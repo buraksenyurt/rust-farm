@@ -11,4 +11,9 @@ Gerekli açıklamalar kod satırları arasında yer almaktadır.
 ```bash
 # hello_world isimli yeni bir proje oluşturulur.
 cargo new hello_world
+
+# çalıştırmak için
+cargo run
 ```
+
+![Sample00](images/mod00.png)

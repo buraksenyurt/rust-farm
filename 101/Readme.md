@@ -35,6 +35,10 @@ cargo doc
 
 ![images/mod01_2.png](images/mod01_2.png)
 
+/// ifadeleri ile oluşturulan yardımcı bilgiler html dosyası üzerinden görüntülenebilir. Tüm Rust çevresindeki standart doküman formatı budur ve markdown tabanlıdır.
+
 ![images/mod01_1.png](images/mod01_1.png)
+
+Yardım dokümanları fonksiyon gibi öğelerin kullanımında geliştiriciye önemli ipuçları verir.
 
 ![images/mod01_3.png](images/mod01_3.png)

@@ -17,3 +17,24 @@ cargo run
 ```
 
 ![images/mod00.png](images/mod00.png)
+
+### Module01: newton _(Test yazmak, Doküman Oluşturmak)_
+
+```bash
+# Yeni fonksiyonlar taşıyan kütüphaneler oluştururken 
+cargo new newton --lib
+
+# Test koşturmak için
+cargo test
+
+# Yardım dokümanını oluşturmak için
+cargo doc
+
+# sonrasında doc/newton/index.html'e bakılabilir
+```
+
+![images/mod01_2.png](images/mod01_2.png)
+
+![images/mod01_1.png](images/mod01_1.png)
+
+![images/mod01_3.png](images/mod01_3.png)

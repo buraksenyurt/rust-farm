@@ -16,4 +16,4 @@ cargo new hello_world
 cargo run
 ```
 
-![Sample00](images/mod00.png)
+![images/mod00.png](images/mod00.png)

@@ -42,3 +42,38 @@ cargo doc
 Yardım dokümanları fonksiyon gibi öğelerin kullanımında geliştiriciye önemli ipuçları verir.
 
 ![images/mod01_3.png](images/mod01_3.png)
+
+### Module02: scalar_types _(Temel Veri Türleri)_
+
+__Scalar Data Types__
+
+    Integer:
+
+    Size    Signed      Unsigned
+
+    8 bit   i8          u8
+    16 bit  i16         u16
+    32 bit  i32         u32 (tamsayılar için varsayılan türdür)
+    64 bit  i64         u64
+    128 bit i128        u128
+    arch    isize       usize (mikro işlemci mimarisine göre)
+
+    Float:
+
+    32 bit  f32
+    64 bit  f64 (noktalı sayılar için varsayılan türdür)
+
+    Boolean:
+
+    true
+    false
+
+    Char:
+
+```bash
+# Projeyi oluşturmak için
+cargo new scalar_types
+
+# Programı çalıştırmak için
+cargo run
+```

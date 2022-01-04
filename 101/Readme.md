@@ -77,3 +77,7 @@ cargo new scalar_types
 # Programı çalıştırmak için
 cargo run
 ```
+
+Çalışma zamanından basit bir görüntü.
+
+![images/mod02_1.png](images/mod02_1.png)

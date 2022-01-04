@@ -24,3 +24,9 @@ cargo test
 # akıllı yardım dokümantasyonunu hazırlar
 cargo doc
 ```
+
+## Bölümler
+
+- 101 : Rust programlama dilini başlangıç seviyesinde öğrenmek amacıyla kullanılır.
+- WebDev : Örnek bir Web uygulamasının geliştirilmesi planlanıyor.
+- Practices : Ortaya karışık pratiklerin yer alması planlanıyor.

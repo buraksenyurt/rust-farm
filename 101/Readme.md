@@ -82,7 +82,7 @@ cargo run
 
 ![images/mod02_1.png](images/mod02_1.png)
 
-## Module03: Basit Fonksiyonlar _(some_functions)_
+### Module03: Basit Fonksiyonlar _(some_functions)_
 
 Temel fonksiyon kullanımlarına bir bakalım.
 
@@ -110,8 +110,26 @@ cargo fmt
 cargo clippy
 ```
 
-Yukarıdaki örnekte yer alan birkaç fonksiyonu aşağıdaki hale getirelim.
+Yukarıdaki örnekte yer alan iki fonksiyonu aşağıdaki hale getirelim.
 
 ```rust
+pub fn greetings(your_name: &str) -> String {
+    let message = format!("Merhaba {}.", your_name);
+    return message;
+}
 
+pub fn square_of_circle(r: f32) -> f32 {
+    return PI * r * r;
+}
 ```
+
+Önceki kullanımdan farklı olarak bilinçli bir şekilde return kullandık. Normalde geriye sonuç döndüren fonksiyonlarda son satırda return veya ; kullanımına gerek yoktur. Tail Expression şeklinde ilerlenebilir. _cargo clippy_ komutunu örnek için çalışıtırırsak aşağıdaki uyarıları verir.
+
+![images/mod03_2.png](images/mod03_2.png)
+
+Yani clippy der ki, "kodunu taradım ve aslında daha idiomatic önerilerim var..." Clippy kodu otomatik olarak derler ve belirli problemlerin olup olmadığını tarar. Sonra da sonuçları programcıya tatlı dille aktarır :)
+
+_Clippy pek çok kategoride düzeltmeler sunar. Performas, yazım stili, kod karmaşıklığı, kısıtlar vs...[Detaylar için clippy lint adresine uğramakta yarar var](https://rust-lang.github.io/rust-clippy/master/)_
+
+### Module04: Modüle Kullanımları _(music_shop)_ 
+

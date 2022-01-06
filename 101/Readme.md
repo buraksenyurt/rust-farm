@@ -8,7 +8,7 @@ Gerekli açıklamalar kod satırları arasında yer almaktadır.
 
 ### Module00: Hello World
 
-```bash
+```shell
 # hello_world isimli yeni bir proje oluşturulur.
 cargo new hello_world
 
@@ -20,7 +20,7 @@ cargo run
 
 ### Module01: newton _(Test yazmak, Doküman Oluşturmak)_
 
-```bash
+```shell
 # Yeni fonksiyonlar taşıyan kütüphaneler oluştururken 
 cargo new newton --lib
 
@@ -70,7 +70,7 @@ __Scalar Data Types__
 
     Char:
 
-```bash
+```shell
 # Projeyi oluşturmak için
 cargo new scalar_types
 
@@ -81,3 +81,37 @@ cargo run
 Çalışma zamanından basit bir görüntü.
 
 ![images/mod02_1.png](images/mod02_1.png)
+
+## Module03: Basit Fonksiyonlar _(some_functions)_
+
+Temel fonksiyon kullanımlarına bir bakalım.
+
+```shell
+# Kütüphane olarak oluşturalım.
+cargo new simple_functions --lib
+
+# test etmek için
+cargo test
+```
+
+Çalışma zamanına ait örnek görüntü.
+
+![images/mod03_1.png](images/mod03_1.png)
+
+Hemen araya reklam olarak faydalı iki _cargo_ komutu alalım.
+
+```shell
+# Kod içeriğini RustFmt'te göre formatlar.
+# Yani terminalden de format düzenlemeleri yaptırabiliriz.
+cargo fmt
+
+# Bu ise kodun idiomatic olmasını sağlar.
+# Yani kodun Rust'ın getirdiği özellikler kullanılarak daha düzgün yazılması için önerilerde bulunur.
+cargo clippy
+```
+
+Yukarıdaki örnekte yer alan birkaç fonksiyonu aşağıdaki hale getirelim.
+
+```rust
+
+```

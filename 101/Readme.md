@@ -142,3 +142,28 @@ cd soundlib/src/
 # dosya olarak module
 touch musicbox.rs
 ```
+
+### Module05: Crate _(Sandık)_ Kullanımı
+
+Modülleri benzer amaçlar doğrultusunda bir arada toplamanın yolu onları bir sandık _(crate)_ içerisine koymaktır.
+
+```shell
+# Örneği aşağıdaki gibi oluşturabiliriz.
+cargo new lotary
+
+cd lotary/src/
+touch warehouse.rs
+
+# Çalıştırmak için
+cargo run
+```
+
+Örnekte rastgele sayı üreteci olarak [rand](https://crates.io/crates/rand) isimli crate kullanılmakta. crates.io, rust ile ilgili paketlerin yayınlandığı ortamdır. Buna benzer harici crate bildirimleri toml dosyasında yapılır.
+
+Örnek ilk çalıştırıldığında toml içinde belirtilen harici crate'ler yüklenir.
+
+![images/mod05_1.png](images/mod05_1.png)
+
+Çalışma zamanına ait bir görüntü.
+
+![images/mod05_2.png](images/mod05_2.png)

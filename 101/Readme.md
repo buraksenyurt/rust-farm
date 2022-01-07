@@ -131,5 +131,14 @@ Yani clippy der ki, "kodunu taradım ve aslında daha idiomatic önerilerim var.
 
 _Clippy pek çok kategoride düzeltmeler sunar. Performas, yazım stili, kod karmaşıklığı, kısıtlar vs...[Detaylar için clippy lint adresine uğramakta yarar var](https://rust-lang.github.io/rust-clippy/master/)_
 
-### Module04: Modüle Kullanımları _(music_shop)_ 
+### Module04: Modül Oluşturma ve Kullanma _(music_shop)_ 
 
+Aynı konu altında birleşen fonksiyonellikleri modül veya sandıklarda _(crate)_ toplarız.
+
+```shell
+cargo new soundlib --lib
+cd soundlib/src/
+
+# dosya olarak module
+touch musicbox.rs
+```

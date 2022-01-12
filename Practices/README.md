@@ -21,4 +21,8 @@ cargo doc --no-deps --open
 
 ![./images/doc_sample_1.png](./images/doc_sample_1.png)
 
+//! şeklinde değişiklik yapıldığında.
+
+![./images/doc_sample_2.png](./images/doc_sample_2.png)
+
 Kodun idiomatic olması için önerileri clippy verir. _cargo clippy_ 

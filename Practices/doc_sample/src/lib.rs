@@ -1,16 +1,16 @@
-/// Maket uçak yapımı sevenler için koleksiyonlarını yönetecekleri basit kütüphane.
-///
-/// # Bazı Yardımcı Bilgiler
-///
-/// Model uçak yapımı çok sevilen bir hobidir. Meşakkatli bir iştir ama sonuçları oldukça harikadır.
-/// Yeni başlayanlar genelde 1:72 ölçekle çalışır. Az parçadan oluşan maketlerin bazıları için boya,
-/// fırça, yapıştırıcı gibi unsurlar paketle birlikte gönderilir. İlk önce parçaların uygun şekilde
-/// boyanması gerekir. Sonrasında plana uygun olarak yapıştırma işlemleri icra edilir. En son olarak
-/// da logoların yapıştırılması işlemi uygulanır.
-///
-/// # İçerik
-///
-/// Kütüphanede yer alan temel enstrümanlar.
+//! Maket uçak yapımı sevenler için koleksiyonlarını yönetecekleri basit kütüphane.
+//!
+//! # Bazı Yardımcı Bilgiler
+//!
+//! Model uçak yapımı çok sevilen bir hobidir. Meşakkatli bir iştir ama sonuçları oldukça harikadır.
+//! Yeni başlayanlar genelde 1:72 ölçekle çalışır. Az parçadan oluşan maketlerin bazıları için boya,
+//! fırça, yapıştırıcı gibi unsurlar paketle birlikte gönderilir. İlk önce parçaların uygun şekilde
+//! boyanması gerekir. Sonrasında plana uygun olarak yapıştırma işlemleri icra edilir. En son olarak
+//! da logoların yapıştırılması işlemi uygulanır.
+//!
+//! # İçerik
+//!
+//! Kütüphanede yer alan temel enstrümanlar.
 ///
 /// Bir maket modelinin temel bilgilerini taşır.
 pub struct Model {

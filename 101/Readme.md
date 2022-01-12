@@ -167,3 +167,17 @@ cargo run
 Çalışma zamanına ait bir görüntü.
 
 ![images/mod05_2.png](images/mod05_2.png)
+
+### Module06: Arrays
+
+Sık kullanılan veri tiplerinden birisi dizilerdir. Diziler sabit boyutludur. Elemanlar aynı tipten oluşur. Dizi elemanlarında değişiklik yapmak için nesnenin mutable tanımlanması gerekir.
+
+```shell
+# Örneği kütüphane olarak oluşturalım
+cargo new arrays --lib
+
+# Testleri aşağıdaki gibi koşturalım
+cargo test
+```
+
+![images/mod06_1.png](images/mod06_1.png)

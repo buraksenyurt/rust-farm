@@ -34,6 +34,19 @@ pub enum Level {
     Pro,
 }
 
+use std::fmt::{Display, Formatter};
+
+impl Display for Model {
+    /// Modelin bilgilerini String formatta geri döndürür.
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}. Zorlu {:?}.{} parça. Liste fiyatı {}",
+            self.title, self.level, self.part_count, self.list_price
+        )
+    }
+}
+
 /// Uygulanabilecek en yüsek indirim oranı
 pub const MAX_DISCOUNT_LEVEL: f32 = 10.99;
 
@@ -58,10 +71,10 @@ impl Model {
     }
 
     // cargo clippy sonrası aşağıdaki kullanım yerine Display trait'inin uyarlanması önerildi
-    pub fn to_string(&self) -> String {
+    /*pub fn to_string(&self) -> String {
         format!(
             "{}. Zorluk {:?}.{} parça. Liste fiyatı {}",
             self.title, self.level, self.part_count, self.list_price
         )
-    }
+    }*/
 }

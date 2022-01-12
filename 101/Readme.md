@@ -194,3 +194,15 @@ cargo test
 ```
 
 ![images/mod07_1.png](images/mod07_1.png)
+
+### Module08_ Slice
+
+Bir veri serisinin bellekteki belli bir bloğunu temsil eden işaretçi olarak düşünülebilir. Read-Only'dir ve sabit boyutludur. Boyutu sabit olmasına rağmen çalışma zamanında belirlenebilir. Yaygın olarak Array, Vector ve String türleri ile kullanılır.
+
+```shell
+cargo new slices --lib
+
+cargo test
+```
+
+![images/mod08_1.png](images/mod08_1.png)

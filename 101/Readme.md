@@ -220,3 +220,15 @@ cargo test
 ```
 
 ![images/mod09_1.png](images/mod09_1.png)
+
+### Module10: Struct Data Type
+
+Kendi veri tiplerimizi struct olarak tanımlarız.
+
+```shell
+cargo new structs --lib
+cargo clippy
+cargo test
+```
+
+![images/mod10_1.png](images/mod10_1.png)

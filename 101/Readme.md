@@ -182,7 +182,7 @@ cargo test
 
 ![images/mod06_1.png](images/mod06_1.png)
 
-### Module07_ Vectors
+### Module07: Vectors
 
 Rust standart kütüphanesinde yer alan Vec yapısı _(struct)_ ile boyutu değiştirilebilir veri serilerini kullanabiliriz. Vec gibi built-in türlerde rust kütüphanesine geçip ne olduklarına ve nasıl kullanıldıklarına bakmakta yarar var. 
 Örneğin Vec tipi için [şuradaki yardım dokümanına](https://doc.rust-lang.org/std/vec/struct.Vec.html#) bakmak ve hatta [src](https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#400-403) linkinden yararlanıp nasıl yazıldığını görmekte yarar var. Kullandığımız tüm built-in enstrümanlar için bu şekilde ilerleyerek Rust dilini daha iyi öğrenebiliriz.
@@ -195,7 +195,7 @@ cargo test
 
 ![images/mod07_1.png](images/mod07_1.png)
 
-### Module08_ Slice
+### Module08: Slice
 
 Bir veri serisinin bellekteki belli bir bloğunu temsil eden işaretçi olarak düşünülebilir. Read-Only'dir ve sabit boyutludur. Boyutu sabit olmasına rağmen çalışma zamanında belirlenebilir. Yaygın olarak Array, Vector ve String türleri ile kullanılır.
 
@@ -206,3 +206,17 @@ cargo test
 ```
 
 ![images/mod08_1.png](images/mod08_1.png)
+
+### Module09: Tuples
+
+Tuple farklı türden verileri bir arada tutabilen bir veri türüdür. Statik özelliği taşırlar ve yeniden boyutlandırılamazlar. Dolayısıyla bellek kapsama alanları en baştan bellidir. Elemanları değiştirilebilir, metotlara parametre olarak aktarılabilir veya dönüş tipi şeklinde kullanılabilir.
+
+```shell
+cargo new tuples --lib
+# Alışkanlık kazanalım yazdıklarımızın idiomatic olup olmadığını görelim.
+# Uyarılara kulak verelim ve değiştirelim.
+cargo clippy
+cargo test
+```
+
+![images/mod09_1.png](images/mod09_1.png)

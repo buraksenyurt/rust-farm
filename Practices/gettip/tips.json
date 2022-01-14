@@ -12,6 +12,16 @@
   {
     "id": 3,
     "category": "Common",
-    "description": "Dünyanın en yüksek dağı Everest'tir ve 8848 metre yüksekliktedir"
+    "description": "Dünyanın en yüksek dağı Everest'tir ve 8848 metre yüksekliktedir."
+  },
+  {
+    "id": 4,
+    "category": "C#",
+    "description": "C# Anders Hejslberg tarafından geliştirilmiştir."
+  },
+  {
+    "id": 5,
+    "category": "C#",
+    "description": "C# dilinde en çok kullanılan anahtar kelimenin class olduğunu biliyor muydun?"
   }
 ]

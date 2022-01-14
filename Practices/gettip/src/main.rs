@@ -1,5 +1,7 @@
+use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use std::env;
+use std::fmt::{Display, Formatter};
 use std::fs::File;
 use std::io::BufReader;
 
@@ -11,7 +13,7 @@ fn main() {
         2 => {
             let command = &args[1];
             if command == "r" {
-                println!("Rastgele bir tip gelecek");
+                println!("{}", get_random_tip(&tips));
             } else {
                 println!("r girerek deneyin.");
             }
@@ -21,7 +23,7 @@ fn main() {
             println!("`{}` ile ilgili bir ipucu aranacak", category);
         }
         _ => {
-            println!("Lütfen kullanım klavuzunu okuyun");
+            println!("Rustgele bir ipucu için `r` ile\nBelli bir kategoride rustgele ipucu için `r rust` ile \ndeneyin lütfen;)");
         }
     };
 }
@@ -34,7 +36,9 @@ fn load_tips() -> Vec<Tip> {
 }
 
 fn get_random_tip(tips: &Vec<Tip>) -> String {
-    todo!()
+    let mut rng = thread_rng();
+    let number = rng.gen_range(0..tips.len());
+    tips[number].to_string()
 }
 
 fn get_tips_by_category(tips: &Vec<Tip>, category: String) -> String {
@@ -46,4 +50,10 @@ pub struct Tip {
     pub id: i32,
     pub category: String,
     pub description: String,
+}
+
+impl Display for Tip {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} -> {}", self.category, self.description)
+    }
 }

@@ -3,6 +3,8 @@ mod model;
 #[cfg(test)]
 mod tests {
     use crate::model::entity::{Game, Kind};
+    use std::fs::File;
+    use std::io::Write;
 
     #[test]
     fn create_new_game_test() {
@@ -37,5 +39,29 @@ mod tests {
             }"#;
         let expected: Game = serde_json::from_str(serialized).unwrap();
         assert_eq!(expected.title, "Age of Empires II");
+    }
+
+    #[test]
+    fn read_from_json_file_test() {}
+
+    #[test]
+    fn write_to_json_file_test() {
+        let mut f = File::create("products.json").expect("Dosya oluşturmada hata");
+        let mut games = vec![];
+        games.push(Game {
+            id: 2001,
+            title: String::from("Age of Empires II"),
+            kind: Kind::Rts,
+        });
+        games.push(Game {
+            id: 1996,
+            title: String::from("Starcraft II"),
+            kind: Kind::Rts,
+        });
+        let data = serde_json::to_string(&games).expect("json dönüştürmede hata");
+        let result = f
+            .write_all(data.as_bytes())
+            .expect("dosyaya yazma sırasında hata");
+        assert_eq!(result, ());
     }
 }

@@ -6,3 +6,5 @@ Sık başvurulacak işlerden birisi JSON verilerle çalışmak olabilir. Örnekt
 # Testleri koşturmak için
 cargo test
 ```
+
+![../images/json_works_1.png](../images/json_works_1.png)

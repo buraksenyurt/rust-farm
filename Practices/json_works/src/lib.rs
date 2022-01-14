@@ -42,9 +42,6 @@ mod tests {
     }
 
     #[test]
-    fn read_from_json_file_test() {}
-
-    #[test]
     fn write_to_json_file_test() {
         let mut f = File::create("products.json").expect("Dosya oluşturmada hata");
         let mut games = vec![];

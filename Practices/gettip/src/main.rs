@@ -1,12 +1,20 @@
+use serde::{Deserialize, Serialize};
 use std::env;
+use std::fs::File;
+use std::io::BufReader;
 
 fn main() {
-    // Terminalden girilen argümanları alalım
     let args: Vec<String> = env::args().collect();
+    let tips = load_tips();
+
     match args.len() {
         2 => {
             let command = &args[1];
-            println!("Girilen komut -> {}", command);
+            if command == "r" {
+                println!("Rastgele bir tip gelecek");
+            } else {
+                println!("r girerek deneyin.");
+            }
         }
         3 => {
             let category = &args[2];
@@ -18,8 +26,11 @@ fn main() {
     };
 }
 
-fn load_tips() -> &'static Vec<Tip> {
-    todo!()
+fn load_tips() -> Vec<Tip> {
+    let f = File::open("tips.json").expect("Dosya açılırken hata");
+    let reader = BufReader::new(f);
+    let tips: Vec<Tip> = serde_json::from_reader(reader).expect("json okumada hata");
+    tips
 }
 
 fn get_random_tip(tips: &Vec<Tip>) -> String {
@@ -30,8 +41,9 @@ fn get_tips_by_category(tips: &Vec<Tip>, category: String) -> String {
     todo!()
 }
 
-struct Tip {
-    id: i32,
-    category: String,
-    description: String,
+#[derive(Serialize, Deserialize)]
+pub struct Tip {
+    pub id: i32,
+    pub category: String,
+    pub description: String,
 }

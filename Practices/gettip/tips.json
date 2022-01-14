@@ -1,0 +1,17 @@
+[
+  {
+  "id": 1,
+  "category": "Rust",
+  "description": "Veri türleri varsayılan olarak immutable'dır."
+  },
+  {
+    "id": 2,
+    "category": "Rust",
+    "description": "Kullanıcı tanımlı veri türü oluşturmanın bir yolu struct kullanmaktır."
+  },
+  {
+    "id": 3,
+    "category": "Common",
+    "description": "Dünyanın en yüksek dağı Everest'tir ve 8848 metre yüksekliktedir"
+  }
+]

@@ -21,22 +21,58 @@ mod tests {
 
     #[test]
     fn change_employee_level_test() {
-        let mut arni = Employee {
-            id: 1,
-            name: String::from("arnıld şıvatzenegır"),
-            level: 68,
-            company: String::from("Soni"),
-        };
+        let mut arni = Employee::new(
+            1,
+            String::from("arnıld şıvatzenegır"),
+            68,
+            String::from("Soni"),
+        );
         assert_eq!(arni.level, 68);
-        arni.change_level(77);
+        let new_level = arni.change_level(77);
+        assert_eq!(new_level, Some(77));
+
+        let new_level = arni.change_level(101);
         assert_eq!(arni.level, 77);
+        assert_eq!(new_level, None);
     }
 
     #[test]
-    fn display_behavior_test() {}
+    fn display_behavior_test() {
+        let lovri = Employee::new(
+            1,
+            String::from("cenifır lovrıns"),
+            75,
+            String::from("Netfiliks"),
+        );
+        // Display trait'i uyarladığımızdan to_string fonksiyonu bizim istediğimiz şekilde çalışır.
+        let lovri_info = lovri.to_string();
+        assert_eq!(lovri_info, "1,cenifır lovrıns,75,Netfiliks");
+    }
 
     #[test]
-    fn create_vec_of_employees() {}
+    fn create_vec_of_employees() {
+        let mut employees: Vec<Employee> = Vec::new();
+        employees.push(Employee::new(
+            1,
+            String::from("cenifır lovrıns"),
+            75,
+            String::from("Netfiliks"),
+        ));
+        employees.push(Employee::new(
+            2,
+            String::from("arnıld şıvatzenegır"),
+            68,
+            String::from("Soni"),
+        ));
+        employees.push(Employee::new(
+            3,
+            String::from("şan kanıri"),
+            100,
+            String::from("MGM"),
+        ));
+
+        assert_eq!(employees.len(), 3);
+    }
 }
 
 // Bir çalışanın birkaç bilgisini tutacak türden bir veri yapısı tanımladık
@@ -63,8 +99,17 @@ impl Employee {
 
     // O nesnenin level değerini değiştiren örnek fonksiyon
     // self ile çalışma zamanı nesnesinin kendisi ifade edilir.
-    pub fn change_level(&mut self, new_level: u8) {
-        self.level = new_level;
+    // fonksiyon geriye Option enum'ı döner.
+    pub fn change_level(&mut self, new_level: u8) -> Option<u8> {
+        // yeni değer kontrolü için matching kullandık.
+        // 0..100 arası ise sıkıntı yok
+        match new_level {
+            0..=100 => {
+                self.level = new_level;
+                Some(self.level)
+            }
+            _ => None, // Diğer hallerde None
+        }
     }
 }
 

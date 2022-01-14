@@ -4,7 +4,7 @@ mod model;
 mod tests {
     use crate::model::entity::{Game, Kind};
     use std::fs::File;
-    use std::io::Write;
+    use std::io::{BufReader, Write};
 
     #[test]
     fn create_new_game_test() {
@@ -63,5 +63,14 @@ mod tests {
             .write_all(data.as_bytes())
             .expect("dosyaya yazma sırasında hata");
         assert_eq!(result, ());
+    }
+
+    #[test]
+    fn read_json_from_file() {
+        let f = File::open("products.json").expect("dosya açılırken hata");
+        let reader = BufReader::new(f);
+        let games: Vec<Game> = serde_json::from_reader(reader).expect("json okumada hata");
+        assert_eq!(games.len(), 2);
+        assert_eq!(games[0].id,2001);
     }
 }

@@ -232,3 +232,111 @@ cargo test
 ```
 
 ![images/mod10_1.png](images/mod10_1.png)
+
+### Module11: Enum Veri Türü
+
+Kullanıcı tanımlı veri türlerinden birisidir. Diğer dillerde genellikle sayılara anlamlı isimler vermek için kullanılır. Rust tarafında enum değerleri türlendirilebilir.
+
+```shell
+cargo new enums
+cargo clippy
+cargo run
+```
+
+![images/mod11_1.png](images/mod11_1.png)
+
+### Module12: Generics
+
+__todo!();__
+
+### Module13: if, match, pattern matching
+
+__todo!();__
+
+### Module14: Loops
+
+__todo!();__
+
+### Module14.5: Scope Hakkında Minik Bilgi
+
+__todo!();__
+
+### Module15: Closures
+
+__todo!();__
+
+### Module16: Higher Order Functions
+
+__todo!();__
+
+### Module17: Macros
+
+__todo!();__
+
+### Module18: Traits
+
+__todo!();__
+
+### Module19: Generic Traits
+
+__todo!();__
+
+### Module20: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
+
+__todo!();__
+
+### Module21: Built-In Türlere Kendi Trait'lerimizi Eklemek
+
+__todo!();__
+
+### Module22: Operator Overloading
+
+__todo!();__
+
+### Module23: Trait'lerde Static Dispatch
+
+__todo!();__
+
+### Module24: Ownership Kuramı
+
+__todo!();__
+
+### Module25: Borrowing
+
+__todo!();__
+
+### Module26: Lifetimes
+
+__todo!();__
+
+### Module27: Otomatik Atanan Lifetime Meselesi
+
+__todo!();__
+
+### Module28: Reference Counted Variables
+
+__todo!();__
+
+### Module29: Dosyalarla Çalışmak
+
+__todo!();__
+
+### Module30: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+
+__todo!();__
+
+### Module31: unwrap, expect ve ? operatörü
+
+__todo!();__
+
+### Module32: Threads
+
+__todo!();__
+
+### Module33: Channels
+
+__todo!();__
+
+### Module34: Concurrency'de Mutex Kullanımı
+
+__todo!();__

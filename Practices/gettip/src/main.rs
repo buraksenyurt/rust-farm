@@ -20,7 +20,16 @@ fn main() {
         }
         3 => {
             let category = &args[2];
-            println!("`{}` ile ilgili bir ipucu aranacak", category);
+            let sub_tips: Vec<Tip> = tips
+                .into_iter()
+                .filter(|t| t.category == *category)
+                .collect();
+            if !sub_tips.is_empty() {
+                let tip = get_random_tip(&sub_tips);
+                println!("{}", tip);
+            } else {
+                println!("{} için hiçbir ipucu yok.", category);
+            }
         }
         _ => {
             println!("Rustgele bir ipucu için `r` ile\nBelli bir kategoride rustgele ipucu için `r rust` ile \ndeneyin lütfen;)");
@@ -35,14 +44,10 @@ fn load_tips() -> Vec<Tip> {
     tips
 }
 
-fn get_random_tip(tips: &Vec<Tip>) -> String {
+fn get_random_tip(tips: &[Tip]) -> String {
     let mut rng = thread_rng();
     let number = rng.gen_range(0..tips.len());
     tips[number].to_string()
-}
-
-fn get_tips_by_category(tips: &Vec<Tip>, category: String) -> String {
-    todo!()
 }
 
 #[derive(Serialize, Deserialize)]

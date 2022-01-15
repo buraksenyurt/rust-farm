@@ -27,6 +27,6 @@ cargo doc
 
 ## Bölümler
 
-- 101 : Rust programlama dilini başlangıç seviyesinde öğrenmek amacıyla kullanılır.
-- WebDev : Örnek bir Web uygulamasının geliştirilmesi planlanıyor.
-- Practices : Ortaya karışık pratiklerin yer alması planlanıyor.
+- 101 : Rust programlama dilini başlangıç seviyesinde öğrenmek amacıyla kullanılır. _inprogress!()_
+- WebDev : Örnek bir Web uygulamasının geliştirilmesi planlanıyor. _inprogress!();_
+- Practices : Ortaya karışık pratiklerin yer alması planlanıyor. _todo!();_

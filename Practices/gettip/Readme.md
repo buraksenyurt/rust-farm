@@ -7,6 +7,7 @@ Bir json dosyasında farklı kategorilerde ipuçları, bilgiler yer alıyor. Kom
 cargo run r
 
 # Örnek olarak rust kategorisinden rastgele bir ipucu döndürür
-cargo run r rust
+cargo run r Rust
 ```
 
+![../images/gettip_1.png](../images/gettip_1.png)

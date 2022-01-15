@@ -23,5 +23,35 @@
     "id": 5,
     "category": "C#",
     "description": "C# dilinde en çok kullanılan anahtar kelimenin class olduğunu biliyor muydun?"
+  },
+  {
+    "id": 6,
+    "category": "Common",
+    "description": "Dünya’ya her gün 8.600.000 yıldırım düşmektedir."
+  },
+  {
+    "id": 7,
+    "category": "Common",
+    "description": "Bir insan uzay boşluğunda, tamamen korunmasız olarak en fazla 2 dakika hayatta kalabilir."
+  },
+  {
+    "id": 8,
+    "category": "Rust",
+    "description": "Rust sistem programlama dilidir ancak fonksiyonel dil özelliklerini de destekler."
+  },
+  {
+    "id": 9,
+    "category": "SQL",
+    "description": "SQL'in açılımı Structured Query Language şeklindedir."
+  },
+  {
+    "id": 10,
+    "category": "C#",
+    "description": "Extension metotlar static sınıflarda yazılırlar."
+  },
+  {
+    "id": 11,
+    "category": "Arc",
+    "description": "Dünya üzerinde en çok kullanılan mimari Monolitik yaklaşımın katmanlı mimari modelidir"
   }
 ]

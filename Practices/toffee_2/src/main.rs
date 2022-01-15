@@ -43,6 +43,23 @@ fn main() {
     } else {
         println!("Eşit değiller");
     }
+
+    // From trait kullanımı örneği
+    let book = Book {
+        id: 345,
+        title: String::from("Calculus"),
+        in_stock: true,
+    };
+    let stock_info = String::from(&book);
+    println!("{}", stock_info);
+
+    // Hatta from'u uygulayınca into otomatik uygulanır
+    let book = Book {
+        id: 678,
+        title: String::from("Numerik Analize Giriş"),
+        in_stock: false,
+    };
+    info(&book);
 }
 
 #[derive(Debug, Clone)]
@@ -56,6 +73,28 @@ impl PartialEq for Book {
     fn eq(&self, other: &Self) -> bool {
         (self.id == other.id) && (self.title == other.title) && (self.in_stock == other.in_stock)
     }
+}
+
+// & ve clone uygulanmasının sebebi içeriği kopyalanması yerine referans taşıması ile kullanılmasıdır.
+// Nitekim veri yapısı içinde(örnekte book) resim veya doküman gibi heap üstünde çok yer tutacak bir veri varsa
+// kopyalama yoluyla kullanım maliyeti çok yüksek olacaktır.
+impl From<&Book> for String {
+    fn from(b: &Book) -> Self {
+        format!(
+            "{},{}",
+            b.title.clone(),
+            match b.in_stock {
+                true => "Stokta var",
+                false => "Stokta yok",
+            }
+        )
+    }
+}
+
+// into trait'ini T tipi üstünden alıp ekrana yazdıran fonksiyon
+// Book için uygulanabilir çünkü From iterator'unu uyguladık.
+pub fn info<T: Into<String>>(s: T) {
+    println!("{}", s.into());
 }
 
 // Copy trait'ini aşağıdaki gibi bir enum'a uygulayabiliriz.

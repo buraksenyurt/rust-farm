@@ -25,6 +25,24 @@ fn main() {
         ..Default::default()
     };
     println!("{:#?}", monthly_report);
+
+    // PartialEq trait kullanımı örneği
+    let first_book = Book {
+        id: 1,
+        title: String::from("Rust for Beginners"),
+        in_stock: true,
+    };
+    let second_book = Book {
+        id: 2,
+        title: String::from("Rust for Beginners"),
+        in_stock: true,
+    };
+    // == operatörünün kullanılabilmesi için ParitalEq trait'i uygulanır
+    if first_book == second_book {
+        println!("Eşitler");
+    } else {
+        println!("Eşit değiller");
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -32,6 +50,12 @@ pub struct Book {
     pub id: i32,
     pub title: String, // String içerdiğinden Copy trait'i uygulanamaz. Clone trait'i uygulanır
     pub in_stock: bool,
+}
+
+impl PartialEq for Book {
+    fn eq(&self, other: &Self) -> bool {
+        (self.id == other.id) && (self.title == other.title) && (self.in_stock == other.in_stock)
+    }
 }
 
 // Copy trait'ini aşağıdaki gibi bir enum'a uygulayabiliriz.

@@ -247,7 +247,15 @@ cargo run
 
 ### Module12: Generics
 
-__todo!();__
+Kendi veri modellerimizi tasarlarken de generic türlendirmelerden yararlanabiliriz.
+
+```shell
+cargo new generics --lib
+cargo clippy
+cargo test
+```
+
+![images/mod12_1.png](images/mod12_1.png)
 
 ### Module13: if, match, pattern matching
 

@@ -86,6 +86,7 @@ pub enum Colors<T> {
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 struct Transparent {
     percentage: f32,
 }

@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 
 #[cfg(test)]
 mod tests {
-    use crate::{Complex, Region};
+    use crate::{Colors, Complex, Region, Transparent};
 
     #[test]
     fn generic_region_type_tests() {
@@ -32,6 +32,21 @@ mod tests {
         };
         assert_eq!(complex1.to_string(), "-4+(3.2345)i");
     }
+
+    #[test]
+    fn generic_enum_type_test() {
+        let green = Colors::Green("#F002023");
+        assert_eq!(format!("{:?}", green), "Green(\"#F002023\")");
+
+        let light_blue = Colors::Blue(173216230);
+        assert_eq!(format!("{:?}", light_blue), "Blue(173216230)");
+
+        let red_bg = Colors::Red(Transparent { percentage: 0.32 });
+        assert_eq!(
+            format!("{:?}", red_bg),
+            "Red(Transparent { percentage: 0.32 })"
+        );
+    }
 }
 
 // T türüyle çalışan bir struct. x,y,z alanları T türüne bürünür.
@@ -60,4 +75,17 @@ impl<T: Display, V: Display> Display for Complex<T, V> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}+({})i", self.real_value, self.virtual_value)
     }
+}
+
+// Bir enum türünü de generic tanımlayabiliriz
+#[derive(Debug)]
+pub enum Colors<T> {
+    Red(T),
+    Blue(T),
+    Green(T),
+}
+
+#[derive(Debug)]
+struct Transparent {
+    percentage: f32,
 }

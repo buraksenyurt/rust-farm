@@ -41,6 +41,17 @@ mod tests {
             Err(e) => assert_eq!(e, "Kuyruk boş!"),
         }
     }
+
+    #[test]
+    fn peek_test() {
+        let mut qu = Uniqueue::<f32>::new();
+        let _ = qu.enq(3.14);
+        let _ = qu.enq(2.22);
+        let _ = qu.enq(1.25);
+        let first_value = qu.peek();
+        assert_eq!(first_value, Ok(&3.14));
+        assert_eq!(qu.count(), 3);
+    }
 }
 
 /// Benzersiz elemanlardan oluşan generic türden bir kuyruk koleksiyonu
@@ -68,7 +79,7 @@ impl<T: Clone + PartialEq> Uniqueue<T> {
         self.items.is_empty()
     }
 
-    /// Kuyruğun sonuna yeni bir tane elemean ekler
+    /// Kuyruğun sonuna yeni bir tane elemean ekler.
     ///
     /// ## Errors
     ///
@@ -86,12 +97,24 @@ impl<T: Clone + PartialEq> Uniqueue<T> {
     ///
     /// ## Errors
     ///
-    /// Kuyruk boşsa hata döner
+    /// Kuyruk boşsa hata döner.
     pub fn deq(&mut self) -> Result<T, &str> {
         if !self.items.is_empty() {
             Ok(self.items.remove(0usize))
         } else {
             Err("Kuyruk boş!")
+        }
+    }
+
+    /// İlk eklenen elemanı koleksiyondan çıkarmadan verir
+    ///
+    /// ## Errors
+    ///
+    /// Kuyrukta hiç eleman olmaması halinde hata döner.
+    pub fn peek(&self) -> Result<&T, &str> {
+        match self.items.first() {
+            Some(value) => Ok(value),
+            None => Err("Kuyruk boş!"),
         }
     }
 }

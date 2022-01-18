@@ -21,6 +21,26 @@ mod tests {
             Err(e) => assert_eq!(e, "Bu eleman zaten var"),
         }
     }
+
+    #[test]
+    fn dequeue_test() {
+        let mut qu = Uniqueue::<f32>::new();
+        let _ = qu.enq(3.14);
+        let _ = qu.enq(2.22);
+        let _ = qu.enq(1.25);
+
+        let r = qu.deq().unwrap();
+        assert_eq!(r, 3.14);
+        let r = qu.deq().unwrap();
+        assert_eq!(r, 2.22);
+        let r = qu.deq().unwrap();
+        assert_eq!(r, 1.25);
+
+        match qu.deq() {
+            Ok(_) => {}
+            Err(e) => assert_eq!(e, "Kuyruk boş!"),
+        }
+    }
 }
 
 /// Benzersiz elemanlardan oluşan generic türden bir kuyruk koleksiyonu
@@ -30,6 +50,8 @@ pub struct Uniqueue<T> {
     pub items: Vec<T>,
 }
 
+// contains fonksiyonunun çalışması için PartialEq trait'ini uygulayan türler kullanılmalı.
+// Ki kıyaslamalar yapılabilsin.
 impl<T: Clone + PartialEq> Uniqueue<T> {
     /// Boş bir Uniqueue oluşturur
     pub fn new() -> Uniqueue<T> {
@@ -47,12 +69,29 @@ impl<T: Clone + PartialEq> Uniqueue<T> {
     }
 
     /// Kuyruğun sonuna yeni bir tane elemean ekler
+    ///
+    /// ## Errors
+    ///
+    /// Eklenmek istenen zaten kuyrukta ise hata döner
     pub fn enq(&mut self, value: T) -> Result<bool, &str> {
         if self.items.contains(&value) {
             Err("Bu eleman zaten var")
         } else {
             self.items.push(value);
             Ok(true)
+        }
+    }
+
+    /// Kuyruğa eklenmiş elemanı çıkartır.
+    ///
+    /// ## Errors
+    ///
+    /// Kuyruk boşsa hata döner
+    pub fn deq(&mut self) -> Result<T, &str> {
+        if !self.items.is_empty() {
+            Ok(self.items.remove(0usize))
+        } else {
+            Err("Kuyruk boş!")
         }
     }
 }

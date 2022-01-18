@@ -8,3 +8,4 @@ cargo clippy
 cargo test
 ```
 
+![../images/uniqueue_1.png](../images/uniqueue_1.png)

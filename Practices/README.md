@@ -1,7 +1,8 @@
 # Ortaya Karışık Pratik Rust Örnekleri
 
-- doc_sample: Kod için yardım dokümanı oluşturmak.
-- json_works: Serde paketini kullanarak JSON içerikle çalışmak.
-- gettip : Bir JSON dosyasında farklı konularda rastgele ipucu veren komut satırı aracı.
-- toffee_1 : Kod idmanı. Closure ve iterator fonksiyonları ile ilgili birkaç pratik.
-- toffee_2 : Kod idmanı. Bu idmanda çok sık kullanılan Derivable trait örnekleri yer alıyor.
+- __doc_sample   :__ Kod için yardım dokümanı oluşturmak.
+- __json_works   :__ Serde paketini kullanarak JSON içerikle çalışmak.
+- __gettip       :__ Bir JSON dosyasında farklı konularda rastgele ipucu veren komut satırı aracı.
+- __toffee_1     :__ Kod idmanı. Closure ve iterator fonksiyonları ile ilgili birkaç pratik.
+- __toffee_2     :__ Kod idmanı. Bu idmanda çok sık kullanılan Derivable trait örnekleri yer alıyor.
+- __uniqueue     :__ Aynı elemandan iki tane olmasına izin vermeyen generic bir queue yapısı.

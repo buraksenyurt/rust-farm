@@ -259,7 +259,17 @@ cargo test
 
 ### Module13: if, match, pattern matching
 
-__todo!();__
+Pek tabii bu konulara değinmeden olmaz.
+
+```shell
+cargo new conditions
+cargo clippy
+cargo run
+```
+
+İlk örnekte basit bir sayı tahmin oyunu söz konusu.
+
+![images/mod13_1.png](images/mod13_1.png)
 
 ### Module14: Loops
 

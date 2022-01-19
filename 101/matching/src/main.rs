@@ -24,6 +24,10 @@ fn main() {
             (x, y) => println!("X,Y koordinatlarında ({},{})", x, y),
         };
     }
+
+    for i in 0..15 {
+        println!("{} adet muz. {}", i, how_many_bananas(i));
+    }
 }
 
 // İlk kullanımda Status enum türünün olası durumları ele alınır.
@@ -52,8 +56,19 @@ fn check_shipment(code: i32) {
         1 => "USA",
         44 => "United Kingdom",
         90 => "Turkey",
-        2..=999 => "Not Available",
-        _ => "Not Valid",
+        2..=999 => "Buraya teslimat yok",
+        _ => "Geçersiz kod",
     };
     println!("{}\t:\t{}", code, country);
+}
+
+// match ifadelerinde birden fazla seçenek farklı şekillerde kullanılabilir.
+fn how_many_bananas(amount: u32) -> &'static str {
+    match amount {
+        0 => "Hiç muz kalmamış :(",
+        1 | 2 => "Bir veya iki tane muzum var",
+        2..=7 => "Elimde bir sürü muz var.",
+        _ if (amount % 2 == 0) => "İstersen yarı yarıya paylaşabiliriz",
+        _ => "Oldukça fazla ama eşit miktarda paylaşmam zor",
+    }
 }

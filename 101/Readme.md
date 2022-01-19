@@ -262,7 +262,13 @@ cargo test
 Pek tabii bu konulara değinmeden olmaz.
 
 ```shell
+# if,else örneği
 cargo new conditions
+cargo clippy
+cargo run
+
+# match statement örneği
+cargo new matching
 cargo clippy
 cargo run
 ```
@@ -270,6 +276,10 @@ cargo run
 İlk örnekte basit bir sayı tahmin oyunu söz konusu.
 
 ![images/mod13_1.png](images/mod13_1.png)
+
+İkinci örnekte çeşitli pattern matching kullanımları var.
+
+![images/mod13_2.png](images/mod13_2.png)
 
 ### Module14: Loops
 

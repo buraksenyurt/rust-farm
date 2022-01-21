@@ -26,14 +26,30 @@ mod tests {
             Ok(_) => {}
         }
     }
+
+    #[test]
+    fn char_counts_test() {
+        let words = vec!["siyah", "beyaz", "en", "büyük", "beşiktaş", "."];
+        let result = char_counts(&words);
+        assert_eq!(result[0], ("siyah", 5));
+        assert_eq!(result[1], ("beyaz", 5));
+        assert_eq!(result[2], ("en", 2));
+        assert_eq!(result[3], ("büyük", 5));
+        assert_eq!(result[4], ("beşiktaş", 8));
+        assert_eq!(result[5], (".", 1));
+    }
 }
 
+// İki değer aralığındaki sayıların toplamını bulan fonksiyon
+// Geriye Result dönüyoruz. Eğer kural ihlali varsa CalculationError dönmekte
 pub fn rngsum(start: i32, stop: i32) -> Result<i32, CalculationError> {
+    // start, stop ikilisini kıyasladığımız matching
     match (start, stop) {
         (s, e) if s > e => Err(CalculationError::InvalidRange),
         (s, e) if s == e => Err(CalculationError::InvalidSpacing),
         (s, e) => {
             let mut total = 0;
+            // basit olarak s değerine e değerine kadar giden bir döngü
             for n in s..=e {
                 total += n;
             }
@@ -51,6 +67,18 @@ pub fn rngsum(start: i32, stop: i32) -> Result<i32, CalculationError> {
         }
         Ok(total)
     }*/
+}
+
+// String elemanlar içeren bir vektördeki her bir ifadede kaç harf olduğunu dönen kobay fonksiyon
+// yaşam sürelerini belirttiğimiz 'a olayına 101 eğitimi için çok takılmayalım.
+pub fn char_counts<'a>(words: &'a [&str]) -> Vec<(&'a str, usize)> {
+    let mut results = Vec::<(&str, usize)>::new();
+    // iterator ile kullanılan bir for döngüsü
+    for word in words.iter() {
+        let l = word.chars().count();
+        results.push((word, l));
+    }
+    results
 }
 
 #[derive(Debug, PartialEq)]

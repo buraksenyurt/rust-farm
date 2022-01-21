@@ -1,3 +1,5 @@
+use rand::Rng;
+
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -31,12 +33,35 @@ mod tests {
     fn char_counts_test() {
         let words = vec!["siyah", "beyaz", "en", "büyük", "beşiktaş", "."];
         let result = char_counts(&words);
-        assert_eq!(result[0], ("siyah", 5));
-        assert_eq!(result[1], ("beyaz", 5));
-        assert_eq!(result[2], ("en", 2));
-        assert_eq!(result[3], ("büyük", 5));
-        assert_eq!(result[4], ("beşiktaş", 8));
-        assert_eq!(result[5], (".", 1));
+        let expected = vec![
+            ("siyah", 5),
+            ("beyaz", 5),
+            ("en", 2),
+            ("büyük", 5),
+            ("beşiktaş", 8),
+            (".", 1),
+        ];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn perfect_divisors_test() {
+        let result = get_perfect_divisors(21, 7);
+        let expected = vec![7, 14, 21];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn get_random_vec_test() {
+        let result = get_random_vec(10);
+        assert_eq!(result.len(), 10);
+
+        let mut i = 0;
+        for (pos, n) in result.iter().enumerate() {
+            assert!(pos == i);
+            assert!(*n > 0);
+            i += 1;
+        }
     }
 }
 
@@ -79,6 +104,49 @@ pub fn char_counts<'a>(words: &'a [&str]) -> Vec<(&'a str, usize)> {
         results.push((word, l));
     }
     results
+}
+
+// Maks değerine kadarki sayılarda ikinci parametreye tam bölünenlerin listesini döner
+pub fn get_perfect_divisors(max: i32, div: i32) -> Vec<i32> {
+    let mut result = Vec::<i32>::new();
+    let mut i = 0;
+    // while döngüsü koşul sağlandığı sürece devam eder
+    while i <= max {
+        i += 1;
+        if i % div == 0 {
+            result.push(i);
+        }
+    }
+    result
+}
+
+// Belirtilen uzunlukta bir vecktör oluşturup içerisini rastgele sayılarla dolduran kobay fonksiyon.
+// Bu seferkinde loop döngüsü söz konusu.
+pub fn get_random_vec(length: i32) -> Vec<i32> {
+    let mut i = 0;
+    let mut numbers = Vec::<i32>::new();
+    let mut rng = rand::thread_rng();
+    // loop aslında while gibi sonsuz bir döngü bloğu açar.
+    loop {
+        // Sembolik bir iç döngü...
+        // Üretilen rastgele sayının 0'dan farklı olmasını istediğimiz için
+        // , sıfırdan farklı bir tane ele edene kadar deniyoruz. Daha kolay yolu da var tabii
+        // ama sırf iç döngü örneği olsun diye :)
+        loop {
+            let n = rng.gen();
+            if n <= 0 {
+                continue;
+            } else {
+                numbers.push(n);
+                break;
+            }
+        }
+        i += 1;
+        if i == length {
+            break; // sonsuz döngüyü kırdığımız satır
+        }
+    }
+    numbers
 }
 
 #[derive(Debug, PartialEq)]

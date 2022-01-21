@@ -10,7 +10,7 @@ mod tests {
 }
 
 // Sadece benchmark testinde kullanım için faktöryel hesabı ele alındı.
-pub fn factorial(num: u64) -> u64 {
+pub fn factorial(num: u128) -> u128 {
     match num {
         0 | 1 => 1,
         _ => factorial(num - 1) * num,

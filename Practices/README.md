@@ -8,3 +8,4 @@
 - __uniqueue     :__ Aynı elemandan iki tane olmasına izin vermeyen generic bir queue yapısı.
 - __toffee_3     :__ Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır?
 - __benchy       :__ Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.
+- __nucleot      :__ Nucleotide Count isimli alıştırmaya ait örnek.

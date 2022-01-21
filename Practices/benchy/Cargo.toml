@@ -1,0 +1,12 @@
+[package]
+name = "benchy"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+criterion={version="0.3.5",features=["html_reports"]}
+
+[[bench]]
+name="speedy_gonsalez"
+# built-in benchmark'ları kapatmak için false değeri atandı
+harness=false

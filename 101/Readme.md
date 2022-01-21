@@ -283,7 +283,15 @@ cargo run
 
 ### Module14: Loops
 
-__todo!();__
+for, while ve loop döngülerinin basit kullanımlarına yer veriliyor.
+
+```shell
+cargo new loooops --lib
+cargo clippy
+cargo test
+```
+
+![images/mod14_1.png](images/mod14_1.png)
 
 ### Module14.5: Scope Hakkında Minik Bilgi
 

@@ -1,15 +1,18 @@
 #[cfg(test)]
 mod tests {
-    use crate::dummy;
+    use crate::factorial;
 
     #[test]
-    fn dummy_func_works() {
-        let result = dummy(8);
-        assert_eq!(result, 64);
+    fn factorial_of_four_is_complete_test() {
+        let result = factorial(4);
+        assert_eq!(result, 24);
     }
 }
 
-// Sadece benchmark testinde kullanm için aptalca bir fonksiyon dahil edildi
-pub fn dummy(number: u128) -> u128 {
-    number * number
+// Sadece benchmark testinde kullanım için faktöryel hesabı ele alındı.
+pub fn factorial(num: u64) -> u64 {
+    match num {
+        0 | 1 => 1,
+        _ => factorial(num - 1) * num,
+    }
 }

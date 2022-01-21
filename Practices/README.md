@@ -6,4 +6,5 @@
 - __toffee_1     :__ Kod idmanı. Closure ve iterator fonksiyonları ile ilgili birkaç pratik.
 - __toffee_2     :__ Kod idmanı. Bu idmanda çok sık kullanılan Derivable trait örnekleri yer alıyor.
 - __uniqueue     :__ Aynı elemandan iki tane olmasına izin vermeyen generic bir queue yapısı.
-- __toffee_3     :__ Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır? 
+- __toffee_3     :__ Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır?
+- __benchy       :__ Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.

@@ -29,7 +29,18 @@ mod tests {
 }
 
 pub fn rngsum(start: i32, stop: i32) -> Result<i32, CalculationError> {
-    if start > stop {
+    match (start, stop) {
+        (s, e) if s > e => Err(CalculationError::InvalidRange),
+        (s, e) if s == e => Err(CalculationError::InvalidSpacing),
+        (s, e) => {
+            let mut total = 0;
+            for n in s..=e {
+                total += n;
+            }
+            Ok(total)
+        }
+    }
+    /*    if start > stop {
         Err(CalculationError::InvalidRange)
     } else if start == stop {
         Err(CalculationError::InvalidSpacing)
@@ -39,10 +50,10 @@ pub fn rngsum(start: i32, stop: i32) -> Result<i32, CalculationError> {
             total += n;
         }
         Ok(total)
-    }
+    }*/
 }
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum CalculationError {
     InvalidRange,
     InvalidSpacing,

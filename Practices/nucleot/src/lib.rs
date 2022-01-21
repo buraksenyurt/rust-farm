@@ -9,19 +9,21 @@ mod tests {
     #[test]
     fn valid_dna_sequence_test() {
         let result = check_dna("GatTAcA").unwrap();
-        assert_eq!(result.adenine, 3);
+        assert_eq!(result.to_string(), "'A':3, 'C':1, 'G':1, 'T':2");
+        /*assert_eq!(result.adenine, 3);
         assert_eq!(result.cytosine, 1);
         assert_eq!(result.guanine, 1);
-        assert_eq!(result.thymine, 2);
+        assert_eq!(result.thymine, 2);*/
     }
 
     #[test]
+    #[should_panic]
     fn invalid_dna_sequence_test() {
-        let result = check_dna("INVALID");
-        match result {
+        let _result = check_dna("INVALID").unwrap();
+        /*match result {
             Err(e) => assert_eq!(e, DnaError::Invalid),
             Ok(_) => {}
-        };
+        };*/
     }
 }
 
@@ -51,6 +53,16 @@ pub struct Nucleotid {
     pub cytosine: u8,
     pub guanine: u8,
     pub thymine: u8,
+}
+
+impl Display for Nucleotid {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "'A':{}, 'C':{}, 'G':{}, 'T':{}",
+            self.adenine, self.cytosine, self.guanine, self.thymine,
+        )
+    }
 }
 
 impl Error for DnaError {}

@@ -368,11 +368,29 @@ generic parametre kullanımında dikkat edilmelidir.
 
 ### Module17: Higher Order Functions
 
-__todo!();__
+Başka bir fonksiyonu parametre olarak alan fonksiyonlar Higher Order Function olarak adlandırılırlar. Fonksiyonel dillerin olmazsa olmaz kabiliyetlerindedir.
+
+```shell
+cargo new hofs --lib
+cargo clippy
+cargo test
+```
+
+![images/mod17_1.png](images/mod17_1.png)
 
 ### Module18: Macros
 
-__todo!();__
+Rust öğrenirken sıklıkla println!, vec!, write! gibi fonksiyonlarla çalışırız. Bunlar birer macro'dur. Sondaki ! işaretinden anlamak mümkün. Tabii geniş bir konudur nitekim meta programlamada da kullanılırlar. Macro'ları kod yazan kodlar olarak düşünebiliriz. Bir kod ifadesini _(expression)_ algılayıp üzerinde çeşitli operasyonlar işletebilmemizi sağlarlar. Bu sayede derleme sırasında araya girip kodu genişletmek de mümkün olabilir. 101 seviyesi eğitimi için ileri seviye bir konudur. O nedenle çok basit anlamda nasıl yazıldığına bakılabilir.
+
+```shell
+cargo new macros
+cargo clippy
+cargo run
+```
+
+Macrolarda kullanılabilen designator türleri; expr _(expresion)_ ,ident _(variable, function names)_ ,block, stmt _(statement)_ ,pat _(patter)_ ,path,meta,ty _(type)_ ,tt _(token tree)_, vis _(visibility qualifier)_, literal... Kısacası bir kodun temel semantik yapılarını macro içerisinde tespit etmemiz mümkündür. 
+
+![images/mod18_1.png](images/mod18_1.png)
 
 ### Module19: Traits
 

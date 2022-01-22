@@ -1,6 +1,43 @@
 # Rust Programlama Dili Temelleri _(Başlangıç Seviyesi)_
 
-Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanıldığını öğrenmek amacıyla oluşturulmuş bir dokümandır.
+Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanıldığını öğrenmek amacıyla oluşturulmuş bir dokümandır. Esas itibariyle giriş seviyedeki Rust eğitimlerinde materyal olarak kullanılabilir. Ana hatları ile konu başlıkları şöyledir.
+
+- __Module00:__ Hello World
+- __Module01:__ Basit test yazmak, dokümantasyon oluşturmak
+- __Module02:__ Temel veri türleri
+- __Module03:__ Basit fonksiyon tanımları
+- __Module04:__ Module oluşturmak
+- __Module05:__ Crate oluşturmak
+- __Module06:__ Array veri türü ile çalışmak
+- __Module07:__ Vector veri türü ile çalışmak
+- __Module08:__ Slice veri türü ile çalışmak
+- __Module09:__ Tuple veri türü ile çalışmak
+- __Module10:__ Kendi veri türlerimiz için Struct kullanmak
+- __Module11:__ Enum veri türü
+- __Module12:__ Generic türler
+- __Module13:__ Karar yapıları, match ifadesi ve pattern matching
+- __Module14:__ Döngüler
+- __Module15:__ İlkel haliyle Scope kavramı
+- __Module16:__ Closure ifadeleri
+- __Module17:__ Higher Order Functions
+- __Module18:__ Basit macro kullanımları
+- __Module19:__ Trait'ler ile nesneler davranış kazandırmak
+- __Module20:__ Generic traits 
+- __Module21:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
+- __Module22:__ Built-In Türlere Kendi Trait'lerimizi Eklemek 
+- __Module23:__ Operator Overloading
+- __Module24:__ Trait'lerde Static Dispatch 
+- __Module25:__ Ownership Kuramı 
+- __Module26:__ Borrowing 
+- __Module27:__ Lifetimes 
+- __Module28:__ Otomatik Atanan Lifetime Meselesi 
+- __Module29:__ Reference Counted Variables 
+- __Module30:__ Dosyalarla Çalışmak 
+- __Module31:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+- __Module32:__ unwrap, expect ve ? operatörü 
+- __Module33:__ Threads 
+- __Module34:__ Channels
+- __Module35:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler
 
@@ -293,86 +330,114 @@ cargo test
 
 ![images/mod14_1.png](images/mod14_1.png)
 
-### Module14.5: Scope Hakkında Minik Bilgi
+### Module15: Scope Hakkında Minik Bilgi
+
+Sahip olduğu önleyici tedbir ve kurallar sayesinde Rust, memory leak oluşmasına izin vermez. Bunun en büyük sebeplerinden birisi de değişkenleri elle kaldırmamıza gerek olmamasıdır. Lakin yönetimli dillerde olduğu gibi bir gargabe collector mekanizması da yoktur. Değişkenleri dahil olduğu scope kavramı bu noktada öne çıkar. Scope bittiğinde bu kapsama dahil olan değişkenler derhal yok edilir ve bellek bölgesi boşaltılır. Bunu anlamak için basit bir kod parçamız var.
+
+```shell
+cargo new scopes
+cargo clippy
+cargo run
+```
+
+value değişkeni ile ilgili scope hatası.
+
+![images/mod15_1.png](images/mod15_1.png)
+
+global değişken kullanırken scope ihlali söz konusu olabilir ve bu güvensizdir. O nedenle aşağıdaki gibi bir derleme hatası alınır.
+
+![images/mod15_2.png](images/mod15_2.png)
+
+### Module16: Closures
+
+Fonksiyonel dillerinin karakteristik özelliklerinden birisi de closure'dur. Onları isimsiz fonksiyon _(anonymous function)_, lambda, lambda ifadesi veya fonksiyon içinde fonksiyon olarak da biliriz. Closure ifadeleri ile fonksiyonları değişkenlere atamamız da mümkündür.
+
+```shell
+cargo new closures
+cargo clippy
+cargo run
+```
+
+generic parametre kullanımında dikkat edilmelidir.
+
+![images/mod16_1.png](images/mod16_1.png)
+
+çalışma zamanı sonucu
+
+![images/mod16_2.png](images/mod16_2.png)
+
+### Module17: Higher Order Functions
 
 __todo!();__
 
-### Module15: Closures
+### Module18: Macros
 
 __todo!();__
 
-### Module16: Higher Order Functions
+### Module19: Traits
 
 __todo!();__
 
-### Module17: Macros
+### Module20: Generic Traits
 
 __todo!();__
 
-### Module18: Traits
+### Module21: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
 
 __todo!();__
 
-### Module19: Generic Traits
+### Module22: Built-In Türlere Kendi Trait'lerimizi Eklemek
 
 __todo!();__
 
-### Module20: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
+### Module23: Operator Overloading
 
 __todo!();__
 
-### Module21: Built-In Türlere Kendi Trait'lerimizi Eklemek
+### Module24: Trait'lerde Static Dispatch
 
 __todo!();__
 
-### Module22: Operator Overloading
+### Module25: Ownership Kuramı
 
 __todo!();__
 
-### Module23: Trait'lerde Static Dispatch
+### Module26: Borrowing
 
 __todo!();__
 
-### Module24: Ownership Kuramı
+### Module27: Lifetimes
 
 __todo!();__
 
-### Module25: Borrowing
+### Module28: Otomatik Atanan Lifetime Meselesi
 
 __todo!();__
 
-### Module26: Lifetimes
+### Module29: Reference Counted Variables
 
 __todo!();__
 
-### Module27: Otomatik Atanan Lifetime Meselesi
+### Module30: Dosyalarla Çalışmak
 
 __todo!();__
 
-### Module28: Reference Counted Variables
+### Module31: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 
 __todo!();__
 
-### Module29: Dosyalarla Çalışmak
+### Module32: unwrap, expect ve ? operatörü
 
 __todo!();__
 
-### Module30: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+### Module33: Threads
 
 __todo!();__
 
-### Module31: unwrap, expect ve ? operatörü
+### Module34: Channels
 
 __todo!();__
 
-### Module32: Threads
-
-__todo!();__
-
-### Module33: Channels
-
-__todo!();__
-
-### Module34: Concurrency'de Mutex Kullanımı
+### Module35: Concurrency'de Mutex Kullanımı
 
 __todo!();__

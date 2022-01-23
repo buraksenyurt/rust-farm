@@ -1,18 +1,16 @@
 #[derive(Debug)]
-pub struct Player {
-    life: u8,
-    nickname: String,
-    universe: String,
-    is_active: bool,
+pub struct Voyager {
+    pub life: u8,
+    pub nickname: String,
+    pub universe: String,
+    pub is_active: bool,
 }
 
-impl Player {
+impl Voyager {
     pub fn new(nickname: String) -> Self {
-        Player {
-            life: 3,
+        Voyager {
             nickname,
-            is_active: false,
-            universe: String::from("nowhere"),
+            ..Default::default()
         }
     }
 
@@ -27,6 +25,17 @@ impl Player {
         self.life -= 1;
         if self.life == 0 {
             self.is_active = false;
+        }
+    }
+}
+
+impl Default for Voyager {
+    fn default() -> Self {
+        Voyager {
+            life: 3,
+            is_active: false,
+            universe: String::from("nowhere"),
+            nickname: String::from("unknown"),
         }
     }
 }

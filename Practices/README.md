@@ -9,3 +9,4 @@
 - __toffee_3     :__ Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır?
 - __benchy       :__ Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.
 - __nucleot      :__ Nucleotide Count isimli alıştırmaya ait örnek.
+- __logging      :__ Sistem programcıları için logları takip etmek oldukça önemli. Rust için loglama nasıl yapılır konusuna bakıyoruz.

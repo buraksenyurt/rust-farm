@@ -12,7 +12,7 @@ pub struct Voyager {
 impl Voyager {
     pub fn new(nickname: String) -> Self {
         // debug türünden bir log bırakıyoruz
-        debug!(target:"App Logs","Oyuna {} isimli bir gezgin katılıyor.",nickname);
+        debug!(target:"app_events","Oyuna {} isimli bir gezgin katılıyor.",nickname);
         Voyager {
             nickname,
             ..Default::default()
@@ -22,7 +22,7 @@ impl Voyager {
     pub fn connect(&mut self, universe: String) {
         if !self.is_active && self.life > 0 {
             // info türünden bir log bırakıyoruz
-            info!(target:"App Logs","{}, {} evrenine bağlanıyor",self.nickname,universe);
+            info!(target:"app_events","{}, {} evrenine bağlanıyor",self.nickname,universe);
             self.is_active = true;
             self.universe = universe;
         }
@@ -31,11 +31,11 @@ impl Voyager {
     pub fn hited(&mut self) {
         self.life -= 1;
         // warn türünden bir log bırakıyoruz
-        warn!(target:"App Logs","{} vuruldu ve {} canı kaldı.",self.nickname,self.life);
+        warn!(target:"app_events","{} vuruldu ve {} canı kaldı.",self.nickname,self.life);
 
         if self.life == 0 {
             // error türünden bir log bırakıyoruz
-            error!(target:"App Logs","{} ne yazık ki tüm canlarını kaybetti. Bağlantısı kesiliyor",self.nickname);
+            error!(target:"app_events","{} ne yazık ki tüm canlarını kaybetti. Bağlantısı kesiliyor",self.nickname);
             self.is_active = false;
         }
     }
@@ -50,7 +50,7 @@ impl Default for Voyager {
             nickname: String::from("unknown"),
         };
         // trace türünden bir log bırakıyoruz
-        trace!(target:"App Logs","Gezgin için varsayılan değerler yükleniyor.{:?}",voyager);
+        trace!(target:"app_events","Gezgin için varsayılan değerler yükleniyor.{:?}",voyager);
         voyager
     }
 }

@@ -21,23 +21,22 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - __Module16:__ Closure ifadeleri
 - __Module17:__ Higher Order Functions
 - __Module18:__ Basit macro kullanımları
-- __Module19:__ Trait'ler ile nesneler davranış kazandırmak
-- __Module20:__ Generic traits 
-- __Module21:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
-- __Module22:__ Built-In Türlere Kendi Trait'lerimizi Eklemek 
-- __Module23:__ Operator Overloading
-- __Module24:__ Trait'lerde Static Dispatch 
-- __Module25:__ Ownership Kuramı 
-- __Module26:__ Borrowing 
-- __Module27:__ Lifetimes 
-- __Module28:__ Otomatik Atanan Lifetime Meselesi 
-- __Module29:__ Reference Counted Variables 
-- __Module30:__ Dosyalarla Çalışmak 
-- __Module31:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
-- __Module32:__ unwrap, expect ve ? operatörü 
-- __Module33:__ Threads 
-- __Module34:__ Channels
-- __Module35:__ Concurrency'de Mutex Kullanımı
+- __Module19:__ Trait'ler ile nesnelere davranış kazandırmak
+- __Module20:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
+- __Module21:__ Built-In Türlere Kendi Trait'lerimizi Eklemek 
+- __Module22:__ Operator Overloading
+- __Module23:__ Trait'lerde Static Dispatch 
+- __Module24:__ Ownership Kuramı 
+- __Module25:__ Borrowing 
+- __Module26:__ Lifetimes 
+- __Module27:__ Otomatik Atanan Lifetime Meselesi 
+- __Module28:__ Reference Counted Variables 
+- __Module29:__ Dosyalarla Çalışmak 
+- __Module30:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+- __Module31:__ unwrap, expect ve ? operatörü 
+- __Module32:__ Threads 
+- __Module33:__ Channels
+- __Module34:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler
 
@@ -394,68 +393,78 @@ Macrolarda kullanılabilen designator türleri; expr _(expresion)_ ,ident _(vari
 
 ### Module19: Traits
 
-__todo!();__
+Trait'ler nesne yönelimli dillerdeki interface veya abstract class tiplerine benzetilebilir. Nesne yapılarına yeni davranış modellerini monte etmek için yaygın olarak kullanılırlar. Örnekte çok basit anlamda trait nasıl tanımlanır ve kullanılır anlamaya çalışıyoruz.
 
-### Module20: Generic Traits
+```shell
+cargo new traits --lib
+cargo clippy
+cargo test
+```
 
-__todo!();__
+generic say_something fonksiyonuna Entity trait'ini uygulamayan bir tip yollarsak.
 
-### Module21: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
+![images/mod19_1.png](images/mod19_1.png)
 
-__todo!();__
+Normal şartlarda ise örnek sorunsuz çalışır.
 
-### Module22: Built-In Türlere Kendi Trait'lerimizi Eklemek
+![images/mod19_2.png](images/mod19_2.png)
 
-__todo!();__
-
-### Module23: Operator Overloading
-
-__todo!();__
-
-### Module24: Trait'lerde Static Dispatch
+### Module20: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
 
 __todo!();__
 
-### Module25: Ownership Kuramı
+### Module21: Built-In Türlere Kendi Trait'lerimizi Eklemek
 
 __todo!();__
 
-### Module26: Borrowing
+### Module22: Operator Overloading
 
 __todo!();__
 
-### Module27: Lifetimes
+### Module23: Trait'lerde Static Dispatch
 
 __todo!();__
 
-### Module28: Otomatik Atanan Lifetime Meselesi
+### Module24: Ownership Kuramı
 
 __todo!();__
 
-### Module29: Reference Counted Variables
+### Module25: Borrowing
 
 __todo!();__
 
-### Module30: Dosyalarla Çalışmak
+### Module26: Lifetimes
 
 __todo!();__
 
-### Module31: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+### Module27: Otomatik Atanan Lifetime Meselesi
 
 __todo!();__
 
-### Module32: unwrap, expect ve ? operatörü
+### Module28: Reference Counted Variables
 
 __todo!();__
 
-### Module33: Threads
+### Module29: Dosyalarla Çalışmak
 
 __todo!();__
 
-### Module34: Channels
+### Module30: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 
 __todo!();__
 
-### Module35: Concurrency'de Mutex Kullanımı
+### Module31: unwrap, expect ve ? operatörü
+
+__todo!();__
+
+### Module32: Threads
+
+__todo!();__
+
+### Module33: Channels
+
+__todo!();__
+
+### Module34: Concurrency'de Mutex Kullanımı
 
 __todo!();__

@@ -20,15 +20,14 @@ pub fn are_you_armstrong_number(number: u32) -> bool {
     // Tüm işi aslında Higher Order Function'lar ile çözümleyebiliriz
 
     // sayının rakamlarını map ile 10luk düzende alır ve u32 türlü bir vector'e koyar (map)
-    // yeni vector'ün tüm elemanlarını dolaşır (iter)
     // her bir rakamın sayıdaki rakam sayısı kadar üssünü bulur (ikinci map)
     // bunların toplamını çeker (sum)
     let sum_of: u32 = number
         .to_string()
         .chars()
         .map(|c| c.to_digit(10).unwrap())
-        .collect::<Vec<u32>>()
-        .iter()
+        //.collect::<Vec<u32>>()
+        //.iter()
         .map(|n| n.pow(digits_count))
         .sum();
 

@@ -10,3 +10,4 @@
 - __benchy       :__ Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.
 - __nucleot      :__ Nucleotide Count isimli alıştırmaya ait örnek.
 - __logging      :__ Sistem programcıları için logları takip etmek oldukça önemli. Rust için loglama nasıl yapılır konusuna bakıyoruz.
+- __toffee_4     :__ Kod idmanı. Basit seviyede birkaç zihin açıcı problemi çözmeye çalışıyoruz. 

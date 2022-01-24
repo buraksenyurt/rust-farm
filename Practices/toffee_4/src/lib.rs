@@ -14,14 +14,24 @@ mod tests {
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
-    // İlk olarak sayının rakamlarını çekmek isterim.
-    // 10 düzende to_digit fonksiyonu iş görecektir
-    let digits: Vec<_> = number
+    // digits_count'u HOF içerisine dahil etmenin bir yolu olabilir mi?
+    let digits_count = number.to_string().chars().count() as u32;
+
+    // Tüm işi aslında Higher Order Function'lar ile çözümleyebiliriz
+
+    // sayının rakamlarını map ile 10luk düzende alır ve u32 türlü bir vector'e koyar (map)
+    // yeni vector'ün tüm elemanlarını dolaşır (iter)
+    // her bir rakamın sayıdaki rakam sayısı kadar üssünü bulur (ikinci map)
+    // bunların toplamını çeker (sum)
+    let sum_of: u32 = number
         .to_string()
         .chars()
         .map(|c| c.to_digit(10).unwrap())
-        .collect();
-    let digits_count = digits.len() as u32;
-    let sum_of: u32 = digits.iter().map(|n| n.pow(digits_count)).sum();
+        .collect::<Vec<u32>>()
+        .iter()
+        .map(|n| n.pow(digits_count))
+        .sum();
+
+    // işlemler sonucu sayıya eşit mi değil mi? Eşitse Armstrong sayısıdır.
     sum_of == number
 }

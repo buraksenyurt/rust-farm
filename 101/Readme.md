@@ -440,7 +440,15 @@ cargo test
 
 ### Module22: Trait'lerde Static Dispatch
 
-__todo!();__
+Trait'leri fonksiyonara parametre olarak geçerken derleyicinin karşısında çözmesi gereken bir durum vardır. Oraya hangi trait uyarlamasını koyacak. Normalde biz bir şey söylemeden bu belli olur. Derleyici static dispatch uygulayarak olası tüm fonksiyon versiyonlarını kendisi yazar. Bu hız kazandırır nitekim derleme zamanında bağlanacak fonksiyonlar hazırdır. Ancak kod tekrar eder ve şişkinlik oluşur. Bu nedenle dinamik dispatch tekniği de uygulanabilir. Generic trait çalışma zamanında bağlanır. Tabii late binding gibi bir durum söz konusu olduğundan bunun kaybı da geç fonksiyon çağrımı olacaktır.
+
+```shell
+cargo new traits_dispatch --lib
+cargo clippy
+cargo test
+```
+
+![images/mod22_1.png](images/mod22_1.png)
 
 ### Module23: Ownership Kuramı
 

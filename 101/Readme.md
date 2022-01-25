@@ -23,20 +23,19 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - __Module18:__ Basit macro kullanımları
 - __Module19:__ Trait'ler ile nesnelere davranış kazandırmak
 - __Module20:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
-- __Module21:__ Built-In Türlere Kendi Trait'lerimizi Eklemek 
-- __Module22:__ Operator Overloading
-- __Module23:__ Trait'lerde Static Dispatch 
-- __Module24:__ Ownership Kuramı 
-- __Module25:__ Borrowing 
-- __Module26:__ Lifetimes 
-- __Module27:__ Otomatik Atanan Lifetime Meselesi 
-- __Module28:__ Reference Counted Variables 
-- __Module29:__ Dosyalarla Çalışmak 
-- __Module30:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
-- __Module31:__ unwrap, expect ve ? operatörü 
-- __Module32:__ Threads 
-- __Module33:__ Channels
-- __Module34:__ Concurrency'de Mutex Kullanımı
+- __Module21:__ Built-In Türlere Kendi Trait'lerimizi Eklemek ve Operator Overloading
+- __Module22:__ Trait'lerde Static Dispatch 
+- __Module23:__ Ownership Kuramı 
+- __Module24:__ Borrowing 
+- __Module25:__ Lifetimes 
+- __Module26:__ Otomatik Atanan Lifetime Meselesi 
+- __Module27:__ Reference Counted Variables 
+- __Module28:__ Dosyalarla Çalışmak 
+- __Module29:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+- __Module30:__ unwrap, expect ve ? operatörü 
+- __Module31:__ Threads 
+- __Module32:__ Channels
+- __Module33:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler
 
@@ -411,60 +410,78 @@ Normal şartlarda ise örnek sorunsuz çalışır.
 
 ### Module20: Fonksiyonlardan Trait Döndürmek için Box Kullanmak
 
-__todo!();__
+Rust, fonksiyonların geriye döndürdüğü değerler varsa bunların bellekte ne kadar yer kaplayacağını önceden bilmek ister. Bu nedenle bir fonksiyondan trait döndürülmesi ilk etapta mümkün görünmez. Lakin Box yapısını kullanarak _(ki kendisi heap üstünde ayarlanan yer için bir işaretçidir)_ bu fonksiyonelliği sağlayabiliriz.
 
-### Module21: Built-In Türlere Kendi Trait'lerimizi Eklemek
+```shell
+cargo new traits_box --lib
+cargo clippy
+cargo test
+```
 
-__todo!();__
+Örneğin yazdığımız ilk versiyonunda Actor trait'ini fonksiyondan döndürmek istiyoruz. Bu durumda derleyici aşağıdaki hatayı verecektir.
 
-### Module22: Operator Overloading
+![images/mod20_1.png](images/mod20_1.png)
 
-__todo!();__
+Box nesnesini devreye alıp birkaç düzeltme yaptıktan sonra.
 
-### Module23: Trait'lerde Static Dispatch
+![images/mod20_2.png](images/mod20_2.png)
 
-__todo!();__
+### Module21: Built-In Türlere Kendi Trait'lerimizi Eklemek ve Operator Overloading
 
-### Module24: Ownership Kuramı
+Rust'ın built-in veri türlerine kendi trait'lerimizi uyarlayabilir ve böylece yeni davranışlar kazandırabiliriz. Hatta bu yaklaşım ile operatörlerin bizim istediğimiz şekilde çalışması da sağlanabilir _(ki bu Operator Overloading olarak bildiğimiz olaydır)_ Operatörler de birer trait'tir aslında. Ooverload edilebilir operatörler için [şu adrese bakılabilir](https://doc.rust-lang.org/stable/core/ops/#structs).
 
-__todo!();__
+```shell
+cargo new traits_4_all --lib
+cargo clippy
+cargo test
+```
 
-### Module25: Borrowing
+![images/mod21_1.png](images/mod21_1.png)
 
-__todo!();__
-
-### Module26: Lifetimes
-
-__todo!();__
-
-### Module27: Otomatik Atanan Lifetime Meselesi
-
-__todo!();__
-
-### Module28: Reference Counted Variables
+### Module22: Trait'lerde Static Dispatch
 
 __todo!();__
 
-### Module29: Dosyalarla Çalışmak
+### Module23: Ownership Kuramı
 
 __todo!();__
 
-### Module30: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+### Module24: Borrowing
 
 __todo!();__
 
-### Module31: unwrap, expect ve ? operatörü
+### Module25: Lifetimes
 
 __todo!();__
 
-### Module32: Threads
+### Module26: Otomatik Atanan Lifetime Meselesi
 
 __todo!();__
 
-### Module33: Channels
+### Module27: Reference Counted Variables
 
 __todo!();__
 
-### Module34: Concurrency'de Mutex Kullanımı
+### Module28: Dosyalarla Çalışmak
+
+__todo!();__
+
+### Module29: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+
+__todo!();__
+
+### Module30: unwrap, expect ve ? operatörü
+
+__todo!();__
+
+### Module31: Threads
+
+__todo!();__
+
+### Module32: Channels
+
+__todo!();__
+
+### Module33: Concurrency'de Mutex Kullanımı
 
 __todo!();__

@@ -4,13 +4,25 @@ mod tests {
 
     #[test]
     fn static_dispatch_test() {
-        let hash = produce_hash(Car {
+        let hash = static_call(Car {
             id: 1,
             price: 300_000.99,
         });
         assert_eq!(hash, "1234");
 
-        let hash = produce_hash(String::from("Bugatti Veyron"));
+        let hash = static_call(String::from("Bugatti Veyron"));
+        assert_eq!(hash, "5678");
+    }
+
+    #[test]
+    fn dynamic_dispatch_test() {
+        // &dyn Stump bildirimi dolayısıyla &Car ve &String şeklinde kullandığımıza dikkat edelim
+        let hash = dynamic_call(&Car {
+            id: 1,
+            price: 250_050.35,
+        });
+        assert_eq!(hash, "1234");
+        let hash = dynamic_call(&String::from("Bugatti Veyron"));
         assert_eq!(hash, "5678");
     }
 }
@@ -43,6 +55,11 @@ impl Stump for String {
 // Fonksiyon generic bir tür belirtiyor ve bunun Stump trait'ini uyarlamış olması gerekiyor.
 // Rust burada monomorphization tekniğini kullanarak static dispatch uyguluyor.
 // Car ve String için aşağıdaki fonksiyonun birer fonksiyonu hazırlanıyor.
-pub fn produce_hash<T: Stump>(object: T) -> String {
+pub fn static_call<T: Stump>(object: T) -> String {
+    object.get_hash()
+}
+
+// Şimdi dynamic dispatch versiyonunu ele alalım
+pub fn dynamic_call(object: &dyn Stump) -> String {
     object.get_hash()
 }

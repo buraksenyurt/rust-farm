@@ -1,6 +1,9 @@
+use std::fmt::{Display, Formatter};
+use std::ops::Add;
+
 #[cfg(test)]
 mod tests {
-    use crate::Average;
+    use super::*;
 
     #[test]
     fn odd_numbers_average_test() {
@@ -8,6 +11,22 @@ mod tests {
         // Görüldüğü üzere vector üstünde kendi fonksiyonumuzu kullanabiliyoruz.
         let result = numbers.avg_for_odds();
         assert_eq!(result, 4);
+    }
+
+    #[test]
+    fn add_operator_overload_test() {
+        let east = Location {
+            x: 32,
+            y: 34,
+            z: 10,
+        };
+        let west = Location {
+            x: -10,
+            y: -18,
+            z: 4,
+        };
+        let total = east + west;
+        assert_eq!(total.to_string(), "(22:16:14)");
     }
 }
 
@@ -29,5 +48,33 @@ impl Average<i32> for Vec<i32> {
             }
         }
         total / (self.len() as i32)
+    }
+}
+
+// Bu sefer kendi veri yapımız için Operator Overloading yapıyoruz.
+// Yani Location veri türü için toplama operasyonunu çalışma zamanına yeniden öğretiyoruz.
+impl Add for Location {
+    // Çıktı olarak Location nesnesi dönüleceği söylenir
+    type Output = Location;
+
+    // + operatörü ile karşılaşınca ne yapılacağı bu fonksiyonda kodlanır.
+    fn add(self, other: Self) -> Self::Output {
+        Location {
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
+        }
+    }
+}
+
+struct Location {
+    x: i32,
+    y: i32,
+    z: i32,
+}
+
+impl Display for Location {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}:{}:{})", self.x, self.y, self.z)
     }
 }

@@ -486,6 +486,10 @@ Vector kullanımında sahiplik into_iter'e geçmesi sonrası oluşan hata durumu
 
 ![images/mod24_2.png](images/mod24_2.png)
 
+Örneğin çalışır hali.
+
+![images/mod24_3.png](images/mod24_3.png)
+
 ### Module25: Lifetimes
 
 __todo!();__

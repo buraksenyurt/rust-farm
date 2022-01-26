@@ -33,4 +33,16 @@ fn main() {
        // Bu yüzden aşağıdaki kullanımda herhangi bir kural ihlali olmaz.
     let points_again = hm_pass(points); // points, hm_pass içerisine gönderiliyor.
     println!("{:?}", points_again);
+
+    // Yukarıda closure üzerinden baktığımız senaryo main dışı fonksiyon çağrımında da geçerlidir.
+    let first_five = vec![32, 11, 1, 23, 24];
+    // get_stats metodu aşağıdaki kullanım sırasında first_five vecktörünün işaret ettiği veri
+    // parçasının sahipliğini alır.
+    let stats = get_stats(first_five);
+    println!("{:?}", stats);
 }
+
+fn get_stats(data: Vec<i32>) -> Vec<i32> {
+    println!("İlk beş istatistikleri toplanıyor");
+    data // fonksiyon gelen vecktörü geriye döndürmektedir
+} // data bu noktada ölürken verinin sahipliği tekrar main fonksiyona(callar) döner

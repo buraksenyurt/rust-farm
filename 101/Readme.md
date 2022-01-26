@@ -470,7 +470,21 @@ vector ataması sonrası oluşan ownership ihlaline ait görüntü.
 
 ### Module24: Borrowing
 
-__todo!();__
+Bir değişkenin tuttuğu verinin sahipliğinin başka bir değişkene geçici süreliğine verilmesidir. Bu anlamda ownership'ten farklıdır. Ownership'te sahiplik el değiştirdiğinde orjinal değişken geçerliliğini yitirir. Borrowing işleminde & operatörü ile sahiplik referansı alınır, * ile de referans edilen verinin okunur.
+
+```shell
+cargo new borrowing
+cargo clippy
+cargo run
+```
+
+Borrowing hatası.
+
+![images/mod24_1.png](images/mod24_1.png)
+
+Vector kullanımında sahiplik into_iter'e geçmesi sonrası oluşan hata durumu.
+
+![images/mod24_2.png](images/mod24_2.png)
 
 ### Module25: Lifetimes
 

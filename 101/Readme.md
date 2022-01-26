@@ -452,7 +452,21 @@ cargo test
 
 ### Module23: Ownership Kuramı
 
-__todo!();__
+Rust bellek yönetimi konusunda önemli kavramlardan birisi değişken sahipliğidir. Belleğin belli bir parçasının sahipliği sadece tek bir değişkende olabilir. Bu, data races durumunu engeller ve paralel programlamadaki hataları azaltır. Verinin sahipliğinin taşınması primitive tipler için değerin kopyalanması anlamına gelir. Nitekim primitive tiplerin bellekte kaplayacağı yer bellidir ve kopyalanma maliyeti düşüktür. Ancak structure gibi karmaşık veri tipleri arasında atamalar söz konusu olduğunda sahiplik bir değişkenden diğerine transfer edilir. Bunun sebebi bellekte ne kadar yer tutulacağının derleme zamanında kestirilemeyişidir. Rust bu konuda çok titizdir.
+
+```shell
+cargo new ownership
+cargo clippy
+cargo test
+```
+
+vector ataması sonrası oluşan ownership ihlaline ait görüntü.
+
+![images/mod23_1.png](images/mod23_1.png)
+
+Örneğin çalışma zamanındaki durumu.
+
+![images/mod23_2.png](images/mod23_2.png)
 
 ### Module24: Borrowing
 

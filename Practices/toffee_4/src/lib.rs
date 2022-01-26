@@ -11,6 +11,12 @@ mod tests {
         assert_eq!(are_you_armstrong_number(371), true);
         assert_eq!(are_you_armstrong_number(999), false);
     }
+
+    #[test]
+    fn square_diff_with_for_test() {
+        let result = square_diff_with_for(10);
+        assert_eq!(result, 2640);
+    }
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
@@ -33,4 +39,18 @@ pub fn are_you_armstrong_number(number: u32) -> bool {
 
     // işlemler sonucu sayıya eşit mi değil mi? Eşitse Armstrong sayısıdır.
     sum_of == number
+}
+
+// 0'dan N'e kadar olan sayıların toplamının karesi ile,
+// aynı aralıktaki sayıların karelerinin toplamı arasındaki farkı,
+// for döngülerini kullanarak bulan fonksiyon örneği.
+pub fn square_diff_with_for(max: u32) -> u32 {
+    let mut total = 0;
+    let mut sum2 = 0;
+    for n in 0..=max {
+        total += n;
+        sum2 += n.pow(2);
+    }
+    let sum1 = total.pow(2);
+    sum1 - sum2
 }

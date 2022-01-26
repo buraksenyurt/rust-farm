@@ -23,6 +23,12 @@ mod tests {
         let result = square_diff_with_formula(10);
         assert_eq!(result, 2640);
     }
+
+    #[test]
+    fn square_diff_with_hof_test() {
+        let result = square_diff_with_hof(10);
+        assert_eq!(result, 2640);
+    }
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
@@ -66,4 +72,11 @@ pub fn square_diff_with_formula(n: u32) -> u32 {
     let sum1 = (n * (n + 1) * (2 * n + 1)) / 6;
     let sum2 = (n * (n + 1) / 2).pow(2);
     sum2 - sum1
+}
+
+// Kareler farkı problemini bu kez HOFs'lardan yararlanarak buluyoruz
+pub fn square_diff_with_hof(max: u32) -> u32 {
+    let sum1 = (0..=max).sum::<u32>().pow(2);
+    let sum2 = (0..=max).map(|n| n.pow(2)).sum::<u32>();
+    sum1 - sum2
 }

@@ -24,11 +24,21 @@ fn main() {
 
     // Birde ownership örneğindeki gibi vector kullanımındaki duruma bakalım
     // Gayet masumane bir şekilde vector içeriğini dolaşırken print! ile değerlerini ekrana basıyoruz.
+    // let numbers = vec![32, 23, 11, 1, 8];
+    // for n in numbers {
+    //     print!("{}\t", n);
+    // }
+    // // Sonrasında da numbers'ın içeriğin yine ekrana bastırmak istiyoruz.
+    // println!("{:?}", numbers);
+    // Yukarıdaki kullanımda `numbers` moved due to this implicit call to `.into_iter()`
+
+    // Yani sahiplik into_iter'e geçtikten sonra artık numbers değişkeni kullanılamaz bu nedenle
+    // 32nci satırdaki kod çalışmaz
+    // ancak borrowing ile sahipliği ödünç verebiliriz.
+    // for döngüsündeki & kullanımına dikkat
     let numbers = vec![32, 23, 11, 1, 8];
-    for n in numbers {
+    for n in &numbers {
         print!("{}\t", n);
     }
-    // Sonrasında da numbers'ın içeriğin yine ekrana bastırmak istiyoruz.
-    println!("{:?}", numbers);
-    // Yukarıdaki kullanımda `numbers` moved due to this implicit call to `.into_iter()`
+    println!("\n{:?}", numbers);
 }

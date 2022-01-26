@@ -17,6 +17,12 @@ mod tests {
         let result = square_diff_with_for(10);
         assert_eq!(result, 2640);
     }
+
+    #[test]
+    fn square_diff_with_formula_test() {
+        let result = square_diff_with_formula(10);
+        assert_eq!(result, 2640);
+    }
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
@@ -53,4 +59,11 @@ pub fn square_diff_with_for(max: u32) -> u32 {
     }
     let sum1 = total.pow(2);
     sum1 - sum2
+}
+
+// Kareler farkı problemini bu kez matematik formüllerini kullanarak buluyoruz
+pub fn square_diff_with_formula(n: u32) -> u32 {
+    let sum1 = (n * (n + 1) * (2 * n + 1)) / 6;
+    let sum2 = (n * (n + 1) / 2).pow(2);
+    sum2 - sum1
 }

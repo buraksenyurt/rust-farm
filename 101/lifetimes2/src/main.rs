@@ -17,8 +17,9 @@ fn main() {
     let actors_name: &String;
     {
         let jennifer = Actor::new(32, String::from("Jenifır Lovrıns"));
-        actors_name = jennifer.get_name();
-        //actors_name = bruce.get_name();
+        println!("{:#?}", jennifer);
+        //actors_name = jennifer.get_name();
+        actors_name = bruce.get_name();
         // Üstteki atamada ise bir sorun olmaz.Nitekim actors_name ile bruce aynı scope seviyesindedir.
     }
     // Hatayı alabilmek için actors_name'i bilerek scope dışında kullandık.

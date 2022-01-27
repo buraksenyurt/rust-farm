@@ -1,4 +1,4 @@
-# Rust Programlama Dili Temelleri _(Başlangıç Seviyesi)_
+# Rust Programlama Dilinin Temelleri _(Başlangıç Seviyesi)_
 
 Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanıldığını öğrenmek amacıyla oluşturulmuş bir dokümandır. Esas itibariyle giriş seviyedeki Rust eğitimlerinde materyal olarak kullanılabilir. Ana hatları ile konu başlıkları şöyledir.
 
@@ -492,7 +492,21 @@ Vector kullanımında sahiplik into_iter'e geçmesi sonrası oluşan hata durumu
 
 ### Module25: Lifetimes
 
-__todo!();__
+Nesnelerin yaşam süreleri vardır. Bunlar çoğunlukla scope'larca belirlenir. Genellikle otomatik olarak atanırlar ama bazı hallerde bizim yaşam ömrünü açıkça belirtmemiz beklenir.
+
+```shell
+cargo new lifetimes
+cargo clippy
+cargo run
+```
+
+Örneğin ilk versiyonunda lifetime hatası gösterilmektedir.
+
+![images/mod25_1.png](images/mod25_1.png)
+
+'a ile yaşam ömrü kullanımı sonrası örnek sorunsuz şekilde çalışacaktır.
+
+![images/mod25_2.png](images/mod25_2.png)
 
 ### Module26: Otomatik Atanan Lifetime Meselesi
 

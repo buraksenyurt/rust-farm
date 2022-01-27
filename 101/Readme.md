@@ -510,7 +510,25 @@ cargo run
 
 ### Module26: Otomatik Atanan Lifetime Meselesi
 
-__todo!();__
+Bazı durumlarda nesnelerin lifetime bilgileri otomatik olarak atanır. Yukarıdaki örnekle karışmaması için yeni bir kodla devam edebiliriz.
+
+```shell
+cargo new lifetimes2
+cargo clippy
+cargo run
+```
+
+Gerekmediği halde açıkça lifetime belirttiğimiz durumlar clippy'nin gözünden kaçmayacaktır.
+
+![images/mod26_1.png](images/mod26_1.png)
+
+İç scope'ta bir veriyi ödünç alan ve scope dışında da kullanılmak istenen bir değişken söz konusu olduğunda alınacak hatanın çıktısı.
+
+![images/mod26_2.png](images/mod26_2.png)
+
+Tabii örneği kusurla halde bırakmamak lazım. Düzeltmeler sonrası aşağıdaki gibi çalışmalı.
+
+![images/mod26_3.png](images/mod26_3.png)
 
 ### Module27: Reference Counted Variables
 

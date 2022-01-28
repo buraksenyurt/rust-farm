@@ -29,6 +29,13 @@ mod tests {
         let result = square_diff_with_hof(10);
         assert_eq!(result, 2640);
     }
+
+    #[test]
+    fn collatz_numbers_test() {
+        let number = 12;
+        assert_eq!(find_collatz_one(number), 9);
+        assert_eq!(find_collatz_one(23), 15);
+    }
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
@@ -79,4 +86,23 @@ pub fn square_diff_with_hof(max: u32) -> u32 {
     let sum1 = (0..=max).sum::<u32>().pow(2);
     let sum2 = (0..=max).map(|n| n.pow(2)).sum::<u32>();
     sum1 - sum2
+}
+
+// Parametre olarak gelen sayıyı baz alarak collatz serisini çıkaracağız ve
+// kaç hamlede 1'e ulaştığımızı döndüreceğiz
+pub fn find_collatz_one(mut n: u32) -> u32 {
+    let mut counter = 0;
+    for _ in 0.. {
+        if n == 1 {
+            break;
+        } else {
+            if n % 2 == 0 {
+                n /= 2;
+            } else {
+                n = (n * 3) + 1;
+            }
+            counter += 1;
+        }
+    }
+    counter
 }

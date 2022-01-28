@@ -3,10 +3,10 @@
 Bu örnekte birkaç problemi çözmeye çalışıyoruz. Bu problemleri şöyle sıralayabiliriz.
 
 - Bir sayının __armstrong__ sayısı olup olmadığını bulan fonksiyon.
-- Collatz sayı teroisini uygulayan bir fonksiyon.
+- __Collatz__ sayı teroisini uygulayan bir fonksiyon.
 - N adet doğal sayının toplamlarının karesi ile karelerinin toplamı arasındaki farkı bulan bir fonksiyon.
 - Bir RNA dizilimini proteinlere dönüştüren fonksiyonu.
-- Affine Cipher yani doğrusal şifreleme yapan bir fonksiyon.
+- __Affine Cipher(Doğrusal Şifreleme)__ yani doğrusal şifreleme yapan bir fonksiyon.
 
 Şimdi haberler :P
 
@@ -18,15 +18,34 @@ Bir sayının rakamlarını alıyoruz ve her birinin rakam sayısı kadar üstü
 371'i ele alalım. 3^3 + 7^3 + 1^3 = 27 + 343 + 1 = 371 yani kendisidir.
 154 ise armstrong sayısı değildir. Nitekim 1^3 + 5^3 + 4^3 = 1 + 125 + 48 = 190 yani kendisine eşit değildir.
 
-## Collatz Dizilimi
+## Collatz Konjektürü
 
-__todo()!__
+Matematikçi Collatz'ın bu teorisinde herhangibir pozitif sayıyı alıyor. Sayı çift ise 2'ye bölüyoruz. Eğer tek sayı ise 3 ile çarpıyor ve 1 ekliyoruz. Doğal olarak yeni bir sayı elde ediyoruz. Oluşan yeni sayıyı yine çift veya tek olmasına göre aynı işlemden geçiriyoruz. Teoriye göre oluşan sayı serisi eninde sonunda 4,2,1,4 şeklinde bir yere varıyor. Hemen bir örnekle açıklayalım.
+
+```text
+n = 12 çift sayıdır.
+12 / 2      =   6
+6 / 2       =   3
+3 * 3 + 1   =   10
+10 / 2      =   5
+5 * 3 + 1   =   16
+16 / 2      =   8
+8 / 2       =   4
+4 / 2       =   2
+2 / 1       =   1    
+1 * 3 + 1   =   4
+4 / 2       =   2  
+2 / 2       =   1
+1 * 3 + 1   =   4
+```
+
+İstenen çözümde ilk 1 rakamına kaç hamlede ulaşıldığının hesaplanması isteniyor. Aklıma ilk gelen yol for döngüleri kullanmak. Lakin daha idiomatic yollar var. Pattern matching içeren recursive fonksiyonlar ve hatta Iterator trait'ini baz alarak count işlevinden yararlananlar.
 
 ## Karelerin Farkı
 
 Bu problem aslında [Project Euler sitesinde](https://projecteuler.net/problem=6) yer alan sorulardan birisi. N adet sayının toplamlarının karesi ile her bir sayının karelerinin toplamları arasındaki farkın bulunması isteniyor. Doğal olarak envayi çeşit yol olduğunu söylemek mümkün. Basit for döngülerinden tutun, matematiksel denklemleri kullanarak ya da Higher Order Function'ları işin içine katarak ilerleyebiliriz. 
 
-_Önce biraz teori._
+_Önce biraz teori;_
 
 1'den 10 kadar olan sayıları ele alalım.
 

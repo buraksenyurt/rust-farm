@@ -33,8 +33,16 @@ mod tests {
     #[test]
     fn collatz_numbers_test() {
         let number = 12;
-        assert_eq!(find_collatz_one(number), 9);
-        assert_eq!(find_collatz_one(23), 15);
+        assert_eq!(find_collatz_bad(number), 9);
+        assert_eq!(find_collatz_bad(23), 15);
+    }
+
+    #[test]
+    fn collatz_number_with_match_test() {
+        assert_eq!(find_collatz_with_match(12, 0), Some(9));
+        assert_eq!(find_collatz_with_match(23, 0), Some(15));
+        assert_eq!(find_collatz_with_match(0, 0), None);
+        assert_eq!(find_collatz_with_match(1, 0), Some(0));
     }
 }
 
@@ -90,7 +98,9 @@ pub fn square_diff_with_hof(max: u32) -> u32 {
 
 // Parametre olarak gelen sayıyı baz alarak collatz serisini çıkaracağız ve
 // kaç hamlede 1'e ulaştığımızı döndüreceğiz
-pub fn find_collatz_one(mut n: u32) -> u32 {
+
+// Pekte şık olmayan klasik çözüm
+pub fn find_collatz_bad(mut n: u32) -> u32 {
     let mut counter = 0;
     for _ in 0.. {
         if n == 1 {
@@ -105,4 +115,18 @@ pub fn find_collatz_one(mut n: u32) -> u32 {
         }
     }
     counter
+}
+
+// recursive ve pattern matching kullanılan versiyon. for döngüsü yok dikkat edileceği üzere
+pub fn find_collatz_with_match(n: u32, counter: u32) -> Option<u32> {
+    // İlk bacakta n 0'sa zaten hesaplama olamaz, None döner.
+    // İkinci bacakta 1 sayısına ulaşılmış demektir ve counter adedi dönülebilir.
+    // Üçüncü bacağa girilmişse 2 ile bölümden kalan 0 demektir. sayı ikiye bölünür ve yeniden fonksiyon çağırılır.
+    // Dördünce bacakta ise üstteki koşullar dışındaki durum söz konusudur. Sayı tektir. 3 ile çarpılıp 1 artırılır ve yeniden fonksiyon çağırılır.
+    match (n, n % 2) {
+        (0, _) => None,
+        (1, _) => Some(counter),
+        (i, 0) => find_collatz_with_match(i / 2, counter + 1),
+        (i, _) => find_collatz_with_match((i * 3) + 1, counter + 1),
+    }
 }

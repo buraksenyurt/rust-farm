@@ -1,7 +1,7 @@
 use crate::dursun::do_homework;
 use crate::gibson::clear_home;
 use crate::jhensen::do_shopping;
-use log::{error, info, warn};
+use log::{error, warn};
 use std::thread;
 
 mod common;
@@ -39,4 +39,5 @@ fn main() {
             error!("Upss. Bu işte bir yanlış var sanki");
         }
     }
+    println!("Her şey yolunda. Misafirlerimizi bekliyoruz :)");
 }

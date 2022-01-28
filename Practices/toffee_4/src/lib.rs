@@ -44,6 +44,15 @@ mod tests {
         assert_eq!(find_collatz_with_match(0, 0), None);
         assert_eq!(find_collatz_with_match(1, 0), Some(0));
     }
+
+    #[test]
+    #[should_panic]
+    fn find_collatz_with_iterator_count_test() {
+        assert_eq!(find_collatz(12), Ok(9));
+        assert_eq!(find_collatz(23), Ok(15));
+        assert_eq!(find_collatz(0), Err("Sıfır Zaten"));
+        assert_eq!(find_collatz(1), Ok(0));
+    }
 }
 
 pub fn are_you_armstrong_number(number: u32) -> bool {
@@ -128,5 +137,38 @@ pub fn find_collatz_with_match(n: u32, counter: u32) -> Option<u32> {
         (1, _) => Some(counter),
         (i, 0) => find_collatz_with_match(i / 2, counter + 1),
         (i, _) => find_collatz_with_match((i * 3) + 1, counter + 1),
+    }
+}
+
+// Birde iteratif çözümler var. Collatz sayısının kendisini bir veri yapısı gibi düşünüp
+// ona Iterator trait'ini implemente ederek gidilen çözümler de var.
+pub struct CollatzNumber {
+    number: usize,
+}
+
+// CollatzNumber'a iterator trait'ini uyguluyoruz.
+// Yapılan bir sonraki elemanı hesaplamayı kolaylaştıracak bir iterasyon oluşturmak
+// Bu sayede Count gibi bir fonksiyonu kullanabiliriz.
+impl Iterator for CollatzNumber {
+    type Item = usize;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.number {
+            0 | 1 => None,
+            n => {
+                match n % 2 {
+                    0 => self.number = n / 2,
+                    _ => self.number = (3 * n) + 1,
+                };
+                Some(self.number)
+            }
+        }
+    }
+}
+
+pub fn find_collatz(n: usize) -> Result<usize, &'static str> {
+    match n {
+        0 => Err("Sıfır zaten"),
+        _ => Ok(CollatzNumber { number: n }.count()),
     }
 }

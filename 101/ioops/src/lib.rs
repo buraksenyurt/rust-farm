@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::game::{append_infos, read_infos, write_info, Info};
+    use crate::game::{append_infos, read_infos, read_infos_to, write_info, Info};
     use std::fs::File;
 
     #[test]
@@ -37,6 +37,20 @@ mod tests {
         let content = read_infos(String::from("src/games.data")).unwrap();
         assert!(content.len() > 1);
     }
+
+    #[test]
+    #[should_panic]
+    fn read_from_file_error_test() {
+        let _content = read_infos(String::from("src/nofile.data")).expect("Dosya bulunamadı");
+        //assert_eq!(_content,None);
+    }
+
+    #[test]
+    fn read_from_file_line_by_line_test() {
+        let lines = read_infos_to();
+        assert!(lines.len() > 0);
+        assert_eq!(lines[0], "No:1|Dunkey Kong|10001 kez beğenildi.");
+    }
 }
 
 /*
@@ -48,7 +62,7 @@ mod tests {
 mod game {
     use std::fmt::{Display, Formatter};
     use std::fs::{File, OpenOptions};
-    use std::io::{Read, Write};
+    use std::io::{BufRead, BufReader, Read, Write};
 
     // Kobay veri yapımız
     pub struct Info {
@@ -75,7 +89,8 @@ mod game {
         }
     }
 
-    // Oyun için bir dosya oluşturup içerisinde veri yazan fonksiyonumuz
+    // Oyun için bir dosya oluşturup içerisinde veri yazan fonksiyonumuz.
+    // Dosya create modda açıldığı için her seferinde sıfırdan oluşturulur.
     pub fn write_info(info: Info) -> bool {
         // create ile bir dosya oluşturmayo deniyoruz aslında.
         // sonucu match ile kontrol etmekteyiz. Error Handling konusunda expect de kullanabiliriz
@@ -94,6 +109,7 @@ mod game {
     }
 
     // Bu fonksiyon gelen info türünden vector'deki içerikleri games.data dosyasına ilave eder.
+    // Dosyayı append modda açtığımız için sürekli olarak içerik arka arkaya eklenecektir.
     pub fn append_infos(infos: &[Info]) -> bool {
         // Öncelikle games/data dosyasını append modda açıyoruz.
         // open Result döndüğünden hata durumunu match ile kontrol altına alıyoruz.
@@ -133,5 +149,20 @@ mod game {
             }
             _ => None,
         }
+    }
+
+    // Bu sefer games.data içeriğini satır satır okuyup bir String vector'e alıyoruz.
+    pub fn read_infos_to() -> Vec<String> {
+        let mut infos = Vec::<String>::new();
+        // Dosyanın var olduğunu düşüüyoruz. Hatayı göz ardı ettik kısacası.(unwrap)
+        let gf = File::open(String::from("src/games.data")).unwrap();
+        // dosyayı kullanacak bir reader oluşturduk.
+        let reader = BufReader::new(gf);
+        // BufReader yardımıyla dosya içeriğini satır satır okuma şansımız var.
+        for (_, line) in reader.lines().enumerate() {
+            // Satırı okurken oluşabilecek hataları da göz ardı ettik.(unwrap)
+            infos.push(line.unwrap().to_string());
+        }
+        infos
     }
 }

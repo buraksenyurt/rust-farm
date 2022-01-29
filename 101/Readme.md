@@ -544,7 +544,19 @@ cargo run
 
 ### Module28: Dosyalarla Çalışmak
 
-__todo!();__
+Dosyaya yazma ve dosyadan içerik okuma işlemlerine kısaca bakalım.
+
+```shell
+cargo new ioops --lib
+cd ioops
+# Dosya append denemeleri için bir dosyaya ihtiyacımız olacak
+touch src/games.data
+
+cargo clippy
+cargo test
+```
+
+![images/mod28_1.png](images/mod28_1.png)
 
 ### Module29: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 

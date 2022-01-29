@@ -532,7 +532,15 @@ Tabii örneği kusurla halde bırakmamak lazım. Düzeltmeler sonrası aşağıd
 
 ### Module27: Reference Counted Variables
 
-__todo!();__
+Bir struct içinde birden fazla referans türü değişken kullanıldığı durumlara sıklıkla rastlanır. Struct nesnesi farklı scope'larda kullanılıyorsa bu referanslar için ownership veya borrowing kurallarına takılmak pekala kolaydır. Ancak __reference counted variables__ kullanılarak söz konusu ihlallere takılmadan ilerleyebiliriz. __Rc<T>__ kullanarak heap'te yer ayrılmış bir bellek bölgesinin sahipliğinin paylaşılması sağlanabilir.
+
+```shell
+cargo new rcv
+carg clippy
+cargo run
+```
+
+![images/mod27_1.png](images/mod27_1.png)
 
 ### Module28: Dosyalarla Çalışmak
 

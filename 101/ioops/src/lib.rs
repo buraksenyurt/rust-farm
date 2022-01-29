@@ -26,12 +26,12 @@ mod game {
     pub struct Info {
         title: String,
         id: u32,
-        like: u8,
+        like: u16,
     }
 
     impl Info {
         // Info nesnelerini new ile kolayca oluşturalım diye.
-        pub fn new(title: String, id: u32, like: u8) -> Self {
+        pub fn new(title: String, id: u32, like: u16) -> Self {
             Info { title, id, like }
         }
     }

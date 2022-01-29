@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::game::{append_infos, write_info, Info};
+    use crate::game::{append_infos, read_infos, write_info, Info};
     use std::fs::File;
 
     #[test]
@@ -31,6 +31,12 @@ mod tests {
         let result = append_infos(&games.as_slice());
         assert_eq!(result, true);
     }
+
+    #[test]
+    fn read_from_file_test() {
+        let content = read_infos(String::from("src/games.data")).unwrap();
+        assert!(content.len() > 1);
+    }
 }
 
 /*
@@ -42,7 +48,7 @@ mod tests {
 mod game {
     use std::fmt::{Display, Formatter};
     use std::fs::{File, OpenOptions};
-    use std::io::Write;
+    use std::io::{Read, Write};
 
     // Kobay veri yapımız
     pub struct Info {
@@ -61,9 +67,9 @@ mod game {
     // to_string için Display trait'ini implemente ettik
     impl Display for Info {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-            write!(
+            writeln!(
                 f,
-                "No:{}|{}|{} kez beğenildi.\n",
+                "No:{}|{}|{} kez beğenildi.",
                 &self.id, &self.title, &self.like
             )
         }
@@ -105,6 +111,27 @@ mod game {
                 true
             }
             _ => false,
+        }
+    }
+
+    // Dosya içeriğini komple okuyan fonksiyon.
+    pub fn read_infos(file: String) -> Option<String> {
+        // games.data içeriğinin tamamını bir String'e alacağız.
+        let mut content = String::new();
+        // Dosyayı açmayı deniyoruz.
+        let gf = File::open(file);
+        match gf {
+            Ok(mut f) => {
+                // Dosya açılmışsa kod bu dala akar.
+                // Şimdi içeriğini okumaya çalışıyoruz.
+                let r = f.read_to_string(&mut content);
+                match r {
+                    // İçerik başarılı okunduysa içeriğini dönmekteyiz
+                    Ok(_) => Some(content),
+                    _ => None,
+                }
+            }
+            _ => None,
         }
     }
 }

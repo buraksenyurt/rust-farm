@@ -598,6 +598,14 @@ expect kullanımındaki çıktı.
 
 ![images/mod30_3.png](images/mod30_3.png)
 
+? olmadan dosya okuması yaptığımız fonksiyon çağrısı için çıktı.
+
+![images/mod30_4.png](images/mod30_4.png)
+
+src/serial.dat dosyası olduğuda ve ? operaötörünü içeren fonksiyonu da kullandığımızdaki çıktı.
+
+![images/mod30_5.png](images/mod30_5.png)
+
 ### Module31: Threads
 
 __todo!();__

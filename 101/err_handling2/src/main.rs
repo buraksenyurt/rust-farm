@@ -32,13 +32,34 @@ fn process(material: String) -> Result<bool, ProcessError> {
 */
 
 fn main() {
-    let result = process(String::from("3 Karbon 1 nitro gliserin 2 azot"));
-    match result {
-        Ok(r) => println!("İşlem sonucu {}", r),
-        Err(e) => {
-            println!("{:?}", e.to_string());
-            panic!("Dikkat nitro");
-        }
-    }
+    // let result = process(String::from("3 Karbon 1 nitro gliserin 2 azot"));
+    // match result {
+    //     Ok(r) => println!("İşlem sonucu {}", r),
+    //     Err(e) => {
+    //         println!("{:?}", e.to_string());
+    //         panic!("Dikkat nitro");
+    //     }
+    // }
+
+    /*
+        Yukarıdaki gibi Result dönüşlerinde Err kontrolü yapıp panic oluşmasını istiyorsak,
+        işi biraz daha kısaltmak mümkün. unwrap ve expect fonksiyonlarını bu amaçla kullanabiliriz.
+        unwrap'ta eğer işlem başarılı ise doğrudan sonuca ulaşırız. Hata varsa'da panic oluşturulur.
+
+        unwrap yerine expect tercih edersek yine hata durumlarında panik oluşmasını sağlarız ama
+        bu sefer ek bir bilgi mesajı da verebiliriz.
+    */
+    // let result = process(String::from("2 azot 1 karbon 3 oksijen")).unwrap();
+    // println!("İşlem sonucu {:?}", result);
+    //
+    // let result = process(String::from("2 azot 1 nitro")).unwrap();
+    // println!("İşlem sonucu {:?}", result);
+
+    let result = process(String::from("2 azot 1 karbon 3 oksijen")).expect("nitro var, kaçın!!!");
+    println!("İşlem sonucu {:?}", result);
+
+    let result = process(String::from("2 azot 1 nitro")).expect("nitro var, kaçın!!!");
+    println!("İşlem sonucu {:?}", result);
+
     println!("Program devam ediyor");
 }

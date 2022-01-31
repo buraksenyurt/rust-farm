@@ -1,6 +1,10 @@
 use std::error::Error;
 use std::fmt::{Display, Formatter};
+use std::fs::File;
+use std::io;
+use std::io::Read;
 
+#[allow(dead_code)]
 #[derive(Debug)]
 enum ProcessError {
     Danger,
@@ -13,6 +17,7 @@ impl Display for ProcessError {
     }
 }
 
+#[allow(dead_code)]
 fn process(material: String) -> Result<bool, ProcessError> {
     if material.to_lowercase().contains("nitro") {
         Err(ProcessError::Danger)
@@ -55,11 +60,57 @@ fn main() {
     // let result = process(String::from("2 azot 1 nitro")).unwrap();
     // println!("İşlem sonucu {:?}", result);
 
-    let result = process(String::from("2 azot 1 karbon 3 oksijen")).expect("nitro var, kaçın!!!");
-    println!("İşlem sonucu {:?}", result);
+    // let result = process(String::from("2 azot 1 karbon 3 oksijen")).expect("nitro var, kaçın!!!");
+    // println!("İşlem sonucu {:?}", result);
+    //
+    // let result = process(String::from("2 azot 1 nitro")).expect("nitro var, kaçın!!!");
+    // println!("İşlem sonucu {:?}", result);
 
-    let result = process(String::from("2 azot 1 nitro")).expect("nitro var, kaçın!!!");
-    println!("İşlem sonucu {:?}", result);
+    // Fonksiyon çağrıldığında serial.dat ortamda yoksa hata mesajı elde edilir
+    // ama program panikleyip sonlanmaz.
+    let serial_number = read_serial_num_from_file();
+    println!("{:?}", serial_number);
+
+    // Testlerde src altına serial.dat şeklinde bir dosya ekleyerek denemek lazım.
+
+    let serial_number = read_serial_number();
+    println!("{:?}", serial_number);
 
     println!("Program devam ediyor");
+}
+
+/*
+   Hata yönetiminde işleri kolaylaştıran birde ? operatörü vardır.
+   Bu durumu anlamak için aşağıdaki fonksiyonu ele alalım.
+   Bu kobay fonksiyon deneysel olarak serial.dat dosyasından bir key okuma işlevini icra etmekte.
+
+   Dosya açma ve içeriği okumak için kullanılan open ve read_to_string sonuçlarını match ifadeleri
+   ile kontrol altına alıyor buna göre Result dönüşünü besliyoruz.
+
+   Aşağıdaki fonksiyonu ? operatörünü kullanarak daha şık bir formatta yazabiliriz.
+   bknz read_serial_number fonksiyonu
+*/
+fn read_serial_num_from_file() -> Result<String, io::Error> {
+    // Dosyayı aç
+    let f = File::open("src/serial.dat");
+    // Operasyon sonucuna bak
+    let mut f = match f {
+        Ok(file) => file,        // dosya varsa f'e atar
+        Err(e) => return Err(e), // Hata varsa geriye hata nesnesi döner. panic değil!!!
+    };
+
+    let mut serial = String::new();
+    // içerik okunursa geriye döner, bulamassa yine Err nesnesi verir.
+    match f.read_to_string(&mut serial) {
+        Ok(_) => Ok(serial),
+        Err(e) => Err(e),
+    }
+}
+
+// Bu fonksiyonda yukarıdaki match ifadeleri yerini ? operatörü kullanımına bırakmıştır.
+fn read_serial_number() -> Result<String, io::Error> {
+    let mut f = File::open("src/serial.dat")?;
+    let mut serial = String::new();
+    f.read_to_string(&mut serial)?;
+    Ok(serial)
 }

@@ -560,11 +560,43 @@ cargo test
 
 ### Module29: Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 
-__todo!();__
+Rust tarafında iki tür hata söz konusudur. Kurtarılabilir _(Recoverable)_ olanlar ve tam tersi kurtarılamaz _(Unrecoverable)_ olanlar :) Kurtarılabilir hatalar için Resut<T,Err> tipi kullanılır. Diğer türde hatalarda akışın kesintiyi uğraması söz konusudur ve bu durum bir paniğin hortlaması olarak da düşünülebilir.
+
+```shell
+cargo new err_handling
+cargo clippy
+cargo run
+```
+
+Vector'ün olmayan bir elemanına ulaşmak istediğimizde panikleyen çalışma zamanı.
+
+![images/mod29_1.png](images/mod29_1.png)
+
+Tipik sıfıra bölme fonksiyonunda bilinçli olarak panic ürettiğimizdeki durum.
+
+![images/mod29_2.png](images/mod29_2.png)
 
 ### Module30: unwrap, expect ve ? operatörü
 
-__todo!();__
+Hata yönetiminde kullanılan önemli enstrümanlar var. unwrap, expect ve ? operatörü. Dönüş türü Result olan fonksiyonlarda match pattern'lerini kısaltman mümkündür.
+
+```shell
+cargo new err_handling2
+cargo clippy
+cargo run
+```
+
+pattern matchin ile Err durumunu alıp ortamı paniklettiğimiz durum.
+
+![images/mod30_1.png](images/mod30_1.png)
+
+unwrap kullanımındaki çıktı.
+
+![images/mod30_2.png](images/mod30_2.png)
+
+expect kullanımındaki çıktı.
+
+![images/mod30_3.png](images/mod30_3.png)
 
 ### Module31: Threads
 

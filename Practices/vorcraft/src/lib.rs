@@ -4,8 +4,8 @@ use std::thread;
 use std::time::Duration;
 
 // Yaptıracağımız işleri tutan bir enum türü. Receiver tarafından kullanılır.
-#[derive(Debug)]
-enum Job {
+#[derive(Debug, Copy, Clone)]
+pub enum Job {
     WheatFarm,
     FishFarm,
     Shack(u8),       // Kaç kişilik bir kulübe olacağını u8 ile atabiliriz
@@ -15,8 +15,8 @@ enum Job {
 
 // İşler tamamlandıktan sonra kanala bırakacağımız mesajlar için aşağıdaki enum kullanılabilir.
 // Sender tarafından kullanılır.
-#[derive(Debug)]
-enum Harvest {
+#[derive(Debug, Copy, Clone)]
+pub enum Harvest {
     WheatFarm,
     FishFarm,
     Shack,
@@ -26,7 +26,7 @@ enum Harvest {
 
 // Fonksiyon Receiver ve Sender türünden iki parametre almakta.
 // Buna göre kanaldan mesaj alma ve kanala mesaj bırakma işlevlerini üstlendiğini ifade edebiliriz.
-fn pesant_worker(jobs: Receiver<Job>, results: Sender<Harvest>) {
+pub fn pesant_worker(jobs: Receiver<Job>, results: Sender<Harvest>) {
     // Bir döngü ile gelen Job listesini dolaşıyoruz.
     for job in jobs {
         // her bir Job'u match ifadesi ile kontrol ediyor ve sembolik bir gecikme ile işletip

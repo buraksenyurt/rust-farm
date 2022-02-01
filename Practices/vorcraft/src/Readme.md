@@ -11,4 +11,11 @@ touch src/lib.rs
 
 cargo clippy
 cargo run
+
+# logları da görmek için
+RUST_LOG=info cargo run
 ```
+
+İşte çalışma zamanı çıktısı.
+
+![../../images/vorcraft_1.png](../../images/vorcraft_1.png)

@@ -12,3 +12,4 @@
 - __logging      :__ Sistem programcıları için logları takip etmek oldukça önemli. Rust için loglama nasıl yapılır konusuna bakıyoruz.
 - __toffee_4     :__ Kod idmanı. Basit seviyede birkaç zihin açıcı problemi çözmeye çalışıyoruz.
 - __fellowship   :__ Rust'a yeni başlayanlara multi-threading konusunu basitçe anlatan bir örnek.
+- __vorcraft     :__ Thread'ler arası mesajlaşmada kanal _(channel)_ kullanımı için crossbeam'den yararlandığımız örnek.

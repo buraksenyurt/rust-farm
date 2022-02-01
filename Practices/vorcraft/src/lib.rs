@@ -1,10 +1,10 @@
 use crossbeam::channel::{Receiver, Sender};
-use log::{error, info};
+use log::{error, info, warn};
 use std::thread;
 use std::time::Duration;
 
 // Yaptıracağımız işleri tutan bir enum türü. Receiver tarafından kullanılır.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug)]
 pub enum Job {
     WheatFarm,
     FishFarm,
@@ -15,7 +15,7 @@ pub enum Job {
 
 // İşler tamamlandıktan sonra kanala bırakacağımız mesajlar için aşağıdaki enum kullanılabilir.
 // Sender tarafından kullanılır.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug)]
 pub enum Harvest {
     WheatFarm,
     FishFarm,
@@ -26,7 +26,8 @@ pub enum Harvest {
 
 // Fonksiyon Receiver ve Sender türünden iki parametre almakta.
 // Buna göre kanaldan mesaj alma ve kanala mesaj bırakma işlevlerini üstlendiğini ifade edebiliriz.
-pub fn pesant_worker(jobs: Receiver<Job>, results: Sender<Harvest>) {
+pub fn pesant_worker(job_no: i32, jobs: Receiver<Job>, results: Sender<Harvest>) {
+    warn!("{} numaralı iş", job_no);
     // Bir döngü ile gelen Job listesini dolaşıyoruz.
     for job in jobs {
         // her bir Job'u match ifadesi ile kontrol ediyor ve sembolik bir gecikme ile işletip
@@ -54,7 +55,7 @@ pub fn pesant_worker(jobs: Receiver<Job>, results: Sender<Harvest>) {
             }
             Job::Shack(p) => {
                 info!("{} kişilik kulübe inşaası.", p);
-                thread::sleep(Duration::from_secs_f32(2.75));
+                thread::sleep(Duration::from_secs_f32(p as f32 * 0.30));
                 Harvest::Shack
             }
         };

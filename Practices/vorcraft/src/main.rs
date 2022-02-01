@@ -24,9 +24,9 @@ fn main() {
     // transmitter nesnesi göndermekte. Ancak her thread kendi transmitter ve receiver'ı ile çalışmalı.
     // Bu nedenle bir üst satırda clone'landıklarını görebiliriz.
     let handles = vec![
-        thread::spawn(|| pesant_worker(jr, rt)),
-        thread::spawn(|| pesant_worker(jr2, rt2)),
-        thread::spawn(|| pesant_worker(jr3, rt3)),
+        thread::spawn(|| pesant_worker(1001, jr, rt)),
+        thread::spawn(|| pesant_worker(1002, jr2, rt2)),
+        thread::spawn(|| pesant_worker(1003, jr3, rt3)),
     ];
 
     // Birkaç kobay iş isteiğinden oluşan bir vector hazırlayalım
@@ -47,14 +47,15 @@ fn main() {
         println!("İstenen iş {:?}", j);
         let _ = jt.send(j); // Kanala istenen işi bıraktık
     }
+    // Artık kanala göndereceğimiz bir iş isteği kalmadığından transmitter'ı hemen kapatıyoruz.
     drop(jt);
 
-    // Burada da thread'lerin yaptığı iş sonuçlarının aktığı kanalı dinleyeceğiz
+    // Burada da thread'lerin yaptığı iş sonuçlarının aktığı kanalı dinleyerek sonuçları almaktayız.
     for r in rr {
-        println!("Tamamlanan iş {:?}", r); // ve şimdi de çağırılan thread'den kanala bırakan sonuç mesajını aldık
+        println!("Tamamlanan iş {:?}", r);
     }
 
-    // İşlemler bitmeden main'in sonlanmasını engelleyelim
+    // İşlemler bitmeden main'in sonlanmasını engelliyoruz
     for h in handles {
         let _ = h.join();
     }

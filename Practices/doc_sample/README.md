@@ -11,6 +11,9 @@ cargo doc --no-deps
 
 # Hatta geliştirme sırasında şu daha şık olur.
 cargo doc --no-deps --open
+
+# doküman içine eklenmiş gerçek kod parçaları varsa test edebiliriz
+cargo test --doc
 ```
 
 ## Notlar
@@ -27,6 +30,22 @@ Yardım dokümanları Markdown formatındadır. Yani dokümanda link verebilir, 
 Kodun idiomatic olması için önerileri clippy verir. _cargo clippy_ Bunu alışkanlık haline getirmekte yarar var. Kodları idiomatic hale getirmek, daha temiz daha şık ve standartlara uygun çıktı üretmek için önemli bir çalışmadır. Örneğin bu kodda to_string yerine Display trait'ini implemente etmenin daha uygun olacağı söyleniyor.
 
 ![../images/doc_sample_3.png](../images/doc_sample_3.png)
+
+Examples kısmında örnek kod parçası kullandığımızda dokümanı test ederek doğruluğundan emin olabiliriz.
+
+![../images/doc_sample_6.png](../images/doc_sample_6.png)
+
+Uyarılardaki gibi eksik bildirimleri eklediğimizdeki durum ise şöyledir.
+
+![../images/doc_sample_9.png](../images/doc_sample_9.png)
+
+Sorunları çözünce de böyle bir çıktı elde ederiz.
+
+![../images/doc_sample_7.png](../images/doc_sample_7.png)
+
+Yardım dokümanı kod yazarken de işimizi kolaylaştırır.
+
+![../images/doc_sample_8.png](../images/doc_sample_8.png)
 
 Sonuç,
 

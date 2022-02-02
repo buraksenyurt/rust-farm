@@ -62,6 +62,16 @@ impl Model {
     }
 
     /// Modelin fiyatına belirtilen miktarda indirim uygular
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use doc_sample::{Model,Level};
+    /// let mut m109 = Model::new(String::from("Meserrschmitt 109"), Level::Easy, 42, 270.0);
+    /// m109.apply_discount(32.0);
+    /// assert_eq!(m109.list_price,259.01);
+    /// ```
+    ///
     pub fn apply_discount(&mut self, amount: f32) {
         if amount <= MAX_DISCOUNT_LEVEL {
             self.list_price -= amount

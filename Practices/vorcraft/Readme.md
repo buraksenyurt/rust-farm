@@ -18,4 +18,4 @@ RUST_LOG=info cargo run
 
 İşte çalışma zamanı çıktısı.
 
-![../../images/vorcraft_1.png](../../images/vorcraft_1.png)
+![../images/vorcraft_1.png](../images/vorcraft_1.png)

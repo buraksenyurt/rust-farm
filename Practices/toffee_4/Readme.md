@@ -2,11 +2,11 @@
 
 Bu örnekte birkaç problemi çözmeye çalışıyoruz. Bu problemleri şöyle sıralayabiliriz.
 
-- Bir sayının __armstrong__ sayısı olup olmadığını bulan fonksiyon.
-- __Collatz__ sayı teroisini uygulayan bir fonksiyon.
-- N adet doğal sayının toplamlarının karesi ile karelerinin toplamı arasındaki farkı bulan bir fonksiyon.
-- Bir RNA dizilimini proteinlere dönüştüren fonksiyonu.
-- __Affine Cipher(Doğrusal Şifreleme)__ yani doğrusal şifreleme yapan bir fonksiyon.
+- [x] Bir sayının __armstrong__ sayısı olup olmadığını bulan fonksiyon.
+- [x] __Collatz__ sayı teroisini uygulayan bir fonksiyon.
+- [x] N adet doğal sayının toplamlarının karesi ile karelerinin toplamı arasındaki farkı bulan bir fonksiyon.
+- [ ] Bir RNA dizilimini proteinlere dönüştüren fonksiyonu.
+- [ ] __Affine Cipher(Doğrusal Şifreleme)__ yani doğrusal şifreleme yapan bir fonksiyon.
 
 Şimdi haberler :P
 

@@ -2,40 +2,40 @@
 
 Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanıldığını öğrenmek amacıyla oluşturulmuş bir dokümandır. Esas itibariyle giriş seviyedeki Rust eğitimlerinde materyal olarak kullanılabilir. Ana hatları ile konu başlıkları şöyledir.
 
-- __Module00:__ Hello World
-- __Module01:__ Basit test yazmak, dokümantasyon oluşturmak
-- __Module02:__ Temel veri türleri
-- __Module03:__ Basit fonksiyon tanımları
-- __Module04:__ Module oluşturmak
-- __Module05:__ Crate oluşturmak
-- __Module06:__ Array veri türü ile çalışmak
-- __Module07:__ Vector veri türü ile çalışmak
-- __Module08:__ Slice veri türü ile çalışmak
-- __Module09:__ Tuple veri türü ile çalışmak
-- __Module10:__ Kendi veri türlerimiz için Struct kullanmak
-- __Module11:__ Enum veri türü
-- __Module12:__ Generic türler
-- __Module13:__ Karar yapıları, match ifadesi ve pattern matching
-- __Module14:__ Döngüler
-- __Module15:__ İlkel haliyle Scope kavramı
-- __Module16:__ Closure ifadeleri
-- __Module17:__ Higher Order Functions
-- __Module18:__ Basit macro kullanımları
-- __Module19:__ Trait'ler ile nesnelere davranış kazandırmak
-- __Module20:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
-- __Module21:__ Built-In Türlere Kendi Trait'lerimizi Eklemek ve Operator Overloading
-- __Module22:__ Trait'lerde Static Dispatch 
-- __Module23:__ Ownership Kuramı 
-- __Module24:__ Borrowing 
-- __Module25:__ Lifetimes 
-- __Module26:__ Otomatik Atanan Lifetime Meselesi 
-- __Module27:__ Reference Counted Variables 
-- __Module28:__ Dosyalarla Çalışmak 
-- __Module29:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
-- __Module30:__ unwrap, expect ve ? operatörü 
-- __Module31:__ Threads 
-- __Module32:__ Channels
-- __Module33:__ Concurrency'de Mutex Kullanımı
+- [x] __Module00:__ Hello World
+- [x] __Module01:__ Basit test yazmak, dokümantasyon oluşturmak
+- [x] __Module02:__ Temel veri türleri
+- [x] __Module03:__ Basit fonksiyon tanımları
+- [x] __Module04:__ Module oluşturmak
+- [x] __Module05:__ Crate oluşturmak
+- [x] __Module06:__ Array veri türü ile çalışmak
+- [x] __Module07:__ Vector veri türü ile çalışmak
+- [x] __Module08:__ Slice veri türü ile çalışmak
+- [x] __Module09:__ Tuple veri türü ile çalışmak
+- [x] __Module10:__ Kendi veri türlerimiz için Struct kullanmak
+- [x] __Module11:__ Enum veri türü
+- [x] __Module12:__ Generic türler
+- [x] __Module13:__ Karar yapıları, match ifadesi ve pattern matching
+- [x] __Module14:__ Döngüler
+- [x] __Module15:__ İlkel haliyle Scope kavramı
+- [x] __Module16:__ Closure ifadeleri
+- [x] __Module17:__ Higher Order Functions
+- [x] __Module18:__ Basit macro kullanımları
+- [x] __Module19:__ Trait'ler ile nesnelere davranış kazandırmak
+- [x] __Module20:__ Fonksiyonlardan Trait Döndürmek için Box Kullanmak 
+- [x] __Module21:__ Built-In Türlere Kendi Trait'lerimizi Eklemek ve Operator Overloading
+- [x] __Module22:__ Trait'lerde Static Dispatch 
+- [x] __Module23:__ Ownership Kuramı 
+- [x] __Module24:__ Borrowing 
+- [x] __Module25:__ Lifetimes 
+- [x] __Module26:__ Otomatik Atanan Lifetime Meselesi 
+- [x] __Module27:__ Reference Counted Variables 
+- [x] __Module28:__ Dosyalarla Çalışmak 
+- [x] __Module29:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
+- [x] __Module30:__ unwrap, expect ve ? operatörü 
+- [ ] __Module31:__ Threads 
+- [ ] __Module32:__ Channels
+- [ ] __Module33:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler
 

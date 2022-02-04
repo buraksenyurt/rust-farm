@@ -33,7 +33,7 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - [x] __Module28:__ Dosyalarla Çalışmak 
 - [x] __Module29:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 - [x] __Module30:__ unwrap, expect ve ? operatörü 
-- [ ] __Module31:__ Threads 
+- [x] __Module31:__ Threads 
 - [ ] __Module32:__ Channels
 - [ ] __Module33:__ Concurrency'de Mutex Kullanımı
 
@@ -586,7 +586,7 @@ cargo clippy
 cargo run
 ```
 
-pattern matchin ile Err durumunu alıp ortamı paniklettiğimiz durum.
+pattern matching ile Err durumunu alıp ortamı paniklettiğimiz durum.
 
 ![images/mod30_1.png](images/mod30_1.png)
 
@@ -608,7 +608,17 @@ src/serial.dat dosyası olduğuda ve ? operaötörünü içeren fonksiyonu da ku
 
 ### Module31: Threads
 
-__todo!();__
+Birden fazla thread ile pek çok işi eş zamanlı olarak işlettirebiliriz. Rust dilinde ownership ve borrowing gibi bellek sahasını güvende tutan mekanizmalar olduğundan ve data race gibi durumların oluşmasına müsaade edilmediğinden thread'ler oldukça etkilidir. Unutmamak gerekir ki bellek üstündeki bir parçanın sadece tek bir sahibi olabilir ki bu durum eş zamanlı çalışan thread'ler için de geçerlidir.
+
+```shell
+cargo new threading
+cargo clippy
+cargo run
+```
+
+Main haricinde 4 iş başlattık ve yaklaşık i değeri kadar duraksattık. Geçen toplam süre 4 saniyeler civarında olacaktır. Ve kaç sefer denersek deneyelim thread'ler aynı sırada başlar.
+
+![images/mod31_1.png](images/mod31_1.png)
 
 ### Module32: Channels
 

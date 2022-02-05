@@ -622,7 +622,15 @@ Main haricinde 4 iş başlattık ve yaklaşık i değeri kadar duraksattık. Ge�
 
 ### Module32: Channels
 
-__todo!();__
+Bazı hallerde thread'ler arasında haberleşme sağlanması gerekebilir. Örneğin bir thread tarafından tetiklenen bir olay sonrası başka bir thread'in haberdar edilip veri gönderilmesi yoluyla yönlendirilmesi gibi. Thread'ler rust dünyasında güvenli şekilde çalıştırılmaktadır ve aradaki haberleşme kanallar üzerinden icra edilir. Built-In olarak gelen mpsc _(multi-producer single-consumer)_ modülü pek çok temel işlev için yeterlidir. Daha ileri versiyonlarda crossbeam paketi ele alınabilir.
+
+```shell
+cargo new channels
+cargo clippy
+cargo run
+```
+
+![images/mod32_1.png](images/mod32_1.png)
 
 ### Module33: Concurrency'de Mutex Kullanımı
 

@@ -66,6 +66,9 @@ bt
 
 # debugger'dan çıkmak içinse aşağıdaki komutu kullanırız.
 q
+
+# Bu arada minik bir ipucu bırakalım. Ekran çok kalabalıklaştığında
+# muhtemelen silmek isteyeceksiniz. Ctrl + L işinizi görecektir.
 ```
 
 Tabii bu komutları denerken ekran görüntüsü aşağıya doğru uzayıp gitti. Neyeseki sağdaki dikey monitör biraz olsun işi kotardı. Yine de sonuçları iki parça halinde paylaşacağım.
@@ -80,4 +83,43 @@ Devam eden kısımda ise komutların sonuçlarını görmekteyiz.
 
 Bu kısmı yorumlamak oldukça önemli. Kodumuzdaki fonksiyonlar Player verisini referans olarak ödünç alıp kullanmaktalar. Bu nedenle girdiğimiz fonksiyonlarda birer pointer görmekteyiz. Pointer adresi yazdığımız kod düşünüldüğünde değişmiyor elbette. Dikkat çekici bir diğer nokta fonksiyonlara parametre olarak gelen Player nesnesinin işaret ettiği veri yapısı. Dikkat edileceği üzere String olarak tasarladığımız name değişkeni String veri yapısının tasarımı gereği heap bölgesindeki içeriği işaret etmekte.
 
-GDB aracını kullanarak özellikle Smart Pointer gibi enstrümanların işleyişini anlamak da oldukça kolay. Tabii kalabalık kod parçalarında bu pek kolay olmayabilir.
+GDB aracını kullanarak özellikle Smart Pointer gibi enstrümanların işleyişini anlamak da oldukça kolay. Örnek koda bu aşamada aşağıdaki fonksiyonu eklediğimizi düşünelim.
+
+```rust
+fn change_level(p: &mut Player) {
+    let level = Box::new(90);
+    p.level = *level;
+}
+```
+
+Sadece konuyu değerlendirmek için level isimli bir smart pointer kullanıyoruz. Smart Pointer'lar scope sonlandığında otomatik olarak heap'ten atılırlar ki bu özellikle silmeyi unuttuğumuz pointer'ların oluşturacağı Memory Leak durumunun oluşmamasını garanti eder. Gerçekten böyle olup olmadığını anlamanın bir yolu kodu debug ederken fonksiyon çağrısı tamamlandıktan sonraki duruma bakmaktır. Öyleyse tekrar...
+
+```bash
+gdb debugging
+# breakpoint'i ekleyelim
+b change_level
+# programı çalıştıralım(run)
+r
+# Birkaç satır ilerleyelim
+n
+n
+n
+# change_level fonksiyonu içinde tanımlanan local değişkenlere bir bakalım
+info locals
+#pointer değerini okuyalım (Tabii siz denerken adres farklı olacaktır)
+x /d 0x5555555a5af0
+
+# Kodu ilerletip scope'u sonlandıralım. Yani fonksiyon işleyişini tamamlayalım.
+n
+n
+# Şimdi tekrar aşağıdaki komutu çalıştıralım
+x /d 0x5555555a5af0
+
+# sonuç 0 olmalı. Bu Smart Pointer'ın söylediği üzere ilgili bellek bölgesinin kaldırıldığı anlamına gelir.
+```
+
+Çalışma zamanı sonuçları aşağıdaki gibidir.
+
+![../images/debugging_4.png](../images/debugging_4.png)
+
+Tabii kalabalık kod parçalarında GDB ile debug işlemleri pek kolay olmayabilir. Hatta sağlıklı loglar daha çok işe yarayabilir. Yine de iç dinamikleri öğrenme aşamasındayken bu debugger'ı kullanmak bence oldukça önemli.

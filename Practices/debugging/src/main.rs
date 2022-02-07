@@ -8,6 +8,8 @@ fn main() {
     dbg!(calderon.level);
     decrease_level(&mut calderon);
     dbg!(calderon.level);
+    change_level(&mut calderon);
+    dbg!(calderon.level);
 }
 
 fn increase_level(p: &mut Player) {
@@ -16,6 +18,11 @@ fn increase_level(p: &mut Player) {
 fn decrease_level(p: &mut Player) {
     let rate = 10;
     p.level -= rate;
+}
+
+fn change_level(p: &mut Player) {
+    let level = Box::new(90);
+    p.level = *level;
 }
 
 #[allow(dead_code)]

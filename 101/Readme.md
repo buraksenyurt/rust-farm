@@ -34,7 +34,7 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - [x] __Module29:__ Hata Yönetimi (panic, Result<T,Error>, Option<T>)
 - [x] __Module30:__ unwrap, expect ve ? operatörü 
 - [x] __Module31:__ Threads 
-- [ ] __Module32:__ Channels
+- [x] __Module32:__ Channels
 - [ ] __Module33:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler

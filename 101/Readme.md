@@ -35,7 +35,7 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - [x] __Module30:__ unwrap, expect ve ? operatörü 
 - [x] __Module31:__ Threads 
 - [x] __Module32:__ Channels
-- [ ] __Module33:__ Concurrency'de Mutex Kullanımı
+- [x] __Module33:__ Concurrency'de Mutex Kullanımı
 
 ## Örnekler
 
@@ -634,4 +634,14 @@ cargo run
 
 ### Module33: Concurrency'de Mutex Kullanımı
 
-__todo!();__
+Mutex, diğer adıyla mutual exclusion thread'ler için bir kilit mekanizmasıdır. Aynı veri üstünde çalışan thread'ler söz konusu olduğunda ortaya çıkabilecek data race durumunu engellemk için kullanılabilir. Bir başka ifadeyle herhangi bir t anında bir veriyi sadece bir thread'in kullanmasını sağlamanın yoludur. Teori basittir. Bir veri bir thread'in sahipliğine geçtiğinde diğer thread'lerin kullanımına kapatılır. Ancak veri bölgesi thread tarafından serbest bırakıldığında başka thread'ler tarafından kullanılabilir. 
+
+```shell
+cargo new mutex_sample
+cargo clippy
+cargo run
+```
+
+Programın örnek çalışma zamanı çıktısı aşağıdaki gibi olacaktır.
+
+![images/mod33_1.png](images/mod33_1.png)

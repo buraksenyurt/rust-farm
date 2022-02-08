@@ -642,6 +642,6 @@ cargo clippy
 cargo run
 ```
 
-Programın örnek çalışma zamanı çıktısı aşağıdaki gibi olacaktır.
+Programın örnek çıktısı aşağıdaki gibidir.
 
 ![images/mod33_1.png](images/mod33_1.png)

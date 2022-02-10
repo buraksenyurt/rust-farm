@@ -1,5 +1,5 @@
 use rand::{thread_rng, Rng};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 use std::env;
 use std::fmt::{Display, Formatter};
 use std::fs::File;
@@ -50,7 +50,7 @@ fn get_random_tip(tips: &[Tip]) -> String {
     tips[number].to_string()
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Deserialize)]
 pub struct Tip {
     pub id: i32,
     pub category: String,

@@ -1,8 +1,17 @@
 use std::io;
+use std::process::exit;
 
 fn main() {
     println!(
-        "Bir gezegen seç.
+        "Bir şeyin ağırlığını gir.\nKendi kilon, bilgisayarının ki, oyuncak otomobilinin ki\nhatta bir balinanın ki bile olabilir.(kg)"
+    );
+
+    let mut input_weight = String::new();
+    io::stdin()
+        .read_line(&mut input_weight)
+        .expect("Developer hatası :P");
+    println!(
+        "...ve bir gezegen seç.
 
         [1] - Merkür
         [2] - Venüs
@@ -11,21 +20,14 @@ fn main() {
         [5] - Satürn
         [6] - Uranüs
         [7] - Neptün
-        [8] - Ay"
+        [8] - Ay
+
+        [9] - Uygulamadan Çıkış"
     );
 
     let mut planet = String::new();
     io::stdin()
         .read_line(&mut planet)
-        .expect("Developer hatası :P");
-
-    println!(
-        "Şimdi de bir ağırlık gir.\nKendi kilon, bilgisayarının ki, oyuncak otomobilinin ki\nhatta bir balinanın ki bile olabilir.(kg)"
-    );
-
-    let mut input_weight = String::new();
-    io::stdin()
-        .read_line(&mut input_weight)
         .expect("Developer hatası :P");
 
     let weight: f32 = match input_weight.trim().parse::<f32>() {
@@ -38,6 +40,10 @@ fn main() {
             "6" => find_weight(w, Planet::Uranus).unwrap(),
             "7" => find_weight(w, Planet::Neptune).unwrap(),
             "8" => find_weight(w, Planet::Moon).unwrap(),
+            "9" => {
+                println!("Görüşmek üzere :)");
+                exit(1)
+            }
             _ => {
                 println!("Seçimin yanlış olabilir mi?");
                 0.0
@@ -49,7 +55,11 @@ fn main() {
         }
     };
 
-    println!("Dünyada {} Kg seçtiğin gezegende ise {} kg'sın",&input_weight.trim(), weight);
+    println!(
+        "Dünyada {} Kg seçtiğin gezegende ise {} kg'sın",
+        &input_weight.trim(),
+        weight
+    );
 }
 
 #[allow(dead_code)]

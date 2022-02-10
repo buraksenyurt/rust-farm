@@ -1,5 +1,4 @@
 use std::io;
-use std::io::stdin;
 
 fn main() {
     println!(
@@ -15,11 +14,42 @@ fn main() {
         [8] - Ay"
     );
 
-    // let mut planet = String::new();
-    // io::stdin().read_line(&mut planet);
+    let mut planet = String::new();
+    io::stdin()
+        .read_line(&mut planet)
+        .expect("Developer hatası :P");
 
-    let w = find_weight(60.0, Planet::Moon);
-    println!("Dünyada 90 Kg Ayda {} kg'sın", w.unwrap());
+    println!(
+        "Şimdi de bir ağırlık gir.\nKendi kilon, bilgisayarının ki, oyuncak otomobilinin ki\nhatta bir balinanın ki bile olabilir.(kg)"
+    );
+
+    let mut input_weight = String::new();
+    io::stdin()
+        .read_line(&mut input_weight)
+        .expect("Developer hatası :P");
+
+    let weight: f32 = match input_weight.trim().parse::<f32>() {
+        Ok(w) => match planet.trim().to_lowercase().as_str() {
+            "1" => find_weight(w, Planet::Mercury).unwrap(),
+            "2" => find_weight(w, Planet::Venus).unwrap(),
+            "3" => find_weight(w, Planet::Mars).unwrap(),
+            "4" => find_weight(w, Planet::Jupiter).unwrap(),
+            "5" => find_weight(w, Planet::Saturn).unwrap(),
+            "6" => find_weight(w, Planet::Uranus).unwrap(),
+            "7" => find_weight(w, Planet::Neptune).unwrap(),
+            "8" => find_weight(w, Planet::Moon).unwrap(),
+            _ => {
+                println!("Seçimin yanlış olabilir mi?");
+                0.0
+            }
+        },
+        Err(e) => {
+            println!("Sanırım girdiğin kilo sayısal bir değer değil.\n{:?}", e);
+            0.0
+        }
+    };
+
+    println!("Dünyada {} Kg seçtiğin gezegende ise {} kg'sın",&input_weight.trim(), weight);
 }
 
 #[allow(dead_code)]

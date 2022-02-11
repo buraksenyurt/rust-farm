@@ -27,6 +27,7 @@ Rust dilinin temellerini ve sahip olduğu genel enstrümanların nasıl kullanı
 - [x] __Module22:__ Trait'lerde Static Dispatch 
 - [x] __Module23:__ Ownership Kuramı 
 - [x] __Module24:__ Borrowing 
+- [x] __Module24.5__ Borrowing ve Ownership Konusunu Debugger ile Anlamak
 - [x] __Module25:__ Lifetimes 
 - [x] __Module26:__ Otomatik Atanan Lifetime Meselesi 
 - [x] __Module27:__ Reference Counted Variables 
@@ -489,6 +490,48 @@ Vector kullanımında sahiplik into_iter'e geçmesi sonrası oluşan hata durumu
 Örneğin çalışır hali.
 
 ![images/mod24_3.png](images/mod24_3.png)
+
+### Module24.5: Borrowing ve Ownership Konusunu GDB (GNU Debugger) ile Anlamak
+
+Eğitim sırasında öğrencilere sadece izleyecekleri bir örnek şeklinde anlatılabilir. Ubuntu sistemde yüklü olan GDB aracı kullanılır.
+
+```shell
+cargo new own_and_borr
+cd own_and_borr
+cargo run
+
+# Build işlemi yaptıktan sonra debugger kullanılabilir
+cargo build
+cd target/debug
+
+# Debugger tarafında yapılacaklar
+gdb own_and_borr
+# borrowing fonksiyonuna breakpoint
+b say_what
+# ownership fonksiyonuna breakpoint
+b whats_say_you
+# ilk fonksiyonu çağırdığımız satıra breakpoint
+b main.rs:29
+# programı çalıştır
+r
+# main'deki local değişkenlere bak
+info locals
+# bir sonraki breakpoint noktasına geç
+c
+# fonksiyon argümanına bak
+info args
+# argümanın pointer olduğunu gördükten sonra değerini oku
+p *input
+# sonraki breakpoint noktasına geç
+c
+# fonksiyona gelen argümana bak
+info args
+# işleme devam et.
+c
+# program sonlanır
+```
+
+![images/mod24_5_1.png](images/mod24_5_1.png)
 
 ### Module25: Lifetimes
 

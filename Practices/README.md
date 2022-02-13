@@ -15,3 +15,4 @@
 - [x] __vorcraft     :__ Thread'ler arası mesajlaşmada kanal _(channel)_ kullanımı için crossbeam'den yararlandığımız örnek.
 - [x] __debugging    :__ GDB _(GNU Debugger)_ aracını kullanarak bir Rust kodunu nasıl debug edebileceğimizi ama daha da önemlisi bellekteki yerleşimleri nasıl görebileceğimizi öğreniyoruz.
 - [x] __fun_calc     :__ Acaba Venus'te olsak kaç kilo geliriz ya da Uranus'te :) Kullanıcıdan veri alma ve işleme konusuna bir bakıyoruz.
+- [ ] __crayz_server :__ Çılgın olmasa da sıfırdan bir HTTP Server yazmaya çalışmak gerçekten de çılgınca ama çok şey öğreteceği kesin ;)

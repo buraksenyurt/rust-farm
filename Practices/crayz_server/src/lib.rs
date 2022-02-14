@@ -1,3 +1,4 @@
+use log::info;
 use std::fmt::{Display, Formatter};
 
 /// Sunucu bilgilerini taşıyan veri yapısı.
@@ -21,8 +22,9 @@ impl Server {
            sahiliği(ownership)'i alınan Server nesnesinin deallocate edilmesinde yarar vardır.
            Bu sebepten &self yerine self kullandık.
         */
-        println!("{} dinelemde.", self.to_string());
+        info!("{} başlatılıyor...", self.to_string());
         //TODO Listener yazılacak
+        info!("{} başlatıldı...", self.to_string());
     }
 }
 
@@ -35,7 +37,7 @@ impl Display for Server {
 /// Kullanılabilecek HTTP metodlarını tutar
 #[derive(Debug)]
 pub enum Method {
-    Get(String), // query string saklayabiliriz
+    Get(Option<String>), // query string saklayabiliriz
     Post,
     Put,
     Delete,

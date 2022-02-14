@@ -1,5 +1,7 @@
-use crayz_server::{Method, Request, Server};
 use log::info;
+use crayz_server::http::common::Method;
+use crayz_server::http::request::Request;
+use crayz_server::server::Server;
 
 fn main() {
     env_logger::init();

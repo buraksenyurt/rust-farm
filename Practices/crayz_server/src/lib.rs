@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 /// Sunucu bilgilerini taşıyan veri yapısı.
 pub struct Server {
     root: String,
@@ -19,7 +21,41 @@ impl Server {
            sahiliği(ownership)'i alınan Server nesnesinin deallocate edilmesinde yarar vardır.
            Bu sebepten &self yerine self kullandık.
         */
-        println!("Sunucu çalışıyor");
+        println!("{} dinelemde.", self.to_string());
         //TODO Listener yazılacak
+    }
+}
+
+impl Display for Server {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({})->{}:{}", self.alias, self.root, self.port)
+    }
+}
+
+/// Kullanılabilecek HTTP metodlarını tutar
+#[derive(Debug)]
+pub enum Method {
+    Get(String), // query string saklayabiliriz
+    Post,
+    Put,
+    Delete,
+}
+
+/// HTTP Request içeriğini tutar.
+pub struct Request {
+    pub method: Method,
+    pub path: String,
+}
+
+impl Request {
+    /// Yeni bir HTTP Request oluşturmak için kullanılır.
+    pub fn new(method: Method, path: String) -> Self {
+        Request { method, path }
+    }
+}
+
+impl Display for Request {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "HTTP {:?}, {}", self.method, self.path)
     }
 }

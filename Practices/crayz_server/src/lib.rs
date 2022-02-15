@@ -2,6 +2,7 @@
 pub mod server {
     use log::{error, info};
     use std::fmt::{Display, Formatter};
+    use std::io::Read;
     use std::net::TcpListener;
 
     /// Sunucu bilgilerini taşıyan veri yapısı.
@@ -41,16 +42,38 @@ pub mod server {
                     loop {
                         // Gelen yeni bağlantıları match ifadesi ile kontrol altına alıyoruz.
                         match l.accept() {
-                            Ok((stream, addrees)) => {
-                                info!("{}", addrees.to_string());
-                                //TODO Gelen istekleri kabul eden kod yazılacak
+                            Ok((mut stream, addrees)) => {
+                                info!("İstemci -> {}", addrees.to_string());
+
+                                /*
+                                    İstemciden gelen talebi belli bir boyuttaki dizi içerisine almalıyız
+                                    read trait'inin TcpStream için implemente edilmiş versiyonu,
+                                    gelen içeriği mutable bir dizi içerisine yazmak üzere tasarlanmış.
+                                    Başlangıç için 1024 elemanlı bir array göz önüne alabiliriz.
+                                */
+                                let mut buffer = [0 as u8; 1024];
+                                match stream.read(&mut buffer) {
+                                    Ok(l) => {
+                                        let msg = String::from_utf8(buffer[0..l].to_vec());
+                                        info!("Gelen bilgi -> {:?}", msg.unwrap());
+
+                                        //TODO Mesaj boyutunun belli bir değerin üstünde olmamasını garanti edelim.
+                                        //TODO Gelen istekler Request veri yapısına dönüştürülmeli
+                                    }
+                                    Err(e) => {
+                                        error!("Stream okumada hata -> {}", e);
+                                    }
+                                }
+
                             }
-                            Err(e) => error!("{:?}", e),
+                            Err(e) => {
+                                error!("Bağlantı sağlanırken bir hata oluştu. Hata detayı -> {}", e)
+                            }
                         }
                     }
                 }
                 Err(e) => {
-                    error!("Sunucu başlatılamadı.{}", e);
+                    error!("Sunucu başlatılamadı. Hata detayı -> {}", e);
                 }
             }
         }

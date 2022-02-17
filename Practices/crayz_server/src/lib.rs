@@ -115,6 +115,7 @@ pub mod http {
         use super::common::Method;
         use log::info;
         use std::fmt::{Display, Formatter};
+        use std::str;
         use thiserror::Error;
 
         /// HTTP Request içeriğini tutar.
@@ -150,13 +151,54 @@ pub mod http {
             type Error = RequestError;
 
             fn try_from(value: &[u8]) -> Result<Self, RequestError> {
-                info!("Request türüne dönüştürülüyor...");
-                //TODO Parsing işlemi yapılacak ve kendi Error nesnemizi kullanacağız.
-                Ok(Request::new(Method::Get(None), "TEST".to_string()))
+                /*
+                    Pattern matching kullanımı yerine ? operatörü ile işi kısaltabiliriz.
+
+                    from_utf8 fonksiyon eğer gelen parametreyi çözümleyemezse ParseError verir.
+                    or fonksiyonunda, ParseError olması halinde kendi Encoding error nesnemizi
+                    döndüreceğimizi belirtiyor.
+
+                    ? operatörü encoding sorunu yoksa, çözümlenmiş içeriğin package nesnesine
+                    alınmasını sağlar.
+                */
+
+                let package = str::from_utf8(value).or(Err(RequestError::Encoding))?;
+
+                /*
+                    Gelen HTTP paketi satır satır akacaktır. Örneğin aşağıdaki gibi,
+
+                    POST /movies/ HTTP/1.1
+                    Host: localhost:5555
+                    User-Agent: curl/7.68.0
+                    Accept: *//*
+                    Content-Type: application/json
+                    Content-Length: 36
+
+                    {"message":"only one ping Vaseley."}
+
+                    ya da
+
+                    GET /query?word=red HTTP/1.1
+                    Host: localhost:5555
+                    User-Agent: curl/7.68.0
+                    Accept: *//*
+
+                    Satır bazında gelen isteği ayrıştırıp örneğin ilk satırdan HTTP metodu,
+                    path, query string son kısımdan JSON content vs almamız mümkün.
+                 */
+
+                // Gelen içeriği satır bazında bir vector içinde topluyoruz.
+                let parts: Vec<&str> = package.split('\n').collect();
+                for p in parts {
+                    info!("Part -> {}", p);
+                }
+                // TODO: parçalardan hareketle Request nesnesi örneklenecek
+                Ok(Request::new(Method::Get(None), "none".to_string()))
             }
         }
 
-        /// Request dönüşümlerindeki olası hata durumlarını tutar
+        // Hata durumlarını tutan enum sabitimizde işleri kolaylaştıran thiserror paketini kullandık.
+        /// Request dönüşümlerindeki olası hata durumlarını tutar.
         #[derive(Debug, Error)]
         pub enum RequestError {
             #[error("Paket geçersiz.")]

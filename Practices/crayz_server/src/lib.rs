@@ -97,6 +97,10 @@ pub mod server {
 pub mod http {
     /// Ortak veri türlerini barındırır
     pub mod common {
+        use crate::http::request::RequestError;
+        use log::error;
+        use std::str::FromStr;
+
         /// Kullanılabilecek HTTP metodlarını tutar
         #[derive(Debug)]
         pub enum Command {
@@ -104,6 +108,30 @@ pub mod http {
             Post,
             Put,
             Delete,
+        }
+
+        /// string'ten Command elde etme davranışını uygular
+        impl FromStr for Command {
+            type Err = RequestError;
+
+            /*
+            from_str trait'ini Command veri yapısı için yeniden programladık.
+            Böylece bir string'i ele alıp uygun Command nesnesini elde edebiliriz.
+            Geçerli bir command nesnesi değilse de RequestError döndürmekteyiz.
+            Bu fonksiyonu Request veri yapısında ele aldığımız TryFrom trait içerisinde kullanacağız.
+             */
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                match s {
+                    "GET" => Ok(Command::Get),
+                    "POST" => Ok(Command::Post),
+                    "DELETE" => Ok(Command::Delete),
+                    "PUT" => Ok(Command::Put),
+                    _ => {
+                        error!("Geçersiz bir metot geldi.");
+                        Err(RequestError::Command)
+                    }
+                }
+            }
         }
     }
 
@@ -113,6 +141,7 @@ pub mod http {
         use log::error;
         use std::fmt::{Display, Formatter};
         use std::str;
+        use std::str::FromStr;
         use thiserror::Error;
 
         /// HTTP Request içeriğini tutar.
@@ -191,25 +220,12 @@ pub mod http {
                 // }
 
                 let first_row = parts[0].to_string();
+                //TODO: İlk satırın 3ncü kısmında protokol bilgisi olur. HTTP değilse error fırlatalım.
                 let cmd: Vec<&str> = first_row.split(' ').collect();
-                let m = match cmd[0] {
-                    "GET" => {
-                        Command::Get
-                        //TODO: path arkasından gelen querystring bilgisini yakalayabiliriz
-                    },
-                    "POST" => {
-                        Command::Post
-                        //TODO: POST mesajı gelmişse JSON payload bilgisini de okuyabiliriz
-                    },
-                    "DELETE" => Command::Delete,
-                    "PUT" => Command::Put,
-                    _ => {
-                        error!("Geçersiz bir metot geldi.");
-                        return Err(RequestError::Command);
-                    }
-                };
-                Ok(Request::new(m, cmd[1].to_string()))
-
+                //TODO: burada bir bug olabilir. Querystring'te boş karakter varsa mesela.
+                // from_str trait'ini yukarıda Command veri yapısına uyarlamıştık
+                let c = Command::from_str(cmd[0])?;
+                Ok(Request::new(c, cmd[1].to_string()))
             }
         }
 

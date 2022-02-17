@@ -67,8 +67,6 @@ pub mod server {
                                                 error!("{:?}", e)
                                             }
                                         }
-
-                                        //TODO Mesaj boyutunun belli bir değerin üstünde olmamasını garanti edelim.
                                     }
                                     Err(e) => {
                                         error!("Stream okumada hata -> {}", e);
@@ -101,9 +99,8 @@ pub mod http {
     pub mod common {
         /// Kullanılabilecek HTTP metodlarını tutar
         #[derive(Debug)]
-        pub enum Method {
-            Get(Option<String>),
-            // query string saklayabiliriz
+        pub enum Command {
+            Get,
             Post,
             Put,
             Delete,
@@ -112,28 +109,28 @@ pub mod http {
 
     /// Request ile ilgili enstrümanları barındırır.
     pub mod request {
-        use super::common::Method;
-        use log::info;
+        use crate::http::common::Command;
+        use log::error;
         use std::fmt::{Display, Formatter};
         use std::str;
         use thiserror::Error;
 
         /// HTTP Request içeriğini tutar.
         pub struct Request {
-            pub method: Method,
+            pub method: Command,
             pub path: String,
         }
 
         impl Request {
             /// Yeni bir HTTP Request oluşturmak için kullanılır.
-            pub fn new(method: Method, path: String) -> Self {
+            pub fn new(method: Command, path: String) -> Self {
                 Request { method, path }
             }
         }
 
         impl Display for Request {
             fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-                write!(f, "HTTP {:?}, {}", self.method, self.path)
+                write!(f, "{:?}, {}", self.method, self.path)
             }
         }
 
@@ -165,35 +162,54 @@ pub mod http {
                 let package = str::from_utf8(value).or(Err(RequestError::Encoding))?;
 
                 /*
-                    Gelen HTTP paketi satır satır akacaktır. Örneğin aşağıdaki gibi,
+                   Gelen HTTP paketi satır satır akacaktır. Örneğin aşağıdaki gibi,
 
-                    POST /movies/ HTTP/1.1
-                    Host: localhost:5555
-                    User-Agent: curl/7.68.0
-                    Accept: *//*
-                    Content-Type: application/json
-                    Content-Length: 36
+                   POST /movies/ HTTP/1.1
+                   Host: localhost:5555
+                   User-Agent: curl/7.68.0
+                   Accept: *//*
+                   Content-Type: application/json
+                   Content-Length: 36
 
-                    {"message":"only one ping Vaseley."}
+                   {"message":"only one ping Vaseley."}
 
-                    ya da
+                   ya da
 
-                    GET /query?word=red HTTP/1.1
-                    Host: localhost:5555
-                    User-Agent: curl/7.68.0
-                    Accept: *//*
+                   GET /query?word=red HTTP/1.1
+                   Host: localhost:5555
+                   User-Agent: curl/7.68.0
+                   Accept: *//*
 
-                    Satır bazında gelen isteği ayrıştırıp örneğin ilk satırdan HTTP metodu,
-                    path, query string son kısımdan JSON content vs almamız mümkün.
-                 */
+                   Satır bazında gelen isteği ayrıştırıp örneğin ilk satırdan HTTP metodu,
+                   path, query string son kısımdan JSON content vs almamız mümkün.
+                */
 
                 // Gelen içeriği satır bazında bir vector içinde topluyoruz.
                 let parts: Vec<&str> = package.split('\n').collect();
-                for p in parts {
-                    info!("Part -> {}", p);
-                }
-                // TODO: parçalardan hareketle Request nesnesi örneklenecek
-                Ok(Request::new(Method::Get(None), "none".to_string()))
+                // for p in parts {
+                //     info!("Part -> {}", p);
+                // }
+
+                let first_row = parts[0].to_string();
+                let cmd: Vec<&str> = first_row.split(' ').collect();
+                let m = match cmd[0] {
+                    "GET" => {
+                        Command::Get
+                        //TODO: path arkasından gelen querystring bilgisini yakalayabiliriz
+                    },
+                    "POST" => {
+                        Command::Post
+                        //TODO: POST mesajı gelmişse JSON payload bilgisini de okuyabiliriz
+                    },
+                    "DELETE" => Command::Delete,
+                    "PUT" => Command::Put,
+                    _ => {
+                        error!("Geçersiz bir metot geldi.");
+                        return Err(RequestError::Command);
+                    }
+                };
+                Ok(Request::new(m, cmd[1].to_string()))
+
             }
         }
 
@@ -203,10 +219,10 @@ pub mod http {
         pub enum RequestError {
             #[error("Paket geçersiz.")]
             Invalid,
-            #[error("{0} metodu geçersiz.")]
-            Method(String),
-            #[error("{0} protokolü geçersiz.")]
-            Protocol(String),
+            #[error("Geçersiz HTTP komutu.")]
+            Command,
+            #[error("Protokol geçersiz.")]
+            Protocol,
             #[error("Sorunlu encoding.")]
             Encoding,
         }

@@ -23,6 +23,7 @@ echo "ping" | netcat localhost 5555
 echo "ping pong" | netcat localhost 5555
 echo "ping" | curl localhost:5555
 curl -X POST http://localhost:5555/movies/ -H 'Content-Type: application/json' -d '{"message":"only one ping Vaseley."}'
+curl http://localhost:5555/query?word=red
 
 # Hatta tarayıcı açıp http://localhost:5555/ping ile talep yapmayı da deneyebiliriz.
 ```

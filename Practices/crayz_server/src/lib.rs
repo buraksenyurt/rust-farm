@@ -122,10 +122,10 @@ pub mod http {
              */
             fn from_str(s: &str) -> Result<Self, Self::Err> {
                 match s {
-                    "GET" => Ok(Command::Get),
-                    "POST" => Ok(Command::Post),
-                    "DELETE" => Ok(Command::Delete),
-                    "PUT" => Ok(Command::Put),
+                    "GET" => Ok(Self::Get),
+                    "POST" => Ok(Self::Post),
+                    "DELETE" => Ok(Self::Delete),
+                    "PUT" => Ok(Self::Put),
                     _ => {
                         error!("Geçersiz bir metot geldi.");
                         Err(RequestError::Command)
@@ -180,9 +180,9 @@ pub mod http {
                 /*
                     Pattern matching kullanımı yerine ? operatörü ile işi kısaltabiliriz.
 
-                    from_utf8 fonksiyon eğer gelen parametreyi çözümleyemezse ParseError verir.
+                    from_utf8 fonksiyonu eğer gelen parametreyi çözümleyemezse ParseError verir.
                     or fonksiyonunda, ParseError olması halinde kendi Encoding error nesnemizi
-                    döndüreceğimizi belirtiyor.
+                    döndüreceğimizi belirtiyoruz.
 
                     ? operatörü encoding sorunu yoksa, çözümlenmiş içeriğin package nesnesine
                     alınmasını sağlar.

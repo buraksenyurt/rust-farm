@@ -138,7 +138,7 @@ pub mod http {
     /// Request ile ilgili enstrümanları barındırır.
     pub mod request {
         use crate::http::common::Command;
-        use log::error;
+        use log::{error, info};
         use std::fmt::{Display, Formatter};
         use std::str;
         use std::str::FromStr;
@@ -215,14 +215,32 @@ pub mod http {
 
                 // Gelen içeriği satır bazında bir vector içinde topluyoruz.
                 let parts: Vec<&str> = package.split('\n').collect();
-                // for p in parts {
-                //     info!("Part -> {}", p);
-                // }
+                for p in &parts {
+                    info!("Part -> {}", p);
+                }
 
                 let first_row = parts[0].to_string();
-                //TODO: İlk satırın 3ncü kısmında protokol bilgisi olur. HTTP değilse error fırlatalım.
                 let cmd: Vec<&str> = first_row.split(' ').collect();
-                //TODO: burada bir bug olabilir. Querystring'te boş karakter varsa mesela.
+
+                /*
+                    Eğer sadece HTTP paketlerini ele alacaksak ilk satırda en azından
+
+                    GET /authors/ HTTP/1.1
+
+                    benzeri bir içerik olmalı.
+                    Dolayısıyla ilk satırın split edilmiş hali 3 eleman olmalı.
+                */
+                if cmd.len() != 3 {
+                    return Err(RequestError::Invalid);
+                }
+
+                let protocol = cmd[2];
+                if !protocol.contains("HTTP") {
+                    return Err(RequestError::Protocol);
+                }
+
+                //TODO Eğer metot POST ise JSON içeriğini alalım
+
                 // from_str trait'ini yukarıda Command veri yapısına uyarlamıştık
                 let c = Command::from_str(cmd[0])?;
                 Ok(Request::new(c, cmd[1].to_string()))
@@ -233,14 +251,16 @@ pub mod http {
         /// Request dönüşümlerindeki olası hata durumlarını tutar.
         #[derive(Debug, Error)]
         pub enum RequestError {
-            #[error("Paket geçersiz.")]
+            #[error("Paket geçersiz")]
             Invalid,
-            #[error("Geçersiz HTTP komutu.")]
+            #[error("Geçersiz HTTP komutu")]
             Command,
-            #[error("Protokol geçersiz.")]
+            #[error("Protokol geçersiz")]
             Protocol,
-            #[error("Sorunlu encoding.")]
+            #[error("Sorunlu encoding")]
             Encoding,
+            #[error("HTTP ile uyumlu değil")]
+            NotCompatible,
         }
     }
 }

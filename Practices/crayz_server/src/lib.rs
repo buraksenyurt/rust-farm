@@ -13,6 +13,12 @@ pub mod server {
         alias: String,
     }
 
+    impl Display for Server {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "({})->{}:{}", self.alias, self.root, self.port)
+        }
+    }
+
     impl Server {
         /// Yeni bir sunucu nesnesi örnekler.
         pub fn new(root: String, port: u16, alias: String) -> Self {
@@ -85,12 +91,6 @@ pub mod server {
             }
         }
     }
-
-    impl Display for Server {
-        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-            write!(f, "({})->{}:{}", self.alias, self.root, self.port)
-        }
-    }
 }
 
 /// HTTP için gerekli temel tipleri taşır
@@ -102,7 +102,7 @@ pub mod http {
         use std::str::FromStr;
 
         /// Kullanılabilecek HTTP metodlarını tutar
-        #[derive(Debug)]
+        #[derive(Debug, PartialEq)]
         pub enum Command {
             Get,
             Post,
@@ -148,19 +148,36 @@ pub mod http {
         pub struct Request {
             pub method: Command,
             pub path: String,
+            pub body: String,
         }
 
         impl Request {
             /// Yeni bir HTTP Request oluşturmak için kullanılır.
-            pub fn new(method: Command, path: String) -> Self {
-                Request { method, path }
+            pub fn new(method: Command, path: String, body: String) -> Self {
+                Request { method, path, body }
             }
         }
 
         impl Display for Request {
             fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-                write!(f, "{:?}, {}", self.method, self.path)
+                write!(f, "{:?}, {}, {}", self.method, self.path, self.body)
             }
+        }
+
+        // Hata durumlarını tutan enum sabitimizde işleri kolaylaştıran thiserror paketini kullandık.
+        /// Request dönüşümlerindeki olası hata durumlarını tutar.
+        #[derive(Debug, Error)]
+        pub enum RequestError {
+            #[error("Paket geçersiz")]
+            Invalid,
+            #[error("Geçersiz HTTP komutu")]
+            Command,
+            #[error("Protokol geçersiz")]
+            Protocol,
+            #[error("Sorunlu encoding")]
+            Encoding,
+            #[error("HTTP ile uyumlu değil")]
+            NotCompatible,
         }
 
         /*
@@ -239,28 +256,15 @@ pub mod http {
                     return Err(RequestError::Protocol);
                 }
 
-                //TODO Eğer metot POST ise JSON içeriğini alalım
-
                 // from_str trait'ini yukarıda Command veri yapısına uyarlamıştık
                 let c = Command::from_str(cmd[0])?;
-                Ok(Request::new(c, cmd[1].to_string()))
+                // Http metodunun Post olması halinde JSON içeriğini almayı da deneyebiliriz.
+                let body = match c {
+                    Command::Post => parts[parts.len() - 1].trim().to_string(),
+                    _ => "".to_string(),
+                };
+                Ok(Request::new(c, cmd[1].to_string(), body))
             }
-        }
-
-        // Hata durumlarını tutan enum sabitimizde işleri kolaylaştıran thiserror paketini kullandık.
-        /// Request dönüşümlerindeki olası hata durumlarını tutar.
-        #[derive(Debug, Error)]
-        pub enum RequestError {
-            #[error("Paket geçersiz")]
-            Invalid,
-            #[error("Geçersiz HTTP komutu")]
-            Command,
-            #[error("Protokol geçersiz")]
-            Protocol,
-            #[error("Sorunlu encoding")]
-            Encoding,
-            #[error("HTTP ile uyumlu değil")]
-            NotCompatible,
         }
     }
 }

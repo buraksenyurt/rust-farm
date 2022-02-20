@@ -21,13 +21,11 @@ RUST_LOG=info cargo run
 # ardından ikinci bir terminal açıp aşağıdaki komutlar ile mesaj göndermeyi deneyebiliriz.
 echo "ping" | netcat localhost 5555
 echo "ping pong" | netcat localhost 5555
-echo "ping" | curl localhost:5555
+curl localhost:5555
 curl -X POST http://localhost:5555/movies/ -H 'Content-Type: application/json' -d '{"message":"only one ping Vaseley."}'
 curl http://localhost:5555/query?word=red
-
-# Hatta tarayıcı açıp http://localhost:5555/ping ile talep yapmayı da deneyebiliriz.
 ```
 
-![../images/crayz_server_1.png](../images/crayz_server_1.png)
+![../images/crayz_server_2.png](../images/crayz_server_2.png)
 
 __DEVAM EDECEK__

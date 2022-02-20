@@ -263,7 +263,7 @@ pub mod http {
                     Command::Post => parts[parts.len() - 1].trim().to_string(),
                     _ => "".to_string(),
                 };
-                Ok(Request::new(c, cmd[1].to_string(), body))
+                Ok(Self::new(c, cmd[1].to_string(), body))
             }
         }
     }

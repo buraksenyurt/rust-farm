@@ -5,7 +5,7 @@ fn main() {
     env_logger::init();
 
     // Server veri yapımızı kullanarak bir örnek oluşturduk
-    let alpha = Server::new("0.0.0.0".to_string(), 5555_u16, "localhost".to_string());
+    let alpha = Server::new("0.0.0.0", 5555_u16, "localhost");
     // run fonksiyonunu çağırıp sunucuyu başlatıyoruz. ya da başlatamıyoruz :)
     alpha.run();
 }

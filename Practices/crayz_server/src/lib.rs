@@ -7,21 +7,21 @@ pub mod server {
     use std::net::TcpListener;
 
     /// Sunucu bilgilerini taşıyan veri yapısı.
-    pub struct Server {
-        root: String,
+    pub struct Server<'a> {
+        root: &'a str,
         port: u16,
-        alias: String,
+        alias: &'a str,
     }
 
-    impl Display for Server {
+    impl<'a> Display for Server<'a> {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
             write!(f, "({})->{}:{}", self.alias, self.root, self.port)
         }
     }
 
-    impl Server {
+    impl<'a> Server<'a> {
         /// Yeni bir sunucu nesnesi örnekler.
-        pub fn new(root: String, port: u16, alias: String) -> Self {
+        pub fn new(root: &'a str, port: u16, alias: &'a str) -> Self {
             Server { root, port, alias }
         }
 

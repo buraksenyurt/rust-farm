@@ -14,3 +14,15 @@ Senaryomuz bir oyuncuyu temsil eden veri modelinin tasarlanması ile başlıyor.
 
 ![../images/viva_las_vegas_1.png](../images/viva_las_vegas_1.png)
 
+Sonrasında senaryoya oyuncunun nickname bilgisini değiştirecek bir fonksiyon _(change_nickname)_ dahil eidliyor. Bu durumda da kod beklediğimiz şekilde çalışıyor.
+
+![../images/viva_las_vegas_2.png](../images/viva_las_vegas_2.png)
+
+Aslında Player değişkenindeki String içerikler literal türden de tanımlanabilirler. String veri türü heap alanını kullanan ve genişleyebilen bir yapıdadır. Stack'te Heap'teki metinsel alanı işaret eden, pointer ve referans adresi gibi bilgileri tutar. str literal'de bir String'in işaret ettiği bellek bölgesinin bir parçasını _(metnin bir kısmını mesela)_ referans eder ve sabit uzunluktadır. Yani String'ten çekildikten sonra değiştirielemez. Metinsel bilginin değişmeyeceği durumlarda literal kullanmak da oldukça mantıklıdır. O halde gelin Player veri yapısında nick ve country alanlarını literal string'e çevirelim. 
+
+Upss!!! Bir sürü hata alacağız.
+
+![../images/viva_las_vegas_3.png](../images/viva_las_vegas_3.png)
+
+nick ve country alanları literal string türünden. Player'ın kullanıldığı scope'lar düşünüldüğünde deallocate edilmesi sonrasında olmayan bellek alanlarını referans eden pointer'lar kalabilir. Bu durumun oluşmaması için Rust söz konusu alanların ne kadar süre yaşayacağını bilmek istiyor. Böylece _Dangling Pointer_ durumunun oluşmasının önüne geçmiş oluyoruz.
+

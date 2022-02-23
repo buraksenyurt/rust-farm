@@ -16,4 +16,5 @@
 - [x] __debugging     :__ GDB _(GNU Debugger)_ aracını kullanarak bir Rust kodunu nasıl debug edebileceğimizi ama daha da önemlisi bellekteki yerleşimleri nasıl görebileceğimizi öğreniyoruz.
 - [x] __fun_calc      :__ Acaba Venus'te olsak kaç kilo geliriz ya da Uranus'te :) Kullanıcıdan veri alma ve işleme konusuna bir bakıyoruz.
 - [ ] __crayz_server  :__ Çılgın olmasa da sıfırdan bir HTTP Server yazmaya çalışmak gerçekten de çılgınca ama çok şey öğreteceği kesin ;)
-- [x] __viva_las_vegas:__ Rust'ın en zor konularından birisi olan Lifetimes kavramını basit bir şekilde nasıl anlatabilirim? Bu soruya cevap aradığımız örnek uygulama. 
+- [x] __viva_las_vegas:__ Rust'ın en zor konularından birisi olan Lifetimes kavramını basit bir şekilde nasıl anlatabilirim? Bu soruya cevap aradığımız örnek uygulama.
+- [x] __by_val_by_ref :__ Bu pratikte bir arkadaşımıza ___Value Moved Here___ hatasının ne olduğun anlatmaya çalışıyoruz.

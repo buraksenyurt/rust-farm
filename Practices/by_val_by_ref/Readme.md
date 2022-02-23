@@ -88,6 +88,65 @@ Clone ve Copy trait'lerini uyguladığımız için binding değişkeni ilgili fo
 Pass by Value durumunu daha iyi anlamak için belkide gdb ile kodu debug etmek iyi olabilir.
 
 ```shell
-
+cargo build
+cd target/debug
+gdb by_val_by_ref
+run
+list
+b prepare_env
+r
+info args
+c
+info args
+c
 ```
 
+![../images/by_val_by_ref_5.png](../images/by_val_by_ref_5.png)
+
+prepare_env fonksiyonuna bir breakpoint ekledik. İki kez üzerinden geçiyoruz. Her seferinde argümanlara baktık. Birebir kopyalanmış bir değişken görmekteyiz. 
+
+Şimdi ikinci kullanıma bakalım. Değeri referans olarak taşımak. İşin püf noktası & sembolü.
+
+```rust
+fn main() {
+    let binding = Binding::Https(SoapVersion::V1_2);
+    prepare_env(&binding);
+    prepare_env(&binding);
+}
+
+fn prepare_env(b: &Binding) {
+    match b {
+        Binding::Http(v) | Binding::Https(v) => {
+            println!("HTTP {:?} versiyonu için ortam hazırlanıyor.", v)
+        }
+        Binding::Rest => println!("Servis REST protokolüne göre hazırlanıyor"),
+        Binding::Grpc => println!("Servis GRPC protoklüne göre hazırlanıyor"),
+    }
+}
+```
+
+Fonksiyonumuzun parametresini referans olarak değiştirdik. Elbette binding değişkenlerini gönderdiğimiz yerde de referansı yollamamız lazım. Ayrıca match ifadesi içerisine bakılacak olursa SoapVersion enum tipinin de referans olarak alındığını görebiliriz.
+
+![../images/by_val_by_ref_6.png](../images/by_val_by_ref_6.png)
+
+Birde gdb debugger aracı ile çalışma zamanındaki argümanların durumuna bakalım.
+
+```shell
+cargo build
+cd target/debug
+gdb by_val_by_ref
+run
+list
+b prepare_env
+r
+info args
+print *b
+c
+info args
+print *b
+c
+```
+
+Özellikle prepare_env fonksiyonundaki breakpoint noktalarında argümanın bir pointer olduğuna ve her iki çağrıda da aynı pointer'ın kullanıldığında dikkat edelim. 
+
+![../images/by_val_by_ref_7.png](../images/by_val_by_ref_7.png)

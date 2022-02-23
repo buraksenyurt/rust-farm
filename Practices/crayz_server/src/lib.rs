@@ -145,20 +145,20 @@ pub mod http {
         use thiserror::Error;
 
         /// HTTP Request içeriğini tutar.
-        pub struct Request {
+        pub struct Request<'a> {
             pub method: Command,
-            pub path: String,
-            pub body: String,
+            pub path: &'a str,
+            pub body: &'a str,
         }
 
-        impl Request {
+        impl<'a> Request<'a> {
             /// Yeni bir HTTP Request oluşturmak için kullanılır.
-            pub fn new(method: Command, path: String, body: String) -> Self {
+            pub fn new(method: Command, path: &'a str, body: &'a str) -> Self {
                 Request { method, path, body }
             }
         }
 
-        impl Display for Request {
+        impl<'a> Display for Request<'a> {
             fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
                 write!(f, "{:?}, {}, {}", self.method, self.path, self.body)
             }
@@ -190,10 +190,10 @@ pub mod http {
 
            Dönüşüm başarılı ise Request türü dönecek, değilse Error.
         */
-        impl TryFrom<&[u8]> for Request {
+        impl<'a> TryFrom<&'a [u8]> for Request<'a> {
             type Error = RequestError;
 
-            fn try_from(value: &[u8]) -> Result<Self, RequestError> {
+            fn try_from(value: &'a [u8]) -> Result<Request<'a>, Self::Error> {
                 /*
                     Pattern matching kullanımı yerine ? operatörü ile işi kısaltabiliriz.
 
@@ -236,7 +236,7 @@ pub mod http {
                     info!("Part -> {}", p);
                 }
 
-                let first_row = parts[0].to_string();
+                let first_row = parts[0];
                 let cmd: Vec<&str> = first_row.split(' ').collect();
 
                 /*
@@ -260,10 +260,10 @@ pub mod http {
                 let c = Command::from_str(cmd[0])?;
                 // Http metodunun Post olması halinde JSON içeriğini almayı da deneyebiliriz.
                 let body = match c {
-                    Command::Post => parts[parts.len() - 1].trim().to_string(),
-                    _ => "".to_string(),
+                    Command::Post => parts[parts.len() - 1].trim(),
+                    _ => "",
                 };
-                Ok(Self::new(c, cmd[1].to_string(), body))
+                Ok(Self::new(c, cmd[1], body))
             }
         }
     }

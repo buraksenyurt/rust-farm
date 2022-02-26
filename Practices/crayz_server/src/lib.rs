@@ -213,7 +213,7 @@ pub mod http {
                    POST /movies/ HTTP/1.1
                    Host: localhost:5555
                    User-Agent: curl/7.68.0
-                   Accept: *//*
+                   Accept:
                    Content-Type: application/json
                    Content-Length: 36
 
@@ -224,7 +224,7 @@ pub mod http {
                    GET /query?word=red HTTP/1.1
                    Host: localhost:5555
                    User-Agent: curl/7.68.0
-                   Accept: *//*
+                   Accept:
 
                    Satır bazında gelen isteği ayrıştırıp örneğin ilk satırdan HTTP metodu,
                    path, query string son kısımdan JSON content vs almamız mümkün.
@@ -265,6 +265,27 @@ pub mod http {
                 };
                 Ok(Self::new(c, cmd[1], body))
             }
+        }
+    }
+
+    /// Response ile ilgili enstrümanları barındırır.
+    pub mod response {
+
+        pub struct Response {
+            status_code: StatusCode,
+            body: Option<String>,
+        }
+
+        impl Response {
+            pub fn new(status_code: StatusCode, body: Option<String>) -> Self {
+                Response { status_code, body }
+            }
+        }
+
+        /// Birkaç HTTP statü kodunu tutan enum sabiti
+        pub enum StatusCode {
+            Ok=200,
+            BadRequest=400,
         }
     }
 }

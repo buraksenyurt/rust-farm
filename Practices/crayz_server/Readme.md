@@ -27,5 +27,3 @@ curl http://localhost:5555/query?word=red
 ```
 
 ![../images/crayz_server_2.png](../images/crayz_server_2.png)
-
-__DEVAM EDECEK__

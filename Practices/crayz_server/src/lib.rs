@@ -270,6 +270,7 @@ pub mod http {
 
     /// Response ile ilgili enstrümanları barındırır.
     pub mod response {
+        use std::fmt::{write, Display, Formatter};
 
         pub struct Response {
             status_code: StatusCode,
@@ -283,9 +284,29 @@ pub mod http {
         }
 
         /// Birkaç HTTP statü kodunu tutan enum sabiti
+        #[derive(Copy, Clone)]
         pub enum StatusCode {
-            Ok=200,
-            BadRequest=400,
+            Ok = 200,
+            BadRequest = 400,
+            Unauthorized = 401,
+            NotFound = 404,
+        }
+
+        impl Display for StatusCode {
+            fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+                /*
+                    enum sabitindeki sayısal değeri almak için dereference işlemi uyguladık.
+                    Ancak bunu yaparken StatusCode'un Copy ve Clone trait'lerini uygulamış olması
+                    gerekiyor. Nitekim buradaki move işlemi için kopyalama gerekiyor.
+                */
+                let code = *self as u16;
+                match self {
+                    Self::Ok => write!(f, "{} Ok", code),
+                    Self::BadRequest => write!(f, "{} Bad request", code),
+                    Self::Unauthorized => write!(f, "{} Unauthorized", code),
+                    Self::NotFound => write!(f, "{} Not found", code),
+                }
+            }
         }
     }
 }

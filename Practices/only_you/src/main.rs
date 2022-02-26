@@ -9,9 +9,22 @@ fn main() {
 
     // 10 tane thread açalım
     for _ in 0..10 {
-        handlers.push(thread::spawn(|| {
+        handlers.push(thread::spawn(move || {
+
+            println!(
+                "{:?} Parametre : {}",
+                thread::current().id(),
+                popular_number
+            );
+
             // Her bir thread popüler olan sayımızı 1 birim artırsın
             popular_number += 1;
+
+            println!(
+                "\t{:?} Yeni Değer : {}",
+                thread::current().id(),
+                popular_number
+            );
         }));
     }
 
@@ -19,5 +32,5 @@ fn main() {
         let _ = h.join();
     }
 
-    //println!("Sayının değeri {}", popular_number);
+    println!("Sayının değeri {}", popular_number);
 }

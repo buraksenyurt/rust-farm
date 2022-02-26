@@ -105,7 +105,7 @@ fn main() {
 
     // 10 tane thread açalım
     for _ in 0..10 {
-        // Atomic Reference Counter'ın bir klonunu oluşturuyoruz
+        // Atomically Reference Counted nesnesinin bir klonunu oluşturuyoruz
         // Thread'ler bunu kullanacak
         let number_clone = Arc::clone(&popular_number);
 
@@ -126,7 +126,7 @@ fn main() {
         let _ = h.join();
     }
 
-    // Thread'lerin ortaklaşa kullandığı sayısal değer aslında Atomic Reference Counter tarafından
+    // Thread'lerin ortaklaşa kullandığı sayısal değer aslında Atomically Reference Counted tarafından
     // tutulan bir Mutext değişkeni. Bir şekilde sonucu almak gerekiyor.
     // Şimdilik aşağıdaki gibi bir yol bulabildim.
     println!(
@@ -138,7 +138,7 @@ fn main() {
     );
 }
 ```
-Yeni kurguda işin içerisine Mutext nesnesini tutan bir de Atomic Reference Counter girdi. Yapılan şeyi anlamaya çalışalım. Öncelikle ortak sayı değerinin thread'ler tarafından aynı anda değiştirilmeyeceğini garanti etmemiz gerekiyor. Bunun için Mutex nesnesini kullanıyoruz. Lakin n sayıda thread'in bu değişkene erişip değiştirmesini istiyoruz. Bir thread bu değişkeni kilit altına aldıysa başka bir thread'in onu değiştirmesini engelliyoruz ve değişken boşa düştüğü zaman başka bir thread tarafından değiştirilebiliyor. Lakin n thread'in içerisine değişkenin birer kopayasını aldığımızda hepsinin kendi başına takılması da söz konusu ve sonuçta sayı ortaklaşa artmıyor. İşte Atomically Reference Counter dediğimiz tür burada devreye girmekte. Arc ile heap'te yer alan ve bir Mutex tarafından tutulan bellek bölgesi için n adet referans oluşturulması mümkün. Thread'ler Arc değerlerini klonladıkça aslında Mutex ile sahiplenilmiş aynı bellek bölgesini referans eden pointer'lar oluşuyor. number_clone değişkeni bu amaçla oluşturuldu. Derken açılan herbir thread kendisine klon olarak gelen ama aynı bellek bölgesini işaret eden bu referansları ele almaya başlıyor. Bu referansın bellekte işaret ettiği alanı değiştirmek içinse öncelikle bir kilit koyuyor. p değişkenini oluşturduğumuz yer. Dolayısıya thread içinde tamamen güvenli bir şekilde ilgili referansın işaret ettiği bölgedeki veriyi değiştirme şansımız doğuyor. Tabii bunun için dereference işlemini uygulamamız lazım ki bu da * operatörü ile sağlanmakta. Thread scope'u sonlandığında hem kilit kalkıyor hem de referans eden pointer'lardan birisi eksiliyor. En nihayetinde tüm thread'ler ilgili sayıyı ortaklaşa değiştirmiş oluyorlar. İşte çalışma zamanı görüntüsü.
+Yeni kurguda işin içerisine Mutext nesnesini tutan bir de Atomically Reference Counted tipi girdi. Yapılan şeyi anlamaya çalışalım. Öncelikle ortak sayı değerinin thread'ler tarafından aynı anda değiştirilmeyeceğini garanti etmemiz gerekiyor. Bunun için Mutex nesnesini kullanıyoruz. Lakin n sayıda thread'in bu değişkene erişip değiştirmesini istiyoruz. Bir thread bu değişkeni kilit altına aldıysa başka bir thread'in onu değiştirmesini engelliyoruz ve değişken boşa düştüğü zaman başka bir thread tarafından değiştirilebiliyor. Lakin n thread'in içerisine değişkenin birer kopayasını aldığımızda hepsinin kendi başına takılması da söz konusu ve sonuçta sayı ortaklaşa artmıyor. İşte Atomically Reference Counter dediğimiz tür burada devreye girmekte. Arc ile heap'te yer alan ve bir Mutex tarafından tutulan bellek bölgesi için n adet referans oluşturulması mümkün. Thread'ler Arc değerlerini klonladıkça aslında Mutex ile sahiplenilmiş aynı bellek bölgesini referans eden pointer'lar oluşuyor. number_clone değişkeni bu amaçla oluşturuldu. Derken açılan herbir thread kendisine klon olarak gelen ama aynı bellek bölgesini işaret eden bu referansları ele almaya başlıyor. Bu referansın bellekte işaret ettiği alanı değiştirmek içinse öncelikle bir kilit koyuyor. p değişkenini oluşturduğumuz yer. Dolayısıya thread içinde tamamen güvenli bir şekilde ilgili referansın işaret ettiği bölgedeki veriyi değiştirme şansımız doğuyor. Tabii bunun için dereference işlemini uygulamamız lazım ki bu da * operatörü ile sağlanmakta. Thread scope'u sonlandığında hem kilit kalkıyor hem de referans eden pointer'lardan birisi eksiliyor. En nihayetinde tüm thread'ler ilgili sayıyı ortaklaşa değiştirmiş oluyorlar. İşte çalışma zamanı görüntüsü.
 
 ![../images/only_you_3.png](../images/only_you_3.png)
 
@@ -181,3 +181,5 @@ fn main() {
 Program kodumuzu tekrar çalıştırdığımızda istediğimiz sonuca ulaşırız.
 
 ![../images/only_you_4.png](../images/only_you_4.png)
+
+Pek tabii parking_lot'un işi daha da 

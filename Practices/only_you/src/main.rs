@@ -30,7 +30,7 @@ fn main() {
     //
     // // 10 tane thread açalım
     // for _ in 0..10 {
-    //     // Atomic Reference Counter'ın bir klonunu oluşturuyoruz
+    //     // Atomically Reference Counted'ın nesnesinin bir klonunu oluşturuyoruz
     //     // Thread'ler bunu kullanacak
     //     let number_clone = Arc::clone(&popular_number);
     //
@@ -51,7 +51,7 @@ fn main() {
     //     let _ = h.join();
     // }
     //
-    // // Thread'lerin ortaklaşa kullandığı sayısal değer aslında Atomic Reference Counter tarafından
+    // // Thread'lerin ortaklaşa kullandığı sayısal değer aslında Atomically Reference Counted tarafından
     // // tutulan bir Mutext değişkeni. Bir şekilde sonucu almak gerekiyor.
     // // Şimdilik aşağıdaki gibi bir yol bulabildim.
     // println!(

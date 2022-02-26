@@ -27,3 +27,7 @@ curl http://localhost:5555/query?word=red
 ```
 
 ![../images/crayz_server_2.png](../images/crayz_server_2.png)
+
+İstemciye çok ilkel de olsa mesaj döndüğümüz durum sonrası.
+
+![../images/crayz_server_last.png](../images/crayz_server_last.png)

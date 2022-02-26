@@ -4,7 +4,7 @@ pub mod server {
     use crate::http::response::{Response, StatusCode};
     use log::{error, info};
     use std::fmt::{Display, Formatter};
-    use std::io::{Read, Write};
+    use std::io::Read;
     use std::net::TcpListener;
 
     /// Sunucu bilgilerini taşıyan veri yapısı.
@@ -74,39 +74,25 @@ pub mod server {
                                                 );
                                                 // İstemci tarafında bir Response yolluyoruz.
                                                 // Şu an için dönüştürme operasyonunun başarılı olduğuna dair HTTP 200 bilgisi vermekteyiz.
-                                                write!(
-                                                    stream,
-                                                    "{}",
-                                                    Response::new(
+
+                                                Response::new(
                                                         StatusCode::Ok,
                                                         Some(String::from("<h1>Would you like to play ping pong?</h1>")),
-                                                    )
-                                                    .to_string()
-                                                )
-                                                .expect("Problem var");
+                                                    ).write(&mut stream).expect("Problem var!");
                                             }
                                             Err(e) => {
                                                 error!("{:?}", e);
-                                                // Mesajın dönüştürülmesi başarısız ise BadRequest verebiliriz.
-                                                write!(
-                                                    stream,
-                                                    "{}",
-                                                    Response::new(StatusCode::BadRequest, None)
-                                                        .to_string()
-                                                )
-                                                .expect("Problem var");
+                                                Response::new(StatusCode::BadRequest, None)
+                                                    .write(&mut stream)
+                                                    .expect("Problem var!");
                                             }
                                         }
                                     }
                                     Err(e) => {
                                         error!("Stream okumada hata -> {}", e);
-                                        write!(
-                                            stream,
-                                            "{}",
-                                            Response::new(StatusCode::InternalServerError, None)
-                                                .to_string()
-                                        )
-                                        .expect("Problem var");
+                                        Response::new(StatusCode::InternalServerError, None)
+                                            .write(&mut stream)
+                                            .expect("Problem var!");
                                     }
                                 }
                             }
@@ -302,6 +288,8 @@ pub mod http {
     /// Response ile ilgili enstrümanları barındırır.
     pub mod response {
         use std::fmt::{Display, Formatter};
+        use std::io::{Result, Write};
+        use std::net::TcpStream;
 
         pub struct Response {
             status_code: StatusCode,
@@ -312,16 +300,14 @@ pub mod http {
             pub fn new(status_code: StatusCode, body: Option<String>) -> Self {
                 Response { status_code, body }
             }
-        }
 
-        impl Display for Response {
-            fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            pub fn write(&self, stream: &mut TcpStream) -> Result<()> {
                 let body = match &self.body {
                     Some(b) => b,
                     None => "",
                 };
                 write!(
-                    f,
+                    stream,
                     "HTTP/1.1 {} \r\n\r\n{}",
                     self.status_code.to_string(),
                     body

@@ -1,9 +1,10 @@
 /// HTTP Sunucu motoru ile ilgili çekirdek fonksiyonellikleri barındırır.
 pub mod server {
     use crate::http::request::Request;
+    use crate::http::response::{Response, StatusCode};
     use log::{error, info};
     use std::fmt::{Display, Formatter};
-    use std::io::Read;
+    use std::io::{Read, Write};
     use std::net::TcpListener;
 
     /// Sunucu bilgilerini taşıyan veri yapısı.
@@ -67,15 +68,45 @@ pub mod server {
                                         let converted_msg = Request::try_from(&buffer[..]);
                                         match converted_msg {
                                             Ok(r) => {
-                                                info!("Request dönüşümü başarılı.{}", r.to_string())
+                                                info!(
+                                                    "Request dönüşümü başarılı.{}",
+                                                    r.to_string()
+                                                );
+                                                // İstemci tarafında bir Response yolluyoruz.
+                                                // Şu an için dönüştürme operasyonunun başarılı olduğuna dair HTTP 200 bilgisi vermekteyiz.
+                                                write!(
+                                                    stream,
+                                                    "{}",
+                                                    Response::new(
+                                                        StatusCode::Ok,
+                                                        Some(String::from("<h1>Would you like to play ping pong?</h1>")),
+                                                    )
+                                                    .to_string()
+                                                )
+                                                .expect("Problem var");
                                             }
                                             Err(e) => {
-                                                error!("{:?}", e)
+                                                error!("{:?}", e);
+                                                // Mesajın dönüştürülmesi başarısız ise BadRequest verebiliriz.
+                                                write!(
+                                                    stream,
+                                                    "{}",
+                                                    Response::new(StatusCode::BadRequest, None)
+                                                        .to_string()
+                                                )
+                                                .expect("Problem var");
                                             }
                                         }
                                     }
                                     Err(e) => {
                                         error!("Stream okumada hata -> {}", e);
+                                        write!(
+                                            stream,
+                                            "{}",
+                                            Response::new(StatusCode::InternalServerError, None)
+                                                .to_string()
+                                        )
+                                        .expect("Problem var");
                                     }
                                 }
                             }
@@ -270,7 +301,7 @@ pub mod http {
 
     /// Response ile ilgili enstrümanları barındırır.
     pub mod response {
-        use std::fmt::{write, Display, Formatter};
+        use std::fmt::{Display, Formatter};
 
         pub struct Response {
             status_code: StatusCode,
@@ -283,6 +314,21 @@ pub mod http {
             }
         }
 
+        impl Display for Response {
+            fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+                let body = match &self.body {
+                    Some(b) => b,
+                    None => "",
+                };
+                write!(
+                    f,
+                    "HTTP/1.1 {} \r\n\r\n{}",
+                    self.status_code.to_string(),
+                    body
+                )
+            }
+        }
+
         /// Birkaç HTTP statü kodunu tutan enum sabiti
         #[derive(Copy, Clone)]
         pub enum StatusCode {
@@ -290,6 +336,7 @@ pub mod http {
             BadRequest = 400,
             Unauthorized = 401,
             NotFound = 404,
+            InternalServerError = 500,
         }
 
         impl Display for StatusCode {
@@ -305,6 +352,7 @@ pub mod http {
                     Self::BadRequest => write!(f, "{} Bad request", code),
                     Self::Unauthorized => write!(f, "{} Unauthorized", code),
                     Self::NotFound => write!(f, "{} Not found", code),
+                    Self::InternalServerError => write!(f, "{} Internal server error", code),
                 }
             }
         }

@@ -1,10 +1,11 @@
 /*
-    Girilen ifade parse edildiğinde neyin ne olduğunu tutacağımız veri modeli.
-    Bunu enum sabiti olarak tasarlamak son derece mantıklı. Bir toplama operatörü ile
-    karşılaştıysak Add, üs alma operatörü ise Caret, ifade sonuna geldiysek EOF,
-    bir sayı söz konusu ise Number(f64) vs şeklinde atamalar yapabiliriz.
- */
-pub enum Token{
+   Girilen ifade parse edildiğinde neyin ne olduğunu tutacağımız veri modeli.
+   Bunu enum sabiti olarak tasarlamak son derece mantıklı. Bir toplama operatörü ile
+   karşılaştıysak Add, üs alma operatörü ise Caret, ifade sonuna geldiysek EOF,
+   bir sayı söz konusu ise Number(f64) vs şeklinde atamalar yapabiliriz.
+*/
+#[derive(Debug, PartialEq)]
+pub enum Token {
     Add,
     Substract,
     Multiply,
@@ -13,5 +14,5 @@ pub enum Token{
     LeftBracket,
     RightBracket,
     Number(f64),
-    EndOfExpression
+    EndOfExpression,
 }

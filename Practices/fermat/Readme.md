@@ -22,7 +22,19 @@ Burada çok önemli kavramlar var. İfade içerisindeki sayılar, aritmetik oper
 
 Şimdi herhangibir script dil ifadesini düşünün. Mesela bir SQL cümleciğini, ya da terminalden girilmiş bir Ruby kod parçasını. Yorumlayıcı için gerekli temel çalışma prensipleri yukarıda bahsettiğimiz gibidir. Abstract Syntax Tree yapısının ortaya çıkması başka şeyleri de kolaylaştırır. Söz gelimi ortaya çıkan token'ların farklı bir dildeki karşılıkları ile değiştirilmesi başka bir dile çevrilmeyi pekala kolaylaştırabilir. C# ifadelerinin alınıp IL kodlarına çevrilmesi belki bu anlamda düşünülebilir.
 
-Gelelim örneğimize;
+Gelelim örneğimize...Aşağıdaki adımlarla işe başlayabiliriz.
 
+```shell
+cargo new fermat
+cd fermat
+mkdir src/parser
+touch src/parser/mod.rs
+touch src/parser/token.rs
+touch src/parser/lexer.rs
+touch src/parser/tree.rs
+touch src/parser/parser.rs
+```
+
+ve kodlamaya geçelim.
 
 

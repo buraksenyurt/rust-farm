@@ -1,4 +1,4 @@
-# İlkel Bir Yorumlayıcı Nasıl Yazılır?
+## ~~# İlkel Bir Yorumlayıcı Nasıl Yazılır. İPTAL?~~
 
 Üniversite yıllarından beri eksikliğini en çok hissettiğim şey derleyici ve yorumlayıcıların nasıl çalıştığının anlatıldığı öğretiler olmuştur. Zaman içerisinde hep .Net Framework gibi konularla veri odaklı uygulamar üzerinde çalışınca da bu konu iyiden iyiye unutulmuştur. Yaşım ilerlemiş olmasına rağmen öğrenmek istediğim bir mevzu ve Rust bunun için oldukça ideal. Gerçekten sistem programlama konusunda bir şeyler başarmak istiyorsam derleyici ve yorumlayıcıların çalışma prensiplerini öğrenmeliyim. 
 

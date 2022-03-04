@@ -13,5 +13,5 @@ pub enum Token{
     LeftBracket,
     RightBracket,
     Number(f64),
-    EOF
+    EndOfExpression
 }

@@ -89,5 +89,20 @@ SHADOW=OFF cargo run
 Şimdi diğer denemelerimizi yapalım.
 
 ```shell
-
+# sembolik bir dosyayı alıp içeriğini bizim programdan geçirip başka bir çıktı vermek
+cargo build
+cat data | target/debug/pipeline > databckp
 ```
+
+![../images/pipeline_3.png](../images/pipeline_3.png)
+
+Dikkat edileceği üzere data isimli dosya içeriği databckp isimli diğer dosyaya akmıştır. Ancak daha da ilginci çalışma sırasında devreye giren println çıktıları bu dosyaya yazılmıştır. Hımmm...
+
+Son olarak programa echo ile girdi vermeyi deneyelim.
+
+```shell
+echo "Merhaba dünya!" | cargo run
+echo "Merhaba dünya!" |SHADOW=ON cargo run
+```
+
+![../images/pipeline_4.png](../images/pipeline_4.png)

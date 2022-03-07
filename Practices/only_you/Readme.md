@@ -181,5 +181,3 @@ fn main() {
 Program kodumuzu tekrar çalıştırdığımızda istediğimiz sonuca ulaşırız.
 
 ![../images/only_you_4.png](../images/only_you_4.png)
-
-Pek tabii parking_lot'un işi daha da 

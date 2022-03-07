@@ -14,6 +14,7 @@ Rust dilini öğrenmek ve etkili şekilde kullanabilmek için pek çok kaynaktan
 ```rust
 use std::io;
 
+#[allow(unused_variables)]
 fn main() {
   let mut input=String::new();
   let mut s=input;  // The ownership of the string is moved to the variable s
@@ -33,4 +34,43 @@ fn main() {
 ```
 
 - Tüm dosya ve klasörler **module**'dür. Rust projesinin kendisi ise **crate** olarak adlandırılır. Rust proje hiyerarşisinde birden fazla dosya olabilir ki her biri birer module'dür. Ayrıca bu dosyalar klasörler içinde yer alabilir ki bu klasörler de ayrıca module'dür. Dosya veya klasör şeklindeki bir modülü uygulamada kullanmak istediğimizde mod anahtar kelimesini kullanırız. Bazen klasörler içinde gördüğümüz **mod.rs** dosyasının bir kullanım amacı o klasörden public olarak açılacak diğer enstrümanların tanımlandığı yer olmasıdır.
-  
+- Bulunduğumuz modülden bir üst modüle ulaşmak istediğimizde **super** operatörünü kullanabiliriz. Bazen de **crate::** şeklinde kullanımlara rastlarız. **crate**, bulunduğumuz projenin root module'ünü işaret eder.
+
+```rust
+mod http {
+  mod request {
+    use super::method::Method; // http modülüne çık, oradan method'a geç, oradan da public Method enum tipine ulaş gibi.
+    struct Request {
+      
+    }
+  }
+
+  mod method {
+    pub enum Method {}
+  }
+}
+```
+- Her dosya esasında bir module'dür demiştik. Yani server.rs şeklinde bir dosya açmak, mod server şeklinde bir module açmakla aynı şeydir. Ayrı bir dosya açtığımızda genellikle main fonksiyonunun olduğu yere de mod bildimi yapılır. Yani server.rs için main.rs içinde **mod server;** şeklinde bir tanım eklenir. Sebebi nedir biliyor musunuz? Derleyici, **mod server;** yazan yeri mod server { } olarak kabul edip içeriğini server.rs içeriği ile doldurur. Sanki önyüzde app bileşeni içerisinde diğer bileşenleri tag olarak eklemek gibidir.
+- Örnek bir klasör yapısı ile modül kullanımına bakabiliriz.
+```text
+server
+--->src
+--->main.rs
+--->server.rs (module)
+--->tcp (module)
+------>package.rs (sub module)
+------>parser.rs (sub module)
+------>mod.rs
+```
+- Rust, exception handling gibi bir mekanizma içermez. Bunun yerine olası tüm durumların değerlendirilmesini ister. Result<T,Err> ile **recoverable** hataların kontrolünü ele alabiliriz. Birde kurtarılamayan **unrecoverable** ve programı sonlandıran hata durumları vardır. Rust her iki durumu ayrı ayrı ele alırken pekçok dilde hepsi aynı istisna yönetimi mekanizması ile kontrol edilmeye çalışılır.
+- Sonsuz döngülerde label kullanarak break çağrısı sonrası nereye sıçrayacağımızı söyleyebiliriz.
+
+```rust
+fn main() {
+  'outer: loop {
+    'inner: loop {
+      break 'outer; // outer olarak isimlendirilmiş loop'a sıçramamızı sağlar.
+    }
+  }
+}
+```

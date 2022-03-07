@@ -20,4 +20,4 @@
 - [x] __by_val_by_ref :__ Bu pratikte bir arkadaşımıza ___Value Moved Here___ hatasının ne olduğun anlatmaya çalışıyoruz.
 - [x] __only_you      :__ Bir t anında sadece tek bir değiştirilebilir referans ___Mutable Reference___ olabilir teorisini inceliyoruz.
 - ~~[ ] __fermat      :__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
-- [ ] __pipeline      :__ Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
+- [x] __pipeline      :__ Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.

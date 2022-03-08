@@ -80,7 +80,7 @@ fn main() {
 ```rust
 use std::env;
 
-#[allow(unusued_variable)]
+#[allow(unused_variables)]
 fn main(){
   // let default_path=env!("CARGO_MANIFEST_DIR");  
   let default_path=format!("{}/public",env!("CARGO_MANIFEST_DIR"));
@@ -97,5 +97,24 @@ fn main(){
   - Double free
   - No pointer dereferences
   - Buffer overflows
-- Ödünç alma _(borrowing)_ kurallına göre n tane immutable referans ödünç alımı mümkünken herhangi bir t anında sadece 1 tane değiştirilebilir _(mutable)_ referans ödünç alınabilir.
+- Ödünç alma _(borrowing)_ kurallına göre n tane immutable referans ödünç alımı mümkünken herhangi bir t anında sadece 1 tane değiştirilebilir _(mutable)_ referans ödünç alınabilir. Bu sayede data races ihlallerinin önüne geçilir.
+
+```rust
+
+fn main() {
+  // n tane immutable mümkündür
+  let mut input = String::new();
+  let s1=&input;
+  let s2=&input;
+  println!("{},{}",s1,s2);
+  
+  // Derlenmez!
+  // let mut s1=&mut input;
+  // let s2=&input;
+  
+  // Bu da derlenmez!
+  // let mut s1=&mut input;
+  // let mut s2=&mut input;
+}
+```
 

@@ -21,3 +21,4 @@
 - [x] __only_you      :__ Bir t anında sadece tek bir değiştirilebilir referans ___Mutable Reference___ olabilir teorisini inceliyoruz.
 - ~~[ ] __fermat      :__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
 - [x] __pipeline      :__ Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
+- [ ] __dublerver     :__ Bir uygulamada iki TcpListener kullanmak.

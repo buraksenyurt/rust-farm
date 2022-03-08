@@ -74,3 +74,28 @@ fn main() {
   }
 }
 ```
+
+- Bir rust programının çalıştığı klasörü platform bağımsız bulabiliriz. Bunun için env! makrosundan ve geçerli bir parametreden yararlanırız. Bu sayede örneğin çalıştığı yerdeki bir klasörü de ele alabiliriz. Mesela bir web server yazdığımızı düşünelim. static dosyaların olduğu path'e ulaşmak için bu yolu kullanabiliriz.
+
+```rust
+use std::env;
+
+#[allow(unusued_variable)]
+fn main(){
+  // let default_path=env!("CARGO_MANIFEST_DIR");  
+  let default_path=format!("{}/public",env!("CARGO_MANIFEST_DIR"));
+  // Envrionment ile public_path tanımı yapılmışsa kullan yoksa default_path'i kullan
+  let public_path=env::var("PUBLIC_PATH").unwrap_or(default_path);
+}
+```
+
+- Rust, Referans içeren struct türlerinden açık bir şekilde _(explicitly)_ lifetime belirtilmesini ister. Öyle ki rust ortamında tüm referansların bir yaşam ömrü vardır.
+- Rust'ın memory safety ve thread safety konusunda uyguladığı kurallar aşağıdaki durumların oluşmasını engeller. Üstelik bunlar derleme zamanında tespit edilir.
+  - Data races
+  - Dangling pointers
+  - Use after free
+  - Double free
+  - No pointer dereferences
+  - Buffer overflows
+- Ödünç alma _(borrowing)_ kurallına göre n tane immutable referans ödünç alımı mümkünken herhangi bir t anında sadece 1 tane değiştirilebilir _(mutable)_ referans ödünç alınabilir.
+

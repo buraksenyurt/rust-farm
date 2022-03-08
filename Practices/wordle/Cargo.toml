@@ -1,0 +1,9 @@
+[package]
+name = "wordle"
+description="Herber Wolverson'un yazısından yararlanılarak yazılan Wordle oyunu."
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bracket-random = "0.8.2"
+colored="2.0.0"

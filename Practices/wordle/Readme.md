@@ -21,5 +21,12 @@ bracket-random = "0.8.2"
 colored="2.0.0"
 ```
 
-Çok doğal olarak program bir veri havuzundan rastgele bir kelime tutacak. Herbert bu kelime havuzunu oluşturma için kaynak olarak [şu adresteki text dosya içeriğini önermiş](https://www.wordgamedictionary.com/twl06/download/twl06.txt). Bende aynı veri kaynağını kullanarak devam etmeyi planlıyorum. Henüz anlayamadım ama veri dosyasında 5 harfli dışında birçok kelime de yer alıyor. Sanırım kodlama safhasında bunun sebebini anlayacağız.
+Çok doğal olarak program bir veri havuzundan rastgele bir kelime tutacak. Herbert bu kelime havuzunu oluşturma için kaynak olarak [şu adresteki text dosya içeriğini önermiş](https://www.wordgamedictionary.com/twl06/download/twl06.txt). Bende aynı veri kaynağını kullanarak devam etmeyi planlıyorum. Henüz anlayamadım ama veri dosyasında 5 harfli dışında birçok kelime de yer alıyor. Sanırım sadece beş harflileri ayıklamak zor olduğu için komple alıp kullanmış. Kod tarafında 5 harfli olmayanları elimine edeceğimizi düşünüyorum. Dosyayı words.data ismiyle src klasörü altına ekleyerek devam edelim.
+
+
+
+## Öğrendiğim Yeni Şeyler
+
+- *bracket-random.* rand yerine kullanılabilecek alternatif bir rastgele sayı üretme kütüphanesi.
+- Terminal ekranını colored küfesini *(Crate)* kullanarak renklendirebiliriz.
 

@@ -16,6 +16,10 @@ cargo new wordle
 Programda yardımcı crate'ler kullanılıyor. Pek çok rust öğretisinde rastgele sayı üretmek için rand paketi kullanılıyor. Bu örnekte ise bracket-random isimli bir paket kullanılmakta. Ayrıca terminal penceresini renklendirmek için _(ki bayılırım buna)_ colored isimli bir modülden yararlanılmakta. Bu paket bildirimlerini tahmin edileceği üzere toml dosyasına eklememiz lazım.
 
 ```toml
-
-
+[dependencies]
+bracket-random = "0.8.2"
+colored="2.0.0"
 ```
+
+Çok doğal olarak program bir veri havuzundan rastgele bir kelime tutacak. Herbert bu kelime havuzunu oluşturma için kaynak olarak [şu adresteki text dosya içeriğini önermiş](https://www.wordgamedictionary.com/twl06/download/twl06.txt). Bende aynı veri kaynağını kullanarak devam etmeyi planlıyorum. Henüz anlayamadım ama veri dosyasında 5 harfli dışında birçok kelime de yer alıyor. Sanırım kodlama safhasında bunun sebebini anlayacağız.
+

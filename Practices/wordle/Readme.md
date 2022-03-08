@@ -29,4 +29,5 @@ colored="2.0.0"
 
 - *bracket-random.* rand yerine kullanılabilecek alternatif bir rastgele sayı üretme kütüphanesi.
 - Terminal ekranını colored küfesini *(Crate)* kullanarak renklendirebiliriz.
+- include_str makro fonksiyonu ile bir dosya içeriğini src klasöründen okuyup derlenen kodun içerisine gömmek mümkün. Dosyayı build çıktılarındaki binary'ler ile birlikte taşımak mümkün hale geliyor.
 

@@ -30,6 +30,26 @@ target/debug/clappy run advanced
 
 ![../images/clappy_2.png](../images/clappy_2.png)
 
+Birde mode argümanı için olası değerleri possible_values ile ekledikten sonraki duruma bakalım.
+
+```bash
+# Önce bir paket çıkalım
+cargo build
+# Terminal parametreleri hakkında yardım alalım.
+target/debug/clappy -h
+
+# run için nasıl argüman gönderebileceğimiz hakkında yardım alalım.
+target/debug/clappy run -h
+
+# bilinen bir argüman yollayalım
+target/debug/clappy run basic
+
+# geçersiz bir argüman yollayalım
+target/debug/clappy run none
+```
+
+![../images/clappy_3.png](../images/clappy_3.png)
+
 İkinci kullanım şeklini de aşağıdaki gibi deneyebiliriz.
 
 ```bash

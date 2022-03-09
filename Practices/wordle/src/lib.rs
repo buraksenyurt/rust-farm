@@ -71,7 +71,7 @@ impl Manager {
 
 #[cfg(test)]
 mod test {
-    use crate::Manager;
+    use crate::{sanitize_word, word_list, Manager};
 
     #[test]
     fn should_manager_crated_successfully() {
@@ -79,5 +79,20 @@ mod test {
         assert_eq!(poe.chosen_word.chars().count(), 5);
         assert!(poe.available_words.len() > 0);
         assert!(poe.guesses.len() == 0);
+    }
+
+    #[test]
+    fn should_sanitize_word_fn_works() {
+        let word = "gol Dy   ";
+        let result = sanitize_word(word);
+        assert_eq!(result, "GOLDY");
+    }
+
+    #[test]
+    fn should_world_list_fn_works() {
+        let words = word_list();
+        assert!(words.len() > 1);
+        let count = words.iter().filter(|w| w.chars().count() != 5).count();
+        assert_eq!(count, 0);
     }
 }

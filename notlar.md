@@ -91,12 +91,12 @@ fn main(){
 
 - Rust, Referans içeren struct türlerinden açık bir şekilde _(explicitly)_ lifetime belirtilmesini ister. Öyle ki rust ortamında tüm referansların bir yaşam ömrü vardır.
 - Rust'ın memory safety ve thread safety konusunda uyguladığı kurallar aşağıdaki durumların oluşmasını engeller. Üstelik bunlar derleme zamanında tespit edilir.
-  - Data races
-  - Dangling pointers
-  - Use after free
-  - Double free
-  - No pointer dereferences
-  - Buffer overflows
+  - Data races : İki veya daha fazla thread'in eş zamanlı olarak aynı veriye erişmesi ve thread'ler den en az birisinin mutation halinde kalması durumunda oluşur.
+  - Dangling pointers : Aynı veri bölgesini işaret eden iki referanstan ilki deallocate olduktan sonra boşalan veri bloğunu işaret etmeye devam eden diğer refaransa verilen isimdir.
+  - Use after free : Referans edilen bir bellek bölgesinin serbest bırakıldıktan sonra kullanılmaya çalışılması halidir.
+  - Double free : Aynı pointer için birden çok defa serbest bırakma _(free)_ operasyonu icra edilmesi durumudur.
+  - No pointer dereferences :
+  - Buffer overflows : 
 - Ödünç alma _(borrowing)_ kurallına göre n tane immutable referans ödünç alımı mümkünken herhangi bir t anında sadece 1 tane değiştirilebilir _(mutable)_ referans ödünç alınabilir. Bu sayede data races ihlallerinin önüne geçilir.
 
 ```rust
@@ -117,4 +117,8 @@ fn main() {
   // let mut s2=&mut input;
 }
 ```
+
+- Rust, C dilindeki gibi belleğin verimli, düşük maliyetli kullanımı ile yüksek performans ve Java'da ki gibi memory safe bir ortamın oluşmasını garanti edecek şekilde tasarlanmış bir derleyici kullanır.
+- 2006 yılında Mozilla çalışanlarından Grayon Hoore tarafından kişisel bir proje olarak başlamıştır. 2010'da Mozilla'nın bir araştırma projesi haline gelir. 2015 yılında Rust 1.0 sürümü yayınlanır. 2020'de Mozilla'dan [Rust Foundation'a](https://foundation.rust-lang.org/) geçer ki bu konsorsiyumun kurucu ortakları AWS, Google, Huawei, Microsoft ve elbette moz://a' dır.
+- Amazon tarafından yapılan [bir araştırmaya göre](https://aws.amazon.com/tr/blogs/opensource/sustainability-with-rust/) enerji tüketimi ve işlem süreleri açısından en verimli diller arasında C'den sonra 2nci sırada gelmektedir. Bu anlamda Java, Go, C#, Python gibi yüksek seviyeli dilleri geride bırakmıştır.
 

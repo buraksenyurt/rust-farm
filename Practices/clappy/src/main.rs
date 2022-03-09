@@ -12,8 +12,11 @@ fn main() {
         .subcommand(
             Command::new("run")
                 .about("Web sunucusunu başlatır.")
-                .short_flag('s')
-                .arg(arg!([MODE] "Hangi modda çalıştırmak istersin?")),
+                .short_flag('r')
+                .arg(
+                    arg!([MODE] "Hangi modda çalıştırmak istersin?")
+                        .possible_values(["basic", "advanced"]),
+                ),
         )
         .get_matches();
 
@@ -22,7 +25,12 @@ fn main() {
             let mode = argmatchs
                 .value_of("MODE")
                 .expect("Bir mod girilmemiş olabilir.");
-            println!("{} moduna göre işlem yapılacak.", mode);
+            //println!("{} moduna göre işlem yapılacak.", mode);
+            match mode {
+                "basic" => println!("Tek thread ile başlatılacak."),
+                "advanced" => println!("Çekirdek sayısı kadar thread açılacak"),
+                _ => unreachable!(),
+            }
         }
         _ => {}
     }

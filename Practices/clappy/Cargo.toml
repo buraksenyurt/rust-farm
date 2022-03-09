@@ -1,0 +1,8 @@
+[package]
+name = "clappy"
+description="Easy manage command line arguments with clappy."
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap="3.1.6"

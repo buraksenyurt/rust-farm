@@ -9,5 +9,33 @@ cargo new clappy
 İlk iş doğal olarak toml dosyasında gerekli bildirimi yapmak.
 
 ```toml
-
+[dependencies]
+clap="3.1.6"
 ```
+
+İlk denemeleri aşağıdaki gibi yapabiliriz.
+
+```bash
+# Önce bir paket çıkalım
+cargo build
+# Terminal parametreleri hakkında yardım alalım.
+target/debug/clappy -h
+
+# run için bir argüman göndermeyi deneyebiliriz
+target/debug/clappy run basic
+
+# Başka bir parametre daha yollayalım.
+target/debug/clappy run advanced
+```
+
+![../images/clappy_2.png](../images/clappy_2.png)
+
+İkinci kullanım şeklini de aşağıdaki gibi deneyebiliriz.
+
+```bash
+# Önce bir paket çıkalım
+cargo build
+target/debug/clappy --start -m parallel
+target/debug/clappy --help
+```
+![../images/clappy_1.png](../images/clappy_1.png)

@@ -59,3 +59,19 @@ target/debug/clappy --start -m parallel
 target/debug/clappy --help
 ```
 ![../images/clappy_1.png](../images/clappy_1.png)
+
+Üçüncü olarak ele alacağımız kullanım şekli çok daha verimli. Argüman değerlerini bir enum yapısı ile eşleştirmemiz mümkün.
+
+```bash
+cargo build
+target/debug/clappy -h
+target/debug/clappy convert -h
+target/debug/clappy convert json
+target/debug/clappy convert bson
+target/debug/clappy convert xml
+target/debug/clappy convert yok
+```
+
+![../images/clappy_4.png](../images/clappy_4.png)
+
+Tabii paketin çok fazla kullanım şekli var. Detaylar için [şu adresteki örneklere](https://github.com/clap-rs/clap/blob/v3.1.6/examples/tutorial_builder/README.md#enumerated-values) bakabiliriz.

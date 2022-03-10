@@ -117,7 +117,10 @@ impl Manager {
     /// Oyuncunun kullandığı ama programın tuttuğu kelimede olmayan harflerin listesini ekrana basar.
     pub fn show_invalid_letters(&self) {
         if !self.guessed_letters.is_empty() {
-            println!("Bu harfleri kullandın.\nAncak tahmin ettiğimi kelimede yoklar.".purple());
+            println!(
+                "{}",
+                format!("Bu harfleri kullandın.\nAncak tahmin ettiğimi kelimede yoklar.").purple()
+            );
             self.guessed_letters.iter().for_each(|c| print!("{}", c));
             println!()
         }
@@ -130,8 +133,12 @@ impl Manager {
     /// Oyuncudan tahminini alır ve belli kurallara göre kontrol eder
     pub fn take_guess(&mut self) -> String {
         println!(
-            "Hey! Oyuncu.\nHadi bana {} karakterden oluşan bir kelime yaz ve ENTER'a bas".purple(),
-            WORD_LENGTH
+            "{}",
+            format!(
+                "Hey! Oyuncu.\nHadi bana {} karakterden oluşan bir kelime yaz ve ENTER'a bas",
+                WORD_LENGTH
+            )
+            .purple()
         );
         // Önce tahminde olupta programın tuttuğu kelimede olmayan harfleri gösterelim
         self.show_invalid_letters();
@@ -156,10 +163,10 @@ impl Manager {
                     "{}",
                     format!("{} uzunluğunda bir kelime girmelisin.", WORD_LENGTH).red()
                 )
-            } else if !self.dictionary.iter().any(|word| word == &user_guess) {
+            } else if !self.available_words.iter().any(|word| word == &user_guess) {
                 println!("{}", "Girdiğin kelime benim dükkanda bile yok :S".red())
             } else {
-                self.guesses.push(guess.clone());
+                self.guesses.push(user_guess.clone());
                 is_guess_valid = true;
             }
         }

@@ -49,6 +49,11 @@ pub struct Manager {
     guessed_letters: HashSet<char>,
     guesses: Vec<String>,
 }
+impl Default for Manager {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl Manager {
     /*
@@ -68,6 +73,7 @@ impl Manager {
             guesses: Vec::new(),
         }
     }
+
     /*
        Oyun sahamız terminal ekranı. Manager'ın tuttuğu kelime ve
        oyuncunun tahminlerine göre 5X6 lık matrisi çizen bir fonksiona ihtiyacımız var.
@@ -80,34 +86,31 @@ impl Manager {
     pub fn draw_board(&mut self) {
         // önce yapılan tahminleri gezen bir döngü açıyoruz.
         // for_each fonksiyonunda bir tuple kullandığımıza dikkat edelim.
-        // Bu tuple'da satır numarası ve guesses vector'ündeki kelime yer alıyor.
-        // Yani guesses vector elemanlarını dolaşırken indislerini de satır numarası olarak kullanabiliriz.
-        self.guesses
-            .iter()
-            .enumerate()
-            .for_each(|(row_index, guess)| {
-                // Şimdi bulunduğumuz satırdaki kelimenin harflerini dolaşacağız
-                // Yine for_each döngüsü kullanılıyor. Her iterasyonda kelimedeki karakteri ve indisini bir tuple ile ele alıyoruz.
-                guess.chars().enumerate().for_each(|(i, c)| {
-                    // Şimdi karakterleri programın tuttuğu kelimedekiler ile karşılaştıracağız.
+        // Bu tuple'da satır numarası ve guesses vector'ündeki kelime yer alır.
+        // Satır numarasını şu an için kullanmayacağız. O yüzden _ ile açıkça kullanmayacağımızı belirttik.
+        self.guesses.iter().enumerate().for_each(|(_, guess)| {
+            // Şimdi bulunduğumuz satırdaki kelimenin harflerini dolaşacağız
+            // Yine for_each döngüsü kullanılıyor. Her iterasyonda kelimedeki karakteri ve indisini bir tuple ile ele alıyoruz.
+            guess.chars().enumerate().for_each(|(i, c)| {
+                // Şimdi karakterleri programın tuttuğu kelimedekiler ile karşılaştıracağız.
 
-                    // Eğer chosen_word'deki i. sıradaki karakter guess'teki c karakterine eşitse
-                    // harf doğrudur ve kelimede doğru yerdedir
-                    let row = if self.chosen_word.chars().nth(i).unwrap() == c {
-                        format!("{}", c).bright_green()
-                    } else if self.chosen_word.chars().any(|wc| wc == c) {
-                        // Harf doğrudur ama yeri yanlıştır. Bunu da any fonksiyonu üstünden kontrol edebiliriz.
-                        format!("{}", c).bright_yellow()
-                    } else {
-                        // Harf programın tuttuğu kelimede yoksa bu durumda tahmin edilen harfler
-                        // listesine eklenir ve kullanıcının karakteri kırmızıya boyanır.
-                        self.guessed_letters.insert(c);
-                        format!("{}", c).red()
-                    };
-                    print!("{}", row);
-                });
-                println!(); // Bir alt satıra geç
-            })
+                // Eğer chosen_word'deki i. sıradaki karakter guess'teki c karakterine eşitse
+                // harf doğrudur ve kelimede doğru yerdedir
+                let row = if self.chosen_word.chars().nth(i).unwrap() == c {
+                    format!("{}", c).bright_green()
+                } else if self.chosen_word.chars().any(|wc| wc == c) {
+                    // Harf doğrudur ama yeri yanlıştır. Bunu da any fonksiyonu üstünden kontrol edebiliriz.
+                    format!("{}", c).bright_yellow()
+                } else {
+                    // Harf programın tuttuğu kelimede yoksa bu durumda tahmin edilen harfler
+                    // listesine eklenir ve kullanıcının karakteri kırmızıya boyanır.
+                    self.guessed_letters.insert(c);
+                    format!("{}", c).red()
+                };
+                print!("{}", row);
+            });
+            println!(); // Bir alt satıra geç
+        })
     }
 
     /*
@@ -117,11 +120,13 @@ impl Manager {
     /// Oyuncunun kullandığı ama programın tuttuğu kelimede olmayan harflerin listesini ekrana basar.
     pub fn show_invalid_letters(&self) {
         if !self.guessed_letters.is_empty() {
+            self.guessed_letters.iter().for_each(|c| print!("{}", c));
             println!(
                 "{}",
-                format!("Bu harfleri kullandın.\nAncak tahmin ettiğimi kelimede yoklar.").purple()
+                "\nBu harfleri kullandın ancak aklımdaki kelimede yoklar!\n"
+                    .to_string()
+                    .cyan()
             );
-            self.guessed_letters.iter().for_each(|c| print!("{}", c));
             println!()
         }
     }

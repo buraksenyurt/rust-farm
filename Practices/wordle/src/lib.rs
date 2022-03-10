@@ -107,7 +107,7 @@ impl Manager {
                     self.guessed_letters.insert(c);
                     format!("{}", c).red()
                 };
-                print!("{}", row);
+                print!("{} ", row);
             });
             println!(); // Bir alt satıra geç
         })

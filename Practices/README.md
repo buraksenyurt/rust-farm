@@ -22,5 +22,5 @@
 - ~~[ ] __fermat      :__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
 - [x] __pipeline      :__ Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
 - [x] __dublerver     :__ Bir uygulamada iki TcpListener kullanmak.
-- [ ] __wordle        :__ Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
+- [x] __wordle        :__ Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
 - [x] __clappy        :__ Terminal satırından argüman okumak için kullanılan [**clap**](https://crates.io/crates/clap) isimli popüler bir küfeye *(crate)* bakıyorum.

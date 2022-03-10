@@ -31,10 +31,15 @@ cargo test
 cargo run
 ```
 
+İlk sonuçlar hiç fena değil gibi ;)
+
+![../images/wordle_2.png](../images/wordle_2.png)
+
 ## Öğrendiğim Yeni Şeyler
 
 - *bracket-random.* rand yerine kullanılabilecek alternatif bir rastgele sayı üretme kütüphanesi.
 - Terminal ekranını *[colored](https://crates.io/crates/colored)* küfesini *(Crate)* kullanarak renklendirebiliriz.
 - *include_str* makro fonksiyonu ile bir dosya içeriğini *src* klasöründen okuyup derlenen kodun içerisine gömmek mümkün. Dosyayı build çıktılarındaki binary'ler ile birlikte taşımak mümkün hale geliyor.
 - *RandomNumberGenerator* nesnesinin *random_slice_entry* fonksiyonu sayesinde parametre olarak verilen bir vector içinden rastgele bir eleman kolayca çekilebilir.
+- *for_each* fonksiyonu ile metnin karakterlerini ya da vector elemanlarını dolaşırken tuple türünden yararlanarak indis ve değer çiftlerine ulaşabiliriz.
 

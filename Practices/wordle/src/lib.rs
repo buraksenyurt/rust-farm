@@ -43,7 +43,7 @@ fn word_list() -> Vec<String> {
 }
 
 /// Yönetici sınıf. Kelimeler, seçilen kelimeyi, tahmin edilen harfleri ve tahmin edilen kelimeleri yönetir
-struct Manager {
+pub struct Manager {
     available_words: Vec<String>,
     chosen_word: String,
     guessed_letters: HashSet<char>,
@@ -172,6 +172,38 @@ impl Manager {
         }
         // Kod buraya geldiyse geçerli bir tahmin elimizdedir. Bunu fonksiyondan geri dönüyoruz.
         user_guess
+    }
+
+    /*
+       İhtiyacımız olan bir diğer fonksiyonda oyuncunun kazanıp kazanmadığının bulunması.
+       Sonuçta bu da bir operasyon gerektirdiğinden main içerisinde tutmak yerine ayrı bir
+       fonksiyona almak daha mantıklı.
+    */
+    /// Oyuncunun oyunu kazanıp kazanmadığını söyler
+    pub fn is_it_over(&self, user_guess: &str) -> bool {
+        // Oyuncunun kelimesi programın tuttuğu kelime ise tamam.
+        let try_count = self.guesses.len();
+        if user_guess == self.chosen_word {
+            println!(
+                "{}",
+                format!("Kelimeyi {} denemede buldun. Tebrikler.", try_count).blue()
+            );
+            true
+        } else if try_count >= TRY_COUNT {
+            // Kelime doğru değilse deneme sayısını kontrol ediyoruz ve haklarımız tükendiyse
+            // bunu üzülerek de olsa bildiriyoruz :P
+            println!(
+                "{}",
+                format!(
+                    "Malesef tüm hakların doldu. Doğru kelime -> {}",
+                    self.chosen_word
+                )
+                .bright_green()
+            );
+            true
+        } else {
+            false
+        }
     }
 }
 

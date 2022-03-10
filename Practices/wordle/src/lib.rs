@@ -71,7 +71,12 @@ impl Manager {
     /*
        Oyun sahamız terminal ekranı. Manager'ın tuttuğu kelime ve
        oyuncunun tahminlerine göre 5X6 lık matrisi çizen bir fonksiona ihtiyacımız var.
+
+       self üzerinden guessed_letters vector'üne oyuncunun tahmin ettiği
+       ama programın tuttuğu kelimede olmayan harfler eklenecek.
+       Bu nedenle self, mutable referans olarak alındı.
     */
+    /// Oyun sahasını tahmin edilen kelimeler ve sonuçları ile çizer
     pub fn draw_board(&mut self) {
         // önce yapılan tahminleri gezen bir döngü açıyoruz.
         // for_each fonksiyonunda bir tuple kullandığımıza dikkat edelim.
@@ -103,6 +108,63 @@ impl Manager {
                 });
                 println!(); // Bir alt satıra geç
             })
+    }
+
+    /*
+       Wordle oyununda kullanılan harflerde gösterilmekte.
+       Bunun için de yardımcı bir fonksiyon kullanılabilir
+    */
+    /// Oyuncunun kullandığı ama programın tuttuğu kelimede olmayan harflerin listesini ekrana basar.
+    pub fn show_invalid_letters(&self) {
+        if !self.guessed_letters.is_empty() {
+            println!("Bu harfleri kullandın.\nAncak tahmin ettiğimi kelimede yoklar.".purple());
+            self.guessed_letters.iter().for_each(|c| print!("{}", c));
+            println!()
+        }
+    }
+
+    /*
+       Bu fonksiyon kullanıcıdan tahminini alıp kontrol etmekte.
+       Geçerli bir uzunlukta mı, oyunun kullandığı sözlük içerisinde yer alıyor mu gibi.
+    */
+    /// Oyuncudan tahminini alır ve belli kurallara göre kontrol eder
+    pub fn take_guess(&mut self) -> String {
+        println!(
+            "Hey! Oyuncu.\nHadi bana {} karakterden oluşan bir kelime yaz ve ENTER'a bas".purple(),
+            WORD_LENGTH
+        );
+        // Önce tahminde olupta programın tuttuğu kelimede olmayan harfleri gösterelim
+        self.show_invalid_letters();
+        // Kullanıcının tahmini ve kelimenin geçerli olup olmadığını tutan iki mutable değişkenimiz var.
+        let mut user_guess = String::new();
+        let mut is_guess_valid = false;
+        // Döngümüz kullanıcının girdiği kelime tüm kuralları sağlayana kadar devam edecek
+        while !is_guess_valid {
+            user_guess = String::new();
+            // Oyuncunun girdisi terminal ekranından olacak.
+            // İçeriği read_line fonksiyonu ile user_guess değişkenine yazabiliriz.
+            // Çok büyük bir problem olmayacağını düşünerekten unwrap ile girilen bilgiyi alıyoruz.
+            std::io::stdin().read_line(&mut user_guess).unwrap();
+            // Kelimedeki gereksiz boşlukları çıkartıp harfleri büyük harfe çeviren bir fonksiyonumuz var.
+            // Kelimeyi o işlemden geçiriyoruz.
+            user_guess = sanitize_word(&user_guess);
+            // Kontrollerimiz basit. Kelime belirlediğimiz uzunlukta olmalı ve
+            // programın kullandığı sözlükte yer almalı.
+            // Eğer böyle değilse is_guess_valid değişkeni false olarak kalacak ve döngü devam edecek
+            if user_guess.len() != WORD_LENGTH {
+                println!(
+                    "{}",
+                    format!("{} uzunluğunda bir kelime girmelisin.", WORD_LENGTH).red()
+                )
+            } else if !self.dictionary.iter().any(|word| word == &user_guess) {
+                println!("{}", "Girdiğin kelime benim dükkanda bile yok :S".red())
+            } else {
+                self.guesses.push(guess.clone());
+                is_guess_valid = true;
+            }
+        }
+        // Kod buraya geldiyse geçerli bir tahmin elimizdedir. Bunu fonksiyondan geri dönüyoruz.
+        user_guess
     }
 }
 

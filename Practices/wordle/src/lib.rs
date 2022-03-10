@@ -4,6 +4,7 @@
    Dolayısıyla data dosyasını release aldıktan sonra programı götürdüğümüz yere taşımaya gerek yoktur.
 */
 use bracket_random::prelude::RandomNumberGenerator;
+use colored::*;
 use std::collections::HashSet;
 
 const WORDS: &str = include_str!("words.data");
@@ -53,7 +54,7 @@ impl Manager {
     /*
        Yapıcı metot kelimelerin olduğu sözlükten rastgele bir kelimeyi de seçerek bir Manager örneği döner.
     */
-    fn new() -> Self {
+    pub fn new() -> Self {
         // Rastgele sayı üretici
         let mut rnd_gnr = RandomNumberGenerator::new();
         let dictionary = word_list();
@@ -66,6 +67,42 @@ impl Manager {
             guessed_letters: HashSet::new(),
             guesses: Vec::new(),
         }
+    }
+    /*
+       Oyun sahamız terminal ekranı. Manager'ın tuttuğu kelime ve
+       oyuncunun tahminlerine göre 5X6 lık matrisi çizen bir fonksiona ihtiyacımız var.
+    */
+    pub fn draw_board(&mut self) {
+        // önce yapılan tahminleri gezen bir döngü açıyoruz.
+        // for_each fonksiyonunda bir tuple kullandığımıza dikkat edelim.
+        // Bu tuple'da satır numarası ve guesses vector'ündeki kelime yer alıyor.
+        // Yani guesses vector elemanlarını dolaşırken indislerini de satır numarası olarak kullanabiliriz.
+        self.guesses
+            .iter()
+            .enumerate()
+            .for_each(|(row_index, guess)| {
+                // Şimdi bulunduğumuz satırdaki kelimenin harflerini dolaşacağız
+                // Yine for_each döngüsü kullanılıyor. Her iterasyonda kelimedeki karakteri ve indisini bir tuple ile ele alıyoruz.
+                guess.chars().enumerate().for_each(|(i, c)| {
+                    // Şimdi karakterleri programın tuttuğu kelimedekiler ile karşılaştıracağız.
+
+                    // Eğer chosen_word'deki i. sıradaki karakter guess'teki c karakterine eşitse
+                    // harf doğrudur ve kelimede doğru yerdedir
+                    let row = if self.chosen_word.chars().nth(i).unwrap() == c {
+                        format!("{}", c).bright_green()
+                    } else if self.chosen_word.chars().any(|wc| wc == c) {
+                        // Harf doğrudur ama yeri yanlıştır. Bunu da any fonksiyonu üstünden kontrol edebiliriz.
+                        format!("{}", c).bright_yellow()
+                    } else {
+                        // Harf programın tuttuğu kelimede yoksa bu durumda tahmin edilen harfler
+                        // listesine eklenir ve kullanıcının karakteri kırmızıya boyanır.
+                        self.guessed_letters.insert(c);
+                        format!("{}", c).red()
+                    };
+                    print!("{}", row);
+                });
+                println!(); // Bir alt satıra geç
+            })
     }
 }
 

@@ -1,4 +1,4 @@
 mod base;
-mod completed;
-mod doing;
-mod ready;
+pub mod completed;
+pub mod doing;
+pub mod ready;

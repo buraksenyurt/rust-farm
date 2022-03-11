@@ -1,5 +1,6 @@
 use super::base::Base;
 
+#[derive(Debug, PartialEq)]
 pub struct Doing {
     pub header: Base,
 }

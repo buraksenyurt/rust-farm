@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
 
+#[derive(Debug, PartialEq)]
 pub struct Base {
     pub title: String,
     pub value: u16,

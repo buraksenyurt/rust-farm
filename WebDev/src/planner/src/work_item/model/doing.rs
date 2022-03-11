@@ -1,5 +1,6 @@
 use super::base::Base;
 
+/// Hali hazırda yürütülmekte olan bir işi ifade eder.
 #[derive(Debug, PartialEq)]
 pub struct Doing {
     pub header: Base,

@@ -1,5 +1,6 @@
 use super::base::Base;
 
+/// Plana dahil edilmiş bir işi temsil eder
 #[derive(Debug, PartialEq)]
 pub struct Ready {
     pub header: Base,

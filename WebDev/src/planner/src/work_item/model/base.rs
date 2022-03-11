@@ -1,5 +1,7 @@
 use std::fmt::{Display, Formatter};
 
+/// Bir iş için ortak olan alanları tutar
+/// İşin başlığı, değeri ve durumu taşınır.
 #[derive(Debug, PartialEq)]
 pub struct Base {
     pub title: String,

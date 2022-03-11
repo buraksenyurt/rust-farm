@@ -1,5 +1,6 @@
 use super::base::Base;
 
+/// Tamamlanmış bir işi ifade eder.
 #[derive(Debug, PartialEq)]
 pub struct Completed {
     pub header: Base,

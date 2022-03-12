@@ -5,6 +5,7 @@ use work_item::model::traits::create::Create;
 use work_item::model::traits::get::Get;
 use work_item::status::Status;
 
+mod state_manager;
 mod work_item;
 
 fn main() {

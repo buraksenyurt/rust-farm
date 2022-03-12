@@ -1,12 +1,7 @@
 use crate::state_manager::{read_file, write_to_file};
 use clap::{arg, Command};
-use log::{info, warn};
+use log::{warn};
 use serde_json::{json, Map, Value};
-use work_item::factory::Factory;
-use work_item::mission::Mission;
-use work_item::model::traits::create::Create;
-use work_item::model::traits::get::Get;
-use work_item::status::Status;
 
 mod state_manager;
 mod work_item;
@@ -51,8 +46,8 @@ fn main() {
                 "value": business_value,
                 "status": "Ready",
             });
-            state.insert(title.to_string(), mission);
-            write_to_file(file_path.as_str(), &mut state);
+            state.insert(title, mission);
+            write_to_file(file_path.as_str(), &mut state).expect("Dosya yazma sırasında hata");
         }
         _ => warn!("Doğru komut bulunamadı."),
     }

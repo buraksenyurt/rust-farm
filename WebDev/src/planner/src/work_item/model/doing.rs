@@ -1,4 +1,8 @@
 use super::base::Base;
+use super::traits::create::Create;
+use super::traits::delete::Delete;
+use super::traits::edit::Edit;
+use super::traits::get::Get;
 
 /// Hali hazırda yürütülmekte olan bir işi ifade eder.
 #[derive(Debug, PartialEq)]
@@ -13,6 +17,11 @@ impl Doing {
         }
     }
 }
+
+impl Create for Doing {}
+impl Edit for Doing {}
+impl Delete for Doing {}
+impl Get for Doing {}
 
 #[cfg(test)]
 mod test {

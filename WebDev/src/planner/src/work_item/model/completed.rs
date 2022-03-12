@@ -1,4 +1,7 @@
 use super::base::Base;
+use super::traits::delete::Delete;
+use super::traits::edit::Edit;
+use super::traits::get::Get;
 
 /// Tamamlanmış bir işi ifade eder.
 #[derive(Debug, PartialEq)]
@@ -13,6 +16,10 @@ impl Completed {
         }
     }
 }
+
+impl Get for Completed {}
+impl Edit for Completed {}
+impl Delete for Completed {}
 
 #[cfg(test)]
 mod test {

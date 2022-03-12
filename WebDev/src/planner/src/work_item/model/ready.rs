@@ -1,4 +1,8 @@
 use super::base::Base;
+use super::traits::create::Create;
+use super::traits::delete::Delete;
+use super::traits::edit::Edit;
+use super::traits::get::Get;
 
 /// Plana dahil edilmiş bir işi temsil eder
 #[derive(Debug, PartialEq)]
@@ -13,6 +17,11 @@ impl Ready {
         }
     }
 }
+
+impl Create for Ready {}
+impl Edit for Ready {}
+impl Delete for Ready {}
+impl Get for Ready {}
 
 #[cfg(test)]
 mod test {

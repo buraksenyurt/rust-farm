@@ -1,4 +1,5 @@
-use serde_json::{Map, Value};
+use serde_json::{json, Map, Value};
+use std::fs;
 use std::fs::File;
 use std::io::Read;
 
@@ -12,6 +13,14 @@ pub fn read_file(file_name: &str) -> Result<Map<String, Value>, String> {
     Ok(state)
 }
 
+/// Work Item verisini JSON formatından dosyaya yazmak için kullanılır.
+pub fn write_to_file(file_name: &str, state: &mut Map<String, Value>) -> Result<(), String> {
+    let json_data = json!(state);
+    fs::write(file_name.to_string(), json_data.to_string())
+        .expect("Dosya yazma işlemi sırasında hata");
+    Ok(())
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -23,12 +32,17 @@ mod test {
     }
 
     #[test]
-    fn json_file_exist_and_readable() {
+    fn should_write_and_read_works() {
         let file_path = format!("{}/states.json", env!("CARGO_MANIFEST_DIR"));
+        let mut sample_data: Map<String, Value> = Map::new();
+        let v = json!({ "value": 3,"state": "Ready" });
+        sample_data.insert("Rust Çalış".to_string(), v);
+        let _ = write_to_file(file_path.as_str(), &mut sample_data);
+
         let result = read_file(file_path.as_str());
         match result {
             Ok(m) => {
-                let v = m.get("oda temizleme");
+                let v = m.get("Rust Çalış");
                 assert!(v.unwrap().is_object())
             }
             _ => {}

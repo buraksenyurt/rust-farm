@@ -18,7 +18,7 @@ use std::io;
 fn main() {
   let mut input=String::new();
   let mut s=input;  // The ownership of the string is moved to the variable s
-  io::stdin().read_lin(&mut input);
+  io::stdin().read_line(&mut input);
 }
   ```
 - Rust dilinde tüm string'ler UTF8 formatındadır. Dolayısıyla bir karakter veri 1 byte'tan fazla yer tutabilir. Bunun sebebi Unicode kullanımıdır. Örneğin emojiler, japon harfleri. Buna göre aşağıdaki kod farklı çalışır.

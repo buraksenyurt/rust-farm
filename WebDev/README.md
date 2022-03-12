@@ -11,3 +11,12 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 - [ ] Gün #5 -
 - [ ] Gün #6 -
 - [ ] Gün #7 -
+
+# Gün 1 Denemeleri
+
+```bash
+RUST_LOG=info cargo run create -t "Evi Temizle" -v 13
+RUST_LOG=info cargo run create -t "10bin Adım At" -v 5
+```
+
+![images/day_1_1.png](images/day_1_1.png)

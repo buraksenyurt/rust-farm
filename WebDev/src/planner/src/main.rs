@@ -1,6 +1,6 @@
 use crate::state_manager::{read_file, write_to_file};
 use clap::{arg, Command};
-use log::{warn};
+use log::{info, warn};
 use serde_json::{json, Map, Value};
 
 mod state_manager;
@@ -34,6 +34,18 @@ fn main() {
                         .required(true),
                 ),
         )
+        .subcommand(
+            Command::new("get")
+                .about("Görev çeker")
+                .short_flag('g')
+                .arg(
+                    arg!(<TITLE>)
+                        .help("Görev adı")
+                        .short('t')
+                        .long("title")
+                        .required(true),
+                ),
+        )
         .get_matches();
 
     match matches.subcommand() {
@@ -48,6 +60,19 @@ fn main() {
             });
             state.insert(title, mission);
             write_to_file(file_path.as_str(), &mut state).expect("Dosya yazma sırasında hata");
+        }
+        Some(("get", argmatchs)) => {
+            let title: String = argmatchs.value_of_t("TITLE").unwrap();
+            let state: Map<String, Value> =
+                read_file(file_path.as_str()).expect("JSON dosyası okunamadı");
+            match state.get(title.as_str()) {
+                Some(v) => {
+                    info!("{:#?}", v)
+                }
+                _ => {
+                    warn!("{} bulunamadı", title)
+                }
+            }
         }
         _ => warn!("Doğru komut bulunamadı."),
     }

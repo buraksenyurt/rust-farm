@@ -15,8 +15,15 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 # Gün 1 Denemeleri
 
 ```bash
+# states.json'a Ready statüsünde yeni bir work item eklemek için
 RUST_LOG=info cargo run create -t "Evi Temizle" -v 13
 RUST_LOG=info cargo run create -t "10bin Adım At" -v 5
 ```
 
 ![images/day_1_1.png](images/day_1_1.png)
+
+```bash
+# states.json'dan bir görev çekmek için. Case Sensitive'dir
+RUST_LOG=info cargo run get -t "Evi temizle"
+RUST_LOG=info cargo run get -t "Evi Temizle"
+```

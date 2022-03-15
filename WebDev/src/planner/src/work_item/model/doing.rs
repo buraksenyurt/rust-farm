@@ -11,9 +11,9 @@ pub struct Doing {
 }
 
 impl Doing {
-    pub fn new(input_title: &str, business_value: u16) -> Self {
+    pub fn new(input_title: &str) -> Self {
         Doing {
-            header: Base::new(input_title, business_value, "Doing"),
+            header: Base::new(input_title, "Doing"),
         }
     }
 }
@@ -29,8 +29,7 @@ mod test {
 
     #[test]
     fn should_new_doing_works() {
-        let job = Doing::new("Odayı temizle.", 5);
+        let job = Doing::new("Odayı temizle.");
         assert_eq!(job.header.status, "Doing");
-        assert_eq!(job.header.value, 5);
     }
 }

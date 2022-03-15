@@ -5,15 +5,13 @@ use std::fmt::{Display, Formatter};
 #[derive(Debug, PartialEq)]
 pub struct Base {
     pub title: String,
-    pub value: u16,
     pub status: String,
 }
 
 impl Base {
-    pub fn new(input_title: &str, input_value: u16, input_status: &str) -> Self {
+    pub fn new(input_title: &str, input_status: &str) -> Self {
         Base {
             title: input_title.to_string(),
-            value: input_value,
             status: input_status.to_string(),
         }
     }
@@ -21,7 +19,7 @@ impl Base {
 
 impl Display for Base {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}.({}:{})", self.title, self.status, self.value)
+        write!(f, "{}.({})", self.title, self.status)
     }
 }
 
@@ -31,7 +29,7 @@ mod test {
 
     #[test]
     fn should_new_works() {
-        let item = Base::new("Odayı temizle", 5, "Ready");
-        assert_eq!(item.to_string(), "Odayı temizle.(Ready:5)");
+        let item = Base::new("Odayı temizle", "Ready");
+        assert_eq!(item.to_string(), "Odayı temizle.(Ready)");
     }
 }

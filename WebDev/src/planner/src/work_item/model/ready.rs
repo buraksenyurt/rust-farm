@@ -44,6 +44,7 @@ mod test {
 
         let job = Ready::new("Odayı Temizle");
         let actual = job.get("Odayı Temizle", &sample_data);
-        assert_eq!(actual, true);
+        let expected = json!({ "value": 5,"state": "Ready" });
+        assert_eq!(actual, Some(expected));
     }
 }

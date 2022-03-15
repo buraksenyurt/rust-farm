@@ -35,6 +35,6 @@ mod test {
 
         job.delete(title, &mut maps);
         let actual = job.get(title, &maps);
-        assert_eq!(actual, false);
+        assert_eq!(actual, None);
     }
 }

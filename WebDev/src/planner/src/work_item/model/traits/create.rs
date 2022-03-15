@@ -24,7 +24,7 @@ mod test {
     use crate::work_item::model::traits::create::Create;
     use crate::work_item::model::traits::get::Get;
     use crate::work_item::status::Status;
-    use serde_json::{Map, Value};
+    use serde_json::{json, Map, Value};
 
     #[test]
     fn should_create_works() {
@@ -32,6 +32,7 @@ mod test {
         let mut maps = Map::<String, Value>::new();
         job.create("Odayı Temizle", 8, Status::Doing, &mut maps);
         let actual = job.get("Odayı Temizle", &maps);
-        assert_eq!(actual, true);
+        let expected = json!({ "value": 8,"state": "Doing" });
+        assert_eq!(actual, Some(expected));
     }
 }

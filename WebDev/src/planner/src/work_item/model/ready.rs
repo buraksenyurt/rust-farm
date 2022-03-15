@@ -26,11 +26,25 @@ impl Get for Ready {}
 #[cfg(test)]
 mod test {
     use super::*;
+    use serde_json::{json, Map, Value};
 
     #[test]
     fn should_new_ready_works() {
         let job = Ready::new("Odayı temizle", 5);
         assert_eq!(job.header.status, "Ready");
         assert_eq!(job.header.value, 5);
+    }
+
+    #[test]
+    fn should_get_trait_works() {
+        let mut sample_data: Map<String, Value> = Map::new();
+        let v = json!({ "value": 5,"state": "Ready" });
+        sample_data.insert("Odayı Temizle".to_string(), v);
+        let v = json!({ "value": 3,"state": "Ready" });
+        sample_data.insert("Kitap Oku".to_string(), v);
+
+        let job = Ready::new("Odayı Temizle", 5);
+        let actual = job.get("Odayı Temizle", &sample_data);
+        assert_eq!(actual, true);
     }
 }

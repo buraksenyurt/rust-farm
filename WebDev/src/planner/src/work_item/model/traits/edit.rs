@@ -30,13 +30,14 @@ pub trait Edit {
 mod test {
     use crate::work_item::model::ready::Ready;
     use crate::work_item::model::traits::edit::Edit;
+    use crate::work_item::size::Size;
     use crate::work_item::status::Status;
     use serde_json::{json, Map, Value};
 
     #[test]
     fn should_edit_works() {
         let title = "Rust çalış";
-        let job = Ready::new(title);
+        let job = Ready::new(title, Size::Short);
         let mut maps = Map::<String, Value>::new();
         maps.insert(title.to_string(), json!(Status::Ready.to_string()));
         job.set_to_doing(title, &mut maps);

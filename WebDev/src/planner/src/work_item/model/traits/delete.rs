@@ -19,6 +19,7 @@ mod test {
     use crate::work_item::model::traits::create::Create;
     use crate::work_item::model::traits::delete::Delete;
     use crate::work_item::model::traits::get::Get;
+    use crate::work_item::size::Size;
     use crate::work_item::status::Status;
     use serde_json::{Map, Value};
 
@@ -26,12 +27,12 @@ mod test {
     fn should_delete_works() {
         let mut maps = Map::<String, Value>::new();
 
-        let job = Ready::new("Odayı Temizle");
-        job.create("Odayı Temizle", 8, Status::Doing, &mut maps);
+        let job = Ready::new("Odayı Temizle", Size::Short);
+        job.create("Odayı Temizle", &Size::Short, Status::Doing, &mut maps);
 
         let title = "10bin Adım At";
-        let job = Ready::new(title);
-        job.create(title, 5, Status::Ready, &mut maps);
+        let job = Ready::new(title, Size::Short);
+        job.create(title, &Size::Short, Status::Ready, &mut maps);
 
         job.delete(title, &mut maps);
         let actual = job.get(title, &maps);

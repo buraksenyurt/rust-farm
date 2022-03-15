@@ -1,17 +1,20 @@
 use crate::work_item::status::Status;
 use crate::{write_to_file, Storage};
-use log::info;
+use log::{error, info};
 use serde_json::{json, Map, Value};
 
 pub trait Create {
     fn create(&self, title: &str, value: u16, status: Status, state: &mut Map<String, Value>) {
         let v = json!({ "value": value,"state": status.to_string() });
         state.insert(title.to_string(), v);
-        info!(
-            "'{}' başlıklı ve {} değerindeki görev {} statüsünde oluşturuldu",
-            title, value, status
-        );
-        write_to_file(Storage::get().as_str(), state);
+        let result = write_to_file(Storage::get().as_str(), state);
+        match result {
+            Ok(_) => info!(
+                "'{}' başlıklı ve {} değerindeki görev {} statüsünde oluşturuldu",
+                title, value, status
+            ),
+            Err(e) => error!("{}", e),
+        }
     }
 }
 

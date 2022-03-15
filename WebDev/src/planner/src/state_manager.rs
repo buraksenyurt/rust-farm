@@ -19,7 +19,6 @@ pub fn read_file(file_name: &str) -> Result<Map<String, Value>, String> {
 pub fn write_to_file(file_name: &str, state: &mut Map<String, Value>) -> Result<(), String> {
     info!("{} dosyasına yazma işlemi.", file_name);
     let json_data = json!(state);
-    info!("Güncel içerik. {:#?}", json_data);
     fs::write(file_name.to_string(), json_data.to_string())
         .expect("Dosya yazma işlemi sırasında hata");
     Ok(())
@@ -28,6 +27,7 @@ pub fn write_to_file(file_name: &str, state: &mut Map<String, Value>) -> Result<
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::storage::Storage;
 
     #[test]
     #[should_panic]
@@ -37,13 +37,12 @@ mod test {
 
     #[test]
     fn should_write_and_read_works() {
-        let file_path = format!("{}/states.json", env!("CARGO_MANIFEST_DIR"));
         let mut sample_data: Map<String, Value> = Map::new();
         let v = json!({ "value": 3,"state": "Ready" });
         sample_data.insert("Rust Çalış".to_string(), v);
-        let _ = write_to_file(file_path.as_str(), &mut sample_data);
+        let _ = write_to_file(Storage::get().as_str(), &mut sample_data);
 
-        let result = read_file(file_path.as_str());
+        let result = read_file(Storage::get().as_str());
         match result {
             Ok(m) => {
                 let v = m.get("Rust Çalış");

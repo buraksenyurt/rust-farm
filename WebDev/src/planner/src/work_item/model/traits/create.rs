@@ -1,4 +1,5 @@
 use crate::work_item::status::Status;
+use crate::{write_to_file, Storage};
 use log::info;
 use serde_json::{json, Map, Value};
 
@@ -10,6 +11,7 @@ pub trait Create {
             "'{}' başlıklı ve {} değerindeki görev {} statüsünde oluşturuldu",
             title, value, status
         );
+        write_to_file(Storage::get().as_str(), state);
     }
 }
 

@@ -1,16 +1,15 @@
 use crate::state_manager::{read_file, write_to_file};
+use crate::storage::Storage;
 use clap::{arg, Command};
 use log::{info, warn};
 use serde_json::{json, Map, Value};
 
 mod state_manager;
+pub mod storage;
 mod work_item;
 
 fn main() {
     env_logger::init();
-
-    let file_path = format!("{}/states.json", env!("CARGO_MANIFEST_DIR"));
-
     let matches = Command::new("Planlayıcı")
         .version("v0.1.0")
         .author("Burak Selim Senyurt")
@@ -53,18 +52,18 @@ fn main() {
             let title: String = argmatchs.value_of_t("TITLE").unwrap();
             let business_value: u16 = argmatchs.value_of_t("VALUE").unwrap();
             let mut state: Map<String, Value> =
-                read_file(file_path.as_str()).expect("JSON dosyası okunamadı");
+                read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
             let mission = json!({
                 "value": business_value,
                 "status": "Ready",
             });
             state.insert(title, mission);
-            write_to_file(file_path.as_str(), &mut state).expect("Dosya yazma sırasında hata");
+            write_to_file(Storage::get().as_str(), &mut state).expect("Dosya yazma sırasında hata");
         }
         Some(("get", argmatchs)) => {
             let title: String = argmatchs.value_of_t("TITLE").unwrap();
             let state: Map<String, Value> =
-                read_file(file_path.as_str()).expect("JSON dosyası okunamadı");
+                read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
             match state.get(title.as_str()) {
                 Some(v) => {
                     info!("{:#?}", v)

@@ -1,10 +1,13 @@
+use crate::action::Action;
+use crate::work_item::size::Size;
 use clap::{arg, Command};
-use log::{info, warn};
+use log::warn;
 use serde_json::{json, Map, Value};
 use state_manager::{read_file, write_to_file};
+use std::str::FromStr;
 use storage::Storage;
 
-pub mod command;
+pub mod action;
 pub mod processor;
 pub mod state_manager;
 pub mod storage;
@@ -17,9 +20,16 @@ fn main() {
         .author("Burak Selim Senyurt")
         .about("Kişisel kanban programı.")
         .subcommand(
-            Command::new("create")
-                .about("Yeni görev oluşturur.")
-                .short_flag('c')
+            Command::new("action")
+                .about("Görev aksiyonu")
+                .short_flag('a')
+                .arg(
+                    arg!(<ACTION>)
+                        .help("Komut")
+                        .short('c')
+                        .long("command")
+                        .required(true),
+                )
                 .arg(
                     arg!(<TITLE>)
                         .help("Görev adı")
@@ -32,25 +42,15 @@ fn main() {
                         .help("Görevin Değeri")
                         .short('v')
                         .long("value")
-                        .required(true),
-                ),
-        )
-        .subcommand(
-            Command::new("get")
-                .about("Görev çeker")
-                .short_flag('g')
-                .arg(
-                    arg!(<TITLE>)
-                        .help("Görev adı")
-                        .short('t')
-                        .long("title")
+                        .possible_values(vec!["1", "3", "5", "8", "13"])
                         .required(true),
                 ),
         )
         .get_matches();
 
     match matches.subcommand() {
-        Some(("create", argmatchs)) => {
+        Some(("action", argmatchs)) => {
+            let action = Action::from_str(argmatchs.value_of("ACTION").unwrap());
             let title: String = argmatchs.value_of_t("TITLE").unwrap();
             let business_value: u16 = argmatchs.value_of_t("VALUE").unwrap();
             let mut state: Map<String, Value> =
@@ -61,19 +61,6 @@ fn main() {
             });
             state.insert(title, mission);
             write_to_file(Storage::get().as_str(), &mut state).expect("Dosya yazma sırasında hata");
-        }
-        Some(("get", argmatchs)) => {
-            let title: String = argmatchs.value_of_t("TITLE").unwrap();
-            let state: Map<String, Value> =
-                read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
-            match state.get(title.as_str()) {
-                Some(v) => {
-                    info!("{:#?}", v)
-                }
-                _ => {
-                    warn!("{} bulunamadı", title)
-                }
-            }
         }
         _ => warn!("Doğru komut bulunamadı."),
     }

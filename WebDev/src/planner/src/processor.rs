@@ -46,6 +46,7 @@ fn process_completed(wi: Completed, action: Action, state: &Map<String, Value>) 
     }
 }
 
+/// Bir görev için belirtilen parametrelerde aksiyon başlatır
 pub fn run(mission: Mission, action: Action, state: &mut Map<String, Value>) {
     match mission {
         Mission::Ready(wi) => process_ready(wi, action, state),

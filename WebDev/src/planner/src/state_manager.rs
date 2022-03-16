@@ -12,6 +12,7 @@ pub fn read_file(file_name: &str) -> Result<Map<String, Value>, String> {
     file.read_to_string(&mut content).expect("Okuma hatası");
     let json: Value = serde_json::from_str(&content).expect("JSON Convert hatası");
     let state: Map<String, Value> = json.as_object().unwrap().clone();
+    info!("{:?}", state);
     Ok(state)
 }
 

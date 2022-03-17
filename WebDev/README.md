@@ -5,7 +5,7 @@ Rust, programlama dilleri piramidi düşünülünce C ve C++ ile aynı seviyede 
 Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz isteklerimizi ready, doing, done gibi statülerle ele alıyoruz. Bu işi yürütecek bir web arabiriminin peşindeyiz. Kişisel bir kanban olarak düşünebiliriz.
 
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
-- [ ] Gün #2 - 
+- [ ] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 - [ ] Gün #3 - 
 - [ ] Gün #4 -
 - [ ] Gün #5 -

@@ -4,7 +4,7 @@ Rust, programlama dilleri piramidi düşünülünce C ve C++ ile aynı seviyede 
 
 Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz isteklerimizi ready, doing, done gibi statülerle ele alıyoruz. Bu işi yürütecek bir web arabiriminin peşindeyiz. Kişisel bir kanban olarak düşünebiliriz.
 
-- [ ] Gün #1 - Projenin temel veri yapılarının oluşturulması.
+- [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
 - [ ] Gün #2 - 
 - [ ] Gün #3 - 
 - [ ] Gün #4 -
@@ -19,4 +19,13 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 RUST_LOG=info cargo run set -a create -t "Rust Çalış" -v 8
 # Var olan work item'ı çekmek için
 RUST_LOG=info cargo run set -a get -t "Rust Çalış" -v 8
+# Ready statüsünde olan bir work item'ı doing'e çekmek için
+RUST_LOG=info cargo run set -a edit -t "Rust Çalış" -v 8
+# ve Doing statüsünden Completed'a çekmek için tekrardan
+RUST_LOG=info cargo run set -a edit -t "Rust Çalış" -v 8
+# Var olan bir work item'ı silmek için
+RUST_LOG=info cargo run set -a delete -t "Odayı Temizle" -v 8
 ```
+
+![./images/day_1_2.png](./images/day_1_2.png)
+

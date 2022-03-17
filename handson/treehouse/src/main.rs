@@ -7,5 +7,5 @@ fn main() {
     */
     println!("Merhaba. Sana nasıl hitap etmemi istersin?");
     let player_name = get_player_name();
-    println!("Hoş geldin, {}", player_name.to_uppercase());
+    println!("Hoş geldin, {}", player_name);
 }

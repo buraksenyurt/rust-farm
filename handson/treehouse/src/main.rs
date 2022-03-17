@@ -1,13 +1,11 @@
-use std::io::stdin;
+use treehouse::get_player_name;
 
 fn main() {
     /*
-       İlk kısımda ekrandan girdi alıp gösterme konusu işleniyor.
+       #1 Ekrandan girdi alıp gösterme işlemi yapıldı.
+       #2 Ekrandan kullanıcı adını alan kod fonksiyonlaştırıldı.
     */
     println!("Merhaba. Sana nasıl hitap etmemi istersin?");
-    let mut player_name = String::new();
-    stdin()
-        .read_line(&mut player_name)
-        .expect("Okuma işlemi sırasında hata");
+    let player_name = get_player_name();
     println!("Hoş geldin, {}", player_name.to_uppercase());
 }

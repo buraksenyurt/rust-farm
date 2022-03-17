@@ -9,14 +9,12 @@ use crate::work_item::size::Size;
 #[derive(Debug, PartialEq)]
 pub struct Ready {
     pub header: Base,
-    pub size: Size,
 }
 
 impl Ready {
     pub fn new(input_title: &str, size: Size) -> Self {
         Ready {
-            header: Base::new(input_title, "Ready"),
-            size,
+            header: Base::new(input_title, "Ready", size),
         }
     }
 }

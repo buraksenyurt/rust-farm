@@ -16,8 +16,8 @@ fn process_ready(wi: Ready, action: Action, state: &Map<String, Value>) {
         Action::Get => {
             wi.get(&wi.header.title, &state);
         }
-        Action::Create => wi.create(&wi.header.title, &wi.size, Status::Ready, &mut state),
-        Action::Edit => wi.set_to_doing(&wi.header.title, &mut state),
+        Action::Create => wi.create(&wi.header.title, &wi.header.size, Status::Ready, &mut state),
+        Action::Edit => wi.set_to_doing(&wi.header.title, &wi.header.size, &mut state),
         Action::Delete => wi.delete(&wi.header.title, &mut state),
     }
 }
@@ -28,7 +28,7 @@ fn process_doing(wi: Doing, action: Action, state: &Map<String, Value>) {
         Action::Get => {
             wi.get(&wi.header.title, &state);
         }
-        Action::Edit => wi.set_to_complete(&wi.header.title, &mut state),
+        Action::Edit => wi.set_to_complete(&wi.header.title, &wi.header.size, &mut state),
         Action::Delete => wi.delete(&wi.header.title, &mut state),
         _ => {}
     }
@@ -40,7 +40,7 @@ fn process_completed(wi: Completed, action: Action, state: &Map<String, Value>) 
         Action::Get => {
             wi.get(&wi.header.title, &state);
         }
-        Action::Edit => wi.set_to_doing(&wi.header.title, &mut state),
+        Action::Edit => wi.set_to_doing(&wi.header.title, &wi.header.size, &mut state),
         Action::Delete => wi.delete(&wi.header.title, &mut state),
         _ => {}
     }

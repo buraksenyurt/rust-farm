@@ -1,7 +1,7 @@
 use bracket_lib::prelude::{main_loop, BError, BTermBuilder};
 use state::State;
 
-mod contant;
+mod constant;
 mod game_mode;
 mod player;
 mod rock;

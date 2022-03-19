@@ -1,5 +1,5 @@
 use super::player::Player;
-use crate::contant::{FRAME_DURATION, SCREEN_HEIGHT, SCREEN_WIDTH};
+use crate::constant::{FRAME_DURATION, SCREEN_HEIGHT};
 use crate::game_mode::GameMode;
 use crate::rock::Rock;
 use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode, TURQUOISE};
@@ -56,11 +56,22 @@ impl State {
             match key {
                 VirtualKeyCode::Up => self.player.up(),
                 VirtualKeyCode::Down => self.player.down(),
+                VirtualKeyCode::R => self.restart(),
                 _ => {}
             }
         }
         self.player.render(ctx);
+        self.rock = self.rock.forward(self.rock.x - 1, self.rock.y);
         self.rock.render(ctx);
+        if self.rock.x<0{
+            self.rock=Rock::new();
+            self.rock.render(ctx);
+        }
+        //TODO: Oyuncu karşıdan gelen kayayı vurduğunda oyun bitmesin puan artsın.
+        // Belli sayıda kayayı kaçırırsak oyun bitsin.
+        if self.rock.hit_rock(&self.player) {
+            self.mode = GameMode::End;
+        }
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
@@ -87,6 +98,7 @@ impl State {
         self.mode = GameMode::Playing;
         self.player = Player::new(5, 25);
         self.frame_time = 0.0;
+        self.rock = Rock::new();
     }
 }
 

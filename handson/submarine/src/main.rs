@@ -4,6 +4,7 @@ use state::State;
 mod contant;
 mod game_mode;
 mod player;
+mod rock;
 mod state;
 /*
    bracket-lib nesne üretimlerinde builder pattern kullanır.

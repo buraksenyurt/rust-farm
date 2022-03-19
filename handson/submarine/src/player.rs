@@ -22,11 +22,6 @@ impl Player {
         ctx.print_color_centered(1, BLACK, TURQUOISE, self.y);
     }
 
-    // pub fn move_to_center(&mut self) {
-    //     self.y += self.speed as i32;
-    //     self.x += 1;
-    // }
-
     pub fn up(&mut self) {
         self.y -= 1;
         if self.y <= 2 {

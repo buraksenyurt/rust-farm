@@ -1,6 +1,7 @@
 use bracket_lib::prelude::{main_loop, BError, BTermBuilder};
 use state::State;
 
+mod game_mode;
 mod state;
 /*
    bracket-lib nesne üretimlerinde builder pattern kullanır.
@@ -14,5 +15,5 @@ fn main() -> BError {
         .build()?;
 
     // oyun motorunu, oyunun state nesnesi ile bağlıyoruz
-    main_loop(context, State {})
+    main_loop(context, State::new())
 }

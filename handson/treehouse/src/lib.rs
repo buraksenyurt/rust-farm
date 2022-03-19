@@ -18,6 +18,32 @@ pub fn is_tree_house_friend(name: &str) -> bool {
     false
 }
 
+pub struct Visitor {
+    pub name: String,
+    pub wellcome: String,
+}
+
+impl Visitor {
+    pub fn new(name: &str, wellcome: &str) -> Self {
+        Self {
+            name: name.to_lowercase(),
+            wellcome: wellcome.to_string(),
+        }
+    }
+
+    pub fn say_hello(&self) -> String {
+        format!("Merhaba {}. {}", self.name, self.wellcome)
+    }
+}
+
+pub fn get_visitors() -> [Visitor; 3] {
+    [
+        Visitor::new("Burak", "Ağaçevine hoşgeldin."),
+        Visitor::new("Ayşe", "Kitapların seni bekliyor."),
+        Visitor::new("Mehmet", "Nerelerdeyin? Yeni bir satranç maçına var mısın?"),
+    ]
+}
+
 #[cfg(test)]
 mod test {
     use crate::is_tree_house_friend;

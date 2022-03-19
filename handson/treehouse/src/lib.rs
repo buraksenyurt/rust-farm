@@ -18,6 +18,7 @@ pub fn is_tree_house_friend(name: &str) -> bool {
     false
 }
 
+#[derive(Debug)]
 pub struct Visitor {
     pub name: String,
     pub wellcome: String,
@@ -36,8 +37,8 @@ impl Visitor {
     }
 }
 
-pub fn get_visitors() -> [Visitor; 3] {
-    [
+pub fn get_visitors() -> Vec<Visitor> {
+    vec![
         Visitor::new("Burak", "Ağaçevine hoşgeldin."),
         Visitor::new("Ayşe", "Kitapların seni bekliyor."),
         Visitor::new("Mehmet", "Nerelerdeyin? Yeni bir satranç maçına var mısın?"),

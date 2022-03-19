@@ -1,0 +1,8 @@
+[package]
+name = "submarine"
+version = "0.1.0"
+authors=["Burak Selim Senyurt"]
+edition = "2021"
+
+[dependencies]
+bracket-lib = "~0.8.1"

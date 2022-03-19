@@ -1,15 +1,23 @@
+use super::player::Player;
+use crate::contant::{FRAME_DURATION, SCREEN_HEIGHT};
 use crate::game_mode::GameMode;
-use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode};
+use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode, TURQUOISE};
 
 /// Oyunun anlık durumuna ait görüntüsünü(snapshot) tutan nesnedir.
 pub struct State {
+    // Oyunun anlık durumunda oyunun hangi bölümünde olduğumuzu,
+    // oyunun çerçeve hızını ve oyuncu bilgilerini saklarız.
     pub mode: GameMode,
+    pub frame_time: f32,
+    pub player: Player,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
             mode: GameMode::Menu,
+            frame_time: 0.0,
+            player: Player::new(5, 25),
         }
     }
 
@@ -34,7 +42,22 @@ impl State {
     }
 
     fn play(&mut self, ctx: &mut BTerm) {
-        todo!()
+        ctx.cls_bg(TURQUOISE);
+        // Frame çizdirme hızını yavaşlattığımız kısım.
+        // Eğer belirlenen FRAME_DURATIN üstüne çıktıysak sıfırlıyoruz.
+        self.frame_time += ctx.frame_time_ms;
+        if self.frame_time > FRAME_DURATION {
+            self.frame_time = 0.0;
+            //self.player.move_to_center();
+        }
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::Up => self.player.up(),
+                VirtualKeyCode::Down => self.player.down(),
+                _ => {}
+            }
+        }
+        self.player.render(ctx);
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
@@ -50,10 +73,17 @@ impl State {
                 _ => {}
             }
         }
+        self.player.render(ctx);
+        ctx.print(0, 0, "Upside or Down");
+        if self.player.y > SCREEN_HEIGHT {
+            self.mode = GameMode::End
+        }
     }
 
     fn restart(&mut self) {
-        self.mode = GameMode::Playing
+        self.mode = GameMode::Playing;
+        self.player = Player::new(5, 25);
+        self.frame_time = 0.0;
     }
 }
 

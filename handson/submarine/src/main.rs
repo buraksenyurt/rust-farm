@@ -1,7 +1,9 @@
 use bracket_lib::prelude::{main_loop, BError, BTermBuilder};
 use state::State;
 
+mod contant;
 mod game_mode;
+mod player;
 mod state;
 /*
    bracket-lib nesne üretimlerinde builder pattern kullanır.

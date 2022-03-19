@@ -1,5 +1,5 @@
-use crate::contant::{SCREEN_HEIGHT, SCREEN_WIDTH};
-use bracket_lib::prelude::{to_cp437, BTerm, BLACK, GOLD, PURPLE, TURQUOISE};
+use crate::constant::SCREEN_HEIGHT;
+use bracket_lib::prelude::{BTerm, BLACK, GOLD, PURPLE, TURQUOISE};
 
 // Denizlatı ya da oyuncunun kendisi Player isimli veri yapısında tutulabilir
 // x, y koordinatları ile hız bilgisini tutmaktayız
@@ -18,7 +18,8 @@ impl Player {
     // denizaltıyı semobilze eden bir karakteri Codepage 437'e uygun olacak şekilde
     // ekrana çizer.
     pub fn render(&mut self, ctx: &mut BTerm) {
-        ctx.set(0, self.y, PURPLE, GOLD, to_cp437('>'));
+        //ctx.set(0, self.y, PURPLE, GOLD, to_cp437('>'));
+        ctx.draw_box(0, self.y, 3, 1, PURPLE, GOLD);
         ctx.print_color_centered(1, BLACK, TURQUOISE, self.y);
     }
 

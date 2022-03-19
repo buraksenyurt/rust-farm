@@ -1,4 +1,4 @@
-use treehouse::{get_player_name, get_visitors, Visitor};
+use treehouse::{get_player_name, get_visitors, Visitor, VisitorAction};
 
 fn main() {
     /*
@@ -7,12 +7,15 @@ fn main() {
        #3 Kullanıcının ağaç ev üyesi olup olmadığını anlayan fonksiyon ve testleri eklendi.
        #4 Ziyaretçiler için karşılama mesajlarını da tutan veri yapısı eklendi.
        #5 Ziyaretçi listesine yeni arkadaşlar eklenmesi sağlandı.
+       #6 Ziyaretçilerin yaşı ve durumu(VisitorAction) için eklemeler yapıldı.
     */
     let mut visitors = get_visitors();
     loop {
         println!("Adın ne? Çıkmak için boş bırakıp Enter'a bas.");
         let player_name = get_player_name();
-        let known_visitor = visitors.iter().find(|v| v.name == player_name);
+        let known_visitor = visitors
+            .iter()
+            .find(|v| v.name.to_lowercase() == player_name.to_lowercase());
         match known_visitor {
             Some(friend) => println!("{}", friend.say_hello()),
             None => {
@@ -22,7 +25,7 @@ fn main() {
                     println!(
                         "Seni davetli listesinde bulamadım ama üzülme. Çünkü listeye eklendin :)"
                     );
-                    visitors.push(Visitor::new(&player_name, "Yeni bir arkadaşımız var :)"))
+                    visitors.push(Visitor::new(&player_name, VisitorAction::Candidate, 0))
                 }
             }
         }

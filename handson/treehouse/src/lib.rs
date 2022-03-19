@@ -21,28 +21,53 @@ pub fn is_tree_house_friend(name: &str) -> bool {
 #[derive(Debug)]
 pub struct Visitor {
     pub name: String,
-    pub wellcome: String,
+    pub action: VisitorAction,
+    pub age: i8,
 }
 
 impl Visitor {
-    pub fn new(name: &str, wellcome: &str) -> Self {
+    pub fn new(name: &str, action: VisitorAction, age: i8) -> Self {
         Self {
             name: name.to_lowercase(),
-            wellcome: wellcome.to_string(),
+            action,
+            age,
         }
     }
 
     pub fn say_hello(&self) -> String {
-        format!("Merhaba {}. {}", self.name, self.wellcome)
+        match &self.action {
+            VisitorAction::Accept => format!("Ağaç evine hoşgeldin {}", self.name),
+            VisitorAction::AcceptWithNote { note } => format!("Hoşgeşdin {}.\n{}", self.name, note),
+            VisitorAction::Candidate => {
+                format!("{} ağaç ev için ziyaretçi adayları arasında", self.name)
+            }
+            VisitorAction::Reject => {
+                format!("Üzgünüm {}. Seni geri çevirmek zorundayım.", self.name)
+            }
+        }
     }
 }
 
 pub fn get_visitors() -> Vec<Visitor> {
     vec![
-        Visitor::new("Burak", "Ağaçevine hoşgeldin."),
-        Visitor::new("Ayşe", "Kitapların seni bekliyor."),
-        Visitor::new("Mehmet", "Nerelerdeyin? Yeni bir satranç maçına var mısın?"),
+        Visitor::new("Burak", VisitorAction::Accept, 45),
+        Visitor::new(
+            "Ayşe",
+            VisitorAction::AcceptWithNote {
+                note: "Kitapların her zaman ki yerinde".to_string(),
+            },
+            35,
+        ),
+        Visitor::new("Mehmet", VisitorAction::Reject, 44),
     ]
+}
+
+#[derive(Debug)]
+pub enum VisitorAction {
+    Accept,
+    AcceptWithNote { note: String },
+    Reject,
+    Candidate,
 }
 
 #[cfg(test)]

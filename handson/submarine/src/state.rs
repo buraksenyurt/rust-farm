@@ -38,7 +38,18 @@ impl State {
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
-        todo!()
+        ctx.cls();
+        ctx.print_centered(5, "The game is over!");
+        ctx.print_centered(8, "(P) Play Again");
+        ctx.print_centered(11, "(Q) Quit");
+
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::P => self.restart(),
+                VirtualKeyCode::Q => ctx.quitting = true,
+                _ => {}
+            }
+        }
     }
 
     fn restart(&mut self) {

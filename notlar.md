@@ -121,4 +121,23 @@ fn main() {
 - Rust, C dilindeki gibi belleğin verimli, düşük maliyetli kullanımı ile yüksek performans ve Java'da ki gibi memory safe bir ortamın oluşmasını garanti edecek şekilde tasarlanmış bir derleyici kullanır.
 - 2006 yılında Mozilla çalışanlarından Grayon Hoore tarafından kişisel bir proje olarak başlamıştır. 2010'da Mozilla'nın bir araştırma projesi haline gelir. 2015 yılında Rust 1.0 sürümü yayınlanır. 2020'de Mozilla'dan [Rust Foundation'a](https://foundation.rust-lang.org/) geçer ki bu konsorsiyumun kurucu ortakları AWS, Google, Huawei, Microsoft ve elbette moz://a' dır.
 - Amazon tarafından yapılan [bir araştırmaya göre](https://aws.amazon.com/tr/blogs/opensource/sustainability-with-rust/) enerji tüketimi ve işlem süreleri açısından en verimli diller arasında C'den sonra 2nci sırada gelmektedir. Bu anlamda Java, Go, C#, Python gibi yüksek seviyeli dilleri geride bırakmıştır.
+- Trait'ler nesneler arasında fonksiyon paylaşımının bir yoludur ve diğer dillerdeki interface türüne oldukça benzerler.
+- Rust'ta standart hata yönetiminde Result tipi kullanılır. Result sonuçlarını pattern matching ile kontrol altına alabiliriz. Unwrap fonksiyonu ile doğrudan Result sonucu alınır ama hata oluştuysa program çöker. Bu yüzden çok tercih edilmemelidir. ? operatörü ile Result bir hata içeriyorsa kolayca yakalanır lakin ?'in olduğu fonksiyonun hata nesnesini döndürmesini gerektirir.
 
+```rust
+fn main() {
+    // Klasik yol
+    match work_result {
+        Ok(r) => do_something(r),
+        Err(e) => handle_error(e)
+    }  
+
+    // Option gibi Unwrap kullanımı. Lakin hata varsa program çöker
+    process_result.unwrap()
+}
+
+// ? operatörü ile
+fn apply() -> MyError {
+    do_something()?;
+}
+```

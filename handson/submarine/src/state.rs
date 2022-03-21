@@ -52,11 +52,6 @@ impl State {
 
     fn play(&mut self, ctx: &mut BTerm) {
         ctx.cls_bg(TURQUOISE);
-        // self.frame_time += ctx.frame_time_ms;
-        // if self.frame_time > FRAME_DURATION {
-        //     self.frame_time = 0.0;
-        // }
-
         if let Some(key) = ctx.key {
             match key {
                 VirtualKeyCode::Up => self.player.up(),
@@ -64,6 +59,7 @@ impl State {
                 VirtualKeyCode::Left => self.player.left(),
                 VirtualKeyCode::Right => self.player.right(),
                 VirtualKeyCode::R => self.restart(),
+                VirtualKeyCode::Escape => self.main_menu(ctx),
                 _ => {}
             }
         }
@@ -105,7 +101,7 @@ impl State {
     }
     fn end_game(&mut self, ctx: &mut BTerm) {
         ctx.cls();
-        ctx.print_centered(5, "The game is over!");
+        ctx.print_centered(3, "The game is over!");
         ctx.print_centered(8, "(P) Play Again");
         ctx.print_centered(11, "(Q) Quit");
 
@@ -125,7 +121,6 @@ impl State {
 
     fn restart(&mut self) {
         self.mode = GameMode::Playing;
-        self.player = Player::new(5, 25);
         self.frame_time = 0.0;
         self.rock = Rock::new();
     }

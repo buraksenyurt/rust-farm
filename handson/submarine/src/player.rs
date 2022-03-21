@@ -7,7 +7,6 @@ use bracket_lib::prelude::{BTerm, BLACK, GOLD, PURPLE, TURQUOISE};
 pub struct Player {
     pub x: i32,
     pub y: i32,
-    pub speed: f32,
     pub frame: usize,
     pub level: Level,
 }
@@ -17,7 +16,6 @@ impl Player {
         Self {
             x,
             y,
-            speed: 0.0,
             frame: 0,
             level: Level::Easy,
         }
@@ -35,7 +33,18 @@ impl Player {
             PURPLE,
             GOLD,
         );
-        ctx.print_color_centered(1, BLACK, TURQUOISE, &format!("{}:{}", self.x, self.y));
+        ctx.print_color_centered(
+            1,
+            BLACK,
+            TURQUOISE,
+            &format!(
+                "{}:{} Level {}({})",
+                self.x,
+                self.y,
+                self.level,
+                i32::from(&self.level)
+            ),
+        );
     }
 
     pub fn up(&mut self) {

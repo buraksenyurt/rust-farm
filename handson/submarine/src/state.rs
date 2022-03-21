@@ -19,7 +19,7 @@ impl State {
         Self {
             mode: GameMode::Menu,
             frame_time: 0.0,
-            player: Player::new(5, 25),
+            player: Player::new(0, 25),
             rock: Rock::new(),
         }
     }
@@ -56,6 +56,8 @@ impl State {
             match key {
                 VirtualKeyCode::Up => self.player.up(),
                 VirtualKeyCode::Down => self.player.down(),
+                VirtualKeyCode::Left => self.player.left(),
+                VirtualKeyCode::Right => self.player.right(),
                 VirtualKeyCode::R => self.restart(),
                 _ => {}
             }
@@ -63,8 +65,8 @@ impl State {
         self.player.render(ctx);
         self.rock = self.rock.forward(self.rock.x - 1, self.rock.y);
         self.rock.render(ctx);
-        if self.rock.x<0{
-            self.rock=Rock::new();
+        if self.rock.x < 0 {
+            self.rock = Rock::new();
             self.rock.render(ctx);
         }
         //TODO: Oyuncu karşıdan gelen kayayı vurduğunda oyun bitmesin puan artsın.

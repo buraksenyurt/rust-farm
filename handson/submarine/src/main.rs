@@ -3,6 +3,7 @@ use state::State;
 
 mod constant;
 mod game_mode;
+mod level;
 mod player;
 mod rock;
 mod state;

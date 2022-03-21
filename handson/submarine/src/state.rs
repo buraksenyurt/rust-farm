@@ -1,6 +1,7 @@
 use super::player::Player;
-use crate::constant::{FRAME_DURATION, SCREEN_HEIGHT};
+use crate::constant::SCREEN_HEIGHT;
 use crate::game_mode::GameMode;
+use crate::level::Level;
 use crate::rock::Rock;
 use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode, BLACK, TURQUOISE};
 
@@ -26,20 +27,23 @@ impl State {
         }
     }
 
-    // Oyunun menüsünü oluşturan fonksiyon
     fn main_menu(&mut self, ctx: &mut BTerm) {
+        self.mode = GameMode::Menu;
         ctx.cls(); // Ekranı temizler
                    // Menu seçeneklerini aşağıdaki gibi merkezi olarak yerleştirebiliriz.
         ctx.print_centered(5, "Submarine - Defend Your Sea");
         ctx.print_centered(8, "(P) Play");
-        ctx.print_centered(11, "(Q) Quit");
+        ctx.print_centered(11, "(C) Configuration");
+        ctx.print_centered(15, "(Q) Quit");
 
         // Kullanıcının seçimini tuşa basma usulü ile yakalayabiliriz.
         // P tuşuna basıldıysa restart fonksiyonunu çağırarak oyunun modunu Playing'e aldırmaktayız.
+        // C tuşuna basıldıysa oyun seviyesini belirleyen konfigurasyon kısmına geçilir.
         // Q tuşuna basıldığında da tahmin edileceği üzere oyun sonlanır.
         if let Some(key) = ctx.key {
             match key {
                 VirtualKeyCode::P => self.restart(),
+                VirtualKeyCode::C => self.config(ctx),
                 VirtualKeyCode::Q => ctx.quitting = true,
                 _ => {}
             }
@@ -48,12 +52,11 @@ impl State {
 
     fn play(&mut self, ctx: &mut BTerm) {
         ctx.cls_bg(TURQUOISE);
-        // Frame çizdirme hızını yavaşlattığımız kısım.
-        // Eğer belirlenen FRAME_DURATIN üstüne çıktıysak sıfırlıyoruz.
-        self.frame_time += ctx.frame_time_ms;
-        if self.frame_time > FRAME_DURATION {
-            self.frame_time = 0.0;
-        }
+        // self.frame_time += ctx.frame_time_ms;
+        // if self.frame_time > FRAME_DURATION {
+        //     self.frame_time = 0.0;
+        // }
+
         if let Some(key) = ctx.key {
             match key {
                 VirtualKeyCode::Up => self.player.up(),
@@ -81,6 +84,25 @@ impl State {
         // }
     }
 
+    fn config(&mut self, ctx: &mut BTerm) {
+        self.mode = GameMode::Config;
+        ctx.cls();
+        ctx.print_centered(3, "Choose Level");
+        ctx.print_centered(5, "(F5) Easy");
+        ctx.print_centered(8, "(F6) Medium");
+        ctx.print_centered(11, "(F7) Hard");
+        ctx.print_centered(13, "(ESC) Main Menu");
+
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::F5 => self.player.level = Level::Easy,
+                VirtualKeyCode::F6 => self.player.level = Level::Medium,
+                VirtualKeyCode::F7 => self.player.level = Level::Hard,
+                VirtualKeyCode::Escape => self.main_menu(ctx),
+                _ => {}
+            }
+        }
+    }
     fn end_game(&mut self, ctx: &mut BTerm) {
         ctx.cls();
         ctx.print_centered(5, "The game is over!");
@@ -118,6 +140,7 @@ impl GameState for State {
         match self.mode {
             GameMode::Menu => self.main_menu(ctx),
             GameMode::Playing => self.play(ctx),
+            GameMode::Config => self.config(ctx),
             GameMode::End => self.end_game(ctx),
         }
     }

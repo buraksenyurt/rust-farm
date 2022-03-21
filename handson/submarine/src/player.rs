@@ -39,15 +39,15 @@ impl Player {
 
     pub fn right(&mut self) {
         self.x += 2;
-        // if self.x >= SCREEN_WIDTH {
-        //     self.x = SCREEN_WIDTH - 2
-        // }
+        if self.x >= SCREEN_WIDTH {
+            self.x = SCREEN_WIDTH - 5
+        }
     }
 
     pub fn left(&mut self) {
         self.x -= 2;
-        // if self.x <= 2 {
-        //     self.x = 2;
-        // }
+        if self.x <= 2 {
+            self.x = 2;
+        }
     }
 }

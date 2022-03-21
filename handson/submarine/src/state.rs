@@ -2,7 +2,7 @@ use super::player::Player;
 use crate::constant::{FRAME_DURATION, SCREEN_HEIGHT};
 use crate::game_mode::GameMode;
 use crate::rock::Rock;
-use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode, TURQUOISE};
+use bracket_lib::prelude::{BTerm, GameState, VirtualKeyCode, BLACK, TURQUOISE};
 
 /// Oyunun anlık durumuna ait görüntüsünü(snapshot) tutan nesnedir.
 pub struct State {
@@ -12,6 +12,7 @@ pub struct State {
     pub frame_time: f32,
     pub player: Player,
     pub rock: Rock,
+    pub score: i32,
 }
 
 impl State {
@@ -21,6 +22,7 @@ impl State {
             frame_time: 0.0,
             player: Player::new(0, 25),
             rock: Rock::new(),
+            score: 0,
         }
     }
 
@@ -69,11 +71,14 @@ impl State {
             self.rock = Rock::new();
             self.rock.render(ctx);
         }
-        //TODO: Oyuncu karşıdan gelen kayayı vurduğunda oyun bitmesin puan artsın.
-        // Belli sayıda kayayı kaçırırsak oyun bitsin.
+        ctx.print_color(1, 1, TURQUOISE, BLACK, &format!("Hit {}", self.score));
+
         if self.rock.hit_rock(&self.player) {
-            self.mode = GameMode::End;
+            self.score += 5;
         }
+        // if self.missed > 10 {
+        //     self.mode = GameMode::End;
+        // }
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
@@ -90,7 +95,7 @@ impl State {
             }
         }
         self.player.render(ctx);
-        ctx.print(0, 0, "Upside or Down");
+        ctx.print_color(1, 1, TURQUOISE, BLACK, &format!("Hit {}", self.score));
         if self.player.y > SCREEN_HEIGHT {
             self.mode = GameMode::End
         }
@@ -115,13 +120,5 @@ impl GameState for State {
             GameMode::Playing => self.play(ctx),
             GameMode::End => self.end_game(ctx),
         }
-
-        // // Oyun penceresi ile iletişim için context'e ihtiyacımız vardır.
-        // // BTerm türünden olan ctx ile ekranı temizleyebilir
-        // // üzerine yeni nesneler konumlandırabilir ve başka etkileşimleri sağlayabiliriz.
-        // ctx.cls(); // Ekranı temizle
-        //            // Koordinat sistemine göre sol üst köşeye bir mesaj yazdırıyoruz.
-        //            // Sol üst köşe 0,0 konumu iken bracket-lib'e göre sağ alt köşe 79,49 konumudur.
-        // ctx.print(1, 1, "1,1 konumundan merhaba");
     }
 }

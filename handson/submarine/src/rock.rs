@@ -15,8 +15,8 @@ impl Rock {
         Self {
             x: SCREEN_WIDTH,
             y: random.range(0, SCREEN_HEIGHT - 5),
-            width: 2,
-            height: 2,
+            width: random.range(0, 10),
+            height: random.range(0, 10),
         }
     }
 

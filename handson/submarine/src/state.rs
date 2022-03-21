@@ -75,6 +75,7 @@ impl State {
         if self.rock.hit_rock(&self.player) {
             self.score += 5;
         }
+        //TODO Kaçırılanları hesaplayabilir miyiz?
         // if self.missed > 10 {
         //     self.mode = GameMode::End;
         // }
@@ -121,6 +122,8 @@ impl State {
 
     fn restart(&mut self) {
         self.mode = GameMode::Playing;
+        //TODO Her oyuna başladığımızda yeni Player oluştuğundan Config'deki Level seçimi sıfırlanıyor. Başka bir yol bulmam lazım.
+        // self.player=Player::new(5,25);
         self.frame_time = 0.0;
         self.rock = Rock::new();
     }

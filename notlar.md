@@ -141,3 +141,24 @@ fn apply() -> MyError {
     do_something()?;
 }
 ```
+
+- Modül bildirimlerinde modül içerisindeki enstrümanlara daha kolay ulaşmak için *prelude* standardı kullanılabilir. Örneğin,
+
+```text
+mod db;
+mod prelude{
+  pub use somelib::prelude::*;
+  pub const WIDTH:i32:80;
+  pub const HEIGHT:i32:50;
+  pub use crate::db::*;
+}
+use prelude::*;
+
+fn main(){
+  
+}
+```
+
+- Modüller ağaç yapısı şeklinde organize olurlar. *crate::* ifadesi ile root modüle çıkılır. Toml dosyasına sahip her tür rust örneği bir *crate* dir.
+- *cargo run* çağrımı arkasından kendi komut satırı argümanlarımızı göndermek istersek rust'ın diğer komut satırı enstrümanları ile karışmamaları için *--* ifadesinden yararlanabiliriz. *cargo run -- -silent -on* gibi
+- cargo aracı modülleri paralel olarak derleyebilir.

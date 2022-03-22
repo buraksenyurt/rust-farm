@@ -1,0 +1,11 @@
+[package]
+name = "hello_world"
+version = "0.1.0"
+description = "Simple Hello World App"
+authors=["Burak Selim Senyurt<selim@buraksenyurt.com>"]
+edition = "2021"
+
+[dependencies]
+log="0.4.16"
+env_logger = "0.9.0"
+

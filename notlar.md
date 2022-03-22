@@ -148,14 +148,13 @@ fn apply() -> MyError {
 mod db;
 mod prelude{
   pub use somelib::prelude::*;
-  pub const WIDTH:i32:80;
-  pub const HEIGHT:i32:50;
+  pub const WIDTH:i32=80;
+  pub const HEIGHT:i32=50;
   pub use crate::db::*;
 }
 use prelude::*;
 
-fn main(){
-  
+fn main(){ 
 }
 ```
 

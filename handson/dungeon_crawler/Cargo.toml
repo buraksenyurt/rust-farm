@@ -1,0 +1,8 @@
+[package]
+name = "dungeon_crawler"
+description = "A simple Dungeon Crawler Clone"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bracket-lib = "~0.8.1"

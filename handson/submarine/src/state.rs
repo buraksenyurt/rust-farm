@@ -1,5 +1,5 @@
 use super::player::Player;
-use crate::constant::SCREEN_HEIGHT;
+use crate::constant::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::game_mode::GameMode;
 use crate::level::Level;
 use crate::rock::Rock;
@@ -14,6 +14,7 @@ pub struct State {
     pub player: Player,
     pub rock: Rock,
     pub score: i32,
+    pub missed: u8,
 }
 
 impl State {
@@ -24,6 +25,7 @@ impl State {
             player: Player::new(0, 25),
             rock: Rock::new(),
             score: 0,
+            missed: 0,
         }
     }
 
@@ -54,10 +56,10 @@ impl State {
         ctx.cls_bg(TURQUOISE);
         if let Some(key) = ctx.key {
             match key {
-                VirtualKeyCode::Up => self.player.up(),
-                VirtualKeyCode::Down => self.player.down(),
-                VirtualKeyCode::Left => self.player.left(),
-                VirtualKeyCode::Right => self.player.right(),
+                VirtualKeyCode::Up => self.up(),
+                VirtualKeyCode::Down => self.down(),
+                VirtualKeyCode::Left => self.left(),
+                VirtualKeyCode::Right => self.right(),
                 VirtualKeyCode::R => self.restart(),
                 VirtualKeyCode::Escape => self.main_menu(ctx),
                 _ => {}
@@ -70,15 +72,26 @@ impl State {
             self.rock = Rock::new();
             self.rock.render(ctx);
         }
-        ctx.print_color(1, 1, TURQUOISE, BLACK, &format!("Hit {}", self.score));
+        ctx.print_color(
+            1,
+            1,
+            TURQUOISE,
+            BLACK,
+            &format!("Hit {} Missed {}", self.score, self.missed),
+        );
 
-        if self.rock.hit_rock(&self.player) {
+        if self.hit_rock(&self.player) {
             self.score += 5;
         }
+
         //TODO Kaçırılanları hesaplayabilir miyiz?
         // if self.missed > 10 {
         //     self.mode = GameMode::End;
         // }
+    }
+
+    pub fn hit_rock(&self, player: &Player) -> bool {
+        player.x == self.rock.x && (player.y > self.rock.y - 5 && player.y < self.rock.y + 5)
     }
 
     fn config(&mut self, ctx: &mut BTerm) {
@@ -98,6 +111,7 @@ impl State {
                 VirtualKeyCode::Escape => self.main_menu(ctx),
                 _ => {}
             }
+            self.score = 0;
         }
     }
     fn end_game(&mut self, ctx: &mut BTerm) {
@@ -126,6 +140,34 @@ impl State {
         // self.player=Player::new(5,25);
         self.frame_time = 0.0;
         self.rock = Rock::new();
+    }
+
+    pub fn up(&mut self) {
+        self.player.y -= i32::from(&self.player.level);
+        if self.player.y <= 2 {
+            self.player.y = 2;
+        }
+    }
+
+    pub fn down(&mut self) {
+        self.player.y += i32::from(&self.player.level);
+        if self.player.y >= SCREEN_HEIGHT {
+            self.player.y = SCREEN_HEIGHT - 1;
+        }
+    }
+
+    pub fn right(&mut self) {
+        self.player.x += i32::from(&self.player.level);
+        if self.player.x >= SCREEN_WIDTH {
+            self.player.x = SCREEN_WIDTH - 5
+        }
+    }
+
+    pub fn left(&mut self) {
+        self.player.x -= i32::from(&self.player.level);
+        if self.player.x <= 2 {
+            self.player.x = 2;
+        }
     }
 }
 

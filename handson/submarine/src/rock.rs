@@ -1,5 +1,4 @@
 use crate::constant::{SCREEN_HEIGHT, SCREEN_WIDTH};
-use crate::player::Player;
 use bracket_lib::prelude::{BTerm, RandomNumberGenerator, BLACK, RED};
 
 pub struct Rock {
@@ -22,10 +21,6 @@ impl Rock {
 
     pub fn render(&mut self, ctx: &mut BTerm) {
         ctx.draw_box(self.x, self.y, self.width, self.height, RED, BLACK);
-    }
-
-    pub fn hit_rock(&self, player: &Player) -> bool {
-        player.x == self.x && (player.y > self.y - 5 && player.y < self.y + 5)
     }
 
     pub fn forward(&mut self, x: i32, y: i32) -> Self {

@@ -1,4 +1,4 @@
-use crate::constant::{SCREEN_HEIGHT, SCREEN_WIDTH, SUBMARINE_DIMENSION};
+use crate::constant::SUBMARINE_DIMENSION;
 use crate::level::Level;
 use bracket_lib::prelude::{BTerm, BLACK, GOLD, PURPLE, TURQUOISE};
 
@@ -45,33 +45,5 @@ impl Player {
                 i32::from(&self.level)
             ),
         );
-    }
-
-    pub fn up(&mut self) {
-        self.y -= i32::from(&self.level);
-        if self.y <= 2 {
-            self.y = 2;
-        }
-    }
-
-    pub fn down(&mut self) {
-        self.y += i32::from(&self.level);
-        if self.y >= SCREEN_HEIGHT {
-            self.y = SCREEN_HEIGHT - 1;
-        }
-    }
-
-    pub fn right(&mut self) {
-        self.x += i32::from(&self.level);
-        if self.x >= SCREEN_WIDTH {
-            self.x = SCREEN_WIDTH - 5
-        }
-    }
-
-    pub fn left(&mut self) {
-        self.x -= i32::from(&self.level);
-        if self.x <= 2 {
-            self.x = 2;
-        }
     }
 }

@@ -14,7 +14,6 @@ pub struct State {
     pub player: Player,
     pub rock: Rock,
     pub score: i32,
-    pub missed: u8,
 }
 
 impl State {
@@ -25,7 +24,6 @@ impl State {
             player: Player::new(0, 25),
             rock: Rock::new(),
             score: 0,
-            missed: 0,
         }
     }
 
@@ -72,26 +70,26 @@ impl State {
             self.rock = Rock::new();
             self.rock.render(ctx);
         }
-        ctx.print_color(
-            1,
-            1,
-            TURQUOISE,
-            BLACK,
-            &format!("Hit {} Missed {}", self.score, self.missed),
-        );
+        ctx.print_color(1, 1, TURQUOISE, BLACK, &format!("Hit {}", self.score));
 
-        if self.hit_rock(&self.player) {
-            self.score += 5;
-        }
-
-        //TODO Kaçırılanları hesaplayabilir miyiz?
-        // if self.missed > 10 {
-        //     self.mode = GameMode::End;
-        // }
+        self.collision_check();
     }
 
-    pub fn hit_rock(&self, player: &Player) -> bool {
-        player.x == self.rock.x && (player.y > self.rock.y - 5 && player.y < self.rock.y + 5)
+    /*
+       y
+       |
+       |
+       |
+       |
+     (0.0)_ _ _ _ _ _ _ > x
+    */
+
+    pub fn collision_check(&mut self) {
+        if self.player.x == self.rock.x
+            && (self.player.y > self.rock.y - 5 && self.player.y < self.rock.y + 5)
+        {
+            self.score += 5;
+        }
     }
 
     fn config(&mut self, ctx: &mut BTerm) {
@@ -136,8 +134,6 @@ impl State {
 
     fn restart(&mut self) {
         self.mode = GameMode::Playing;
-        //TODO Her oyuna başladığımızda yeni Player oluştuğundan Config'deki Level seçimi sıfırlanıyor. Başka bir yol bulmam lazım.
-        // self.player=Player::new(5,25);
         self.frame_time = 0.0;
         self.rock = Rock::new();
     }

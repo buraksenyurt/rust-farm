@@ -22,4 +22,26 @@ impl Adventurer {
             to_cp437('A'),
         )
     }
+
+    // go fonksiyonunda basılan yön tuşlarına göre oyuncunun,
+    // oyun sahasındaki yeni bir konuma 1er birim hareketinin kontrolü söz konusu.
+    // Öncelikle Context üstünden basılan tuş yakalanıyor.
+    // Tuşun yönüne göre x,y değerleri için birer fark belirleniyor.
+    // Yeni konum bilgisi hareket etmek için müsait mi can_enter_tile fonksiyonu ile bakılıyor.
+    // Müsaitlik varsa oyuncunun yeni pozisyonu delta birimi kadar artırılan yeni konum oluyor.
+    pub fn go(&mut self, ctx: &mut BTerm, map: &Map) {
+        if let Some(key) = ctx.key {
+            let delta = match key {
+                VirtualKeyCode::Left => Point::new(-1, 0),
+                VirtualKeyCode::Right => Point::new(1, 0),
+                VirtualKeyCode::Up => Point::new(0, -1),
+                VirtualKeyCode::Down => Point::new(0, 1),
+                _ => Point::zero(),
+            };
+            let new_location = self.location + delta;
+            if map.can_enter_tile(new_location) {
+                self.location = new_location;
+            }
+        }
+    }
 }

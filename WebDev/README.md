@@ -29,3 +29,12 @@ RUST_LOG=info cargo run set -a delete -t "Odayı Temizle" -v 8
 
 ![./images/day_1_2.png](./images/day_1_2.png)
 
+# Gün 2 Denemeleri
+
+```bash
+# actix'in en basit kullanım şeklinin ele alındığı actix_hw
+cargo run
+```
+
+![./images/day_2_1.png](./images/day_2_1.png)
+

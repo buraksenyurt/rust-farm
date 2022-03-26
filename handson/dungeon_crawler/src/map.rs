@@ -6,6 +6,7 @@ use crate::prelude::*;
 const NUMBER_OF_TILES: usize = { SCHENE_WIDTH * SCHENE_HEIGHT } as usize;
 
 // Haritadaki hücrelerin tipleri. Duvar olabilir veya bir zemindir.
+#[derive(Copy, Clone)]
 pub enum TileType {
     Wall,
     Floor,
@@ -30,12 +31,12 @@ impl Map {
     // Ekran koordinatlarını dolaşırken, x,y karşılığı olan indis değerini bulur,
     // bu değerin karşılığı olan vector alanının tipine bakarak bir şey çizer.
     pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCHENE_WIDTH {
-            for x in 0..SCHENE_HEIGHT {
+        for y in 0..SCHENE_HEIGHT {
+            for x in 0..SCHENE_WIDTH {
                 let index = map_to_index(x, y);
                 match self.tiles[index] {
                     TileType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('X')),
-                    TileType::Floor => ctx.set(x, y, RED, BLACK, to_cp437('X')),
+                    TileType::Floor => ctx.set(x, y, RED, BLACK, to_cp437('_')),
                 }
             }
         }

@@ -1,4 +1,4 @@
-use crate::prelude::{BTerm, GameState, Map};
+use crate::prelude::*;
 
 // State tutan veri yapımız
 pub struct State {

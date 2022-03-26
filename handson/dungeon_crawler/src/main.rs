@@ -1,4 +1,5 @@
-use crate::prelude::{main_loop, BError, BTermBuilder, State};
+use crate::prelude::*;
+mod adventurer;
 mod map;
 mod state;
 
@@ -11,6 +12,7 @@ mod prelude {
     pub use bracket_lib::prelude::*;
     pub const SCHENE_WIDTH: i32 = 80;
     pub const SCHENE_HEIGHT: i32 = 50;
+    pub use crate::adventurer::*;
     pub use crate::map::*;
     pub use crate::state::*;
 }

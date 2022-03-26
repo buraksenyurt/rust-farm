@@ -8,9 +8,11 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
+        let mut gen = RandomNumberGenerator::new();
+        let map_builder = MapBuilder::new(&mut gen);
         Self {
-            map: Map::new(),
-            hero: Adventurer::new(Point::new(1, 1)),
+            map: map_builder.map,
+            hero: Adventurer::new(map_builder.hero_start),
         }
     }
 }

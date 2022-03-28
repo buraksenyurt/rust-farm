@@ -26,8 +26,8 @@ impl State {
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         ctx.cls(); // Sahneyi sil
-        self.hero.go(ctx, &self.map); // 1,1 konumuna oyuncuyu ekle
+        self.hero.go(ctx, &self.map, &mut self.visor); // 1,1 konumuna oyuncuyu ekle
         self.map.render(ctx, &self.visor); // Haritayı kamerayı kullanarak çiz
-        self.hero.render(ctx); // Oyuncuyu çiz
+        self.hero.render(ctx, &self.visor); // Oyuncuyu çiz
     }
 }

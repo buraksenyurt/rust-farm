@@ -1,5 +1,6 @@
 use crate::prelude::*;
 mod adventurer;
+mod camera;
 mod map;
 mod map_builder;
 mod state;
@@ -16,6 +17,7 @@ mod prelude {
     pub const DISPLAY_HEIGHT: i32 = SCHENE_HEIGHT / 2;
     pub const FONT_SOURCE: &str = "gamefonts.png";
     pub use crate::adventurer::*;
+    pub use crate::camera::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
     pub use crate::state::*;

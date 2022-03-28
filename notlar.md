@@ -161,3 +161,4 @@ fn main(){
 - Modüller ağaç yapısı şeklinde organize olurlar. *crate::* ifadesi ile root modüle çıkılır. Toml dosyasına sahip her tür rust örneği bir *crate* dir.
 - *cargo run* çağrımı arkasından kendi komut satırı argümanlarımızı göndermek istersek rust'ın diğer komut satırı enstrümanları ile karışmamaları için *--* ifadesinden yararlanabiliriz. *cargo run -- -silent -on* gibi
 - cargo aracı modülleri paralel olarak derleyebilir.
+- Pek çok dilde tek bir string türü vardır. Rust'ın iki string türü ile ilgilendiğini söyleyebiliriz. Birisi kendi değerine sahip çıkan ve heap'i kullanan String, diğeri de bir String içeriğindeki parçaları ifade edebilen referans string, yani &str.

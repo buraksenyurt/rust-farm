@@ -1,9 +1,11 @@
 use crate::prelude::*;
 
-// State tutan veri yapımız
+// State tutan veri yapısı.
+// Haritayı, oyuncuyu ve kamerayı tutmakta.
 pub struct State {
     map: Map,
     hero: Adventurer,
+    visor: Camera,
 }
 
 impl State {
@@ -13,6 +15,7 @@ impl State {
         Self {
             map: map_builder.map,
             hero: Adventurer::new(map_builder.hero_start),
+            visor:Camera::new(map_builder.hero_start)
         }
     }
 }

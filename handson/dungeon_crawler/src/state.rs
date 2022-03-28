@@ -25,7 +25,10 @@ impl State {
 // Her tiklemede sahnenin çizilmesi, karakterlerin hareketi, kural kontrolleri vs yapabiliriz.
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(0); // sahneye ilk console layer'ı ekle
         ctx.cls(); // Sahneyi sil
+        ctx.set_active_console(1); // İkinci console layer'ı da ekle
+        ctx.cls();
         self.hero.go(ctx, &self.map, &mut self.visor); // 1,1 konumuna oyuncuyu ekle
         self.map.render(ctx, &self.visor); // Haritayı kamerayı kullanarak çiz
         self.hero.render(ctx, &self.visor); // Oyuncuyu çiz

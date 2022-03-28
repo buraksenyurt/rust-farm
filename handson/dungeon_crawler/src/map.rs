@@ -46,9 +46,13 @@ impl Map {
                             BLACK,
                             to_cp437('#'),
                         ),
-                        TileType::Floor => {
-                            ctx.set(x - visor.left_x, y - visor.top_y, RED, BLACK, to_cp437('.'))
-                        }
+                        TileType::Floor => ctx.set(
+                            x - visor.left_x,
+                            y - visor.top_y,
+                            WHITE,
+                            BLACK,
+                            to_cp437('.'),
+                        ),
                     }
                 }
             }

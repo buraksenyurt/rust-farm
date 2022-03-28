@@ -51,18 +51,41 @@ fn main() {
 
        Kod sorunsuz derlenip çalışacaktır.
     */
+    // for i in 1..50 {
+    //     let i_value;
+    //     let word = if i % 3 == 0 {
+    //         "Fizz"
+    //     } else if i % 5 == 0 {
+    //         "Buzz"
+    //     } else if i % 15 == 0 {
+    //         "FizzBuzz"
+    //     } else {
+    //         i_value = i.to_string();
+    //         &*i_value
+    //     };
+    //     print!("{} ", word);
+    // }
+
+    /*
+       Version #4.
+
+       Bu sefer sayının fizz buzz veya fizzbuzz olma durumunu bir fonksiyona devrediyoruz.
+    */
     for i in 1..50 {
-        let i_value;
-        let word = if i % 3 == 0 {
-            "Fizz"
-        } else if i % 5 == 0 {
-            "Buzz"
-        } else if i % 15 == 0 {
-            "FizzBuzz"
-        } else {
-            i_value = i.to_string();
-            &*i_value
-        };
-        print!("{} ", word);
+        print!("{} ", check(i));
+    }
+}
+
+fn check(i: i32) -> &str {
+    let i_value;
+    if i % 3 == 0 {
+        "Fizz"
+    } else if i % 5 == 0 {
+        "Buzz"
+    } else if i % 15 == 0 {
+        "FizzBuzz"
+    } else {
+        i_value = i.to_string();
+        &*i_value
     }
 }

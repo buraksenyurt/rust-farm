@@ -70,13 +70,37 @@ fn main() {
        Version #4.
 
        Bu sefer sayının fizz buzz veya fizzbuzz olma durumunu bir fonksiyona devrediyoruz.
+       Lakin missing lifetimes specifier hatasına takılacağız.
+
+       Version #5.
+       Sorunu çözmek için 'a ile lifetime açık bir şekilde belirtilir. Fakat bu sefer
+       i_value değişkeni yan çizer. Nitekim i_value'nun sahiplendiği bir değere ait referans,
+       fonksiyondan geriye döndürülmeye çalışılmaktadır. Rust bu duruma müsaade etmez.
+
+       returns a value referencing data owned by the current function
     */
     for i in 1..50 {
         print!("{} ", check(i));
     }
 }
 
-fn check(i: i32) -> &str {
+// Version #4
+// fn check(i: i32) -> &str {
+//     let i_value;
+//     if i % 3 == 0 {
+//         "Fizz"
+//     } else if i % 5 == 0 {
+//         "Buzz"
+//     } else if i % 15 == 0 {
+//         "FizzBuzz"
+//     } else {
+//         i_value = i.to_string();
+//         &*i_value
+//     }
+// }
+
+// Version #5
+fn check<'live_long_and_well>(i: i32) -> &'live_long_and_well str {
     let i_value;
     if i % 3 == 0 {
         "Fizz"

@@ -24,3 +24,17 @@ Derleyici hata mesajında i'yi bir değişkende saklamayı önerir. Örnek buna 
 
 ![../images/fizz_buzz_4.png](../images/fizz_buzz_4.png)
 
+_Aslında if koşullarının tamamında .to_string() kullanarak hiç &str'yi hesaba katmadan da ilerlenebilir. Lakin bu durumda birçok String değişkeni için bellekte yer ayrılmasına sebebiyet veririz ki çalışma zamanı maliyetini yükseltecektir. Dolayısıyla bu seçeneği hiç hesaba katmamak lazım._
+
+## missing lifetime specifier
+
+String kullanımının getireceği maliyet sebebiyle &str kullanımında kararlıyız. Şimdi sayının karşılığını bulmak için bu işi bir fonksiyona devredelim. 4ncü versiyonda bu durumu ele alıyoruz. Ancak bu sefer de lifetime ihlali söz konusu olacaktır.
+
+![../images/fizz_buzz_5.png](../images/fizz_buzz_5.png)
+
+## returns a value referencing data owned by the current function
+
+Sorunu çözmek için fonksiyonda da lifetime'ı açıkça belirtmeyi deneyebiliriz. Bu seferde 5nci versiyondaki hata ile karşılaşırız.
+
+![../images/fizz_buzz_6.png](../images/fizz_buzz_6.png)
+

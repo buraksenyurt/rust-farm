@@ -12,14 +12,16 @@ impl Adventurer {
     }
 
     // Oyunucuyu sahaya çizmek için kullanılan render fonksiyonu.
-    // x,y bilgilerine göre siyah zemin üstüne beyaz renkte bir A harfi basmakta.
-    pub fn render(&self, ctx: &mut BTerm) {
+    // x,y bilgilerine göre @ sembolünün karşılığı olan figürü, builder'da belirttiğimiz
+    // png kaynağından bulup basmakta. Konumlandırma kameranın bakış açısına göre yapılıyor.
+    pub fn render(&self, ctx: &mut BTerm, visor: &Camera) {
+        ctx.set_active_console(1);
         ctx.set(
-            self.location.x,
-            self.location.y,
+            self.location.x - visor.left_x,
+            self.location.y - visor.top_y,
             WHITE,
             BLACK,
-            to_cp437('A'),
+            to_cp437('@'),
         )
     }
 
@@ -29,7 +31,8 @@ impl Adventurer {
     // Tuşun yönüne göre x,y değerleri için birer fark belirleniyor.
     // Yeni konum bilgisi hareket etmek için müsait mi can_enter_tile fonksiyonu ile bakılıyor.
     // Müsaitlik varsa oyuncunun yeni pozisyonu delta birimi kadar artırılan yeni konum oluyor.
-    pub fn go(&mut self, ctx: &mut BTerm, map: &Map) {
+    // Bu işlemin arkasında kamera açısının da değiştirilmesi için on_move fonksiyonu çağırılıyor.
+    pub fn go(&mut self, ctx: &mut BTerm, map: &Map, visor: &mut Camera) {
         if let Some(key) = ctx.key {
             let delta = match key {
                 VirtualKeyCode::Left => Point::new(-1, 0),
@@ -41,6 +44,7 @@ impl Adventurer {
             let new_location = self.location + delta;
             if map.can_enter_tile(new_location) {
                 self.location = new_location;
+                visor.on_move(new_location);
             }
         }
     }

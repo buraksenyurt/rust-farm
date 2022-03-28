@@ -29,7 +29,30 @@ fn main() {
 
        temporary value dropped while borrowed
     */
+    // for i in 1..50 {
+    //     let word = if i % 3 == 0 {
+    //         "Fizz"
+    //     } else if i % 5 == 0 {
+    //         "Buzz"
+    //     } else if i % 15 == 0 {
+    //         "FizzBuzz"
+    //     } else {
+    //         &*i.to_string()
+    //     };
+    //     print!("{} ", word);
+    // }
+
+    /*
+       Version #3.
+
+       i değeri için ayrı bir değişken tanımlanır.
+       to_string() ile i bu değişkende tutulur.
+       i_value değişkeninin ömrü &str referansının kullanılması için yeterlidir.
+
+       Kod sorunsuz derlenip çalışacaktır.
+    */
     for i in 1..50 {
+        let i_value;
         let word = if i % 3 == 0 {
             "Fizz"
         } else if i % 5 == 0 {
@@ -37,7 +60,8 @@ fn main() {
         } else if i % 15 == 0 {
             "FizzBuzz"
         } else {
-            &*i.to_string()
+            i_value = i.to_string();
+            &*i_value
         };
         print!("{} ", word);
     }

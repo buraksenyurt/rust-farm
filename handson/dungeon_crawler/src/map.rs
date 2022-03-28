@@ -28,15 +28,28 @@ impl Map {
     }
 
     // Bu fonksiyon haritayı ekrana çizmek için kullanılır.
+    // Oyuna eklenen kamerayı kullanarak kameranın baktığı alan için bir render işlemi uygular.
     // Ekran koordinatlarını dolaşırken, x,y karşılığı olan indis değerini bulur,
     // bu değerin karşılığı olan vector alanının tipine bakarak bir şey çizer.
-    pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCHENE_HEIGHT {
-            for x in 0..SCHENE_WIDTH {
-                let index = map_to_index(x, y);
-                match self.tiles[index] {
-                    TileType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('X')),
-                    TileType::Floor => ctx.set(x, y, RED, BLACK, to_cp437('_')),
+    pub fn render(&self, ctx: &mut BTerm, visor: &Camera) {
+        // main fonksiyonundaki builder'daki ilk console layer'ı kullanacağımızı söyledik.
+        ctx.set_active_console(0);
+        for y in visor.top_y..visor.bottom_y {
+            for x in visor.left_x..visor.right_x {
+                if self.is_in_bounds(Point::new(x, y)) {
+                    let index = map_to_index(x, y);
+                    match self.tiles[index] {
+                        TileType::Wall => ctx.set(
+                            x - visor.left_x,
+                            y - visor.top_y,
+                            WHITE,
+                            BLACK,
+                            to_cp437('#'),
+                        ),
+                        TileType::Floor => {
+                            ctx.set(x - visor.left_x, y - visor.top_y, RED, BLACK, to_cp437('.'))
+                        }
+                    }
                 }
             }
         }

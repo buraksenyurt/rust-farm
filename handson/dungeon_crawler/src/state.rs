@@ -15,7 +15,7 @@ impl State {
         Self {
             map: map_builder.map,
             hero: Adventurer::new(map_builder.hero_start),
-            visor:Camera::new(map_builder.hero_start)
+            visor: Camera::new(map_builder.hero_start),
         }
     }
 }
@@ -27,7 +27,7 @@ impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         ctx.cls(); // Sahneyi sil
         self.hero.go(ctx, &self.map); // 1,1 konumuna oyuncuyu ekle
-        self.map.render(ctx); // Haritayı çiz
+        self.map.render(ctx, &self.visor); // Haritayı kamerayı kullanarak çiz
         self.hero.render(ctx); // Oyuncuyu çiz
     }
 }

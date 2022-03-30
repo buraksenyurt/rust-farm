@@ -1,3 +1,5 @@
+mod fermat;
+
 fn main() {
     /*
        Version #1.
@@ -75,13 +77,21 @@ fn main() {
        Version #5.
        Sorunu çözmek için 'a ile lifetime açık bir şekilde belirtilir. Fakat bu sefer
        i_value değişkeni yan çizer. Nitekim i_value'nun sahiplendiği bir değere ait referans,
-       fonksiyondan geriye döndürülmeye çalışılmaktadır. Rust bu duruma müsaade etmez.
+       fonksiyondan geriye döndürülmeye çalışılmaktadır. Oysa ki değişkenin zaten fonksiyon
+       içerisinde bir sahibi bulunmakta. Rust bu duruma müsaade etmez.
 
        returns a value referencing data owned by the current function
     */
-    for i in 1..50 {
-        print!("{} ", check(i));
-    }
+    // for i in 1..50 {
+    //     print!("{} ", check(i));
+    // }
+
+    /*
+       Version #6
+
+       Enum veri türü destekli Fizz Buzz çözümü.
+       Bu sefer sayı durumunu String veya &str ile değil bir enum veri yapısı ile temsil ediyoruz.
+    */
 }
 
 // Version #4
@@ -99,17 +109,17 @@ fn main() {
 //     }
 // }
 
-// Version #5
-fn check<'live_long_and_well>(i: i32) -> &'live_long_and_well str {
-    let i_value;
-    if i % 3 == 0 {
-        "Fizz"
-    } else if i % 5 == 0 {
-        "Buzz"
-    } else if i % 15 == 0 {
-        "FizzBuzz"
-    } else {
-        i_value = i.to_string();
-        &*i_value
-    }
-}
+// // Version #5
+// fn check<'live_long_and_well>(i: i32) -> &'live_long_and_well str {
+//     let i_value;
+//     if i % 3 == 0 {
+//         "Fizz"
+//     } else if i % 5 == 0 {
+//         "Buzz"
+//     } else if i % 15 == 0 {
+//         "FizzBuzz"
+//     } else {
+//         i_value = i.to_string();
+//         &*i_value
+//     }
+// }

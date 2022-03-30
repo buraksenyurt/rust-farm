@@ -24,4 +24,5 @@
 - [x] __dublerver     :__ Bir uygulamada iki TcpListener kullanmak.
 - [x] __wordle        :__ Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
 - [x] __clappy        :__ Terminal satırından argüman okumak için kullanılan [**clap**](https://crates.io/crates/clap) isimli popüler bir küfeye *(crate)* bakıyorum.
-- [ ] **fizz_buzz:** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
+- [x] **fizz_buzz:** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
+- [x] **fizz_bench:** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.

@@ -38,3 +38,12 @@ Sorunu çözmek için fonksiyonda da lifetime'ı açıkça belirtmeyi deneyebili
 
 ![../images/fizz_buzz_6.png](../images/fizz_buzz_6.png)
 
+Kaçınmak istesekte sanki en iyi çözüm fonksiyondan String döndürmektir...Immm...Aslında daha iyi bir çözüm var. Rust'ın zengin enum veri yapısını kullanabiliriz.
+
+## Enum ile FizzBuzz
+
+Enum sabiti kullanarak olasılıkları sabitlediğimiz örneğin çalışma zamanı çıktıları.
+
+![../images/fizz_buzz_7.png](../images/fizz_buzz_7.png)
+
+Kaynak olarak kullandığım eşsiz doküman: [https://chrismorgan.info/blog/rust-fizzbuzz/](https://chrismorgan.info/blog/rust-fizzbuzz/)

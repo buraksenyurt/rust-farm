@@ -1,0 +1,14 @@
+[package]
+name = "fizz_bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+criterion={version="0.3.5",features=["html_reports"]}
+
+[[bench]]
+name="measurements"
+# built-in benchmark'ları kapatmak için false değeri atandı
+harness=false

@@ -11,12 +11,12 @@ fn main() {
        `if` and `else` have incompatible types
     */
     // for i in 1..50 {
-    //     let word = if i % 3 == 0 {
+    //     let word = if i % 15 == 0 {
+    //         "FizzBuzz"
+    //     } else if i % 3 == 0 {
     //         "Fizz"
     //     } else if i % 5 == 0 {
     //         "Buzz"
-    //     } else if i % 15 == 0 {
-    //         "FizzBuzz"
     //     } else {
     //         i.to_string()
     //     };
@@ -32,12 +32,12 @@ fn main() {
        temporary value dropped while borrowed
     */
     // for i in 1..50 {
-    //     let word = if i % 3 == 0 {
+    //     let word = if i % 15 == 0 {
+    //         "FizzBuzz"
+    //     } else if i % 3 == 0 {
     //         "Fizz"
     //     } else if i % 5 == 0 {
     //         "Buzz"
-    //     } else if i % 15 == 0 {
-    //         "FizzBuzz"
     //     } else {
     //         &*i.to_string()
     //     };
@@ -55,12 +55,12 @@ fn main() {
     */
     // for i in 1..50 {
     //     let i_value;
-    //     let word = if i % 3 == 0 {
+    //     let word = if i % 15 == 0 {
+    //         "FizzBuzz"
+    //     } else if i % 3 == 0 {
     //         "Fizz"
     //     } else if i % 5 == 0 {
     //         "Buzz"
-    //     } else if i % 15 == 0 {
-    //         "FizzBuzz"
     //     } else {
     //         i_value = i.to_string();
     //         &*i_value
@@ -97,27 +97,27 @@ fn main() {
 // Version #4
 // fn check(i: i32) -> &str {
 //     let i_value;
-//     if i % 3 == 0 {
+//     if i % 15 == 0 {
+//         "FizzBuzz"
+//     } else if i % 3 == 0 {
 //         "Fizz"
 //     } else if i % 5 == 0 {
 //         "Buzz"
-//     } else if i % 15 == 0 {
-//         "FizzBuzz"
 //     } else {
 //         i_value = i.to_string();
 //         &*i_value
 //     }
 // }
 
-// // Version #5
+// Version #5
 // fn check<'live_long_and_well>(i: i32) -> &'live_long_and_well str {
 //     let i_value;
-//     if i % 3 == 0 {
+//     if i % 15 == 0 {
+//         "FizzBuzz"
+//     } else if i % 3 == 0 {
 //         "Fizz"
 //     } else if i % 5 == 0 {
 //         "Buzz"
-//     } else if i % 15 == 0 {
-//         "FizzBuzz"
 //     } else {
 //         i_value = i.to_string();
 //         &*i_value

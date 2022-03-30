@@ -92,6 +92,17 @@ fn main() {
        Enum veri türü destekli Fizz Buzz çözümü.
        Bu sefer sayı durumunu String veya &str ile değil bir enum veri yapısı ile temsil ediyoruz.
     */
+    // get_fizz_buzz fonksiyonunu aşağıdaki gibi kullanabiliriz
+    for i in 1..50 {
+        print!("{} ", fermat::get_fizz_buzz(i));
+    }
+    println!();
+
+    // ama bir map fonksiyonuna parametre olarak vererek de kullanabiliriz
+    for f in (1..50).map(fermat::get_fizz_buzz) {
+        print!("{} ", f);
+    }
+    println!();
 }
 
 // Version #4

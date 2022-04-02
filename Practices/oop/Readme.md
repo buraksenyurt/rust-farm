@@ -10,6 +10,8 @@ cargo new rusty
 
 Çalışmadaki amaç **OOP-Object Oriented Programming*** prensiplerinin Rust tarafında uygulanıp uygulanamayacağını görmek.
 
+## Basit Nesne Tasarımı ve Override
+
 İlk olarak dotnet tarafındaki console uygulamasını ele alalım. Bir oyundaki robotu temsile edecek veri yapısını kuvvetle muhtemel bir sınıf olarak tasarlarız.
 
 ```csharp
@@ -159,3 +161,92 @@ Rust örneğinin çalışma zamanı çıktısı da aşağıdaki gibi olacaktır.
 
 ![../images/oop_2.png](../images/oop_2.png)
 
+## Kalıtım(Inheritance) Durumu
+
+Gelelim nesne yönelimli programlamanın önemli kavramlarından birisi olan türetmeye. Bunu için dotnet tarafındaki uygulamamızı değiştirerek ilereyelim. Örneğin Robot haricinde Submarine şeklinde bir sınıfımız da olsun. Her ikisinin ortak özellik ve fonksiyonlarını bir üst sınıfta toplayalım. Vehicle tipik bir abstract sınıf rolünde. Robot ve Submarine sınıfları ortak özellikleri ve örneğin yapıcı metot için bu sınıfa geliyorlar.
+
+```csharp
+Robot tars = new Robot("TARS", 80);
+Console.WriteLine(tars.ToString());
+tars.LoadFuel(10);
+Console.WriteLine(tars.ToString());
+tars.Walk(23, -51);
+Console.WriteLine(tars.ToString());
+
+Submarine u12 = new Submarine("u12", 1200);
+Console.WriteLine(u12.ToString());
+u12.LoadFuel(10);
+Console.WriteLine(u12.ToString());
+u12.Dive(800);
+Console.WriteLine(u12.ToString());
+
+enum State
+{
+    Online,
+    OutOfService,
+    OnTheMove,
+    Dive,
+    Destroyed
+}
+class Vehicle
+{
+    public string Name { get; set; }
+    public float FuelLevel { get; set; }
+    protected State State { get; set; }
+
+    public Vehicle(string name, float fuelLevel)
+    {
+        Name = name;
+        FuelLevel = fuelLevel;
+        State = State.Online;
+    }
+    public override string ToString()
+    {
+        return $"{this.Name}. Yakıt {this.FuelLevel}. Durum {this.State}";
+    }
+    public void LoadFuel(float amount)
+    {
+        Console.WriteLine($"{amount} litre yakıt yükleniyor...");
+        this.FuelLevel += amount;
+    }
+}
+
+class Robot
+    : Vehicle
+{
+    public Robot(string name, float fuel)
+        : base(name, fuel)
+    {
+    }
+
+    public void Walk(float x, float y)
+    {
+        Console.WriteLine($"{x},{y} noktasında hareket halinde");
+        this.State = State.OnTheMove;
+    }
+}
+
+class Submarine
+    : Vehicle
+{
+    public Submarine(string name, float fuel)
+        : base(name, fuel)
+    {
+    }
+    public void Dive(int depth)
+    {
+        Console.WriteLine($"{depth} metreye dalıyor");
+        this.State = State.Dive;
+    }
+}
+```
+
+Bu örneği çalıştırdığımızda aşağıdaki gibi sonuçlar alırız.
+
+![../images/oop_3.png](../images/oop_3.png)
+
+Kalıtımı kullanmanın sebepleri arasında tekrarlı kod bloklarını engellemeyi, türler için ortak olan özellik ve fonksiyonellikleri bir noktada toplamayı sayabiliriz. Gerçi ben sınıf bazlı kalıtım yerine Interface kullanmaktan ve ille de gerekiyorsa ortak özellik ve fonksiyonları tutan sınıfların alt sınıflarda birer özellik olarak kullanılmasından yanayım. Ancak bu tartışmaya açık bir konu. Biz şimdi rust cephesinden duruma bir bakalım. Rust tarafında bu tip bir kalıtım formasyonu yok ama ortak fonksiyonellikleri birer davranış gibi düşünürsek trait şeklinde tanımlayabiliriz.
+
+```rust
+
+```

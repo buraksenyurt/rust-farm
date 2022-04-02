@@ -1,3 +1,3 @@
-pub async fn update()-> String{
-    format!("View - Kitap güncelleme işleri")
+pub async fn update() -> String {
+    "View - Kitap güncelleme işleri".to_string()
 }

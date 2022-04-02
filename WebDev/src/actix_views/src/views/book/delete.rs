@@ -1,3 +1,3 @@
-pub async fn delete() -> String{
-    format!("View - Kitap silme işleri")
+pub async fn delete() -> String {
+    "View - Kitap silme işleri".to_string()
 }

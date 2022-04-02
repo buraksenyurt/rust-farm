@@ -1,3 +1,3 @@
-pub async fn create() -> String{
-    format!("View - Kitap ekleme işleri.")
+pub async fn create() -> String {
+    "View - Kitap ekleme işleri.".to_string()
 }

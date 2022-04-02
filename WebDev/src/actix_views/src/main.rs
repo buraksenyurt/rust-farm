@@ -6,8 +6,7 @@ mod views;
 async fn main() -> std::io::Result<()> {
     //Standart olarak belli bir ip:port üstünden web sunucusunu başlatıyoruz.
     HttpServer::new(|| {
-        let app = App::new();
-        return app;
+        App::new()
     })
     .bind("0.0.0.0:8000")?
     .run()

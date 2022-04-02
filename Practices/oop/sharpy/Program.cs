@@ -1,53 +1,73 @@
-﻿var tars = new Robot("TARS", 80);
+﻿Robot tars = new Robot("TARS", 80);
 Console.WriteLine(tars.ToString());
 tars.LoadFuel(10);
 Console.WriteLine(tars.ToString());
-tars.Walk();
+tars.Walk(23, -51);
 Console.WriteLine(tars.ToString());
 
-// Robotun durumunu ifade edecek bir enum sabiti tanımladık.
-public enum State
+Submarine u12 = new Submarine("u12", 1200);
+Console.WriteLine(u12.ToString());
+u12.LoadFuel(10);
+Console.WriteLine(u12.ToString());
+u12.Dive(800);
+Console.WriteLine(u12.ToString());
+
+enum State
 {
     Online,
     OutOfService,
     OnTheMove,
+    Dive,
     Destroyed
 }
-class Robot
+abstract class Vehicle
 {
     public string Name { get; set; }
     public float FuelLevel { get; set; }
-    // State özelliğine dışarıdan erişilemez.
-    private State State { get; set; }
+    protected State State { get; set; }
 
-    // Parametrelerle güçlendirilmiş yapıcı metot(constructor)
-    public Robot(string name, float fuel)
+    public Vehicle(string name, float fuelLevel)
     {
         Name = name;
-        FuelLevel = fuel;
+        FuelLevel = fuelLevel;
         State = State.Online;
     }
-
-    // Geriye bir şey döndürmeyen ve sınıfa ait nesne örneğinin FuelLevel özelliğini değiştiren kobay fonkisyon
+    public override string ToString()
+    {
+        return $"{this.Name}. Yakıt {this.FuelLevel}. Durum {this.State}";
+    }
     public void LoadFuel(float amount)
     {
         Console.WriteLine($"{amount} litre yakıt yükleniyor...");
         this.FuelLevel += amount;
     }
+}
 
-    // Yine kobay bir fonksiyon. Nesnenin state değerini değiştiriyor ve yürüyüş moduna geçiriyor
-    public void Walk()
+class Robot
+    : Vehicle
+{
+    public Robot(string name, float fuel)
+        : base(name, fuel)
     {
-        Console.WriteLine("Hareket halinde");
-        this.State = State.OnTheMove;
     }
 
-    // DotNet tarafında herkes bir Object olduğundan ve ToString fonksiyonu Object sınıfında
-    // virutal tanımlandığından, istersek kendi türlerimiz için bu davranışı değiştirebiliriz.
-    // Kısaca ToString metodunu Override ediyor ve varsayılan haliyle değil bizim istediğimiz
-    // şekilde çalışması için yeniden kodluyoruz. Kısa olmadı yahu :D
-    public override string ToString()
+    public void Walk(float x, float y)
     {
-        return $"{this.Name}. Yakıt {this.FuelLevel}. Durum {this.State}";
+        Console.WriteLine($"{x},{y} noktasında hareket halinde");
+        this.State = State.OnTheMove;
+    }
+}
+
+class Submarine
+    : Vehicle
+{
+    public Submarine(string name, float fuel)
+        : base(name, fuel)
+    {
+    }
+    public void Dive(int depth)
+    {
+        Console.WriteLine($"{depth} metreye dalıyor");
+        this.State = State.Dive;
     }
 }

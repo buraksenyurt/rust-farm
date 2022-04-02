@@ -5,12 +5,13 @@ Rust, programlama dilleri piramidi düşünülünce C ve C++ ile aynı seviyede 
 Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz isteklerimizi ready, doing, done gibi statülerle ele alıyoruz. Bu işi yürütecek bir web arabiriminin peşindeyiz. Kişisel bir kanban olarak düşünebiliriz.
 
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
-- [ ] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
-- [ ] Gün #3 - 
-- [ ] Gün #4 -
+- [x] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
+- [ ] Gün #3 - Actix Web Framework tarafında View'ların kullanılması.
+- [ ] Gün #4 - Authentication tarafı için temel View'ların eklenmesi. 
 - [ ] Gün #5 -
 - [ ] Gün #6 -
 - [ ] Gün #7 -
+- [ ] Gün #8 -
 
 # Gün 1 Denemeleri
 
@@ -37,4 +38,44 @@ cargo run
 ```
 
 ![./images/day_2_1.png](./images/day_2_1.png)
+
+# Gün 3 Denemeleri
+
+Actix tarafında view'ların yönetimini nasıl yapıldığına dair bir çalışma. actix_views isimli projenin klasör yapısı şöyle.
+
+```bash
+# src klasöründeyken
+mkdir views
+mkdir views/book
+touch views/book/create.rs
+touch views/book/get.rs
+touch views/book/update.rs
+touch views/book/delete.rs
+touch views/book/mod.rs
+touch views/mod.rs
+touch views/path.rs
+```
+
+![./images/day_3_1.png](./images/day_3_1.png)
+
+![./images/day_3_2.png](./images/day_3_2.png)
+
+![./images/day_3_3.png](./images/day_3_3.png)
+
+![./images/day_3_4.png](./images/day_3_4.png)
+
+# Gün 4 Denemeleri
+
+Öncelikle view'lar için bir klasör yapısı oluşturulmalı.
+
+```bash
+# terminalde src klasöründeyken
+mkdir views
+mkdir views/auth
+touch views/mod.rs
+touch views/path.rs
+touch views/auth/login.rs
+touch views/auth/logout.rs
+touch views/auth/mod.rs
+```
 

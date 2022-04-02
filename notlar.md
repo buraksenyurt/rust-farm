@@ -162,3 +162,16 @@ fn main(){
 - *cargo run* çağrımı arkasından kendi komut satırı argümanlarımızı göndermek istersek rust'ın diğer komut satırı enstrümanları ile karışmamaları için *--* ifadesinden yararlanabiliriz. *cargo run -- -silent -on* gibi
 - cargo aracı modülleri paralel olarak derleyebilir.
 - Pek çok dilde tek bir string türü vardır. Rust'ın iki string türü ile ilgilendiğini söyleyebiliriz. Birisi kendi değerine sahip çıkan ve heap'i kullanan String, diğeri de bir String içeriğindeki parçaları ifade edebilen referans string, yani &str.
+- Rust Standard Library *(std olarak kısaltabiliriz)* işletim sistemi içerisinde sistem çağrıları yapmak için *(syscalls)* libc veya muadili bir aracı kullanır. Doğrudan sistem fonksiyonları da çağırabilir. Ayrıca 1.59.0 sürümü ile birlikte [assembler kodlarını çalıştırmak](https://blog.rust-lang.org/2022/02/24/Rust-1.59.0.html) da mümkündür.
+- Rust Standard Library platform bağımsızdır.
+- Rust Standard Library içerisindeki modüller **Syscalls-Oriented** ve **Computation-Oriented** olarak iki gruba ayrılır.
+  - **Syscalls-Oriented:** Sistem donanımı ve kaynaklarını doğrudan yönetmek için kullanılan modülleri içerir.
+  - **Computation-Oriented:** Verinin gösterimi, modellenmesi, işlenmesi, hata yönetimi, temel veri türleri gibi modülleri içerir.
+
+![images/std_1.png](images/std_1.png)
+
+![images/std_2.png](images/std_2.png)
+
+- Rust'ın **array** veri yapısı **value-type** türündendir ve stack bellek bölgesinde sabit uzunlukta olacak şekilde kullanılır.
+- Bir fonksiyona gönderilecek parametre derleme zamanında belli değilse **any** tipi kullanılabilir.
+- isize ve usize tipleri 32 bit sistemlerde 32 bit(4 byte), 64 bit sistemlerde ise 64 bit(8 byte) uzuğunluğundadır.

@@ -2,30 +2,40 @@ use std::fmt::{Display, Formatter};
 
 fn main() {
     let mut tars = Robot::new(String::from("TARS"), 80.0);
-    // Tabii ortak özellikleri vehicle alanında tutuyoruz ve onun Display özelliğini kullanmalıyız.
-    // Bu nedenle tars.vehicle şeklinde bir kullanım söz konusu.
-    println!("{}", tars.vehicle);
-    tars.vehicle.load_fuel(10.0);
-    println!("{}", tars.vehicle);
-    tars.walk(24.0, -50.9);
-    println!("{}", tars.vehicle);
-
     let mut u12 = Submarine::new(String::from("u12"), 1400.10);
-    println!("{}", u12.vehicle);
-    u12.vehicle.load_fuel(100.90);
-    println!("{}", u12.vehicle);
-    u12.dive(800);
-    println!("{}", u12.vehicle);
+    let mut alpha = Submarine::new(String::from("alpha"), 2000.0);
+    // static dispatch
+    // call_tools(tars);
+    // call_tools(u12);
+    // call_tools(alpha);
+
+    // dynamic dispatch
+    call_tools_dynamic(&mut tars);
+    call_tools_dynamic(&mut u12);
+    call_tools_dynamic(&mut alpha);
 }
 
-// C# Örneğindeki gibi robotun anlık durumu için burada da bir enum kullanıyoruz.
-// Tabii rust için enum bir veri yapısıdır. Zenginleştirilebilir. OnTheMove ve Dive alanlarında olduğu gibi.
+// Static Dispatch
+// Burada trait'in generic sürümüne başvurulur.
+// Ability trait'ini uygulamış türler bu fonksiyona girebilir.
+// Lakin Rust derleyicisi yukarıdaki call_tools çağrılarına göre her tip için aşağıdaki fonksiyonu yeniden yazıp derlenmiş koda gömer.
+// fn call_tools<T: Ability>(mut a: T) {
+//     a.set_tools();
+// }
+
+// Bir diğer alternatif yolda Dynamic Dispatch kullanımıdır.
+// Özellikle library geliştiriyorsak Ability trait'ini asıl uygulayan tipi bilemeyebiliriz. Bunu runtime'da çözümlemek adına
+// dyn anahtar kelimesinden yararlanırız.
+fn call_tools_dynamic(a: &mut dyn Ability) {
+    a.set_tools();
+}
+
 #[allow(dead_code)]
 enum State {
     Online,
     OutOfService,
-    OnTheMove(Location), // Bonus :) Rust enum veri yapısının zenginliğini kullandık. OnTheMove state'indeyken örneğin lokasyonunu da tutalım dedik.
-    Dive(i32),           // Bonus
+    OnTheMove(Location),
+    Dive(i32),
     Destroyed,
 }
 
@@ -48,17 +58,9 @@ impl Vehicle {
     }
 }
 
-// Hem Robot hem de Submarine için ortak olan load_fuel fonksiyonelliğini bir trait olarak tanımladık
-trait Fuel {
-    fn load_fuel(&mut self, amount: f32);
-}
-
-// Tanımladığımız trait'i Vehicle tipi için uyguladık.
-impl Fuel for Vehicle {
-    fn load_fuel(&mut self, amount: f32) {
-        println!("{} litre yakıt yükleniyor.", amount);
-        self.fuel_level += amount
-    }
+// Araçların çeşitli alet ve edavatları yüklemesi için kodlayabilecekleri bir fonksiyon tanımladık.
+trait Ability {
+    fn set_tools(&mut self);
 }
 
 impl Display for Vehicle {
@@ -71,25 +73,25 @@ impl Display for Vehicle {
     }
 }
 
-// Robot veri yapısı Vehicle türünden bir özellik barındırıyor.
-// Bu Submarine için de uygulanıyor. Composition yaptığımızı düşünebiliriz.
 struct Robot {
     pub vehicle: Vehicle,
 }
 
 impl Robot {
-    // C# tarafındaki base constructor'ı çağırma işlevselliğini uygulamaya çalıştık diyebiliriz.
-    // Aslında Robot'un içerdiği Vehicle nesnesini örnekleyip onu taşıyan bir Robot değişkeni dönüyoruz.
     pub fn new(name: String, fuel_level: f32) -> Self {
         Self {
             vehicle: Vehicle::new(name, fuel_level),
         }
     }
+}
 
-    // Bu robota has bir fonksiyon.
-    pub fn walk(&mut self, x: f32, y: f32) {
-        println!("Hareket halinde");
-        self.vehicle.state = State::OnTheMove(Location { x, y });
+// Ability trait'ini Robot türü için uyarladık
+impl Ability for Robot {
+    fn set_tools(&mut self) {
+        println!(
+            "{} için termal görüş sistemi, oksijen seviyesi ölçer yükleniyor.",
+            self.vehicle.name
+        );
     }
 }
 
@@ -103,11 +105,15 @@ impl Submarine {
             vehicle: Vehicle::new(name, fuel_level),
         }
     }
+}
 
-    // Submarine'e özgün fonksiyon
-    pub fn dive(&mut self, depth: i32) {
-        println!("{} metreye dalıyor", depth);
-        self.vehicle.state = State::Dive(depth);
+// Ability trait'ini Submarine türü için uyarladık
+impl Ability for Submarine {
+    fn set_tools(&mut self) {
+        println!(
+            "{} için sonar, derinlik ölçer, ek batarya yükleniyor.",
+            self.vehicle.name
+        );
     }
 }
 

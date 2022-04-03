@@ -1,13 +1,21 @@
-﻿Robot tars = new Robot("TARS", 80);
+﻿using System.Collections.Generic;
+
+Robot tars = new Robot("TARS", 80);
 Submarine u12 = new Submarine("u12", 1200);
 Submarine alpha = new Submarine("Alpha", 5000);
 
-CallTools(tars);
-CallTools(u12);
-CallTools(alpha);
+// CallTools(tars);
+// CallTools(u12);
+// CallTools(alpha);
 
-void CallTools(IAbility ability){
-    ability.SetTools();
+// void CallTools(IAbility ability){
+//     ability.SetTools();
+// }
+
+List<IAbility> abilities=new List<IAbility>{tars,u12,alpha};
+foreach (var a in abilities)
+{
+    a.SetTools();
 }
 
 enum State

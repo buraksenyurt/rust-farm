@@ -616,3 +616,32 @@ fn call_tools_dynamic(a: &mut dyn Ability) {
 Hem static hem dynamic dispatch kullanımları aynı sonuçları verecektir.
 
 ![../images/oop_7.png](../images/oop_7.png)
+
+Esasında üst türden bir koleksiyon da sıklıkla kullanılır. Örneğin C# tarafında aşağıdaki gibi bir kullanım mümkündür.
+
+```csharp
+List<IAbility> abilities=new List<IAbility>{tars,u12,alpha};
+foreach (var a in abilities)
+{
+    a.SetTools();
+}
+```
+
+abilities isimli generic liste koleksiyonu IAbility arayüzünü uyarlayan nesneleri taşıyabilir. Arayüz kendisini uygulayan nesneyi taşıyabildiği için onun uyguladığı gerçek fonksiyonunu da kullanabilir. Bu nedenle foreach döngüsündeki gibi bir çalışma mümkündür. Döngünün her bir iterasyonunda o anki nesne örneği kimse, onun set_tools fonksiyonu devreye girer. Aynı işlevselliği dynamic dispatch'in kullanıldığı rust senaryosunda aşağıdaki gibi yapabiliriz.
+
+```rust
+fn main() {
+    let mut tars = Robot::new(String::from("TARS"), 80.0);
+    let mut u12 = Submarine::new(String::from("u12"), 1400.10);
+    let mut alpha = Submarine::new(String::from("alpha"), 2000.0);
+
+    let mut abilities: Vec<&mut dyn Ability> = vec![];
+    abilities.push(&mut tars);
+    abilities.push(&mut u12);
+    abilities.push(&mut alpha);
+
+    for a in abilities {
+        a.set_tools();
+    }
+}
+```

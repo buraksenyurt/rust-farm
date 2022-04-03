@@ -26,4 +26,4 @@
 - [x] __clappy        :__ Terminal satırından argüman okumak için kullanılan [**clap**](https://crates.io/crates/clap) isimli popüler bir küfeye *(crate)* bakıyorum.
 - [x] **fizz_buzz:** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
 - [x] **fizz_bench:** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.
-- [ ] **oop:** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek. 
+- [x] **oop:** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek. 

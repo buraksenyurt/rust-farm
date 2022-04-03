@@ -10,9 +10,18 @@ fn main() {
     // call_tools(alpha);
 
     // dynamic dispatch
-    call_tools_dynamic(&mut tars);
-    call_tools_dynamic(&mut u12);
-    call_tools_dynamic(&mut alpha);
+    // call_tools_dynamic(&mut tars);
+    // call_tools_dynamic(&mut u12);
+    // call_tools_dynamic(&mut alpha);
+
+    let mut abilities: Vec<&mut dyn Ability> = vec![];
+    abilities.push(&mut tars);
+    abilities.push(&mut u12);
+    abilities.push(&mut alpha);
+
+    for a in abilities {
+        a.set_tools();
+    }
 }
 
 // Static Dispatch

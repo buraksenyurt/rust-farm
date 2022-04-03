@@ -380,3 +380,240 @@ impl Display for State {
 Submarine ve Robot veri yapılarının ortak özellikleri Vehicle veri yapısına alındı. Bu nedenle hem Robot hem Submarine, vehicle isimli birer alana sahip. Bir nevi Composition gibi düşünebiliriz. Tabii C# örneğinde ortak fonksiyonellik olan load_fule metodunu üst sınıfta konuşlandırmıştık. Burada da bu iş için bir trait tanımlayıp kullanmaktayız. İlgili trait'i Vehicle için yazdığımızda Submarine ve Robot için de kullanabilir hale getirdik. Nitekim her ikisi de Vehicle'a sahip ve dolayısıyla Fuel trait'i istenen yakıt yükleme davranışını uygulayabilir. Ancak şunu hatırlatmak yarar var, Rust OOP hedefli bir dil değil. Yine de basit bir has-a ilişkisi ve trait'leri kullanarak benzer işlevsellikleri sağladık diyebiliriz. İşte çalışma zamanı çıktısı.
 
 ![../images/oop_4.png](../images/oop_4.png)
+
+## Polymorphism Konusu
+
+Çok biçimlilikte üst sınıfın yeri gelince kendisinden türeyen alt sınıf gibi hareket edebilmesi söz konusudur. Bunun için polymorphism isimli branch'teki kodlara bir bakabiliriz. İlk olarak C# tarafından olaya bakalım.
+
+```csharp
+Robot tars = new Robot("TARS", 80);
+Submarine u12 = new Submarine("u12", 1200);
+Submarine alpha = new Submarine("Alpha", 5000);
+
+var vehicles = new List<IAbility> { tars, u12, alpha };
+foreach (var v in vehicles)
+{
+    v.SetTools();
+}
+
+enum State
+{
+    Online,
+    OutOfService,
+    OnTheMove,
+    Dive,
+    Destroyed
+}
+
+interface IAbility
+{
+    void SetTools();
+}
+
+abstract class Vehicle
+{
+    public string Name { get; set; }
+    public float FuelLevel { get; set; }
+    protected State State { get; set; }
+
+    public Vehicle(string name, float fuelLevel)
+    {
+        Name = name;
+        FuelLevel = fuelLevel;
+        State = State.Online;
+    }
+    public override string ToString()
+    {
+        return $"{this.Name}. Yakıt {this.FuelLevel}. Durum {this.State}";
+    }
+    public void LoadFuel(float amount)
+    {
+        Console.WriteLine($"{amount} litre yakıt yükleniyor...");
+        this.FuelLevel += amount;
+    }
+}
+
+class Robot
+    : Vehicle, IAbility
+{
+    public Robot(string name, float fuel)
+        : base(name, fuel)
+    {
+    }
+
+    public void SetTools()
+    {
+        Console.WriteLine($"{base.Name} için termal görüş sistemi, oksijen seviyesi ölçer yükleniyor.");
+    }
+
+    public void Walk(float x, float y)
+    {
+        Console.WriteLine($"{x},{y} noktasında hareket halinde");
+        this.State = State.OnTheMove;
+    }
+}
+
+class Submarine
+    : Vehicle, IAbility
+{
+    public Submarine(string name, float fuel)
+        : base(name, fuel)
+    {
+    }
+    public void Dive(int depth)
+    {
+        Console.WriteLine($"{depth} metreye dalıyor");
+        this.State = State.Dive;
+    }
+
+    public void SetTools()
+    {
+        Console.WriteLine($"{base.Name} için sonar, derinlik ölçer, ek batarya yükleniyor.");
+    }
+}
+```
+
+Yeni sürümde IAbility isimli bir arayüz *(interface)* mevcut. İçerisinde sadece SetTools isimli bir fonksiyon yer alıyor ve uygulandığı araç için bir takım alet edavatların yüklenmesi işini üstleniyor. Robot ve Submarine türleri bu arayüzü uyguladıklarından CallTools isimli bir metot yazmamız pekala mümkün. Parametre olarak IAbility arayüzünü uygulayan her nesne bu fonksiyona girebilir ve kendisi için yazılmış SetTools metodunu icra edebilir.
+
+![../images/oop_5.png](../images/oop_5.png)
+
+```rust
+use std::fmt::{Display, Formatter};
+
+fn main() {
+    let tars = Robot::new(String::from("TARS"), 80.0);
+    let u12 = Submarine::new(String::from("u12"), 1400.10);
+    let alpha = Submarine::new(String::from("alpha"), 2000.0);
+    call_tools(tars);
+    call_tools(u12);
+    call_tools(alpha);
+}
+
+// Burada trait'in generic sürümüne başvurulur.
+// Ability trait'ini uygulamış türler bu fonksiyona girebilir.
+// Lakin Rust derleyicisi yukarıdaki call_tools çağrılarına göre her tip için aşağıdaki fonksiyonu yeniden yazıp derlenmiş koda gömer.
+// Bunun tabii bir maliyeti olacaktır.
+fn call_tools<T: Ability>(mut a: T) {
+    a.set_tools();
+}
+
+#[allow(dead_code)]
+enum State {
+    Online,
+    OutOfService,
+    OnTheMove(Location),
+    Dive(i32),
+    Destroyed,
+}
+
+struct Location {
+    pub x: f32,
+    pub y: f32,
+}
+struct Vehicle {
+    pub name: String,
+    pub fuel_level: f32,
+    state: State,
+}
+impl Vehicle {
+    pub fn new(name: String, fuel_level: f32) -> Self {
+        Self {
+            name,
+            fuel_level,
+            state: State::Online,
+        }
+    }
+}
+
+// Araçların çeşitli alet ve edavatları yüklemesi için kodlayabilecekleri bir fonksiyon tanımladık.
+trait Ability {
+    fn set_tools(&mut self);
+}
+
+struct Robot {
+    pub vehicle: Vehicle,
+}
+
+impl Robot {
+    pub fn new(name: String, fuel_level: f32) -> Self {
+        Self {
+            vehicle: Vehicle::new(name, fuel_level),
+        }
+    }
+}
+
+// Ability trait'ini Robot türü için uyarladık
+impl Ability for Robot {
+    fn set_tools(&mut self) {
+        println!(
+            "{} için termal görüş sistemi, oksijen seviyesi ölçer yükleniyor.",
+            self.vehicle.name
+        );
+    }
+}
+
+struct Submarine {
+    pub vehicle: Vehicle,
+}
+
+impl Submarine {
+    pub fn new(name: String, fuel_level: f32) -> Self {
+        Self {
+            vehicle: Vehicle::new(name, fuel_level),
+        }
+    }
+}
+
+// Ability trait'ini Submarine türü için uyarladık
+impl Ability for Submarine {
+    fn set_tools(&mut self) {
+        println!(
+            "{} için sonar, derinlik ölçer, ek batarya yükleniyor.",
+            self.vehicle.name
+        );
+    }
+}
+```
+
+İlk örnekte static dispatch kullanımı söz konusudur. call_tools fonksiyonu generic bir trait alır ve bu trait'i uyarlamış her nesne fonksiyona girebilir. Derleyici her nesne için birer call_tools fonksiyonu yazıp içerisinde uygun olan nesnenin set_tools'unu yürütür.
+
+![../images/oop_6.png](../images/oop_6.png)
+
+İkinci kullanım şekli ise dynamic dispatch üzerinedir. Trait nesnesi runtime'da bağlanır.
+
+```rust
+fn main() {
+    let mut tars = Robot::new(String::from("TARS"), 80.0);
+    let mut u12 = Submarine::new(String::from("u12"), 1400.10);
+    let mut alpha = Submarine::new(String::from("alpha"), 2000.0);
+    // static dispatch
+    // call_tools(tars);
+    // call_tools(u12);
+    // call_tools(alpha);
+
+    // dynamic dispatch
+    call_tools_dynamic(&mut tars);
+    call_tools_dynamic(&mut u12);
+    call_tools_dynamic(&mut alpha);
+}
+
+// Static Dispatch
+// Burada trait'in generic sürümüne başvurulur.
+// Ability trait'ini uygulamış türler bu fonksiyona girebilir.
+// Lakin Rust derleyicisi yukarıdaki call_tools çağrılarına göre her tip için aşağıdaki fonksiyonu yeniden yazıp derlenmiş koda gömer.
+// fn call_tools<T: Ability>(mut a: T) {
+//     a.set_tools();
+// }
+
+// Bir diğer alternatif yolda Dynamic Dispatch kullanımıdır.
+// Özellikle library geliştiriyorsak Ability trait'ini asıl uygulayan tipi bilemeyebiliriz. Bunu runtime'da çözümlemek adına
+// dyn anahtar kelimesinden yararlanırız.
+fn call_tools_dynamic(a: &mut dyn Ability) {
+    a.set_tools();
+}
+```
+
+Hem static hem dynamic dispatch kullanımları aynı sonuçları verecektir.
+
+![../images/oop_7.png](../images/oop_7.png)
+

@@ -2,10 +2,12 @@
 Submarine u12 = new Submarine("u12", 1200);
 Submarine alpha = new Submarine("Alpha", 5000);
 
-var vehicles = new List<IAbility> { tars, u12, alpha };
-foreach (var v in vehicles)
-{
-    v.SetTools();
+CallTools(tars);
+CallTools(u12);
+CallTools(alpha);
+
+void CallTools(IAbility ability){
+    ability.SetTools();
 }
 
 enum State

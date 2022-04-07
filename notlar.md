@@ -175,3 +175,11 @@ fn main(){
 - Rust'ın **array** veri yapısı **value-type** türündendir ve stack bellek bölgesinde sabit uzunlukta olacak şekilde kullanılır.
 - Bir fonksiyona gönderilecek parametre derleme zamanında belli değilse **any** tipi kullanılabilir.
 - isize ve usize tipleri 32 bit sistemlerde 32 bit(4 byte), 64 bit sistemlerde ise 64 bit(8 byte) uzuğunluğundadır.
+- Bellek yönetimi denilince şunları düşünebiliriz;
+  - static memory allocation *(stack)*
+  - dynamic memory allocation *(heap)*
+  - memory deallocation *(bir değişkenin scope dışına çıkması sonrası destructor'un çalışması)*
+  - clone, copy işlemleri
+  - raw ve smart pointer'ların yönetimi
+- Rust dilinde raw pointer'lar çok sık kullanılmazlar. Mutable ve immutable tanımlanabilirler ve mutlaka unsafe kod blokları içerisinde ele alınırlar. Dolayısıyla derleyici bellek güvenliğinin sorumluluğunu üstüne almaz, bunu programcıya bırakır.
+- Bazen nesnelerin bellekteki sabit lokasyonlarda kalmasını ve hiçbir şekilde taşınmamasını *(move)* isteyebiliriz. Kendisini referans eden bağlı listeler'de *(Linked List)* olduğu gibi. Bu gibi durumlarda için Rust, *Pin<P>* veri tipini sunmaktadır. 

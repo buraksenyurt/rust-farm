@@ -14,8 +14,8 @@ pub mod action;
 pub mod processor;
 pub mod state_manager;
 pub mod storage;
-pub mod work_item;
 mod views;
+pub mod work_item;
 
 fn main() {
     env_logger::init();

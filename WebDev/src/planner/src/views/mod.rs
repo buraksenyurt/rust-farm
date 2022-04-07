@@ -3,6 +3,7 @@ use std::env;
 
 mod auth;
 mod path;
+mod work_item;
 
 pub fn views_factory(app: &mut web::ServiceConfig) {
     let args: Vec<String> = env::args().collect();

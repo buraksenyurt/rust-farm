@@ -7,7 +7,7 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
 - [x] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 - [x] Gün #3 - Actix Web Framework tarafında View'ların kullanılması.
-- [ ] Gün #4 - Authentication tarafı View düzeneğinin kurgulanması. 
+- [ ] Gün #4 - Authentication tarafı için View düzeneğinin kurgulanması. 
 - [ ] Gün #5 -
 - [ ] Gün #6 -
 - [ ] Gün #7 -
@@ -77,5 +77,13 @@ touch views/path.rs
 touch views/auth/login.rs
 touch views/auth/logout.rs
 touch views/auth/mod.rs
+
+mkdir views/work_item
+touch views/work_item/mod.rs
+touch views/work_item/create.rs
 ```
+
+İlk denemede HTTP Post kullanılarak bir Work Item oluşturulabildiği görüldü.
+
+![./images/day_4_1.png](./images/day_4_1.png)
 

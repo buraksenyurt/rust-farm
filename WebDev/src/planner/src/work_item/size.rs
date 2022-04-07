@@ -37,6 +37,19 @@ impl From<u64> for Size {
         }
     }
 }
+
+impl Clone for Size {
+    fn clone(&self) -> Self {
+        match self {
+            Size::Short => Size::Short,
+            Size::Medium => Size::Medium,
+            Size::Large => Size::Large,
+            Size::Epic => Size::Epic,
+            Size::Xlarge => Size::Xlarge,
+            Size::Unknown => Size::Unknown,
+        }
+    }
+}
 // impl FromStr for Size {
 //     type Err = String;
 //

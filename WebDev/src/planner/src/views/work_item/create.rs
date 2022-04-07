@@ -5,11 +5,13 @@ use crate::work_item::factory::Factory;
 use crate::work_item::status::Status;
 use crate::{Size, Storage};
 use actix_web::HttpRequest;
+use log::info;
 use serde_json::{Map, Value};
 use std::str::FromStr;
 
 // Bu view yeni bir work item oluşturmak için HttpRequest üstünden gelen bilgileri kullanır.
 pub async fn create(request: HttpRequest) -> String {
+    info!("Create modülüne talep geldi. {:#?}", request);
     // State bilgileri JSON dosyasından yüklenir
     let mut state: Map<String, Value> =
         read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
@@ -33,8 +35,13 @@ pub async fn create(request: HttpRequest) -> String {
         ),
         None => (Status::Ready, size),
     };
+    let size_ref = size.clone();
+
     // work item oluşturulur.
-    let work_item = Factory::create_work_item(status, title, size).expect("Work Item Create error");
-    run(work_item, Action::Create, &mut state);
-    format!("{} başlıklı görev oluşturuldu", title)
+    let mission = Factory::create_work_item(status, title, size).expect("Work Item Create error");
+    run(mission, Action::Create, &mut state);
+    format!(
+        "{} başlıklı iş, {} büyüklüğünde oluşturuldu.",
+        title, size_ref
+    )
 }

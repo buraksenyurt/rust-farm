@@ -1,10 +1,12 @@
 use super::path::Path;
 use actix_web::web;
+use log::info;
 
 mod login;
 mod logout;
 
 pub fn auth_factory(app: &mut web::ServiceConfig) {
+    info!("Authentication factory");
     let base_path: Path = Path {
         prefix: String::from("/auth"),
     };

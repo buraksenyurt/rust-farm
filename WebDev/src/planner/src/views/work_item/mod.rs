@@ -1,10 +1,12 @@
 use crate::views::path::Path;
 use actix_web::web;
+use log::info;
 
 mod create;
 
 // workitem/create path'ine gelenleri karşılayan factory fonksiyonu
 pub fn work_item_factory(app: &mut web::ServiceConfig) {
+    info!("Work Item Factory");
     let base_path = Path {
         prefix: String::from("workitem"),
     };

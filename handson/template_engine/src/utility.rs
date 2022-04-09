@@ -13,11 +13,16 @@ pub fn check_symbol(data: &str, symbol: &str) -> bool {
 }
 
 pub fn get_expression_data(data: &str) -> ExpressionData {
-    todo!()
+    let (_, i) = get_index_for_symbol(data, '[');
+    let head = data[0..i].to_string();
+    let (_, k) = get_index_for_symbol(data, ']');
+    let variable = data[i + 1 + 1..k].to_string();
+    let tail = data[k + 1 + 1..].to_string();
+    ExpressionData::new(Some(head), variable, Some(tail))
 }
 
 pub fn get_index_for_symbol(data: &str, symbol: char) -> (bool, usize) {
-    let mut chars = data.char_indices();
+    let chars = data.char_indices();
     let mut does_exist = false;
     let mut index = 0;
     for (c, d) in chars {

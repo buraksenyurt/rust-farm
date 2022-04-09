@@ -1,19 +1,14 @@
-use crate::content_type::ContentType;
-
 mod content_type;
 mod expression_data;
 mod tag_type;
+mod utility;
 
 mod prelude {
     pub use crate::content_type::*;
     pub use crate::expression_data::*;
-    pub use crate::get_content_type;
     pub use crate::tag_type::TagType::*;
     pub use crate::tag_type::*;
-}
-
-pub fn get_content_type(_data: &str) -> ContentType {
-    todo!()
+    pub use crate::utility::*;
 }
 
 #[cfg(test)]
@@ -56,5 +51,38 @@ mod tests {
             ContentType::Tag(Loop),
             get_content_type("[@ for category in categories @]")
         );
+    }
+
+    #[test]
+    fn should_symbol_pairs_works_test() {
+        let expected = true;
+        let actual = check_matching_pair("[[username]]", "[[", "]]");
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn should_symbol_checks_works_test() {
+        let expected = true;
+        let actual = check_symbol("[[username]]", "[[");
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn should_get_index_for_symbol_works_test() {
+        let expected = (true, 7);
+        let actual = get_index_for_symbol("Melaba [[username]] .", '[');
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn should_get_expression_data_works_test() {
+        let expected = ExpressionData::new(
+            Some("Melaba ".to_string()),
+            "username".to_string(),
+            Some(" .Nasılsın?".to_string()),
+        );
+        let data = "Melaba [[username]] .Nasılsın?";
+        let actual = get_expression_data(data);
+        assert_eq!(actual, expected);
     }
 }

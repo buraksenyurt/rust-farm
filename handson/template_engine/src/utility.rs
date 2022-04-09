@@ -1,7 +1,26 @@
 use super::prelude::*;
 
-pub fn get_content_type(_data: &str) -> ContentType {
-    todo!()
+pub fn get_content_type(data: &str) -> ContentType {
+    let is_tag_expression = check_matching_pair(data, "[@", "@]");
+    let is_loop_tag =
+        (check_symbol(data, "loop") && check_symbol(data, "in")) || check_symbol(data, "end loop");
+    let is_if_tag = check_symbol(data, "if") || check_symbol(data, "end if");
+    let is_template_variable = check_matching_pair(data, "[[", "]]");
+    let return_value;
+
+    if is_tag_expression && is_loop_tag {
+        return_value = ContentType::Tag(Loop);
+    } else if is_tag_expression && is_if_tag {
+        return_value = ContentType::Tag(If);
+    } else if is_template_variable {
+        let content = get_expression_data(data);
+        return_value = ContentType::TemplateVariable(content);
+    } else if !is_tag_expression && !is_template_variable {
+        return_value = ContentType::Literal(data.to_string());
+    } else {
+        return_value = ContentType::Unknown;
+    }
+    return_value
 }
 
 pub fn check_matching_pair(data: &str, symbol1: &str, symbol2: &str) -> bool {

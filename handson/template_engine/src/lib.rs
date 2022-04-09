@@ -29,7 +29,7 @@ mod tests {
         let content = ExpressionData {
             head: Some("Melaba ".to_string()),
             variable: "username".to_string(),
-            tail: Some(" . Nasılsın?".to_string()),
+            tail: Some(" .Nasılsın?".to_string()),
         };
         assert_eq!(
             ContentType::TemplateVariable(content),
@@ -49,7 +49,7 @@ mod tests {
     fn should_loop_tag_works_test() {
         assert_eq!(
             ContentType::Tag(Loop),
-            get_content_type("[@ for category in categories @]")
+            get_content_type("[@ loop category in categories @]")
         );
     }
 

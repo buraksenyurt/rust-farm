@@ -1,9 +1,10 @@
 use crate::Size;
+use serde::Serialize;
 use std::fmt::{Display, Formatter};
 
 /// Bir iş için ortak olan alanları tutar
 /// İşin başlığı, değeri ve durumu taşınır.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize)]
 pub struct Base {
     pub title: String,
     pub status: String,

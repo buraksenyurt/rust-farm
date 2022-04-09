@@ -13,6 +13,7 @@ use storage::Storage;
 
 pub mod action;
 pub mod processor;
+mod serializer;
 pub mod state_manager;
 pub mod storage;
 mod views;

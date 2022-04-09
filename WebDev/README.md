@@ -7,13 +7,13 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
 - [x] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 - [x] Gün #3 - Actix Web Framework tarafında View'ların kullanılması.
-- [ ] Gün #4 - Authentication tarafı için View düzeneğinin kurgulanması. 
-- [ ] Gün #5 -
+- [ ] Gün #4 - Proje için gerekli View nesnelerinin hazırlanması. 
+- [ ] Gün #5 - 
 - [ ] Gün #6 -
 - [ ] Gün #7 -
 - [ ] Gün #8 -
 
-# Gün 1 Denemeleri
+# Gün 1 Denemeleri - Projenin temel veri yapılarının oluşturulması.
 
 ```bash
 # states.json'a Ready statüsünde yeni bir work item eklemek için
@@ -30,7 +30,7 @@ RUST_LOG=info cargo run set -a delete -t "Odayı Temizle" -v 8
 
 ![./images/day_1_2.png](./images/day_1_2.png)
 
-# Gün 2 Denemeleri
+# Gün 2 Denemeleri - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 
 ```bash
 # actix'in en basit kullanım şeklinin ele alındığı actix_hw
@@ -39,7 +39,7 @@ cargo run
 
 ![./images/day_2_1.png](./images/day_2_1.png)
 
-# Gün 3 Denemeleri
+# Gün 3 Denemeleri - Actix Web Framework tarafında View'ların kullanılması.
 
 Actix tarafında view'ların yönetimini nasıl yapıldığına dair bir çalışma. actix_views isimli projenin klasör yapısı şöyle.
 
@@ -64,7 +64,7 @@ touch views/path.rs
 
 ![./images/day_3_4.png](./images/day_3_4.png)
 
-# Gün 4 Denemeleri
+# Gün 4 Denemeleri - Proje için gerekli View nesnelerinin hazırlanması.
 
 Öncelikle view'lar için bir klasör yapısı oluşturulmalı.
 
@@ -87,3 +87,10 @@ touch views/work_item/create.rs
 
 ![./images/day_4_1.png](./images/day_4_1.png)
 
+Work item listesini JSON formatında dönen get fonksiyonunun ilk versiyonuna ait çalışma zamanı görüntüsü. 
+
+![./images/day_4_2.png](./images/day_4_2.png)
+
+Geriye döndürülecek Work Item listesi için serileştirme işlemi özelleştirildikten sonraki durum.
+
+![./images/day_4_3.png](./images/day_4_3.png)

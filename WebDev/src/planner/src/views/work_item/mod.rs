@@ -3,6 +3,7 @@ use actix_web::web;
 use log::info;
 
 mod create;
+mod get;
 
 // workitem/create path'ine gelenleri karşılayan factory fonksiyonu
 pub fn work_item_factory(app: &mut web::ServiceConfig) {
@@ -16,5 +17,12 @@ pub fn work_item_factory(app: &mut web::ServiceConfig) {
     app.route(
         &base_path.define(String::from("/create/{title}/{size}")),
         web::post().to(create::create),
+    );
+
+    // workitem/get adresine gelen Http Get taleplerini, get modülündeki get fonksiyonuna yönlendiriyoruz.
+    // Bu talebe karşılık work item listesinin JSON formatını istemciye dönmekteyiz
+    app.route(
+        &base_path.define(String::from("/get")),
+        web::get().to(get::get),
     );
 }

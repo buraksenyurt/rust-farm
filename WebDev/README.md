@@ -94,3 +94,9 @@ Work item listesini JSON formatında dönen get fonksiyonunun ilk versiyonuna ai
 Geriye döndürülecek Work Item listesi için serileştirme işlemi özelleştirildikten sonraki durum.
 
 ![./images/day_4_3.png](./images/day_4_3.png)
+
+HTTP Request JSON içeriği ile yeni bir work item eklenmesine ait çalışma zamanı görüntüleri.
+
+![./images/day_4_4.png](./images/day_4_4.png)
+
+![./images/day_4_5.png](./images/day_4_5.png)

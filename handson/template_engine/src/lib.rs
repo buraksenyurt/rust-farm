@@ -1,9 +1,9 @@
 mod content_type;
 mod expression_data;
 mod tag_type;
-mod utility;
+pub mod utility;
 
-mod prelude {
+pub mod prelude {
     pub use crate::content_type::*;
     pub use crate::expression_data::*;
     pub use crate::tag_type::TagType::*;

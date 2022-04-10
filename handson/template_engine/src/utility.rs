@@ -1,4 +1,5 @@
 use super::prelude::*;
+use std::collections::HashMap;
 
 pub fn get_content_type(data: &str) -> ContentType {
     let is_tag_expression = check_matching_pair(data, "[@", "@]");
@@ -52,4 +53,21 @@ pub fn get_index_for_symbol(data: &str, symbol: char) -> (bool, usize) {
         }
     }
     (does_exist, index)
+}
+
+pub fn generate_html_template_variable(
+    content: ExpressionData,
+    context: HashMap<String, String>,
+) -> String {
+    let mut html = String::new();
+    if let Some(h) = content.head {
+        html.push_str(&h);
+    }
+    if let Some(v) = context.get(&content.variable) {
+        html.push_str(v);
+    }
+    if let Some(t) = content.tail {
+        html.push_str(&t);
+    }
+    html
 }

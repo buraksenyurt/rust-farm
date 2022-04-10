@@ -2,7 +2,7 @@ use serde::Deserialize;
 use serde_repr::*;
 use std::fmt::{Display, Formatter};
 
-#[derive(Serialize_repr, Debug, PartialEq, Deserialize)]
+#[derive(Serialize_repr, Debug, PartialEq, Deserialize, Copy)]
 #[repr(u8)]
 pub enum Size {
     Short = 1,

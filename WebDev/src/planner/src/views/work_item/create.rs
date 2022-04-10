@@ -16,7 +16,7 @@ pub async fn add(work_item: web::Json<WorkItem>) -> HttpResponse {
     let mut state: Map<String, Value> =
         read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
     let title = work_item.title.clone();
-    let size = work_item.size.clone();
+    let size = work_item.size;
     match state.get(&title) {
         Some(_) => {
             warn!("Gelen görev başlığı zaten mevcut");
@@ -57,7 +57,7 @@ pub async fn create(request: HttpRequest) -> String {
         ),
         None => (Status::Ready, size),
     };
-    let size_ref = size.clone();
+    let size_ref = size;
 
     // work item oluşturulur.
     let mission = Factory::create_work_item(status, title, size).expect("Work Item Create error");

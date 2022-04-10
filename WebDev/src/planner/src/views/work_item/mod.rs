@@ -3,6 +3,7 @@ use actix_web::web;
 use log::info;
 
 mod create;
+mod edit;
 mod get;
 
 // workitem/create path'ine gelenleri karşılayan factory fonksiyonu
@@ -24,6 +25,13 @@ pub fn work_item_factory(app: &mut web::ServiceConfig) {
     app.route(
         &base_path.define(String::from("/add")),
         web::post().to(create::add),
+    );
+
+    // HTTP Put taleplerini karşılayan yönlendirme tanımı.
+    // edit adresine gelen talepler edit modülündeki edit fonksiyonuna yönlendirliyor.
+    app.route(
+        &base_path.define(String::from("/edit")),
+        web::put().to(edit::edit),
     );
 
     // workitem/get adresine gelen Http Get taleplerini, get modülündeki get fonksiyonuna yönlendiriyoruz.

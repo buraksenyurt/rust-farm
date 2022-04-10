@@ -3,7 +3,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// Görev durum bilgisini tutan enum sabiti
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum Status {
     Ready,
     Doing,

@@ -1,15 +1,37 @@
 use crate::action::Action;
 use crate::processor::run;
+use crate::serializer::work_item::WorkItem;
 use crate::state_manager::read_file;
 use crate::work_item::factory::Factory;
 use crate::work_item::status::Status;
 use crate::{Size, Storage};
-use actix_web::HttpRequest;
-use log::info;
+use actix_web::{web, HttpRequest, HttpResponse};
+use log::{info, warn};
 use serde_json::{Map, Value};
 use std::str::FromStr;
 
-// Bu view yeni bir work item oluşturmak için HttpRequest üstünden gelen bilgileri kullanır.
+// Bu sefer HTTP Post talebine ait mesajın JSON içeriğini kullanarak bir Work Item eklenmekte.
+pub async fn add(work_item: web::Json<WorkItem>) -> HttpResponse {
+    info!("Add fonksiyonuna JSON içeriği geldi\n{:#?}", work_item);
+    let mut state: Map<String, Value> =
+        read_file(Storage::get().as_str()).expect("JSON dosyası okunamadı");
+    let title = work_item.title.clone();
+    let size = work_item.size.clone();
+    match state.get(&title) {
+        Some(_) => {
+            warn!("Gelen görev başlığı zaten mevcut");
+            HttpResponse::Found().json(Value::String("Bu görev zaten tanımlı".to_string()))
+        }
+        None => {
+            let mission = Factory::create_work_item(Status::Ready, &title, size)
+                .expect("Work Item Create error");
+            run(mission, Action::Create, &mut state);
+            HttpResponse::Ok().json(Value::String("Work Item Oluşturuldu".to_string()))
+        }
+    }
+}
+
+// Bu fonksiyon yeni bir work item oluşturmak için HttpRequest üstünden gelen bilgileri kullanır.
 pub async fn create(request: HttpRequest) -> String {
     info!("Create modülüne talep geldi. {:#?}", request);
     // State bilgileri JSON dosyasından yüklenir

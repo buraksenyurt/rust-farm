@@ -19,6 +19,13 @@ pub fn work_item_factory(app: &mut web::ServiceConfig) {
         web::post().to(create::create),
     );
 
+    // add adresine gelen taleplerde Body üstündeki JSON içeriği kullanılıyor.
+    // Bunun için create modülündeki add fonksiyonunu deneysel olarak kullanmaktayız.
+    app.route(
+        &base_path.define(String::from("/add")),
+        web::post().to(create::add),
+    );
+
     // workitem/get adresine gelen Http Get taleplerini, get modülündeki get fonksiyonuna yönlendiriyoruz.
     // Bu talebe karşılık work item listesinin JSON formatını istemciye dönmekteyiz
     app.route(

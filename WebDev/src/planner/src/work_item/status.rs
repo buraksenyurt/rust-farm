@@ -1,8 +1,9 @@
+use serde::Deserialize;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// Görev durum bilgisini tutan enum sabiti
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Deserialize, Clone)]
 pub enum Status {
     Ready,
     Doing,

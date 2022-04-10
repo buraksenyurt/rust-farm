@@ -7,7 +7,7 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
 - [x] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 - [x] Gün #3 - Actix Web Framework tarafında View'ların kullanılması.
-- [ ] Gün #4 - Proje için gerekli View nesnelerinin hazırlanması. 
+- [ ] Gün #4 - JSON ile çalışan Create ve Edit view'larının hazırlanması. 
 - [ ] Gün #5 - 
 - [ ] Gün #6 -
 - [ ] Gün #7 -
@@ -64,7 +64,7 @@ touch views/path.rs
 
 ![./images/day_3_4.png](./images/day_3_4.png)
 
-# Gün 4 Denemeleri - Proje için gerekli View nesnelerinin hazırlanması.
+# Gün 4 Denemeleri - JSON ile çalışan Create ve Edit view'larının hazırlanması.
 
 Öncelikle view'lar için bir klasör yapısı oluşturulmalı.
 
@@ -100,3 +100,12 @@ HTTP Request JSON içeriği ile yeni bir work item eklenmesine ait çalışma za
 ![./images/day_4_4.png](./images/day_4_4.png)
 
 ![./images/day_4_5.png](./images/day_4_5.png)
+
+HTTP Put operasyonunu ele adan edit modülüne ait edit fonksiyonunun kullanımına ait çalışma zamanı görüntüleri.
+İlk önce var olan bir görevin büyüklüğünü değiştirmek üzere Put talebi gönderiliyor. Bu arada görevin durumu Ready.
+
+![./images/day_4_6.png](./images/day_4_6.png)
+
+Değişiklik talebi sonrası talebin işlendiğini ve durumun Ready'den bir sonraki durum olan Doing'e çekildiğini görebiliriz.
+
+![./images/day_4_7.png](./images/day_4_7.png)

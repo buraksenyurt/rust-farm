@@ -111,7 +111,7 @@ impl Display for Product {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "{}|t{}|t{}|t{}",
+            "{} | {} | {} | {}",
             self.id, self.title, self.quantity, self.list_price
         )
     }

@@ -8,18 +8,15 @@ pub trait Draw {
 
 // Bu veri yapısı fatura veya benzeri bir evrakı temsil eden modelimiz olsun.
 // En önemli özelliği kendi üstündeki bileşenleri taşıdığı Sections koleksiyonu.
-// Dikkat edileceği üzere bu ilk versiyonda sections kısmı Draw trait'ini uygulayan generic bir tip kullanıyor
-// Yani Draw davranışını kullanan herkes bu listeye eklenebilir.
-pub struct Document<T: Draw> {
-    sections: Vec<T>,
+// Çalışma zamanında Draw trait'ini uygulayan asıl tipler belirsiz olacağından
+// Dynamic Dispatch yaklaşımına geçildi.
+pub struct Document {
+    pub sections: Vec<Box<dyn Draw>>,
 }
 
-impl<T> Document<T>
-where
-    T: Draw,
-{
+impl Document {
     // sections içeriğine veri ekleme işini add fonksiyonuna verdik
-    pub fn add(&mut self, section: T) {
+    pub fn add(&mut self, section: Box<dyn Draw>) {
         self.sections.push(section)
     }
     // print fonksiyonu belgenin sections kısmındaki tüm nesneleri dolaşacak
@@ -34,6 +31,12 @@ where
 pub struct Title {
     pub text: String,
     pub sub_text: String,
+}
+
+impl Title {
+    pub fn new(text: String, sub_text: String) -> Self {
+        Self { text, sub_text }
+    }
 }
 
 // Title için Draw davranışını modelliyoruz(Sembolik olarak elbette)
@@ -51,16 +54,23 @@ pub struct Bottom {
     pub summary: String,
 }
 
+impl Bottom {
+    pub fn new(summary: String) -> Self {
+        Self { summary }
+    }
+}
+
 // Bottom veri yapısı içinde Draw davranışını yazıyoruz
 impl Draw for Bottom {
     fn draw(&self) {
-        println!("{}", self.summary.to_uppercase());
+        println!("\n------\n{}\n-------", self.summary.to_uppercase());
     }
 }
 
 // Dokümana eklenebilecek ürün bilgilerini LineItems şeklinde bir veri yapısı olarak tutabiliriz.
 // Faturanın orta kısımlarında alt alta kalemlerin yer aldığı, üstünde ürün adı, miktarı ve
 // fiyatının olduğu bir grid düşünün.
+#[derive(Default)]
 pub struct LineItems {
     items: Vec<Product>,
 }

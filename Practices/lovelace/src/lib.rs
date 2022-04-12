@@ -27,12 +27,28 @@ mod tests {
         let actual = light_time(distance);
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    fn moose_body_mass_test() {
+        let latitude = 60.5;
+        let expected = 183.59149;
+        let actual = moose_body_mass(latitude);
+        assert_eq!(expected, actual);
+    }
 }
+
+pub const C: f32 = 299_792_458.0;
+pub const A: f32 = 2.757;
+pub const B: f32 = 16.793;
 
 pub fn fahrenheit_to_celcius(f: f32) -> f32 {
     (5.0 / 9.0) * (f - 32.0)
 }
 
 pub fn light_time(distance: u32) -> f32 {
-    distance as f32 / 299_792_458.0
+    distance as f32 / C
+}
+
+pub fn moose_body_mass(latitude: f32) -> f32 {
+    (A * latitude) + B
 }

@@ -4,7 +4,7 @@ Bir Windows Forms uygulaması düşünelim ya da bir web sayfası. Hatta birden 
 
 Nesne yönelimli dillerde bu tip kurgular için Interface'ler sıklıkla tercih edilir. Ana motor, belli interface şablonlarınca tanımlanan davranışları işletecek şekilde tasarlanır. Bileşenler bu interface şablonlarında belirtilen kuralları kendi dünyalarında yeniden yazar. Çalışma zamanı motoru çok biçimlilik esaslarını kullanarak bu davranışları kolayca icra eder. Rust tarafında bu amaçla trait nesneleri öne çıkmaktadır. Bu pratikte fatura gibi bir doküman üstünen eklenen parçları trait nesnelerini kullanarak nasıl genişletebileceğimizi incelemeye çalışacağız. Tabii gerçekten de bir fatura görseli çizmeyeceğiz ama temel yapı taşlarını icra etmeye uğraşacağız.
 
-*Normalde generic tip kullanarak ilerlemeyi de düşünebiliriz lakin generic tip parametrelere t anında sadece tek bir concrete tip ile çalışabilir. Bu nedenle Trait nesneler kullanılır nitekim birden fazla asıl tipin çalışma zamanında dinamik olarak bağlanabilmesine imkan tanır. Esasında Trait nesneleri tanımlayabilmek için birkaç yol vardır. Bunlar Box<T>, &, Arc ve RC enstrümanlarıdır ve Dynamic Dispatch yöntemini kullanmamıza izin verir.
+*Normalde generic tip kullanarak ilerlemeyi de düşünebiliriz lakin generic tip parametreler t anında sadece tek bir concrete tip ile çalışabilir. Bu nedenle Trait nesneler kullanılır nitekim birden fazla asıl tipin çalışma zamanında dinamik olarak bağlanabilmesine imkan tanır. Esasında Trait nesneleri tanımlayabilmek için birkaç yol vardır. Bunlar Box<T>, &, Arc ve RC enstrümanlarıdır ve Dynamic Dispatch yöntemini kullanmamıza izin verir. Konunun sonunda bunu gösterecek şekilde örneği değiştireceğiz.
 
 Örneğimizi doc_builder ismiyle oluşturabiliriz.
 
@@ -171,3 +171,33 @@ fn main() {
 İşte çalışma zamanına ait bir görüntü.
 
 ![../images/doc_builder_1.png](../images/doc_builder_1.png)
+
+Örnekte smart pointer'lardan olan Box türünü kullanan trait nesnelerini ele aldık. Bu uygulama biçimi ile dynamic dispatch olarak da adlandırılan konuya değinmiş oluyoruz. C# tarafından gelen birisi için generic türlerin Rust tarafında da yer alması, aynı örnekte generic kullanımın işe yarayacağını düşündürebilir. Bu durumu görmek için örnekte aşağıdaki değişiklikleri yaparak ilerleyelim.
+
+```rust
+pub struct Document<T: Draw> {
+    pub sections: Vec<Box<T>>,
+}
+
+impl<T> Document<T>
+where
+    T: Draw,
+{
+    pub fn add(&mut self, section: Box<T>) {
+        self.sections.push(section)
+    }
+    pub fn print(&self) {
+        self.sections.iter().for_each(|m| m.draw())
+    }
+}
+```
+
+Document tipinin Draw trait'ini uyarlayan T tipi ile çalışmasını istediğimiz belirttik. Her ne kadar smart pointer'dan yararlanmış olsak da bu kod derlenmeyecek ve aşağıdaki hata mesajını verecektir.
+
+![../images/doc_builder_2.png](../images/doc_builder_2.png)
+
+Bu hata durumu main fonksiyonunda da görebiliriz.
+
+![../images/doc_builder_3.png](../images/doc_builder_3.png)
+
+Fatura nesnesine ilk olarak title bileşeni eklenmiştir. Bu sebepten sonraki add operasyonlarında rust derleyici yine title türünden nesnelerin eklenmesini bekler. Nitekim rust'ın kuralına göre generi bir parametre t anında sadece tek bir tiple çalışabilir. Dolayısıyla LineItems ve ve Bottom nesne örneklerinin eklenmeye çalışması bu kuralın ihlali anlamına gelmiştir.

@@ -6,4 +6,4 @@ Geçenlerde çok güzel bir problem sitesi buldum; [Project Lovelace](https://pr
 - [x] **Speed of Light:** Işığın yayılma hızını mesafeye göre bulan fonksiyon.
 - [x] **Plump Moose:** Bir enlemdeki bir geyiğin vücut kütlesini tahmin eden fonksiyon.
 - [x] **NAND Gate:** Not And operatörü için bir fonksiyon. And kapısının değili şeklinde düşünebiliriz.
-- [ ] **Compound Interest:** 
+- [x] **Compound Interest:** Faiz oranı, tutar ve yıla göre bileşik faiz sonrası ne kadar ödeme yapılacağınu bulur.

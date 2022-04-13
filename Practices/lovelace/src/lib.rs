@@ -50,6 +50,13 @@ mod tests {
         let actual = nand(Input::One, Input::One);
         assert_eq!(actual, Input::Zero);
     }
+
+    #[test]
+    pub fn compound_interest_test() {
+        let expected = 5427.4395;
+        let actual = compound_interest(1000, 0.07, 25);
+        assert_eq!(actual, expected);
+    }
 }
 
 pub const C: f32 = 299_792_458.0;
@@ -89,4 +96,9 @@ pub fn nand(a: Input, b: Input) -> Input {
 pub enum Input {
     Zero = 0,
     One = 1,
+}
+
+/// Bileşik faize göre belli yıl sonra yapılacak ödemeyi bulur
+pub fn compound_interest(amount: i32, rate: f32, year: u8) -> f32 {
+    amount as f32 * ((1.0 + rate as f32).powf(year as f32))
 }

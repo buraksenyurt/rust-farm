@@ -7,3 +7,4 @@ Geçenlerde çok güzel bir problem sitesi buldum; [Project Lovelace](https://pr
 - [x] **Plump Moose:** Bir enlemdeki bir geyiğin vücut kütlesini tahmin eden fonksiyon.
 - [x] **NAND Gate:** Not And operatörü için bir fonksiyon. And kapısının değili şeklinde düşünebiliriz.
 - [x] **Compound Interest:** Faiz oranı, tutar ve yıla göre bileşik faiz sonrası ne kadar ödeme yapılacağınu bulur.
+- [x] **Wind Chill:**  Rüzgar soğutma indeksi kullanılarak hissedilen asıl soğukluk değerini hesaplayan fonksiyon.

@@ -57,6 +57,13 @@ mod tests {
         let actual = compound_interest(1000, 0.07, 25);
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    pub fn wind_chill_test() {
+        let expected = -39.053047;
+        let actual = wind_chill(-25.0, 30.0);
+        assert_eq!(expected, actual);
+    }
 }
 
 pub const C: f32 = 299_792_458.0;
@@ -98,7 +105,13 @@ pub enum Input {
     One = 1,
 }
 
-/// Bileşik faize göre belli yıl sonra yapılacak ödemeyi bulur
+/// Bileşik faize göre belli yıl sonra yapılacak ödemeyi bulur.
 pub fn compound_interest(amount: i32, rate: f32, year: u8) -> f32 {
     amount as f32 * ((1.0 + rate as f32).powf(year as f32))
+}
+
+/// Rüzgarın hızına göre hissedilen asıl soğukluk derecesini bulur.
+pub fn wind_chill(temeprature: f32, wind_speed: f32) -> f32 {
+    let w = wind_speed.powf(0.16);
+    13.12 + (0.6215 * temeprature) - (11.37 * w) + (0.3956 * temeprature * w)
 }

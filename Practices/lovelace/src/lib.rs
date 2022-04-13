@@ -35,20 +35,58 @@ mod tests {
         let actual = moose_body_mass(latitude);
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    fn nand_test() {
+        let actual = nand(Input::Zero, Input::Zero);
+        assert_eq!(actual, Input::One);
+
+        let actual = nand(Input::Zero, Input::One);
+        assert_eq!(actual, Input::One);
+
+        let actual = nand(Input::One, Input::Zero);
+        assert_eq!(actual, Input::One);
+
+        let actual = nand(Input::One, Input::One);
+        assert_eq!(actual, Input::Zero);
+    }
 }
 
 pub const C: f32 = 299_792_458.0;
 pub const A: f32 = 2.757;
 pub const B: f32 = 16.793;
 
+/// Sıcaklık değerini Fahrenheit'tan Santigrat'a çevirir
 pub fn fahrenheit_to_celcius(f: f32) -> f32 {
     (5.0 / 9.0) * (f - 32.0)
 }
 
+/// Mesafeye göre ışığın ne kadar sürede ulaşacağını hesaplar
 pub fn light_time(distance: u32) -> f32 {
     distance as f32 / C
 }
 
+/// Su seviyesinden yüksekliğe göre geyiğin tahmini iriliğini hesaplar
 pub fn moose_body_mass(latitude: f32) -> f32 {
     (A * latitude) + B
+}
+
+/// Non And fonksiyonu. And kapısının değili.
+/// 0 NAND 0 = 1
+/// 0 NAND 1 = 1
+/// 1 NAND 0 = 1
+/// 1 NAND 1 = 0
+pub fn nand(a: Input, b: Input) -> Input {
+    if a == Input::One && b == Input::One {
+        Input::Zero
+    } else {
+        Input::One
+    }
+}
+
+/// NAND fonksiyonu için kullanılan veri modeli
+#[derive(PartialEq, Debug)]
+pub enum Input {
+    Zero = 0,
+    One = 1,
 }

@@ -28,3 +28,4 @@
 - [x] **fizz_bench:** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.
 - [x] **oop:** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek.
 - [x] **doc_builder:** Kendi trait nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
+- [ ] **lovelace:** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.

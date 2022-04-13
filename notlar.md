@@ -183,3 +183,14 @@ fn main(){
   - raw ve smart pointer'ların yönetimi
 - Rust dilinde raw pointer'lar çok sık kullanılmazlar. Mutable ve immutable tanımlanabilirler ve mutlaka unsafe kod blokları içerisinde ele alınırlar. Dolayısıyla derleyici bellek güvenliğinin sorumluluğunu üstüne almaz, bunu programcıya bırakır.
 - Bazen nesnelerin bellekteki sabit lokasyonlarda kalmasını ve hiçbir şekilde taşınmamasını *(move)* isteyebiliriz. Kendisini referans eden bağlı listeler'de *(Linked List)* olduğu gibi. Bu gibi durumlarda için Rust, *Pin<P>* veri tipini sunmaktadır. 
+- Rust dilinde versiyonlama Major.Minor.Patch formatında yapılır. 1.4.12 gibi. Büyük değişikliklerde Major sürüm artar. Yeni fonksiyon veya özelliklerin eklenmesinde ise Minor sürüm artar. Var olan sürümdeki bug fix'ler için Patch versiyonu artırılır. Yeni bir minor versiyon çıkılması halinde patch değeri de sıfırlanır. Yani 1.2.3 şeklindeki bir sürüme yeni özellikler eklendiyse yeni sürüm 1.3.0 olacaktır.
+- Bir rust kütüphanesini crates.io'ya alırken TOML dosyasında mutlaka olması gereken bazı bilgiler vardır.
+  - authors: yazar bilgileri
+  - description: ürünün ne yaptığı hakkında kısa bir açıklama.
+  - homepage: ürüne ait web sayfası *(en kötü ihtimalle github adresi)*
+  - repository: kaynak kodun yer aldığı github reposu
+  - readme: projede bir Readme.md dosyası olmalıdır.
+  - keywords: ürünü sınıflandıran takılar *(tag)* için
+  - categories: ürünün dahil olduğu kategori/kategoriler *(crates.io dakiler kullanılabilir)*
+  - license : MIT or Apache 2.0 gibi bir lisanslama bilgisi. Lisanlama var ise proje kaynak klasöründe COPYING dosyası ve license klasörü ile içeriği de olmalıdır.
+  - Bir rust projesinde birden fazla binary kullanmak istersek kaynak dosyaları src/bin klasörü altında toplamamız yeterlidir.

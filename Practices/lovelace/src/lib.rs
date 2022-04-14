@@ -1,3 +1,7 @@
+use crate::constant::*;
+
+mod constant;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -66,10 +70,6 @@ mod tests {
     }
 }
 
-pub const C: f32 = 299_792_458.0;
-pub const A: f32 = 2.757;
-pub const B: f32 = 16.793;
-
 /// Sıcaklık değerini Fahrenheit'tan Santigrat'a çevirir
 pub fn fahrenheit_to_celcius(f: f32) -> f32 {
     (5.0 / 9.0) * (f - 32.0)
@@ -112,6 +112,7 @@ pub fn compound_interest(amount: i32, rate: f32, year: u8) -> f32 {
 
 /// Rüzgarın hızına göre hissedilen asıl soğukluk derecesini bulur.
 pub fn wind_chill(temeprature: f32, wind_speed: f32) -> f32 {
-    let w = wind_speed.powf(0.16);
-    13.12 + (0.6215 * temeprature) - (11.37 * w) + (0.3956 * temeprature * w)
+    let w = wind_speed.powf(WIND_CHILL_5);
+    WIND_CHILL_1 + (WIND_CHILL_2 * temeprature) - (WIND_CHILL_3 * w)
+        + (WIND_CHILL_4 * temeprature * w)
 }

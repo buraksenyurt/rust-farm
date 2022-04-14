@@ -30,6 +30,25 @@ mod tests {
         let current_info = rfc_1.get_info();
         assert_eq!(current_info, "Onay Bekliyor|Menü arka plan rengi|Menü arka planının kullanıcı isteğine göre değişebilmesini istiyorum".to_string());
     }
+
+    #[test]
+    fn should_next_state_after_waiting_for_approval_is_committed() {
+        // Bu vakada ise yeni bir RFC oluşturulduktan sonra durumu onay bekliyora çekilir.
+        // Sonrasında da submit çağrısı ile durumu Committed'a çekilir.
+        let mut rfc_1 = ChangeRequest::new();
+        rfc_1.add_info(
+            "Menü arka plan rengi".to_string(),
+            "Menü arka planının kullanıcı isteğine göre değişebilmesini istiyorum".to_string(),
+        );
+        let current_info = rfc_1.get_info();
+        assert_eq!(current_info, "".to_string());
+        rfc_1.request_approve();
+        let current_info = rfc_1.get_info();
+        assert_eq!(current_info, "Onay Bekliyor|Menü arka plan rengi|Menü arka planının kullanıcı isteğine göre değişebilmesini istiyorum".to_string());
+        rfc_1.submit();
+        let current_info = rfc_1.get_info();
+        assert_eq!(current_info, "Onaylandı, Backlog'a eklendi|Menü arka plan rengi|Menü arka planının kullanıcı isteğine göre değişebilmesini istiyorum".to_string());
+    }
 }
 
 // Durumlar arasındaki geçişlere ait davranışları tanımladığımız trait
@@ -45,8 +64,10 @@ trait State {
     fn information(&self, _cr: &ChangeRequest) -> String {
         "".to_string()
     }
-    // Draft halinden ChangeForApproval'a geçişi tanımladığımız davranış
+    // Draft halinden WaitingForApproval'a geçişi tanımladığımız davranış
     fn request_approve(self: Box<Self>) -> Box<dyn State>;
+    // WaitingForApproval durumundan Committed durumuna geçişi tanımlayan davranış
+    fn commit(self: Box<Self>) -> Box<dyn State>;
 }
 
 // ChangeRequest nesnesinin ilk halini ifade eden veri yapısı
@@ -56,6 +77,11 @@ impl State for Draft {
     fn request_approve(self: Box<Self>) -> Box<dyn State> {
         // Draft için bu davranışın uygulanması bir sonraki durum olan WaitingForApproval'a geçiştir.
         Box::new(WaitingForApproval {})
+    }
+
+    // Nesne, Draft halindeyken doğrudan Committed durumuna geçemez. Bu nedenle self dönülür.
+    fn commit(self: Box<Self>) -> Box<dyn State> {
+        self
     }
 }
 
@@ -68,11 +94,39 @@ impl State for WaitingForApproval {
         // bu nedenle kendisini döndürür
         self
     }
+    // Talep onaylandıktan sonra WaitingForApproval'dan  Committed'a geçebilir
+    // Bu nedenle smart pointer üstünden Committed nesne örneği dönülür.
+    fn commit(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Committed {})
+    }
     // Nesnemiz WaitingForApproval durumuna geçtiğinde artık title ve description gibi bilgilerin
     // görülebilmesi gerekir. Bu nedenle State trait'i içindeki information davranışını yeniden
     // yazmaktayız.
     fn information(&self, cr: &ChangeRequest) -> String {
         format!("Onay Bekliyor|{}|{}", cr.title, cr.description)
+    }
+}
+
+// WaitingForApproval durumundaki sonraki durumu ifade eden veri yapısı
+struct Committed {}
+
+// Örnek akışımızda Committed nesnenin içinde olabileceği son haldir.
+// Bu nedenle request_approve veya commit gibi davranışlar self ile kendi durumunu döner.
+// Nitekim Committed durumunda diğer durumlar geçilmemektedir. En azından bu senaryo gereği.
+impl State for Committed {
+    fn information(&self, cr: &ChangeRequest) -> String {
+        format!(
+            "Onaylandı, Backlog'a eklendi|{}|{}",
+            cr.title, cr.description
+        )
+    }
+
+    fn request_approve(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+
+    fn commit(self: Box<Self>) -> Box<dyn State> {
+        self
     }
 }
 
@@ -120,6 +174,14 @@ impl ChangeRequest {
         if let Some(s) = self.state.take() {
             // O anki trait kimse onun üstünden asıl durum nesnesinin uyguladığı request_approve fonksiyonu çağırılır.
             self.state = Some(s.request_approve())
+        }
+    }
+
+    // Nesnenin WaitingForApproval durumundan Committed durumuna geçişi sırasında kullanılan fonksiyon
+    pub fn submit(&mut self) {
+        if let Some(s) = self.state.take() {
+            // O anki trait kimse onun üstünden asıl durum nesnesinin uyguladığı commit fonksiyonu çağırılır.
+            self.state = Some(s.commit())
         }
     }
 }

@@ -194,3 +194,28 @@ fn main(){
   - categories: ürünün dahil olduğu kategori/kategoriler *(crates.io dakiler kullanılabilir)*
   - license : MIT or Apache 2.0 gibi bir lisanslama bilgisi. Lisanlama var ise proje kaynak klasöründe COPYING dosyası ve license klasörü ile içeriği de olmalıdır.
   - Bir rust projesinde birden fazla binary kullanmak istersek kaynak dosyaları src/bin klasörü altında toplamamız yeterlidir.
+  - Rust'ın stable, beta ve nightly sürümleri arasında kolayca geçişler yapılıp istenilen sürüm ile çalışılabilir.
+  
+```shell
+# stable sürümü yüklemek için
+rustup install stable
+# beta sürümünü yüklemek için
+rustup install beta
+# nightly build sürümlerden yüklemek için
+rustup install nightly
+# hatta belli bir günün nightly sürümünü yüklemek için
+rustup install nightly-2022-04-13
+
+# Belli bir sürüme geçmek için rustup default nightly
+
+# Var olan sürümü güncellemek için
+rustup update
+
+# Güncel sürümü öğrenmek için
+rustc --version
+
+# mevcut sürümleri görmek için
+rustup show
+```
+
+![images/rustup_1.png](images/rustup_1.png)

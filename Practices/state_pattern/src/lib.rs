@@ -1,9 +1,15 @@
 #[cfg(test)]
 mod tests {
+    use crate::ChangeRequest;
+
     #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    fn should_new_change_request_info_is_empty() {
+        let mut rfc_1 = ChangeRequest::new();
+        rfc_1.add_info(
+            "Menü arka plan rengi".to_string(),
+            "Menü arka planının kullanıcı isteğine göre değişebilmesini istiyorum.".to_string(),
+        );
+        assert_eq!(rfc_1.get_info(), "");
     }
 }
 
@@ -36,5 +42,16 @@ impl ChangeRequest {
             title: String::new(),
             description: String::new(),
         }
+    }
+    // Taleple ilgili bilgileri eklemek için bir fonksiyondan yararlanacağız.
+    pub fn add_info(&mut self, title: String, description: String) {
+        self.title = title;
+        self.description = description;
+    }
+    // ChangeRequest, Draf moddayken hiçbir içeriğie sahip olmamalı şeklinde bir kuralımız vardı.
+    // Dolayısıyla bu bilgiler, ChangeRequest nesnesi ancak bir sonraki state'e geçerse kullanılabilir olmalı.
+    // Bu nedenle get_info fonksiyonu boş bir string referans döner.
+    pub fn get_info(&self) -> &str {
+        ""
     }
 }

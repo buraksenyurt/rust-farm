@@ -11,6 +11,8 @@ fn main() {
     println!("{}", dragon_fly);
     dragon_fly.end_game();
     println!("{}", dragon_fly);
+    dragon_fly.init();
+    println!("{}", dragon_fly);
     dragon_fly.menu();
     println!("{}", dragon_fly);
     dragon_fly.playing();

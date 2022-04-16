@@ -13,6 +13,7 @@ pub struct Game {
 
 impl Game {
     pub fn new(game_id: u32) -> Box<Game> {
+        println!("Yeni bir oyun nesnesi oluşturuldu. #{}", game_id);
         Box::new(Game {
             game_id,
             state: Box::new(InitState {
@@ -33,15 +34,17 @@ impl State for Game {
 // davranışların Game veri yapısı için uygulaması yapılır.
 impl GameState for Game {
     fn init(&mut self) -> bool {
+        println!("init çağrısı.");
         let result = self.state.init();
         if result {
             self.state = Box::new(PlayingState {
                 name: "INIT".to_string(),
             })
-        }
+        };
         result
     }
     fn playing(&mut self) -> bool {
+        println!("playing çağrısı.");
         let result = self.state.playing();
         if result {
             self.state = Box::new(PlayingState {
@@ -52,6 +55,7 @@ impl GameState for Game {
     }
 
     fn end_game(&mut self) -> bool {
+        println!("end_game çağrısı.");
         let result = self.state.end_game();
         if result {
             self.state = Box::new(EndGameState {
@@ -62,6 +66,7 @@ impl GameState for Game {
     }
 
     fn menu(&mut self) -> bool {
+        println!("menu çağrısı.");
         let result = self.state.menu();
         if result {
             self.state = Box::new(MenuState {
@@ -72,6 +77,7 @@ impl GameState for Game {
     }
 
     fn play_again(&mut self) -> bool {
+        println!("play_again çağrısı.");
         let result = self.state.play_again();
         if result {
             self.state = Box::new(PlayAgainState {

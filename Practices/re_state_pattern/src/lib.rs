@@ -12,19 +12,46 @@ mod tests {
     use super::*;
 
     #[test]
-    fn should_game_in_menu_state_at_the_beginning() {
+    fn should_game_on_new_state_test() {
         let dragon_fly = Game::new(1);
         let current_state = dragon_fly.get_state();
         assert_eq!(current_state, "".to_string());
     }
 
     #[test]
-    fn should_state_be_endgame_after_the_playing() {
+    fn should_game_on_playing_state_test() {
         let mut dragon_fly = Game::new(1);
         let current_state = dragon_fly.get_state();
         assert_eq!(current_state, "".to_string());
         let actual = dragon_fly.playing();
         assert_eq!(actual, true);
+        assert_eq!(dragon_fly.state.get_state(), "PLAYING".to_string());
+    }
+
+    #[test]
+    fn should_game_on_endgame_state_test() {
+        let mut dragon_fly = Game::new(1);
+        dragon_fly.playing();
+        dragon_fly.end_game();
+        assert_eq!(dragon_fly.state.get_state(), "END_GAME".to_string());
+    }
+
+    #[test]
+    fn should_game_on_play_again_state_test() {
+        let mut dragon_fly = Game::new(1);
+        dragon_fly.playing();
+        dragon_fly.end_game();
+        dragon_fly.play_again();
+        assert_eq!(dragon_fly.state.get_state(), "PLAY_AGAIN".to_string());
+    }
+
+    #[test]
+    fn should_game_on_menu_state_from_end_test() {
+        let mut dragon_fly = Game::new(1);
+        dragon_fly.playing();
+        dragon_fly.end_game();
+        dragon_fly.menu();
+        assert_eq!(dragon_fly.state.get_state(), "MENU_FROM_END".to_string());
     }
 }
 
@@ -55,6 +82,7 @@ impl State for Game {
 // davranışların Game veri yapısı için uygulaması yapılır.
 impl GameStateAction for Game {
     fn playing(&mut self) -> bool {
+        // Oyunun güncel durumuna bakılır.
         let result = self.state.playing();
         if result {
             self.state = Box::new(PlayingState {
@@ -65,15 +93,37 @@ impl GameStateAction for Game {
     }
 
     fn end_game(&mut self) -> bool {
-        todo!()
+        let result = self.state.end_game();
+        if result {
+            self.state = Box::new(EndGameState {
+                name: "END_GAME".to_string(),
+            })
+        }
+        result
     }
 
-    fn go_to_menu(&mut self) -> bool {
-        todo!()
+    fn menu(&mut self) -> bool {
+        // Oyun nesnesninin güncel durumuna bakılır
+        // Eğer end_game konumundaysak, menüye tekrar dönebiliriz.
+        let result = self.state.end_game();
+        if result {
+            self.state = Box::new(MenuState {
+                name: "MENU_FROM_END".to_string(),
+            })
+        }
+        result
     }
 
     fn play_again(&mut self) -> bool {
-        todo!()
+        // Oyun nesnesninin güncel durumuna bakılır
+        // Eğer end_game konumundaysak, yeniden oynamaya dönebiliriz.
+        let result = self.state.end_game();
+        if result {
+            self.state = Box::new(PlayingState {
+                name: "PLAY_AGAIN".to_string(),
+            })
+        }
+        result
     }
 }
 
@@ -85,7 +135,7 @@ trait State {
 trait GameStateAction: State {
     fn playing(&mut self) -> bool;
     fn end_game(&mut self) -> bool;
-    fn go_to_menu(&mut self) -> bool;
+    fn menu(&mut self) -> bool;
     fn play_again(&mut self) -> bool;
 }
 
@@ -113,7 +163,7 @@ impl GameStateAction for MenuState {
         false
     }
 
-    fn go_to_menu(&mut self) -> bool {
+    fn menu(&mut self) -> bool {
         // zaten menüdeyiz
         false
     }
@@ -148,7 +198,7 @@ impl GameStateAction for PlayingState {
         true
     }
 
-    fn go_to_menu(&mut self) -> bool {
+    fn menu(&mut self) -> bool {
         // esasında true olabilir belki. Oyunu oynarken Esc yapıp menu adımına geçmek de mümkündür.
         false
     }
@@ -156,5 +206,38 @@ impl GameStateAction for PlayingState {
     fn play_again(&mut self) -> bool {
         // Zaten oyun oynanıyor modda o nedenle play_again moduna da geçilmez.
         false
+    }
+}
+
+// EndGame durumunu temsil eden veri yapısı
+struct EndGameState {
+    name: String,
+}
+
+impl State for EndGameState {
+    fn get_state(&self) -> String {
+        self.name.clone()
+    }
+}
+
+// Oyun kaybedildiğinde geçilen EndGame durumudur.
+impl GameStateAction for EndGameState {
+    fn playing(&mut self) -> bool {
+        false
+    }
+
+    fn end_game(&mut self) -> bool {
+        // Zaten EndGame durumundayız
+        true
+    }
+
+    fn menu(&mut self) -> bool {
+        // Oyunun sonunda oyuncu menüye dönebilir
+        true
+    }
+
+    fn play_again(&mut self) -> bool {
+        // Oyunun sonunda oyuncu yeniden oynamaya devam edebilir
+        true
     }
 }

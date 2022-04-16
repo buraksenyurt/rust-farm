@@ -30,3 +30,4 @@
 - [x] **doc_builder:** Kendi trait nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
 - [ ] **lovelace:** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
 - [x] **state_pattern:** Bu örnekte State tasarım kalıbının nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
+- [x] **state_pattern2:** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.

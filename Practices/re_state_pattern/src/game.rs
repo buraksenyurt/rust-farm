@@ -5,6 +5,7 @@ use crate::menu_state::MenuState;
 use crate::play_again::PlayAgainState;
 use crate::playing::PlayingState;
 use crate::state::State;
+use std::fmt::{Display, Formatter};
 
 pub struct Game {
     game_id: u32,
@@ -23,6 +24,17 @@ impl Game {
     }
 }
 
+impl Display for Game {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Oyun #{}. Durum => {}",
+            self.game_id,
+            self.state.get_state()
+        )
+    }
+}
+
 impl State for Game {
     fn get_state(&self) -> String {
         "".to_string()
@@ -34,7 +46,7 @@ impl State for Game {
 // davranışların Game veri yapısı için uygulaması yapılır.
 impl GameState for Game {
     fn init(&mut self) -> bool {
-        println!("init çağrısı.");
+        println!("\tINIT çağrısı.");
         let result = self.state.init();
         if result {
             self.state = Box::new(PlayingState {
@@ -44,7 +56,7 @@ impl GameState for Game {
         result
     }
     fn playing(&mut self) -> bool {
-        println!("playing çağrısı.");
+        println!("\tPLAYING çağrısı.");
         let result = self.state.playing();
         if result {
             self.state = Box::new(PlayingState {
@@ -55,7 +67,7 @@ impl GameState for Game {
     }
 
     fn end_game(&mut self) -> bool {
-        println!("end_game çağrısı.");
+        println!("\tEND_GAME çağrısı.");
         let result = self.state.end_game();
         if result {
             self.state = Box::new(EndGameState {
@@ -66,7 +78,7 @@ impl GameState for Game {
     }
 
     fn menu(&mut self) -> bool {
-        println!("menu çağrısı.");
+        println!("\tMENU çağrısı.");
         let result = self.state.menu();
         if result {
             self.state = Box::new(MenuState {
@@ -77,7 +89,7 @@ impl GameState for Game {
     }
 
     fn play_again(&mut self) -> bool {
-        println!("play_again çağrısı.");
+        println!("\tPLAY_AGAIN çağrısı.");
         let result = self.state.play_again();
         if result {
             self.state = Box::new(PlayAgainState {

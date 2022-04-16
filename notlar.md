@@ -219,3 +219,13 @@ rustup show
 ```
 
 ![images/rustup_1.png](images/rustup_1.png)
+
+- Rust'ın 1.60.0 sürümü ile birlikte build işlemlerine ait bazı ölçümleri gösteren bir cargo parametresi eklendi.
+
+```shell
+cargo build --timings
+```
+
+Bu çalıştırma işlemi sonrasında cargo-timing bilgilerini içeren html dosyaları target/cargo-timings klasörü altına atılıyor.
+
+![images/timings.png](images/timings.png)

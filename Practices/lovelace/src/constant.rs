@@ -14,3 +14,5 @@ pub const WIND_CHILL_3: f32 = 11.37;
 pub const WIND_CHILL_4: f32 = 0.3956;
 /// Wind Chill katsayısı 5
 pub const WIND_CHILL_5: f32 = 0.16;
+/// Dünyanın yarıçapı
+pub const R: f32 = 6372.1;

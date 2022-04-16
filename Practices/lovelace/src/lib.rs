@@ -68,6 +68,15 @@ mod tests {
         let actual = wind_chill(-25.0, 30.0);
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    pub fn flight_paths_test() {
+        let point1 = Point::new(46.283, 86.667);
+        let point2 = Point::new(-48.877, -123.393);
+        let expected_distance = 17760.057;
+        let actual = haversine_distance(point1, point2);
+        assert_eq!(expected_distance, actual);
+    }
 }
 
 /// Sıcaklık değerini Fahrenheit'tan Santigrat'a çevirir
@@ -115,4 +124,36 @@ pub fn wind_chill(temeprature: f32, wind_speed: f32) -> f32 {
     let w = wind_speed.powf(WIND_CHILL_5);
     WIND_CHILL_1 + (WIND_CHILL_2 * temeprature) - (WIND_CHILL_3 * w)
         + (WIND_CHILL_4 * temeprature * w)
+}
+
+/// Dünya üstündeki iki nokta arasındaki uçuş mesafesini Haversine Distance formülüne göre hesaplayan fonksiyon.
+pub fn haversine_distance(a: Point, b: Point) -> f32 {
+    let l1 = a.to_radians();
+    let l2 = b.to_radians();
+    let sin1 = f32::sin((l2.latitude - l1.latitude) / 2.0);
+    let sin2 = f32::sin((l2.longtitude - l1.longtitude) / 2.0);
+    let part1 = sin1.powf(2.0) + (f32::cos(l1.latitude) * f32::cos(l2.latitude) * sin2.powf(2.0));
+    let part2 = part1.sqrt().asin();
+    let part3 = 2.0 * R;
+    part3 * part2
+}
+
+pub struct Point {
+    pub latitude: f32,
+    pub longtitude: f32,
+}
+
+impl Point {
+    pub fn new(latitude: f32, longtitude: f32) -> Self {
+        Self {
+            latitude,
+            longtitude,
+        }
+    }
+    pub fn to_radians(&self) -> Self {
+        Point {
+            latitude: self.latitude.to_radians(),
+            longtitude: self.longtitude.to_radians(),
+        }
+    }
 }

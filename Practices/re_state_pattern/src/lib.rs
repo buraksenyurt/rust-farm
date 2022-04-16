@@ -1,10 +1,10 @@
 /*
-   Bu örnekte bir Oyun nesnesinin Menu, Playing ve EndGame konumlarında olma halini ele aldığımız
+   Bu örnekte bir Oyun nesnesinin Init, Playing, PlayAgain, EndGame konumlarında olma halini ele aldığımız
    bir state pattern örneği söz konusu.
 
-   Oyun nesnesi Menu konumundan, Playing konumuna geçebilir ama EndGame konumuna geçemez.
-   Playing konumundan EndGame konumuna geçebilir ama Menu konumuna geçemez.
-   EndGame konumundan tekrar Playing'e (Replay seçeneği) veya Menu durumuna geçebilir.
+   Oyun nesnesi Init konumundan, Playing konumuna geçebilir ama EndGame konumuna geçemez.
+   Playing konumundan EndGame konumuna geçebilir ama Init konumuna geçemez.
+   EndGame konumundan PlayAgain ve Menu konumuna geçebilir.
 */
 
 #[cfg(test)]
@@ -18,16 +18,15 @@ mod tests {
         assert_eq!(current_state, "".to_string());
     }
 
+    // Oyun nesnesi Init konumundan, Playing konumuna geçebilir ama EndGame konumuna geçemez.
     #[test]
     fn should_game_on_playing_state_test() {
         let mut dragon_fly = Game::new(1);
-        let current_state = dragon_fly.get_state();
-        assert_eq!(current_state, "".to_string());
-        let actual = dragon_fly.playing();
-        assert_eq!(actual, true);
+        dragon_fly.playing();
         assert_eq!(dragon_fly.state.get_state(), "PLAYING".to_string());
     }
 
+    // Playing konumundan EndGame konumuna geçebilir.
     #[test]
     fn should_game_on_endgame_state_test() {
         let mut dragon_fly = Game::new(1);
@@ -36,6 +35,16 @@ mod tests {
         assert_eq!(dragon_fly.state.get_state(), "END_GAME".to_string());
     }
 
+    // Playing konumundan Init konumuna geçemez.
+    #[test]
+    fn game_should_not_be_init_state_when_playing_test() {
+        let mut dragon_fly = Game::new(1);
+        dragon_fly.playing();
+        dragon_fly.init();
+        assert_eq!(dragon_fly.state.get_state(), "PLAYING".to_string());
+    }
+
+    // EndGame konumundan PlayAgain konumuna geçebilir.
     #[test]
     fn should_game_on_play_again_state_test() {
         let mut dragon_fly = Game::new(1);
@@ -45,27 +54,28 @@ mod tests {
         assert_eq!(dragon_fly.state.get_state(), "PLAY_AGAIN".to_string());
     }
 
+    // EndGame konumundan Menu konumuna geçebilir.
     #[test]
-    fn should_game_on_menu_state_from_end_test() {
+    fn should_game_on_menu_state_after_end_game_test() {
         let mut dragon_fly = Game::new(1);
         dragon_fly.playing();
         dragon_fly.end_game();
         dragon_fly.menu();
-        assert_eq!(dragon_fly.state.get_state(), "MENU_FROM_END".to_string());
+        assert_eq!(dragon_fly.state.get_state(), "MENU".to_string());
     }
 }
 
 struct Game {
     game_id: u32,
-    state: Box<dyn GameStateAction>,
+    state: Box<dyn GameState>,
 }
 
 impl Game {
     pub fn new(game_id: u32) -> Box<Game> {
         Box::new(Game {
             game_id,
-            state: Box::new(MenuState {
-                name: "MENU".to_string(),
+            state: Box::new(InitState {
+                name: "INIT".to_string(),
             }),
         })
     }
@@ -78,11 +88,19 @@ impl State for Game {
 }
 
 // Oyun nesnesi üstünde durumlar arası geçiş söz konusudur.
-// Bu geçişleri kontrol altına almak için GameStateAction trait'i üstünden gelen
+// Bu geçişleri kontrol altına almak için GameState trait'i üstünden gelen
 // davranışların Game veri yapısı için uygulaması yapılır.
-impl GameStateAction for Game {
+impl GameState for Game {
+    fn init(&mut self) -> bool {
+        let result = self.state.init();
+        if result {
+            self.state = Box::new(PlayingState {
+                name: "INIT".to_string(),
+            })
+        }
+        result
+    }
     fn playing(&mut self) -> bool {
-        // Oyunun güncel durumuna bakılır.
         let result = self.state.playing();
         if result {
             self.state = Box::new(PlayingState {
@@ -103,23 +121,19 @@ impl GameStateAction for Game {
     }
 
     fn menu(&mut self) -> bool {
-        // Oyun nesnesninin güncel durumuna bakılır
-        // Eğer end_game konumundaysak, menüye tekrar dönebiliriz.
-        let result = self.state.end_game();
+        let result = self.state.menu();
         if result {
             self.state = Box::new(MenuState {
-                name: "MENU_FROM_END".to_string(),
+                name: "MENU".to_string(),
             })
         }
         result
     }
 
     fn play_again(&mut self) -> bool {
-        // Oyun nesnesninin güncel durumuna bakılır
-        // Eğer end_game konumundaysak, yeniden oynamaya dönebiliriz.
-        let result = self.state.end_game();
+        let result = self.state.play_again();
         if result {
-            self.state = Box::new(PlayingState {
+            self.state = Box::new(PlayAgainState {
                 name: "PLAY_AGAIN".to_string(),
             })
         }
@@ -132,11 +146,45 @@ trait State {
 }
 // Oyununun durumları arasındaki geçişlerin tanımlandığı trait
 // Bu trait State trait'ini de devralmaktadır
-trait GameStateAction: State {
+trait GameState: State {
+    fn init(&mut self) -> bool;
     fn playing(&mut self) -> bool;
     fn end_game(&mut self) -> bool;
-    fn menu(&mut self) -> bool;
     fn play_again(&mut self) -> bool;
+    fn menu(&mut self) -> bool;
+}
+
+// Başlangıç durumunu temsil eden veri yapısı
+struct InitState {
+    name: String,
+}
+
+impl State for InitState {
+    fn get_state(&self) -> String {
+        self.name.clone()
+    }
+}
+
+impl GameState for InitState {
+    fn init(&mut self) -> bool {
+        false
+    }
+
+    fn playing(&mut self) -> bool {
+        true
+    }
+
+    fn end_game(&mut self) -> bool {
+        false
+    }
+
+    fn menu(&mut self) -> bool {
+        false
+    }
+
+    fn play_again(&mut self) -> bool {
+        false
+    }
 }
 
 // Menu durumunu temsil eden veri yapısı
@@ -149,32 +197,29 @@ impl State for MenuState {
     }
 }
 
-// Menu adımından playing durumuna geçilebilir.
-// Bu sebepten sadece playing uygulanabilirdir.
-// playing true dönerken diğer trait fonksiyonları false dönecektir.
-impl GameStateAction for MenuState {
-    fn playing(&mut self) -> bool {
-        // playing moda geçebiliriz.
+impl GameState for MenuState {
+    fn init(&mut self) -> bool {
         true
     }
 
+    fn playing(&mut self) -> bool {
+        false
+    }
+
     fn end_game(&mut self) -> bool {
-        // end_game moduna geçemeyiz
         false
     }
 
     fn menu(&mut self) -> bool {
-        // zaten menüdeyiz
         false
     }
 
     fn play_again(&mut self) -> bool {
-        // yeniden oyna moduna da geçemeyiz
         false
     }
 }
 
-// Menu durumunu temsil eden veri yapısı
+// Playing durumunu temsil eden veri yapısı
 struct PlayingState {
     name: String,
 }
@@ -187,9 +232,11 @@ impl State for PlayingState {
 
 // Oyun oynanırken Playing modundayız.
 // Oyun kaybedildiğinde bu durumdan EndGame durumuna geçilebilir.
-impl GameStateAction for PlayingState {
+impl GameState for PlayingState {
+    fn init(&mut self) -> bool {
+        false
+    }
     fn playing(&mut self) -> bool {
-        // Zaten playing moddayız
         false
     }
 
@@ -221,19 +268,52 @@ impl State for EndGameState {
 }
 
 // Oyun kaybedildiğinde geçilen EndGame durumudur.
-impl GameStateAction for EndGameState {
+impl GameState for EndGameState {
+    fn init(&mut self) -> bool {
+        false
+    }
     fn playing(&mut self) -> bool {
         false
     }
 
     fn end_game(&mut self) -> bool {
-        // Zaten EndGame durumundayız
-        true
+        false
     }
 
     fn menu(&mut self) -> bool {
-        // Oyunun sonunda oyuncu menüye dönebilir
         true
+    }
+
+    fn play_again(&mut self) -> bool {
+        true
+    }
+}
+
+struct PlayAgainState {
+    name: String,
+}
+
+impl State for PlayAgainState {
+    fn get_state(&self) -> String {
+        self.name.clone()
+    }
+}
+
+// Oyun kaybedildiğinde geçilen EndGame durumudur.
+impl GameState for PlayAgainState {
+    fn init(&mut self) -> bool {
+        false
+    }
+    fn playing(&mut self) -> bool {
+        false
+    }
+
+    fn end_game(&mut self) -> bool {
+        false
+    }
+
+    fn menu(&mut self) -> bool {
+        false
     }
 
     fn play_again(&mut self) -> bool {

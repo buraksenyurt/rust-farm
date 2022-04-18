@@ -11,7 +11,7 @@ impl State {
         let map_builder = MapBuilder::new(&mut gen);
         Self {
             map: map_builder.map,
-            packy: Packy::new(map_builder.pack_start),
+            packy: Packy::new(map_builder.packy_start),
         }
     }
 }

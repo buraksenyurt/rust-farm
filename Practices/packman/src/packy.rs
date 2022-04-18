@@ -33,6 +33,7 @@ impl Packy {
             if map.want_enter_tile(new_location) {
                 self.location = new_location;
             }
+            self.render(ctx);
         }
     }
 }

@@ -6,17 +6,19 @@ const NUMBER_OF_TILES: usize = { SCHENE_WIDTH * SCHENE_HEIGHT } as usize;
 pub enum ObjectType {
     Wall,
     Floor,
-    Apple,
-    RottenApple,
 }
 pub struct Map {
     pub objects: Vec<ObjectType>,
+    pub apples: Vec<Apple>,
+    pub roten_apples: Vec<RottenApple>,
 }
 
 impl Map {
     pub fn new() -> Self {
         Self {
             objects: vec![ObjectType::Floor; NUMBER_OF_TILES],
+            apples: Vec::new(),
+            roten_apples: Vec::new(),
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
@@ -26,10 +28,28 @@ impl Map {
                 match self.objects[index] {
                     ObjectType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('#')),
                     ObjectType::Floor => ctx.set(x, y, WHITE, BLACK, to_cp437('!')),
-                    ObjectType::Apple => ctx.set(x, y, WHITE, BLACK, to_cp437('.')),
-                    ObjectType::RottenApple => ctx.set(x, y, RED, BLACK, to_cp437(',')),
-                }
+                };
             }
+        }
+
+        for apple in &self.apples {
+            ctx.set(
+                apple.location.x,
+                apple.location.y,
+                WHITE,
+                BLACK,
+                to_cp437('.'),
+            );
+        }
+
+        for apple in &self.roten_apples {
+            ctx.set(
+                apple.location.x,
+                apple.location.y,
+                WHITE,
+                BLACK,
+                to_cp437(','),
+            );
         }
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {

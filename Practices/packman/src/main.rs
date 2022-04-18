@@ -1,8 +1,10 @@
 use crate::prelude::*;
 
+mod apple;
 mod map;
 mod map_builder;
 mod packy;
+mod rotten_apple;
 mod state;
 
 mod prelude {
@@ -10,16 +12,20 @@ mod prelude {
     pub const SCHENE_HEIGHT: i32 = 50;
     pub const DISPLAY_WIDTH: i32 = SCHENE_WIDTH / 2;
     pub const DISPLAY_HEIGHT: i32 = SCHENE_HEIGHT / 2;
+    pub const MAX_NUM_OF_APPLES: usize = 10;
+    pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
+    pub use crate::apple::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
     pub use crate::packy::*;
+    pub use crate::rotten_apple::*;
     pub use crate::state::*;
     pub use bracket_lib::prelude::*;
     pub const FONT_SOURCE: &str = "mapfonts.png";
 }
 fn main() -> BError {
     let context = BTermBuilder::new()
-        .with_title("Dungeon Crawler")
+        .with_title("Packy Man")
         .with_fps_cap(30.0)
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
         .with_tile_dimensions(32, 32)

@@ -1,0 +1,9 @@
+[package]
+name = "packman"
+description = "packman benzeri bir oyun programı denemesidir"
+authors = ["Burak Selim Şenyurt<selim@buraksenyurt.com>"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bracket-lib = "~0.8.1"

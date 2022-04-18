@@ -229,3 +229,13 @@ cargo build --timings
 Bu çalıştırma işlemi sonrasında cargo-timing bilgilerini içeren html dosyaları target/cargo-timings klasörü altına atılıyor.
 
 ![images/timings.png](images/timings.png)
+
+- Bir rust binary'sinin bellek görüntüsüne bakmak için xxd aracından yararlanılabilir. intro klasöründe yer alan basit örnek için;
+
+```shell
+cargo build
+cd target/debug
+xxd -g1 intro
+```
+
+![images/xdd_1.png](images/xdd_1.png)

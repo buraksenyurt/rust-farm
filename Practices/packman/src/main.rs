@@ -22,8 +22,11 @@ mod prelude {
     pub use crate::state::*;
     pub use bracket_lib::prelude::*;
     pub const FONT_SOURCE: &str = "mapfonts.png";
+    pub use log::*;
 }
 fn main() -> BError {
+    let _ = env_logger::init();
+
     let context = BTermBuilder::new()
         .with_title("Packy Man")
         .with_fps_cap(30.0)

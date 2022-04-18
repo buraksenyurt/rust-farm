@@ -12,7 +12,6 @@ impl MapBuilder {
             packy_start: Point::zero(),
         };
         map_builder.fill(ObjectType::Wall);
-        // map_builder.fill(ObjectType::RottenApple);
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
         map_builder
@@ -27,6 +26,7 @@ impl MapBuilder {
                 gen.range(1, SCHENE_WIDTH - 10),
                 gen.range(1, SCHENE_HEIGHT - 10),
             );
+            info!("{}:{} -> APPLE", x, y);
             let apple = Apple::new(Point { x, y });
             self.map.apples.push(apple);
         }
@@ -38,6 +38,7 @@ impl MapBuilder {
                 gen.range(1, SCHENE_WIDTH - 10),
                 gen.range(1, SCHENE_HEIGHT - 10),
             );
+            info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = RottenApple::new(Point { x, y });
             self.map.roten_apples.push(rotten_apple);
         }

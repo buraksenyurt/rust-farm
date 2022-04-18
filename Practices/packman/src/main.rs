@@ -8,10 +8,8 @@ mod rotten_apple;
 mod state;
 
 mod prelude {
-    pub const SCHENE_WIDTH: i32 = 80;
-    pub const SCHENE_HEIGHT: i32 = 50;
-    pub const DISPLAY_WIDTH: i32 = SCHENE_WIDTH / 2;
-    pub const DISPLAY_HEIGHT: i32 = SCHENE_HEIGHT / 2;
+    pub const DISPLAY_WIDTH: i32 = 40;
+    pub const DISPLAY_HEIGHT: i32 = 25;
     pub const MAX_NUM_OF_APPLES: usize = 10;
     pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
     pub use crate::apple::*;

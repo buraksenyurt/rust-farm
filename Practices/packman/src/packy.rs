@@ -29,11 +29,19 @@ impl Packy {
                 VirtualKeyCode::Down => Point::new(0, 1),
                 _ => Point::zero(),
             };
+            info!(
+                "PACKY CURRENT LOC -> {}:{}",
+                self.location.x, self.location.y
+            );
             let new_location = self.location + delta;
-            if map.want_enter_tile(new_location) {
+            info!(
+                "MOVE ACTION FOR NEW LOCATION -> {}:{}",
+                new_location.x, new_location.y
+            );
+            if map.is_in_bounds(new_location) {
                 self.location = new_location;
+                info!("IT CAN GO TO -> {}:{}", self.location.x, self.location.y);
             }
-            self.render(ctx);
         }
     }
 }

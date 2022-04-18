@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-const NUMBER_OF_TILES: usize = { SCHENE_WIDTH * SCHENE_HEIGHT } as usize;
+const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum ObjectType {
@@ -22,8 +22,8 @@ impl Map {
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
-        for y in 0..SCHENE_HEIGHT {
-            for x in 0..SCHENE_WIDTH {
+        for y in 0..DISPLAY_HEIGHT {
+            for x in 0..DISPLAY_WIDTH {
                 let index = map_to_index(x, y);
                 match self.objects[index] {
                     ObjectType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('#')),
@@ -53,9 +53,9 @@ impl Map {
         }
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {
-        point.x >= 0 && point.x < SCHENE_WIDTH && point.y >= 0 && point.y < SCHENE_HEIGHT
+        (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)
     }
-    pub fn want_enter_tile(&self, point: Point) -> bool {
+    pub fn can_enter_tile(&self, point: Point) -> bool {
         self.is_in_bounds(point)
             && self.objects[map_to_index(point.x, point.y)] == ObjectType::Floor
     }
@@ -69,5 +69,5 @@ impl Map {
 }
 
 pub fn map_to_index(x: i32, y: i32) -> usize {
-    ((y + SCHENE_WIDTH) + x) as usize
+    ((y + DISPLAY_WIDTH) + x) as usize
 }

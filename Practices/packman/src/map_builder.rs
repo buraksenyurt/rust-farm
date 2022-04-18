@@ -23,8 +23,8 @@ impl MapBuilder {
     fn add_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_APPLES {
             let (x, y) = (
-                gen.range(1, SCHENE_WIDTH - 10),
-                gen.range(1, SCHENE_HEIGHT - 10),
+                gen.range(1, DISPLAY_WIDTH - 10),
+                gen.range(1, DISPLAY_HEIGHT - 10),
             );
             info!("{}:{} -> APPLE", x, y);
             let apple = Apple::new(Point { x, y });
@@ -35,8 +35,8 @@ impl MapBuilder {
     fn add_rotten_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_ROTTEN_APPLES {
             let (x, y) = (
-                gen.range(1, SCHENE_WIDTH - 10),
-                gen.range(1, SCHENE_HEIGHT - 10),
+                gen.range(1, DISPLAY_WIDTH - 10),
+                gen.range(1, DISPLAY_HEIGHT - 10),
             );
             info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = RottenApple::new(Point { x, y });

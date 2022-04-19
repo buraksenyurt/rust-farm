@@ -37,17 +37,26 @@ impl Packy {
                 "MOVE ACTION FOR NEW LOCATION -> {}:{}",
                 new_location.x, new_location.y
             );
-            let index = map_to_index(new_location.x, new_location.y);
-            match map.objects[index] {
-                ObjectType::Floor => info!("\t{}:{} is Floor", x, y),
-                ObjectType::Apple => info!("\t{}:{} is Apple", x, y),
-                ObjectType::RottenApple => info!("\t{}:{} is Rotten Apple", x, y),
-                ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
-            };
-
-            if map.is_in_bounds(new_location) {
-                self.location = new_location;
-                info!("IT CAN GO TO -> {}:{}", self.location.x, self.location.y);
+            match map.try_map_to_index(new_location) {
+                Some(index) => match map.objects[index] {
+                    ObjectType::Floor => {
+                        info!("\t{}:{} is Floor", x, y);
+                        info!("IT CAN GO TO -> {:?}", self.location);
+                        self.location = new_location;
+                    }
+                    ObjectType::Apple => {
+                        info!("\t{}:{} is Apple", x, y);
+                        info!("IT CAN GO TO -> {:?}", self.location);
+                        self.location = new_location;
+                    }
+                    ObjectType::RottenApple => {
+                        info!("\t{}:{} is Rotten Apple", x, y);
+                        info!("IT CAN GO TO -> {:?}", self.location);
+                        self.location = new_location;
+                    }
+                    ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
+                },
+                _ => {}
             }
         }
     }

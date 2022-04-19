@@ -10,8 +10,8 @@ mod state;
 mod wall;
 
 mod prelude {
-    pub const DISPLAY_WIDTH: i32 = 40;
-    pub const DISPLAY_HEIGHT: i32 = 25;
+    pub const DISPLAY_WIDTH: i32 = 20;
+    pub const DISPLAY_HEIGHT: i32 = 20;
     pub const MAX_NUM_OF_APPLES: usize = 10;
     pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
     pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 2) as usize;

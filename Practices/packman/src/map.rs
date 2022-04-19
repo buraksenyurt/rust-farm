@@ -28,6 +28,7 @@ impl Map {
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
+        ctx.set_active_console(0);
         //info!("TOTAL TILE {}", self.objects.len());
 
         for y in 0..DISPLAY_HEIGHT {
@@ -73,5 +74,5 @@ impl Map {
 }
 
 pub fn map_to_index(x: i32, y: i32) -> usize {
-    ((y + DISPLAY_WIDTH) + x) as usize
+    ((y * DISPLAY_WIDTH) + x) as usize
 }

@@ -23,7 +23,7 @@ impl Packy {
     pub fn move_to(&mut self, ctx: &mut BTerm, map: &Map) {
         if let Some(key) = ctx.key {
             let (x, y) = (self.location.x, self.location.y);
-
+            //ctx.print_color(1, 1, WHITE, BLACK, &format!("({}:{})", x, y));
             let delta = match key {
                 VirtualKeyCode::Left => Point::new(-1, 0),
                 VirtualKeyCode::Right => Point::new(1, 0),
@@ -43,7 +43,8 @@ impl Packy {
                 ObjectType::Apple => info!("\t{}:{} is Apple", x, y),
                 ObjectType::RottenApple => info!("\t{}:{} is Rotten Apple", x, y),
                 ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
-            }
+            };
+
             if map.is_in_bounds(new_location) {
                 self.location = new_location;
                 info!("IT CAN GO TO -> {}:{}", self.location.x, self.location.y);

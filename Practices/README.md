@@ -31,3 +31,4 @@
 - [ ] **lovelace:** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
 - [x] **state_pattern:** Bu örnekte State tasarım kalıbının nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
 - [x] **state_pattern2:** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
+- [ ] **packman:** Bracket-Lib oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.

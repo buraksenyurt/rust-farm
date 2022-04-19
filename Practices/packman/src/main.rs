@@ -11,10 +11,10 @@ mod wall;
 
 mod prelude {
     pub const DISPLAY_WIDTH: i32 = 24;
-    pub const DISPLAY_HEIGHT: i32 = 24;
+    pub const DISPLAY_HEIGHT: i32 = 22;
     pub const MAX_NUM_OF_APPLES: usize = 10;
     pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
-    pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 2) as usize;
+    pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 3) as usize;
     pub use crate::apple::*;
     pub use crate::floor::*;
     pub use crate::map::*;

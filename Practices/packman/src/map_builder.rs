@@ -11,13 +11,28 @@ impl MapBuilder {
             map: Map::new(),
             packy_start: Point::zero(),
         };
-        map_builder.fill(ObjectType::Wall);
+        map_builder.fill(ObjectType::Floor);
+
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
+        map_builder.add_walls(gen);
+
         map_builder
     }
     fn fill(&mut self, object: ObjectType) {
         self.map.objects.iter_mut().for_each(|t| *t = object);
+    }
+
+    fn add_walls(&mut self, gen: &mut RandomNumberGenerator) {
+        for _ in 0..MAX_NUM_OF_WALLS {
+            let (x, y) = (
+                gen.range(1, DISPLAY_WIDTH - 10),
+                gen.range(1, DISPLAY_HEIGHT - 10),
+            );
+            info!("{}:{} -> WALL", x, y);
+            let wall = Wall::new(Point { x, y });
+            self.map.walls.push(wall);
+        }
     }
 
     fn add_apples(&mut self, gen: &mut RandomNumberGenerator) {

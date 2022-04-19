@@ -4,11 +4,11 @@ const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 
 #[derive(Copy, Clone, PartialEq)]
 pub enum ObjectType {
-    Wall,
     Floor,
 }
 pub struct Map {
     pub objects: Vec<ObjectType>,
+    pub walls: Vec<Wall>,
     pub apples: Vec<Apple>,
     pub roten_apples: Vec<RottenApple>,
 }
@@ -19,6 +19,7 @@ impl Map {
             objects: vec![ObjectType::Floor; NUMBER_OF_TILES],
             apples: Vec::new(),
             roten_apples: Vec::new(),
+            walls: Vec::new(),
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
@@ -26,7 +27,6 @@ impl Map {
             for x in 0..DISPLAY_WIDTH {
                 let index = map_to_index(x, y);
                 match self.objects[index] {
-                    ObjectType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('#')),
                     ObjectType::Floor => ctx.set(x, y, WHITE, BLACK, to_cp437('!')),
                 };
             }

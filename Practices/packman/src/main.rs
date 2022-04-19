@@ -6,18 +6,21 @@ mod map_builder;
 mod packy;
 mod rotten_apple;
 mod state;
+mod wall;
 
 mod prelude {
     pub const DISPLAY_WIDTH: i32 = 40;
     pub const DISPLAY_HEIGHT: i32 = 25;
     pub const MAX_NUM_OF_APPLES: usize = 10;
     pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
+    pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 2) as usize;
     pub use crate::apple::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
     pub use crate::packy::*;
     pub use crate::rotten_apple::*;
     pub use crate::state::*;
+    pub use crate::wall::*;
     pub use bracket_lib::prelude::*;
     pub const FONT_SOURCE: &str = "mapfonts.png";
     pub use log::*;

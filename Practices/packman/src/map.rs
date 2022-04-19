@@ -5,9 +5,13 @@ const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 #[derive(Copy, Clone, PartialEq)]
 pub enum ObjectType {
     Floor,
+    Wall,
+    Apple,
+    RottenApple,
 }
 pub struct Map {
     pub objects: Vec<ObjectType>,
+    pub tiles: Vec<Tile>,
     pub walls: Vec<Wall>,
     pub apples: Vec<Apple>,
     pub roten_apples: Vec<RottenApple>,
@@ -17,18 +21,26 @@ impl Map {
     pub fn new() -> Self {
         Self {
             objects: vec![ObjectType::Floor; NUMBER_OF_TILES],
+            tiles: Vec::new(),
             apples: Vec::new(),
             roten_apples: Vec::new(),
             walls: Vec::new(),
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
+        //info!("TOTAL TILE {}", self.objects.len());
+
         for y in 0..DISPLAY_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
-                let index = map_to_index(x, y);
-                match self.objects[index] {
-                    ObjectType::Floor => ctx.set(x, y, WHITE, BLACK, to_cp437('!')),
-                };
+                // let index = map_to_index(x, y);
+                // match self.objects[index] {
+                //     ObjectType::Floor => ctx.set(x, y, BLACK, RED, to_cp437('#')),
+                //     ObjectType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('!')),
+                //     ObjectType::Apple => ctx.set(x, y, WHITE, RED, to_cp437('.')),
+                //     ObjectType::RottenApple => ctx.set(x, y, WHITE, YELLOW, to_cp437(',')),
+                // }
+                let floor = Floor::new(Point { x, y });
+                floor.render(ctx);
             }
         }
 

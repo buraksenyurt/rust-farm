@@ -11,7 +11,7 @@ impl MapBuilder {
             map: Map::new(),
             packy_start: Point::zero(),
         };
-        map_builder.fill(ObjectType::Floor);
+        map_builder.fill_ground(ObjectType::Floor);
 
         map_builder.add_walls(gen);
         map_builder.add_apples(gen);
@@ -19,7 +19,7 @@ impl MapBuilder {
 
         map_builder
     }
-    fn fill(&mut self, object: ObjectType) {
+    fn fill_ground(&mut self, object: ObjectType) {
         self.map.objects.iter_mut().for_each(|t| *t = object);
     }
 
@@ -27,37 +27,40 @@ impl MapBuilder {
         info!("CREATING {} WALL", MAX_NUM_OF_WALLS);
 
         for _ in 0..MAX_NUM_OF_WALLS {
-            let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH),
-                gen.range(1, DISPLAY_HEIGHT),
-            );
+            let (x, y, index) = Self::get_random_point(gen);
             info!("{}:{} -> WALL", x, y);
             let wall = Wall::new(Point { x, y });
             self.map.walls.push(wall);
+            info!("[{}] CHANGED TO WALL", index);
+            self.map.objects[index] = ObjectType::Wall;
         }
     }
 
     fn add_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_APPLES {
-            let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH),
-                gen.range(1, DISPLAY_HEIGHT),
-            );
+            let (x, y, index) = Self::get_random_point(gen);
             info!("{}:{} -> APPLE", x, y);
             let apple = Apple::new(Point { x, y });
             self.map.apples.push(apple);
+            info!("[{}] CHANGED TO APPLE", index);
+            self.map.objects[index] = ObjectType::Apple;
         }
     }
 
     fn add_rotten_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_ROTTEN_APPLES {
-            let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH),
-                gen.range(1, DISPLAY_HEIGHT),
-            );
+            let (x, y, index) = Self::get_random_point(gen);
             info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = RottenApple::new(Point { x, y });
             self.map.roten_apples.push(rotten_apple);
+            info!("[{}] CHANGED TO ROTTEN_APPLE", index);
+            self.map.objects[index] = ObjectType::RottenApple;
         }
+    }
+
+    fn get_random_point(gen: &mut RandomNumberGenerator) -> (i32, i32, usize) {
+        let (x, y) = (gen.range(1, DISPLAY_WIDTH), gen.range(1, DISPLAY_HEIGHT));
+        let index = map_to_index(x, y);
+        (x, y, index)
     }
 }

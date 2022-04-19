@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 mod apple;
+mod floor;
 mod map;
 mod map_builder;
 mod packy;
@@ -15,6 +16,7 @@ mod prelude {
     pub const MAX_NUM_OF_ROTTEN_APPLES: usize = 5;
     pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 2) as usize;
     pub use crate::apple::*;
+    pub use crate::floor::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
     pub use crate::packy::*;

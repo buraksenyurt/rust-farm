@@ -33,23 +33,15 @@ impl Map {
         }
 
         for apple in &self.apples {
-            ctx.set(
-                apple.location.x,
-                apple.location.y,
-                WHITE,
-                BLACK,
-                to_cp437('.'),
-            );
+            apple.render(ctx);
         }
 
-        for apple in &self.roten_apples {
-            ctx.set(
-                apple.location.x,
-                apple.location.y,
-                WHITE,
-                BLACK,
-                to_cp437(','),
-            );
+        for rotten_apple in &self.roten_apples {
+            rotten_apple.render(ctx);
+        }
+
+        for wall in &self.walls {
+            wall.render(ctx);
         }
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {

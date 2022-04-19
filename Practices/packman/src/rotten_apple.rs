@@ -12,6 +12,6 @@ impl RottenApple {
 
     pub fn render(&self, ctx: &mut BTerm) {
         ctx.set_active_console(1);
-        ctx.set(self.location.x, self.location.y, RED, WHITE, to_cp437(','))
+        ctx.set(self.location.x, self.location.y, WHITE, YELLOW, to_cp437(','))
     }
 }

@@ -14,8 +14,8 @@ impl Packy {
         ctx.set(
             self.location.x,
             self.location.y,
+            YELLOW,
             WHITE,
-            BLACK,
             to_cp437('@'),
         )
     }

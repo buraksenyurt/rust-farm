@@ -13,9 +13,9 @@ impl MapBuilder {
         };
         map_builder.fill(ObjectType::Floor);
 
+        map_builder.add_walls(gen);
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
-        map_builder.add_walls(gen);
 
         map_builder
     }
@@ -24,10 +24,12 @@ impl MapBuilder {
     }
 
     fn add_walls(&mut self, gen: &mut RandomNumberGenerator) {
+        info!("CREATING {} WALL", MAX_NUM_OF_WALLS);
+
         for _ in 0..MAX_NUM_OF_WALLS {
             let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH - 10),
-                gen.range(1, DISPLAY_HEIGHT - 10),
+                gen.range(1, DISPLAY_WIDTH),
+                gen.range(1, DISPLAY_HEIGHT),
             );
             info!("{}:{} -> WALL", x, y);
             let wall = Wall::new(Point { x, y });
@@ -38,8 +40,8 @@ impl MapBuilder {
     fn add_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_APPLES {
             let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH - 10),
-                gen.range(1, DISPLAY_HEIGHT - 10),
+                gen.range(1, DISPLAY_WIDTH),
+                gen.range(1, DISPLAY_HEIGHT),
             );
             info!("{}:{} -> APPLE", x, y);
             let apple = Apple::new(Point { x, y });
@@ -50,8 +52,8 @@ impl MapBuilder {
     fn add_rotten_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for _ in 0..MAX_NUM_OF_ROTTEN_APPLES {
             let (x, y) = (
-                gen.range(1, DISPLAY_WIDTH - 10),
-                gen.range(1, DISPLAY_HEIGHT - 10),
+                gen.range(1, DISPLAY_WIDTH),
+                gen.range(1, DISPLAY_HEIGHT),
             );
             info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = RottenApple::new(Point { x, y });

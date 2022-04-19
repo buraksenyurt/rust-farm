@@ -18,10 +18,11 @@ impl State {
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        ctx.set_active_console(0);
-        ctx.cls();
-        ctx.set_active_console(1);
-        ctx.cls();
+        for i in 0..4 {
+            ctx.set_active_console(i);
+            ctx.cls();
+        }
+
         self.packy.move_to(ctx, &self.map);
         self.map.render(ctx);
         self.packy.render(ctx);

@@ -45,24 +45,23 @@ impl Map {
             }
         }
 
+        ctx.set_active_console(2);
         for apple in &self.apples {
             apple.render(ctx);
         }
 
+        ctx.set_active_console(3);
         for rotten_apple in &self.roten_apples {
             rotten_apple.render(ctx);
         }
 
+        ctx.set_active_console(4);
         for wall in &self.walls {
             wall.render(ctx);
         }
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {
         (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)
-    }
-    pub fn can_enter_tile(&self, point: Point) -> bool {
-        self.is_in_bounds(point)
-            && self.objects[map_to_index(point.x, point.y)] == ObjectType::Floor
     }
     pub fn try_map_to_index(&self, point: Point) -> Option<usize> {
         if !self.is_in_bounds(point) {

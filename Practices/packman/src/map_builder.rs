@@ -16,9 +16,10 @@ impl MapBuilder {
         map_builder.add_walls(gen);
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
-
+        map_builder.packy_start = Self::get_available_entry_point(&map_builder, gen);
         map_builder
     }
+
     fn fill_ground(&mut self, object: ObjectType) {
         self.map.objects.iter_mut().for_each(|t| *t = object);
     }
@@ -62,5 +63,18 @@ impl MapBuilder {
         let (x, y) = (gen.range(1, DISPLAY_WIDTH), gen.range(1, DISPLAY_HEIGHT));
         let index = map_to_index(x, y);
         (x, y, index)
+    }
+
+    fn get_available_entry_point(
+        map_builder: &MapBuilder,
+        gen: &mut RandomNumberGenerator,
+    ) -> Point {
+        loop {
+            let (x, y, index) = Self::get_random_point(gen);
+            if map_builder.map.objects[index] != ObjectType::Floor {
+                continue;
+            }
+            return Point::new(x, y);
+        }
     }
 }

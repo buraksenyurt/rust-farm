@@ -241,5 +241,14 @@ xxd -g1 intro
 ![images/xdd_1.png](images/xdd_1.png)
 
 - Her rust programı bir process olarak açılır ve işletim sistemince sağlanan bir sanal bellek alanına yerleşir. JVM, V8 ve Go'nun bellek kullanım tasarımları ile karşılaştırıldığında generational veya karmaşık alt yapılardan oluşmaz. Bir GC mekanizması yoktur ancak bellek yönetimi için Ownership, Resource Acquisition is Initialization *(RAII)*, Borrowing & Borrow Checker, Variable Lifetimes ve Smart Pointers kullanır.
-- Derleme zamanında boyutu tahmin edilemeyen her veri heap'te tutulur = *Dynamic Data* Ancak istersek sabit uzunlukta veriler için Box<T> smart pointer'ını kullanarak Heap üstünde de yer ayrılmasını *(allocation)* sağlayabiliriz.
+- Derleme zamanında boyutu tahmin edilemeyen her veri heap'te tutulur = *Dynamic Data* Ancak istersek sabit uzunlukta veriler için Box< T >  smart pointer'ını kullanarak Heap üstünde de yer ayrılmasını *(allocation)* sağlayabiliriz.
 - Veri boyutları derleme zamanında bilinen veriler stack üstünde durur. Thread başına bir Stack söz konusudur. Fonksiyon çerçeveleri *(Function Framews)*, primitive tipler, struct veri türü ve pointer'lar burada durur.
+- Normal koşullarda tüm değerler stack üstünde tutulur ancak String veya Vector gibi dinamik büyüyen içerikler varsa veya kasıtlı olarak Box< T > ile açıkça heap üstünde yer ayrılmasını istersek bu durum geçerli olmaz.
+- Bir Rust programının temel bellek açılımı düşünüldüğünde aşağıdakileri söyleyebiliriz.
+  - Main fonksiyonu stack üstünde *main frame" de yaşar.
+  - Her fonksiyon çağrımı Stack'e bir frame-block olarak eklenir. Fonksiyonun kullandığı tüm parametreler(return parametresi dahil) fonksiyon için açılan bu frame içerisine dahil edilir. Bilindiği üzere Stack Last-In-First-Out ilkesine göre çalışır.
+  - Static değerlerin hepsi tipine bakılmaksızın doğrudan Stack üstünde saklanır.
+  - Dinamik tipler heap üstünde konumlanır ve stack tarafından smart pointer'lar ile referans edilir.
+  - Statik veriler içeren bir Struct, heap üzerinde tutulur ve herhangi bir dinamik değer içeriyorsa bu değer heap üzerinde tutulurken, işaretçisi stack'te struct için ayrılan alanda yer alır.
+  - Bir fonksiyon başka bir fonksiyonu çağırdığında, çağırılan fonksiyon Stack'in en üstüne frame olarak alınır ve LIFO prensibine göre ilgili fonksiyondan dönüş sağlandığında Stack'ten çıkartılır.
+  - Main işlevi sonlandığında heap'teki nesneler de Garbage Collector'lerin aksina anında yok edilir. 

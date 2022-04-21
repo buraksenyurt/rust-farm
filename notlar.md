@@ -239,3 +239,7 @@ xxd -g1 intro
 ```
 
 ![images/xdd_1.png](images/xdd_1.png)
+
+- Her rust programı bir process olarak açılır ve işletim sistemince sağlanan bir sanal bellek alanına yerleşir. JVM, V8 ve Go'nun bellek kullanım tasarımları ile karşılaştırıldığında generational veya karmaşık alt yapılardan oluşmaz. Bir GC mekanizması yoktur ancak bellek yönetimi için Ownership, Resource Acquisition is Initialization *(RAII)*, Borrowing & Borrow Checker, Variable Lifetimes ve Smart Pointers kullanır.
+- Derleme zamanında boyutu tahmin edilemeyen her veri heap'te tutulur = *Dynamic Data* Ancak istersek sabit uzunlukta veriler için Box<T> smart pointer'ını kullanarak Heap üstünde de yer ayrılmasını *(allocation)* sağlayabiliriz.
+- Veri boyutları derleme zamanında bilinen veriler stack üstünde durur. Thread başına bir Stack söz konusudur. Fonksiyon çerçeveleri *(Function Framews)*, primitive tipler, struct veri türü ve pointer'lar burada durur.

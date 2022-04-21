@@ -2,13 +2,6 @@ use crate::prelude::*;
 
 const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 
-#[derive(Copy, Clone, PartialEq)]
-pub enum ObjectType {
-    Floor,
-    Wall,
-    Apple(usize),
-    RottenApple(usize),
-}
 pub struct Map {
     pub objects: Vec<ObjectType>,
     pub tiles: Vec<Tile>,

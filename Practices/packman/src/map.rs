@@ -6,7 +6,7 @@ const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 pub enum ObjectType {
     Floor,
     Wall,
-    Apple,
+    Apple(usize),
     RottenApple,
 }
 pub struct Map {
@@ -49,6 +49,9 @@ impl Map {
 
         ctx.set_active_console(2);
         for apple in &self.apples {
+            if apple.is_eated() {
+                continue;
+            }
             apple.render(ctx);
         }
 

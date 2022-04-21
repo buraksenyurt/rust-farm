@@ -44,12 +44,15 @@ impl Packy {
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
                     }
-                    ObjectType::Apple => {
+                    ObjectType::Apple(id) => {
                         info!("\t{}:{} is Apple", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
                         map.player_score += 10;
                         info!("+10 POINT. CURRENT SCORE IS {}", map.player_score);
+
+                        map.apples[id].eated();
+                        map.objects[index] = ObjectType::Floor;
                     }
                     ObjectType::RottenApple => {
                         info!("\t{}:{} is Rotten Apple", x, y);

@@ -7,7 +7,7 @@ pub enum ObjectType {
     Floor,
     Wall,
     Apple(usize),
-    RottenApple,
+    RottenApple(usize),
 }
 pub struct Map {
     pub objects: Vec<ObjectType>,
@@ -57,6 +57,9 @@ impl Map {
 
         ctx.set_active_console(3);
         for rotten_apple in &self.roten_apples {
+            if rotten_apple.is_eated() {
+                continue;
+            }
             rotten_apple.render(ctx);
         }
 

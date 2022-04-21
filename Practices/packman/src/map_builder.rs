@@ -49,13 +49,13 @@ impl MapBuilder {
     }
 
     fn add_rotten_apples(&mut self, gen: &mut RandomNumberGenerator) {
-        for _ in 0..MAX_NUM_OF_ROTTEN_APPLES {
+        for i in 0..MAX_NUM_OF_ROTTEN_APPLES {
             let (x, y, index) = self.get_random_point(gen);
             info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = RottenApple::new(Point { x, y });
             self.map.roten_apples.push(rotten_apple);
             info!("[{}] CHANGED TO ROTTEN_APPLE", index);
-            self.map.objects[index] = ObjectType::RottenApple;
+            self.map.objects[index] = ObjectType::RottenApple(i);
         }
     }
 

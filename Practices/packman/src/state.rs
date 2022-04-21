@@ -23,7 +23,7 @@ impl GameState for State {
             ctx.cls();
         }
 
-        self.packy.move_to(ctx, &self.map);
+        self.packy.move_to(ctx, &mut self.map);
         self.map.render(ctx);
         self.packy.render(ctx);
     }

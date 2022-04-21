@@ -15,6 +15,7 @@ pub struct Map {
     pub walls: Vec<Wall>,
     pub apples: Vec<Apple>,
     pub roten_apples: Vec<RottenApple>,
+    pub player_score: i32,
 }
 
 impl Map {
@@ -25,6 +26,7 @@ impl Map {
             apples: Vec::new(),
             roten_apples: Vec::new(),
             walls: Vec::new(),
+            player_score: 0,
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
@@ -59,6 +61,10 @@ impl Map {
         for wall in &self.walls {
             wall.render(ctx);
         }
+
+        ctx.set_active_console(5);
+        ctx.cls();
+        ctx.print_centered_at(DISPLAY_WIDTH / 2, 0, format!("SKOR:{}", self.player_score));
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {
         (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)

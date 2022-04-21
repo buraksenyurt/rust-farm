@@ -20,7 +20,7 @@ impl Packy {
         )
     }
 
-    pub fn move_to(&mut self, ctx: &mut BTerm, map: &Map) {
+    pub fn move_to(&mut self, ctx: &mut BTerm, map: &mut Map) {
         if let Some(key) = ctx.key {
             let (x, y) = (self.location.x, self.location.y);
             //ctx.print_color(1, 1, WHITE, BLACK, &format!("({}:{})", x, y));
@@ -48,11 +48,15 @@ impl Packy {
                         info!("\t{}:{} is Apple", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
+                        map.player_score += 10;
+                        info!("+10 POINT. CURRENT SCORE IS {}", map.player_score);
                     }
                     ObjectType::RottenApple => {
                         info!("\t{}:{} is Rotten Apple", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
+                        map.player_score -= 5;
+                        info!("-5 POINT. CURRENT SCORE IS {}", map.player_score);
                     }
                     ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
                 },

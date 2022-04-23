@@ -5,3 +5,9 @@ pub enum ObjectType {
     Apple(usize),
     RottenApple(usize),
 }
+
+#[derive(Copy, Clone, PartialEq)]
+pub enum FruitType {
+    Apple,
+    RottenApple,
+}

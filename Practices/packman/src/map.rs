@@ -7,7 +7,7 @@ pub struct Map {
     pub tiles: Vec<Tile>,
     pub walls: Vec<Wall>,
     pub apples: Vec<Apple>,
-    pub roten_apples: Vec<RottenApple>,
+    pub roten_apples: Vec<Apple>,
     pub player_score: i32,
 }
 

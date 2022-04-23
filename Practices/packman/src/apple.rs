@@ -4,13 +4,15 @@ use crate::prelude::*;
 pub struct Apple {
     pub location: Point,
     is_eat: bool,
+    pub fruit_type: FruitType,
 }
 
 impl Apple {
-    pub fn new(location: Point) -> Self {
+    pub fn new(location: Point, fruit_type: FruitType) -> Self {
         Self {
             location,
             is_eat: false,
+            fruit_type,
         }
     }
 
@@ -24,6 +26,13 @@ impl Apple {
 
     pub fn render(&self, ctx: &mut BTerm) {
         ctx.set_active_console(1);
-        ctx.set(self.location.x, self.location.y, WHITE, RED, to_cp437('.'))
+        match self.fruit_type {
+            FruitType::Apple => {
+                ctx.set(self.location.x, self.location.y, WHITE, RED, to_cp437('.'))
+            }
+            FruitType::RottenApple => {
+                ctx.set(self.location.x, self.location.y, WHITE, RED, to_cp437(','))
+            }
+        }
     }
 }

@@ -6,7 +6,6 @@ mod map;
 mod map_builder;
 mod object_type;
 mod packy;
-mod rotten_apple;
 mod state;
 mod wall;
 
@@ -22,7 +21,6 @@ mod prelude {
     pub use crate::map_builder::*;
     pub use crate::object_type::*;
     pub use crate::packy::*;
-    pub use crate::rotten_apple::*;
     pub use crate::state::*;
     pub use crate::wall::*;
     pub use bracket_lib::prelude::*;

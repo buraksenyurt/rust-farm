@@ -41,7 +41,7 @@ impl MapBuilder {
         for i in 0..MAX_NUM_OF_APPLES {
             let (x, y, index) = self.get_random_point(gen);
             info!("{}:{} -> APPLE", x, y);
-            let apple = Apple::new(Point { x, y });
+            let apple = Apple::new(Point { x, y }, FruitType::Apple);
             self.map.apples.push(apple);
             info!("[{}] CHANGED TO APPLE", index);
             self.map.objects[index] = ObjectType::Apple(i);
@@ -52,7 +52,7 @@ impl MapBuilder {
         for i in 0..MAX_NUM_OF_ROTTEN_APPLES {
             let (x, y, index) = self.get_random_point(gen);
             info!("{}:{} -> ROTTEN APPLE", x, y);
-            let rotten_apple = RottenApple::new(Point { x, y });
+            let rotten_apple = Apple::new(Point { x, y }, FruitType::RottenApple);
             self.map.roten_apples.push(rotten_apple);
             info!("[{}] CHANGED TO ROTTEN_APPLE", index);
             self.map.objects[index] = ObjectType::RottenApple(i);

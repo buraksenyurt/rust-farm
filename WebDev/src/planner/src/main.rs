@@ -3,9 +3,10 @@
 //use crate::work_item::factory::Factory;
 use crate::work_item::size::Size;
 //use crate::work_item::status::Status;
+use actix_web::dev::Service;
 use actix_web::{App, HttpServer};
 //use clap::{arg, Command};
-use log::warn;
+use log::{info, warn};
 //use serde_json::{Map, Value};
 use state_manager::write_to_file;
 //use std::str::FromStr;
@@ -25,7 +26,26 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
     HttpServer::new(|| {
         // uygulama nesnesi oluşturulurken view'ları ele alacak factory fonksiyonu da atanıyor.
-        let app = App::new().configure(views::views_factory);
+        // wrap_fn ile middleware'e closure kullanarak bir fonksiyon ekledik.
+        // request ve app_router parametreleri ile gelen ve giden mesajları yakalamak pekala mümkün.
+        // ilk olarak workitem path'ine doğru gelen talepleri yakalıyoruz.
+        // Gelen talebin içerisindeki token bilgisini de kontrol amaçlı yardımcı fonksiyona yolluyoruz.
+        let app = App::new()
+            .wrap_fn(|request, app_router| {
+                if request.path().contains("/workitem/") {
+                    match views::token::process_token(&request) {
+                        Ok(_) => info!("Token bilgisi geçerli"),
+                        Err(message) => info!("token hatası: {}", message),
+                    }
+                }
+                // Şimdilik token bilgisinin geçerli olup olmadığına bakmaksızın akışı devam ettirdik.
+                let future = app_router.call(request);
+                async {
+                    let result = future.await?;
+                    Ok(result)
+                }
+            })
+            .configure(views::views_factory);
         warn!("Web sunucusu oluşturuldu");
         app
     })

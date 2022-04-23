@@ -3,7 +3,7 @@ use log::info;
 
 mod auth;
 mod path;
-mod token;
+pub(crate) mod token;
 mod work_item;
 
 pub fn views_factory(app: &mut web::ServiceConfig) {

@@ -15,4 +15,11 @@ Herbert Wolverson'un yazdığı [Hands-on Rust: Effective Learning through 2D Ga
 
 #### Sürüm 0.1.2
 
-*todo()!*
+- Packy, sağlam elamları yediğinde 10 puan, çürük elma yediğinde -5 puan alıyor.
+- Skor tabelası eklendi.
+- 3 bomba hakkı verildi. Packy, space tuşu ile bomba patlatabiliyor. Bu durumda üst, sol, sağ ve alt kısımlarda duvar varsa patlıyor.
+- Apple ve Rotten_Apple veri yapıları tek veri yapısında toplandı.
+
+Bomba ile duvarları patlatma özelliği için aşağıdaki çizelgeden yararlanıldı.
+
+![../images/packman_2.png](../images/packman_2.png)

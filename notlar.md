@@ -251,4 +251,8 @@ xxd -g1 intro
   - Dinamik tipler heap üstünde konumlanır ve stack tarafından smart pointer'lar ile referans edilir.
   - Statik veriler içeren bir Struct, heap üzerinde tutulur ve herhangi bir dinamik değer içeriyorsa bu değer heap üzerinde tutulurken, işaretçisi stack'te struct için ayrılan alanda yer alır.
   - Bir fonksiyon başka bir fonksiyonu çağırdığında, çağırılan fonksiyon Stack'in en üstüne frame olarak alınır ve LIFO prensibine göre ilgili fonksiyondan dönüş sağlandığında Stack'ten çıkartılır.
-  - Main işlevi sonlandığında heap'teki nesneler de Garbage Collector'lerin aksina anında yok edilir. 
+  - Main işlevi sonlandığında heap'teki nesneler de Garbage Collector'lerin aksina anında yok edilir.
+- Rust'ın ownership kuralları her ne kadar katı olsa da değişken sahipliğinin taşınabilmesi için yollar da sunar. Kopyalama yoluyla veya referans vererek.
+- Rust, C++'tan beri gelen RAII *(Resource Acquisition is initialization)* prensibini de kullanır. Buna göre bir değişken oluştuğunda değeri onunla ilişkilendirilir ve değişken scope dışına çıktığında destructor'u çağırılıp sahip olduğu kaynaklarla beraber yok olur. Bu yüzden manuel olarak belleği boşaltmaya gerek kalmaz ve memory leak problemleri yaşanmaz.
+- Borrowing'de amaç kaynağın sahipliğini *(ownership)* almadan kullanabilmektir.
+- Smart pointer kavramı da C++'tan gelmiştir. Normal pointer'ların aksine referans ettikleri verinin aynı zamanda sahibidirler.

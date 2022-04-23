@@ -1,4 +1,3 @@
-use crate::ObjectType::Floor;
 use crate::prelude::*;
 
 pub struct Packy {
@@ -77,7 +76,7 @@ impl Packy {
                         map.roten_apples[id].eated();
                         map.objects[index] = ObjectType::Floor;
                     }
-                    ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
+                    ObjectType::Wall(_) => info!("\t{}:{} is Wall", x, y),
                 }
             }
         }
@@ -98,8 +97,11 @@ impl Packy {
 
     fn blast_it(&mut self, p: Point, map: &mut Map) {
         if let Some(index) = map.try_map_to_index(p) {
-            info!("{} IS A WALL. BLAST IT", { index });
-            map.objects[index] = ObjectType::Floor
+            if let ObjectType::Wall(i) = map.objects[index] {
+                info!("{} IS A WALL. BLAST IT", { index });
+                map.walls[i].blasted();
+                map.objects[index] = ObjectType::Floor
+            }
         }
     }
 }

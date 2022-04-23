@@ -27,13 +27,13 @@ impl MapBuilder {
     fn add_walls(&mut self, gen: &mut RandomNumberGenerator) {
         info!("CREATING {} WALL", MAX_NUM_OF_WALLS);
 
-        for _ in 0..MAX_NUM_OF_WALLS {
+        for i in 0..MAX_NUM_OF_WALLS {
             let (x, y, index) = self.get_random_point(gen);
             info!("{}:{} -> WALL", x, y);
             let wall = Wall::new(Point { x, y });
             self.map.walls.push(wall);
             info!("[{}] CHANGED TO WALL", index);
-            self.map.objects[index] = ObjectType::Wall;
+            self.map.objects[index] = ObjectType::Wall(i);
         }
     }
 

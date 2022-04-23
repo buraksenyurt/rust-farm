@@ -1,7 +1,7 @@
 #[derive(Copy, Clone, PartialEq)]
 pub enum ObjectType {
     Floor,
-    Wall,
+    Wall(usize),
     Apple(usize),
     RottenApple(usize),
 }

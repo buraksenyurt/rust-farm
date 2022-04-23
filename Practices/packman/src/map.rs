@@ -52,6 +52,9 @@ impl Map {
 
         ctx.set_active_console(4);
         for wall in &self.walls {
+            if wall.is_blasted() {
+                continue;
+            }
             wall.render(ctx);
         }
 

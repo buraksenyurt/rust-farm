@@ -7,7 +7,7 @@ use std::io::Read;
 /// Dosyadan, JSON formatındaki Work Item bilgilerini okuyup geriye döner
 pub fn read_file(file_name: &str) -> Result<Map<String, Value>, String> {
     info!("{} dosyasından okuma işlemi.", file_name);
-    let mut file = File::open(file_name.to_string()).expect("Dosya açma hatası");
+    let mut file = File::open(file_name).expect("Dosya açma hatası");
     let mut content = String::new();
     file.read_to_string(&mut content).expect("Okuma hatası");
     let json: Value = serde_json::from_str(&content).expect("JSON Convert hatası");
@@ -20,8 +20,7 @@ pub fn read_file(file_name: &str) -> Result<Map<String, Value>, String> {
 pub fn write_to_file(file_name: &str, state: &mut Map<String, Value>) -> Result<(), String> {
     info!("{} dosyasına yazma işlemi.", file_name);
     let json_data = json!(state);
-    fs::write(file_name.to_string(), json_data.to_string())
-        .expect("Dosya yazma işlemi sırasında hata");
+    fs::write(file_name, json_data.to_string()).expect("Dosya yazma işlemi sırasında hata");
     Ok(())
 }
 

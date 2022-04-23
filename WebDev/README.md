@@ -7,7 +7,7 @@ Uygulama basit bir todo klonu. Kişisel planlamalarımıza dahil edeceğimiz ist
 - [x] Gün #1 - Projenin temel veri yapılarının oluşturulması.
 - [x] Gün #2 - Actix Web Framework Hakkında ön bilgilerin kazanılması.
 - [x] Gün #3 - Actix Web Framework tarafında View'ların kullanılması.
-- [ ] Gün #4 - JSON ile çalışan Create ve Edit view'larının hazırlanması. 
+- [x] Gün #4 - JSON ile çalışan Create ve Edit view'larının hazırlanması. 
 - [ ] Gün #5 - 
 - [ ] Gün #6 -
 - [ ] Gün #7 -

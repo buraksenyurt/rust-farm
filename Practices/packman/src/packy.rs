@@ -1,3 +1,4 @@
+use crate::ObjectType::Floor;
 use crate::prelude::*;
 
 pub struct Packy {
@@ -23,12 +24,24 @@ impl Packy {
     pub fn move_to(&mut self, ctx: &mut BTerm, map: &mut Map) {
         if let Some(key) = ctx.key {
             let (x, y) = (self.location.x, self.location.y);
-            //ctx.print_color(1, 1, WHITE, BLACK, &format!("({}:{})", x, y));
+
             let delta = match key {
                 VirtualKeyCode::Left => Point::new(-1, 0),
                 VirtualKeyCode::Right => Point::new(1, 0),
                 VirtualKeyCode::Up => Point::new(0, -1),
                 VirtualKeyCode::Down => Point::new(0, 1),
+                VirtualKeyCode::Space => {
+                    if map.bomb_count != 0 {
+                        info!("CURRENT BOMB COUNT {}", map.bomb_count);
+                        map.bomb_count -= 1;
+                        let (u, d, l, r) = self.get_cells_around_packy();
+                        self.blast_it(u, map);
+                        self.blast_it(d, map);
+                        self.blast_it(l, map);
+                        self.blast_it(r, map);
+                    }
+                    Point::new(x, y)
+                }
                 _ => Point::zero(),
             };
             info!("PACKY CURRENT LOC -> {}:{}", x, y);
@@ -67,6 +80,26 @@ impl Packy {
                     ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
                 }
             }
+        }
+    }
+
+    fn get_cells_around_packy(&self) -> (Point, Point, Point, Point) {
+        let up_cell = Point::new(self.location.x, self.location.y - 1);
+        let down_cell = Point::new(self.location.x, self.location.y + 1);
+        let right_cell = Point::new(self.location.x + 1, self.location.y);
+        let left_cell = Point::new(self.location.x - 1, self.location.y);
+
+        info!(
+            "Blasting Points ({:?}), ({:?}), ({:?}), ({:?})",
+            up_cell, down_cell, right_cell, left_cell
+        );
+        (up_cell, down_cell, right_cell, left_cell)
+    }
+
+    fn blast_it(&mut self, p: Point, map: &mut Map) {
+        if let Some(index) = map.try_map_to_index(p) {
+            info!("{} IS A WALL. BLAST IT", { index });
+            map.objects[index] = ObjectType::Floor
         }
     }
 }

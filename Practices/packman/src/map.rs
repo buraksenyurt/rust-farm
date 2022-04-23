@@ -9,6 +9,7 @@ pub struct Map {
     pub apples: Vec<Apple>,
     pub roten_apples: Vec<Apple>,
     pub player_score: i32,
+    pub bomb_count: u16,
 }
 
 impl Map {
@@ -20,21 +21,14 @@ impl Map {
             roten_apples: Vec::new(),
             walls: Vec::new(),
             player_score: 0,
+            bomb_count: 3,
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
         ctx.set_active_console(0);
-        //info!("TOTAL TILE {}", self.objects.len());
 
         for y in 0..DISPLAY_HEIGHT {
             for x in 0..DISPLAY_WIDTH {
-                // let index = map_to_index(x, y);
-                // match self.objects[index] {
-                //     ObjectType::Floor => ctx.set(x, y, BLACK, RED, to_cp437('#')),
-                //     ObjectType::Wall => ctx.set(x, y, WHITE, BLACK, to_cp437('!')),
-                //     ObjectType::Apple => ctx.set(x, y, WHITE, RED, to_cp437('.')),
-                //     ObjectType::RottenApple => ctx.set(x, y, WHITE, YELLOW, to_cp437(',')),
-                // }
                 let floor = Floor::new(Point { x, y });
                 floor.render(ctx);
             }
@@ -63,7 +57,11 @@ impl Map {
 
         ctx.set_active_console(5);
         ctx.cls();
-        ctx.print_centered_at(DISPLAY_WIDTH / 2, 0, format!("SKOR:{}", self.player_score));
+        ctx.print_centered_at(
+            DISPLAY_WIDTH / 2,
+            0,
+            format!("SKOR:{} BOMBA:{}", self.player_score, self.bomb_count),
+        );
     }
     pub fn is_in_bounds(&self, point: Point) -> bool {
         (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)

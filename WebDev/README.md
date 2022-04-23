@@ -109,3 +109,7 @@ HTTP Put operasyonunu ele adan edit modülüne ait edit fonksiyonunun kullanım�
 Değişiklik talebi sonrası talebin işlendiğini ve durumun Ready'den bir sonraki durum olan Doing'e çekildiğini görebiliriz.
 
 ![./images/day_4_7.png](./images/day_4_7.png)
+
+Token bilgisi ekleyip servisi denerken aldığımız sonuçlar. Token bilgisi kulladığımız ve kullanmadığımız hallerdeki çıktıyı gösteriyor.
+
+![./images/day_4_8.png](./images/day_4_8.png)

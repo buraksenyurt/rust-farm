@@ -37,8 +37,8 @@ impl Packy {
                 "MOVE ACTION FOR NEW LOCATION -> {}:{}",
                 new_location.x, new_location.y
             );
-            match map.try_map_to_index(new_location) {
-                Some(index) => match map.objects[index] {
+            if let Some(index) = map.try_map_to_index(new_location) {
+                match map.objects[index] {
                     ObjectType::Floor => {
                         info!("\t{}:{} is Floor", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
@@ -65,8 +65,7 @@ impl Packy {
                         map.objects[index] = ObjectType::Floor;
                     }
                     ObjectType::Wall => info!("\t{}:{} is Wall", x, y),
-                },
-                _ => {}
+                }
             }
         }
     }

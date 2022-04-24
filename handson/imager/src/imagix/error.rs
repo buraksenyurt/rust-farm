@@ -1,5 +1,6 @@
 use std::{fmt, io};
 
+#[derive(Debug, PartialEq)]
 pub enum ImagixError {
     FileIO(String),
     UserInput(String),

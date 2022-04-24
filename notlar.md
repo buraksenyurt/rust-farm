@@ -256,3 +256,19 @@ xxd -g1 intro
 - Rust, C++'tan beri gelen RAII *(Resource Acquisition is initialization)* prensibini de kullanır. Buna göre bir değişken oluştuğunda değeri onunla ilişkilendirilir ve değişken scope dışına çıktığında destructor'u çağırılıp sahip olduğu kaynaklarla beraber yok olur. Bu yüzden manuel olarak belleği boşaltmaya gerek kalmaz ve memory leak problemleri yaşanmaz.
 - Borrowing'de amaç kaynağın sahipliğini *(ownership)* almadan kullanabilmektir.
 - Smart pointer kavramı da C++'tan gelmiştir. Normal pointer'ların aksine referans ettikleri verinin aynı zamanda sahibidirler.
+- Bir rust projesinde çalıştırılabilir ve yeniden kullanılabilir nitelikli modüllerin belirtilmesinde cargo.toml dosyasındaki bildirimlerden yararlanabiliriz. Aşağıda görüldüğü gibi. Projenin imagix klasörü bir library olarak ele alınırken imager.rs modülü executable binary olarak işaretlenmiştir.
+
+```toml
+[package]
+name = "imager"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name="imagix"
+path="src/imagix/mod.rs"
+
+[[bin]]
+name="imager"
+path="src/imager.rs"
+```

@@ -30,8 +30,8 @@ impl Packy {
                 VirtualKeyCode::Up => Point::new(0, -1),
                 VirtualKeyCode::Down => Point::new(0, 1),
                 VirtualKeyCode::Space => {
-                    if map.bomb_count != 0 {
-                        info!("CURRENT BOMB COUNT {}", map.bomb_count);
+                    info!("CURRENT BOMB COUNT {}", map.bomb_count);
+                    if map.bomb_count > 0 {
                         map.bomb_count -= 1;
                         let (u, d, l, r) = self.get_cells_around_packy();
                         self.blast_it(u, map);
@@ -39,7 +39,7 @@ impl Packy {
                         self.blast_it(l, map);
                         self.blast_it(r, map);
                     }
-                    Point::new(x, y)
+                    return;
                 }
                 _ => Point::zero(),
             };

@@ -1,3 +1,3 @@
 mod error;
-mod resize;
-mod stats;
+pub mod resize;
+pub mod stats;

@@ -77,6 +77,15 @@ mod tests {
         let actual = haversine_distance(point1, point2);
         assert_eq!(expected_distance, actual);
     }
+
+    #[test]
+    pub fn almost_pi_test() {
+        let pi_number = almost_pi(5);
+        assert_eq!(pi_number, 3.1415926454603365);
+
+        let pi_number = almost_pi(1000000);
+        assert_eq!(pi_number, 3.141592653589793);
+    }
 }
 
 /// Sıcaklık değerini Fahrenheit'tan Santigrat'a çevirir
@@ -156,4 +165,21 @@ impl Point {
             longtitude: self.longtitude.to_radians(),
         }
     }
+}
+
+/// Belirtilen toplam sayısına göre PI değerini hesaplar.
+/// Büyük n değeri verilmesi halinde PI değeri daha isabetli bulunur.
+/// Aşağıdaki yöntem Bailey, Adamchik ve Wagon'un ki.
+pub fn almost_pi(try_count: u32) -> f64 {
+    let mut sum: f64 = 0.0;
+    for i in 0..try_count {
+        let n = i as f64;
+        let sum2 = (1.0 / 16.0) as f64;
+        sum += ((4.0 / (8.0 * n + 1.0))
+            - (2.0 / (8.0 * n + 4.0))
+            - (1.0 / (8.0 * n + 5.0))
+            - (1.0 / (8.0 * n + 6.0)))
+            * sum2.powi(i as i32)
+    }
+    sum
 }

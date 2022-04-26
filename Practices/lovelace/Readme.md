@@ -9,3 +9,4 @@ Geçenlerde çok güzel bir problem sitesi buldum; [Project Lovelace](https://pr
 - [x] **Compound Interest:** Faiz oranı, tutar ve yıla göre bileşik faiz sonrası ne kadar ödeme yapılacağınu bulur.
 - [x] **Wind Chill:**  Rüzgar soğutma indeksi kullanılarak hissedilen asıl soğukluk değerini hesaplayan fonksiyon.
 - [x] **Flight Paths:** Dünya üstündeki iki nokta arasındaki uçuş mesafesini Haversine Distance formülüne göre hesaplayan fonksiyon.
+- [x] **Almost Pi:** Pi saysının formül yardımıyla bulunmasının ele alındığı fonksiyon.

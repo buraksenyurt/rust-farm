@@ -8,6 +8,7 @@ mod map_builder;
 mod object_type;
 mod packy;
 mod state;
+mod utility;
 mod wall;
 
 mod prelude {
@@ -24,6 +25,7 @@ mod prelude {
     pub use crate::object_type::*;
     pub use crate::packy::*;
     pub use crate::state::*;
+    pub use crate::utility::*;
     pub use crate::wall::*;
     pub use bracket_lib::prelude::*;
     pub const FONT_SOURCE: &str = "mapfonts.png";

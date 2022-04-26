@@ -16,7 +16,7 @@ impl MapBuilder {
         map_builder.add_walls(gen);
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
-        map_builder.packy_start = Self::get_available_entry_point(&mut map_builder, gen);
+        map_builder.packy_start = get_available_entry_point(&map_builder.map, gen);
         map_builder
     }
 
@@ -28,7 +28,7 @@ impl MapBuilder {
         info!("CREATING {} WALL", MAX_NUM_OF_WALLS);
 
         for i in 0..MAX_NUM_OF_WALLS {
-            let (x, y, index) = self.get_random_point(gen);
+            let (x, y, index) = get_random_point(&self.map, gen);
             info!("{}:{} -> WALL", x, y);
             let wall = Wall::new(Point { x, y });
             self.map.walls.push(wall);
@@ -39,7 +39,7 @@ impl MapBuilder {
 
     fn add_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for i in 0..MAX_NUM_OF_APPLES {
-            let (x, y, index) = self.get_random_point(gen);
+            let (x, y, index) = get_random_point(&self.map, gen);
             info!("{}:{} -> APPLE", x, y);
             let apple = Apple::new(Point { x, y }, FruitType::Apple);
             self.map.apples.push(apple);
@@ -50,33 +50,12 @@ impl MapBuilder {
 
     fn add_rotten_apples(&mut self, gen: &mut RandomNumberGenerator) {
         for i in 0..MAX_NUM_OF_ROTTEN_APPLES {
-            let (x, y, index) = self.get_random_point(gen);
+            let (x, y, index) = get_random_point(&self.map, gen);
             info!("{}:{} -> ROTTEN APPLE", x, y);
             let rotten_apple = Apple::new(Point { x, y }, FruitType::RottenApple);
             self.map.roten_apples.push(rotten_apple);
             info!("[{}] CHANGED TO ROTTEN_APPLE", index);
             self.map.objects[index] = ObjectType::RottenApple(i);
-        }
-    }
-
-    fn get_random_point(&mut self, gen: &mut RandomNumberGenerator) -> (i32, i32, usize) {
-        loop {
-            let (x, y) = (gen.range(1, DISPLAY_WIDTH), gen.range(1, DISPLAY_HEIGHT));
-            let index = map_to_index(x, y);
-            if self.map.objects[index] != ObjectType::Floor {
-                continue;
-            }
-            return (x, y, index);
-        }
-    }
-
-    fn get_available_entry_point(&mut self, gen: &mut RandomNumberGenerator) -> Point {
-        loop {
-            let (x, y, index) = self.get_random_point(gen);
-            if self.map.objects[index] != ObjectType::Floor {
-                continue;
-            }
-            return Point::new(x, y);
         }
     }
 }

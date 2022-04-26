@@ -29,6 +29,16 @@ impl Packy {
                 VirtualKeyCode::Right => Point::new(1, 0),
                 VirtualKeyCode::Up => Point::new(0, -1),
                 VirtualKeyCode::Down => Point::new(0, 1),
+                VirtualKeyCode::W => {
+                    if map.warp_level == 0 {
+                        return;
+                    }
+                    map.warp_level -= 25;
+                    info!("WARP ENERGY {}", map.warp_level);
+                    let mut gen = RandomNumberGenerator::new();
+                    let (new_x, new_y, _) = get_random_point(&map, &mut gen);
+                    Point { x: new_x, y: new_y }
+                }
                 VirtualKeyCode::Space => {
                     info!("CURRENT BOMB COUNT {}", map.bomb_count);
                     if map.bomb_count > 0 {

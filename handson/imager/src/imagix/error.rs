@@ -1,3 +1,4 @@
+use image::ImageError;
 use std::{fmt, io};
 
 #[derive(Debug, PartialEq)]
@@ -9,8 +10,20 @@ pub enum ImagixError {
 }
 
 impl From<io::Error> for ImagixError {
-    fn from(_error: io::Error) -> Self {
+    fn from(_: io::Error) -> Self {
         ImagixError::FileIO("I/O işlemi sırasında hata".to_string())
+    }
+}
+
+impl From<ImageError> for ImagixError {
+    fn from(_: ImageError) -> Self {
+        ImagixError::ImageResizing("Resim dönüştürme işlemi sırasında hata".to_string())
+    }
+}
+
+impl From<io::ErrorKind> for ImagixError {
+    fn from(_: io::ErrorKind) -> Self {
+        ImagixError::UserInput("Hatalı girdi".to_string())
     }
 }
 

@@ -3,6 +3,7 @@ use crate::prelude::*;
 pub struct State {
     map: Map,
     packy: Packy,
+    boss: Boss,
     mode: GameMode,
 }
 
@@ -13,6 +14,7 @@ impl State {
         Self {
             map: map_builder.map,
             packy: Packy::new(map_builder.packy_start),
+            boss: Boss::new(map_builder.boss_start),
             mode: GameMode::Menu,
         }
     }
@@ -55,6 +57,7 @@ impl State {
         self.packy.move_to(ctx, &mut self.map);
         self.map.render(ctx);
         self.packy.render(ctx);
+        self.boss.render(ctx);
     }
 
     // fn end_game(&mut self, ctx: &mut BTerm) {

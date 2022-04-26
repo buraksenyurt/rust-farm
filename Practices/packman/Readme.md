@@ -20,6 +20,7 @@ Herbert Wolverson'un yazdığı [Hands-on Rust: Effective Learning through 2D Ga
 - 3 bomba hakkı verildi. Packy, space tuşu ile bomba patlatabiliyor. Bu durumda üst, sol, sağ ve alt kısımlarda duvar varsa patlıyor.
 - Apple ve Rotten_Apple veri yapıları tek veri yapısında toplandı.
 - Oyuna giriş menüsü eklendi.
+- Warp (W) ile rastgele bir konuma atlama özelliği eklendi.
 
 Bomba ile duvarları patlatma özelliği için aşağıdaki çizelgeden yararlanıldı.
 

@@ -3,6 +3,7 @@ use crate::prelude::*;
 pub struct MapBuilder {
     pub map: Map,
     pub packy_start: Point,
+    pub boss_start: Point,
 }
 
 impl MapBuilder {
@@ -10,6 +11,7 @@ impl MapBuilder {
         let mut map_builder = MapBuilder {
             map: Map::new(),
             packy_start: Point::zero(),
+            boss_start: Point::zero(),
         };
         map_builder.fill_ground(ObjectType::Floor);
 
@@ -17,6 +19,7 @@ impl MapBuilder {
         map_builder.add_apples(gen);
         map_builder.add_rotten_apples(gen);
         map_builder.packy_start = get_available_entry_point(&map_builder.map, gen);
+        map_builder.boss_start = get_available_entry_point(&map_builder.map, gen);
         map_builder
     }
 

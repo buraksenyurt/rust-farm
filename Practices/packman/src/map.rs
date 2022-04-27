@@ -66,7 +66,7 @@ impl Map {
             DISPLAY_WIDTH / 2,
             0,
             format!(
-                "SKOR:{} BOMBA:{} WARP:%{}",
+                "SCR:{} BOMB:{} WARP:%{}",
                 self.player_score, self.bomb_count, self.warp_level
             ),
         );
@@ -81,8 +81,4 @@ impl Map {
             Some(map_to_index(point.x, point.y))
         }
     }
-}
-
-pub fn map_to_index(x: i32, y: i32) -> usize {
-    ((y * DISPLAY_WIDTH) + x) as usize
 }

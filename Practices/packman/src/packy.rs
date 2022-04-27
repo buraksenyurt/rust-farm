@@ -35,9 +35,9 @@ impl Packy {
                     }
                     map.warp_level -= 25;
                     info!("WARP ENERGY {}", map.warp_level);
-                    let mut gen = RandomNumberGenerator::new();
-                    let (new_x, new_y, _) = get_random_point(&map, &mut gen);
-                    Point { x: new_x, y: new_y }
+                    let warp_point = find_warp_point(map, self.location);
+                    info!("WARP Point {:?}", warp_point);
+                    warp_point
                 }
                 VirtualKeyCode::Space => {
                     info!("CURRENT BOMB COUNT {}", map.bomb_count);
@@ -53,12 +53,9 @@ impl Packy {
                 }
                 _ => Point::zero(),
             };
-            info!("PACKY CURRENT LOC -> {}:{}", x, y);
+            info!("PACKY CURRENT LOC -> {:?}", self.location);
             let new_location = self.location + delta;
-            info!(
-                "MOVE ACTION FOR NEW LOCATION -> {}:{}",
-                new_location.x, new_location.y
-            );
+            info!("MOVE ACTION TO -> {:?}", new_location);
             if let Some(index) = map.try_map_to_index(new_location) {
                 match map.objects[index] {
                     ObjectType::Floor => {
@@ -86,7 +83,7 @@ impl Packy {
                         map.roten_apples[id].eated();
                         map.objects[index] = ObjectType::Floor;
                     }
-                    ObjectType::Wall(_) => info!("\t{}:{} is Wall", x, y),
+                    ObjectType::Wall(_) => info!("\t{:?} is Wall", self.location),
                 }
             }
         }

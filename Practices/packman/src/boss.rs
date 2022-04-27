@@ -11,7 +11,7 @@ impl Boss {
 
     pub fn move_to(&mut self, map: &mut Map) {
         let (x, y) = (self.location.x, self.location.y);
-        info!("Current boss location {}x{}", x, y);
+        //info!("Current boss location {:?}", self.location);
         let mut gen = RandomNumberGenerator::new();
 
         let suggestions = vec![

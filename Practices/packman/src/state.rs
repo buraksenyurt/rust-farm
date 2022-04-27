@@ -62,7 +62,7 @@ impl State {
 
         self.tick_count += 1;
         if self.tick_count == 10 {
-            info!("Tick Counts is {}", self.tick_count);
+            //info!("Tick Counts is {}", self.tick_count);
             self.tick_count = 0;
             self.boss.move_to(&mut self.map);
         }

@@ -24,3 +24,34 @@ cargo generate --git https://github.com/rustwasm/wasm-pack-template
 ```
 
 ![../images/hello_wasm_01.png](../images/hello_wasm_01.png)
+
+```shell
+# Web tarafında kullanılacak WASM paketini üretmek için
+wasm-pack build
+
+# web assmebly'ı bir web sayfasında kullanmak için öncelikle wasm-app yüklenmelidir
+npm init wasm-app www
+```
+
+![../images/hello_wasm_02.png](../images/hello_wasm_02.png)
+
+Bu işlemler sonrasında www klasöründeki node projesinin pkg içerisindeki wasm çıktısını kullanması için  www içerisindeki package.json dosyasında dependencies kısmı eklenmelidir.
+
+```json
+{
+  "dependencies": {
+    "hello-wasm": "file:../pkg"
+  }
+}
+```
+
+```shell
+# Bu işlemle birlikte npm bağımlılıkları yüklenir
+cd www
+npm install
+
+# ve deneme amaçlı olarak proje aşağıdaki komutla çalıştırılır
+npm run start
+```
+
+![../images/hello_wasm_03.png](../images/hello_wasm_03.png)

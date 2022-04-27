@@ -11,6 +11,8 @@ impl Boss {
 
     pub fn move_to(&mut self, map: &mut Map) {
         let (x, y) = (self.location.x, self.location.y);
+        info!("Current boss location {}x{}", x, y);
+        let mut gen = RandomNumberGenerator::new();
 
         let suggestions = vec![
             Point::new(x - 1, y),
@@ -18,15 +20,17 @@ impl Boss {
             Point::new(x, y - 1),
             Point::new(x, y + 1),
         ];
-        for suggestion in suggestions {
-            if let Some(index) = map.try_map_to_index(suggestion) {
-                match map.objects[index] {
-                    ObjectType::Floor => {
-                        info!("BOSS on the go -> {:?}", self.location);
-                        self.location = suggestion;
-                        break;
+        loop {
+            let index = gen.range(0, 4);
+            if let Some(i) = map.try_map_to_index(suggestions[index]) {
+                match map.objects[i] {
+                    ObjectType::Floor | ObjectType::Apple(_) => {
+                        self.location = suggestions[index];
+                        return;
                     }
-                    _ => {}
+                    _ => {
+                        continue;
+                    }
                 }
             }
         }

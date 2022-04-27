@@ -59,6 +59,14 @@ impl State {
         self.packy.move_to(ctx, &mut self.map);
         self.map.render(ctx);
         self.packy.render(ctx);
+
+        self.tick_count += 1;
+        if self.tick_count == 10 {
+            info!("Tick Counts is {}", self.tick_count);
+            self.tick_count = 0;
+            self.boss.move_to(&mut self.map);
+        }
+
         self.boss.render(ctx);
     }
 
@@ -81,13 +89,6 @@ impl State {
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        self.tick_count += 1;
-        if self.tick_count == 9 {
-            info!("Tick Counts is {}", self.tick_count);
-            self.tick_count = 0;
-            self.boss.move_to(&mut self.map);
-            self.boss.render(ctx);
-        }
         match self.mode {
             GameMode::Menu => self.main_menu(ctx),
             GameMode::Playing => self.play(ctx),

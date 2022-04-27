@@ -5,6 +5,7 @@ pub struct State {
     packy: Packy,
     boss: Boss,
     mode: GameMode,
+    tick_count: u16,
 }
 
 impl State {
@@ -16,6 +17,7 @@ impl State {
             packy: Packy::new(map_builder.packy_start),
             boss: Boss::new(map_builder.boss_start),
             mode: GameMode::Menu,
+            tick_count: 0,
         }
     }
 
@@ -79,6 +81,13 @@ impl State {
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
+        self.tick_count += 1;
+        if self.tick_count == 9 {
+            info!("Tick Counts is {}", self.tick_count);
+            self.tick_count = 0;
+            self.boss.move_to(&mut self.map);
+            self.boss.render(ctx);
+        }
         match self.mode {
             GameMode::Menu => self.main_menu(ctx),
             GameMode::Playing => self.play(ctx),

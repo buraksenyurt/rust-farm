@@ -55,3 +55,10 @@ npm run start
 ```
 
 ![../images/hello_wasm_03.png](../images/hello_wasm_03.png)
+
+Rust kütüphanesinde değişiklik olduğunda www klasöründeki projede kullanılabilmesi için yeni bir build işlemi yapmak gerekir.
+
+```shell
+wasm-pack build
+```
+

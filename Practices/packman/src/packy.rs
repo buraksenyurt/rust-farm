@@ -33,7 +33,7 @@ impl Packy {
                     if map.warp_level == 0 {
                         return;
                     }
-                    map.warp_level -= 25;
+                    map.warp_level -= 10;
                     info!("WARP ENERGY {}", map.warp_level);
                     let warp_point = find_warp_point(map, self.location);
                     info!("WARP Point {:?}", warp_point);
@@ -56,7 +56,7 @@ impl Packy {
             info!("PACKY CURRENT LOC -> {:?}", self.location);
             let new_location = self.location + delta;
             info!("MOVE ACTION TO -> {:?}", new_location);
-            if let Some(index) = map.try_map_to_index(new_location) {
+            if let Some(index) = try_map_to_index(new_location) {
                 match map.objects[index] {
                     ObjectType::Floor => {
                         info!("\t{}:{} is Floor", x, y);
@@ -103,7 +103,7 @@ impl Packy {
     }
 
     fn blast_it(&mut self, p: Point, map: &mut Map) {
-        if let Some(index) = map.try_map_to_index(p) {
+        if let Some(index) = try_map_to_index(p) {
             if let ObjectType::Wall(i) = map.objects[index] {
                 info!("{} IS A WALL. BLAST IT", { index });
                 map.walls[i].blasted();

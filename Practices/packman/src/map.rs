@@ -71,14 +71,4 @@ impl Map {
             ),
         );
     }
-    pub fn is_in_bounds(&self, point: Point) -> bool {
-        (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)
-    }
-    pub fn try_map_to_index(&self, point: Point) -> Option<usize> {
-        if !self.is_in_bounds(point) {
-            None
-        } else {
-            Some(map_to_index(point.x, point.y))
-        }
-    }
 }

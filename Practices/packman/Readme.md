@@ -21,6 +21,7 @@ Herbert Wolverson'un yazdığı [Hands-on Rust: Effective Learning through 2D Ga
 - Apple ve Rotten_Apple veri yapıları tek veri yapısında toplandı.
 - Oyuna giriş menüsü eklendi.
 - Warp (W) ile rastgele bir konuma atlama özelliği eklendi.
+- Hayalet karakteri eklendi. Şimdilik boş boş dolanıyor.
 
 Bomba ile duvarları patlatma özelliği için aşağıdaki çizelgeden yararlanıldı.
 
@@ -29,3 +30,7 @@ Bomba ile duvarları patlatma özelliği için aşağıdaki çizelgeden yararlan
 Giriş menüsüne ait bir görüntü.
 
 ![../images/packman_3.png](../images/packman_3.png)
+
+Ghost eklendikten sonraki duruma ait bir görüntü.
+
+![../images/packman_4.png](../images/packman_4.png)

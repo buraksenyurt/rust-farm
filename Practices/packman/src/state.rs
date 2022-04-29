@@ -52,17 +52,17 @@ impl State {
             match key {
                 VirtualKeyCode::F5 => {
                     self.tick_level = u16::from(BossLevel::Smurf);
-                    self.tick_count=0;
+                    self.tick_count = 0;
                     self.main_menu(ctx);
                 }
                 VirtualKeyCode::F6 => {
                     self.tick_level = u16::from(BossLevel::Gentle);
-                    self.tick_count=0;
+                    self.tick_count = 0;
                     self.main_menu(ctx);
                 }
                 VirtualKeyCode::F7 => {
                     self.tick_level = u16::from(BossLevel::Monstrous);
-                    self.tick_count=0;
+                    self.tick_count = 0;
                     self.main_menu(ctx);
                 }
                 _ => {}

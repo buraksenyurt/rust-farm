@@ -34,13 +34,13 @@ impl Packy {
                         return;
                     }
                     map.warp_level -= WARP_LEVEL_PENALTY;
-                    info!("WARP ENERGY {}", map.warp_level);
+                    warn!("WARP ENERGY {}", map.warp_level);
                     let warp_point = find_warp_point(map, self.location);
-                    info!("WARP Point {:?}", warp_point);
+                    warn!("WARP Point {:?}", warp_point);
                     warp_point
                 }
                 VirtualKeyCode::Space => {
-                    info!("CURRENT BOMB COUNT {}", map.bomb_count);
+                    warn!("CURRENT BOMB COUNT {}", map.bomb_count);
                     if map.bomb_count > 0 {
                         map.bomb_count -= 1;
                         let (u, d, l, r) = self.get_cells_around_packy();
@@ -78,7 +78,7 @@ impl Packy {
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
                         map.player_score -= ROTTEN_APPLE_POINT_FOR_USER;
-                        info!("-5 POINT. CURRENT SCORE IS {}", map.player_score);
+                        warn!("-5 POINT. CURRENT SCORE IS {}", map.player_score);
 
                         map.roten_apples[id].eated();
                         map.objects[index] = ObjectType::Floor;
@@ -105,7 +105,7 @@ impl Packy {
     fn blast_it(&mut self, p: Point, map: &mut Map) {
         if let Some(index) = try_map_to_index(p) {
             if let ObjectType::Wall(i) = map.objects[index] {
-                info!("{} IS A WALL. BLAST IT", { index });
+                warn!("{} IS A WALL. BLAST IT", { index });
                 map.walls[i].blasted();
                 map.objects[index] = ObjectType::Floor
             }

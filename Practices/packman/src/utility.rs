@@ -13,12 +13,23 @@ pub fn get_random_point(map: &Map, gen: &mut RandomNumberGenerator) -> (i32, i32
 
 pub fn get_available_entry_point(map: &Map, gen: &mut RandomNumberGenerator) -> Point {
     loop {
-        let (x, y, index) = get_random_point(&map, gen);
-        if map.objects[index] != ObjectType::Floor {
+        let (x, y, index) = get_random_point(map, gen);
+        if map.objects[index] != ObjectType::Floor || !is_cell_suitable(map, x, y) {
             continue;
         }
         return Point::new(x, y);
     }
+}
+
+fn is_cell_suitable(map: &Map, x: i32, y: i32) -> bool {
+    if map.objects[map_to_index(x - 1, y)] == ObjectType::Floor
+        || map.objects[map_to_index(x + 1, y)] == ObjectType::Floor
+        || map.objects[map_to_index(x, y - 1)] == ObjectType::Floor
+        || map.objects[map_to_index(x, y + 1)] == ObjectType::Floor
+    {
+        return true;
+    }
+    false
 }
 
 pub fn find_warp_point(map: &Map, p: Point) -> Point {

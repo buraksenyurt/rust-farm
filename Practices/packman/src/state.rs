@@ -19,7 +19,7 @@ impl State {
             boss: Boss::new(map_builder.boss_start),
             mode: GameMode::Menu,
             tick_count: 0,
-            tick_level: 10,
+            tick_level: u16::from(BossLevel::Gentle),
         }
     }
 
@@ -45,17 +45,26 @@ impl State {
         self.mode = GameMode::Options;
         ctx.cls();
         ctx.print_centered(3, "Boss Level");
-        ctx.print_centered(5, "(F5) Easy");
-        ctx.print_centered(8, "(F6) Medium");
-        ctx.print_centered(11, "(F7) Hard");
+        ctx.print_centered(5, "(F5) Smurf");
+        ctx.print_centered(8, "(F6) Gentle");
+        ctx.print_centered(11, "(F7) Monstrous");
         if let Some(key) = ctx.key {
             match key {
-                VirtualKeyCode::F5 => self.tick_level = 30,
-                VirtualKeyCode::F6 => self.tick_level = 20,
-                VirtualKeyCode::F7 => self.tick_level = 7,
-                VirtualKeyCode::Escape => self.main_menu(ctx),
+                VirtualKeyCode::F5 => {
+                    self.tick_level = u16::from(BossLevel::Smurf);
+                    self.main_menu(ctx);
+                }
+                VirtualKeyCode::F6 => {
+                    self.tick_level = u16::from(BossLevel::Gentle);
+                    self.main_menu(ctx);
+                }
+                VirtualKeyCode::F7 => {
+                    self.tick_level = u16::from(BossLevel::Monstrous);
+                    self.main_menu(ctx);
+                }
                 _ => {}
             }
+            info!("Tick Level {}", self.tick_level);
         }
     }
 

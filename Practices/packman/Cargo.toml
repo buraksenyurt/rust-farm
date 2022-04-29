@@ -1,8 +1,10 @@
 [package]
 name = "packman"
 description = "packman benzeri bir oyun programı denemesidir"
+keywords=["game development","bracket library","rust"]
 authors = ["Burak Selim Şenyurt<selim@buraksenyurt.com>"]
-version = "0.1.2"
+version = "0.1.3"
+repository = "https://github.com/buraksenyurt/rust-farm/tree/main/Practices/packman"
 edition = "2021"
 
 [dependencies]

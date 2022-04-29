@@ -24,8 +24,17 @@ impl Boss {
             let index = gen.range(0, 4);
             if let Some(i) = try_map_to_index(suggestions[index]) {
                 match map.objects[i] {
-                    ObjectType::Floor | ObjectType::Apple(_) => {
+                    ObjectType::Floor => {
                         self.location = suggestions[index];
+                        return;
+                    }
+                    ObjectType::Apple(id) => {
+                        self.location = suggestions[index];
+                        if !map.apples[id].is_eated() {
+                            map.apples[id].eated();
+                            map.player_score -= 3;
+                            map.objects[index] = ObjectType::Floor;
+                        }
                         return;
                     }
                     _ => {

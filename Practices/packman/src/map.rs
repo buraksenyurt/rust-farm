@@ -22,8 +22,8 @@ impl Map {
             roten_apples: Vec::new(),
             walls: Vec::new(),
             player_score: 0,
-            bomb_count: 3,
-            warp_level: 100,
+            bomb_count: BOMB_COUNT,
+            warp_level: WARP_MAX_LEVEL,
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {

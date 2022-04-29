@@ -33,7 +33,7 @@ impl Packy {
                     if map.warp_level == 0 {
                         return;
                     }
-                    map.warp_level -= 10;
+                    map.warp_level -= WARP_LEVEL_PENALTY;
                     info!("WARP ENERGY {}", map.warp_level);
                     let warp_point = find_warp_point(map, self.location);
                     info!("WARP Point {:?}", warp_point);
@@ -67,7 +67,7 @@ impl Packy {
                         info!("\t{}:{} is Apple", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
-                        map.player_score += 10;
+                        map.player_score += RED_APPLE_POINT_FOR_USER;
                         info!("+10 POINT. CURRENT SCORE IS {}", map.player_score);
 
                         map.apples[id].eated();
@@ -77,7 +77,7 @@ impl Packy {
                         info!("\t{}:{} is Rotten Apple", x, y);
                         info!("IT CAN GO TO -> {:?}", self.location);
                         self.location = new_location;
-                        map.player_score -= 5;
+                        map.player_score -= ROTTEN_APPLE_POINT_FOR_USER;
                         info!("-5 POINT. CURRENT SCORE IS {}", map.player_score);
 
                         map.roten_apples[id].eated();

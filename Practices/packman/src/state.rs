@@ -6,6 +6,7 @@ pub struct State {
     boss: Boss,
     mode: GameMode,
     tick_count: u16,
+    tick_level: u16,
 }
 
 impl State {
@@ -18,6 +19,7 @@ impl State {
             boss: Boss::new(map_builder.boss_start),
             mode: GameMode::Menu,
             tick_count: 0,
+            tick_level: 10,
         }
     }
 
@@ -26,12 +28,32 @@ impl State {
         ctx.cls();
         ctx.print_centered(5, "PackyMan - Catch Apples");
         ctx.print_centered(8, "(P) Play");
-        ctx.print_centered(11, "(Q) Quit");
+        ctx.print_centered(11, "(O) Options");
+        ctx.print_centered(14, "(Q) Quit");
 
         if let Some(key) = ctx.key {
             match key {
                 VirtualKeyCode::P => self.restart(ctx),
+                VirtualKeyCode::O => self.options(ctx),
                 VirtualKeyCode::Q => ctx.quitting = true,
+                _ => {}
+            }
+        }
+    }
+
+    fn options(&mut self, ctx: &mut BTerm) {
+        self.mode = GameMode::Options;
+        ctx.cls();
+        ctx.print_centered(3, "Boss Level");
+        ctx.print_centered(5, "(F5) Easy");
+        ctx.print_centered(8, "(F6) Medium");
+        ctx.print_centered(11, "(F7) Hard");
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::F5 => self.tick_level = 30,
+                VirtualKeyCode::F6 => self.tick_level = 20,
+                VirtualKeyCode::F7 => self.tick_level = 7,
+                VirtualKeyCode::Escape => self.main_menu(ctx),
                 _ => {}
             }
         }
@@ -61,7 +83,7 @@ impl State {
         self.packy.render(ctx);
 
         self.tick_count += 1;
-        if self.tick_count == 10 {
+        if self.tick_count == self.tick_level {
             //info!("Tick Counts is {}", self.tick_count);
             self.tick_count = 0;
             self.boss.move_to(&mut self.map);
@@ -92,6 +114,7 @@ impl GameState for State {
         match self.mode {
             GameMode::Menu => self.main_menu(ctx),
             GameMode::Playing => self.play(ctx),
+            GameMode::Options => self.options(ctx),
             //GameMode::End => self.end_game(ctx),
         }
     }

@@ -33,3 +33,4 @@
 - [x] **state_pattern2:** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
 - [ ] **packman:** Bracket-Lib oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
 - [ ] **win_forms:** Amacım winit paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
+- [ ] **hello-wasm:** wasm-bindgen küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.

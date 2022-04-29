@@ -62,3 +62,7 @@ Rust kütüphanesinde değişiklik olduğunda www klasöründeki projede kullan�
 wasm-pack build
 ```
 
+Bir sonraki denemede sayfadaki HTML kontrollerindeki değerleri alıp Rust tarafında yazılmış bir fonksiyonunun çağırılması işlemi icra edildi.
+
+![../images/hello_wasm_04.png](../images/hello_wasm_04.png)
+

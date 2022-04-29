@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 mod apple;
 mod boss;
+mod boss_level;
 mod floor;
 mod game_mode;
 mod map;
@@ -20,6 +21,7 @@ mod prelude {
     pub const MAX_NUM_OF_WALLS: usize = ((DISPLAY_WIDTH * DISPLAY_HEIGHT) / 3) as usize;
     pub use crate::apple::*;
     pub use crate::boss::*;
+    pub use crate::boss_level::*;
     pub use crate::floor::*;
     pub use crate::game_mode::*;
     pub use crate::map::*;

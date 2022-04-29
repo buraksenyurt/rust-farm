@@ -52,14 +52,17 @@ impl State {
             match key {
                 VirtualKeyCode::F5 => {
                     self.tick_level = u16::from(BossLevel::Smurf);
+                    self.tick_count=0;
                     self.main_menu(ctx);
                 }
                 VirtualKeyCode::F6 => {
                     self.tick_level = u16::from(BossLevel::Gentle);
+                    self.tick_count=0;
                     self.main_menu(ctx);
                 }
                 VirtualKeyCode::F7 => {
                     self.tick_level = u16::from(BossLevel::Monstrous);
+                    self.tick_count=0;
                     self.main_menu(ctx);
                 }
                 _ => {}
@@ -73,6 +76,7 @@ impl State {
         let map_builder = MapBuilder::new(&mut gen);
         self.map = map_builder.map;
         self.packy = Packy::new(map_builder.packy_start);
+        self.boss = Boss::new(map_builder.boss_start);
         self.mode = GameMode::Playing;
         self.play(ctx);
     }

@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 ggez="0.7.0"
+specs={version="0.17.0", features=["specs-derive"]}

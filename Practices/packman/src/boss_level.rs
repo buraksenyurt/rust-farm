@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 pub enum BossLevel {
     Smurf,
     Gentle,
@@ -10,6 +12,16 @@ impl From<BossLevel> for u16 {
             BossLevel::Smurf => 30,
             BossLevel::Gentle => 20,
             BossLevel::Monstrous => 7,
+        }
+    }
+}
+
+impl Display for BossLevel {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Smurf => write!(f, "Smurf mode on"),
+            Self::Gentle => write!(f, "Gentle mode on"),
+            Self::Monstrous => write!(f, "Monstrous mode on"),
         }
     }
 }

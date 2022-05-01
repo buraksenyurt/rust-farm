@@ -25,7 +25,6 @@ impl State {
     }
 
     fn main_menu(&mut self, ctx: &mut BTerm) {
-        warn!("Mode -> Menu");
         self.mode = GameMode::Menu;
         ctx.cls();
         ctx.print_centered(5, "PackyMan - Catch Apples");
@@ -45,38 +44,42 @@ impl State {
 
     fn options(&mut self, ctx: &mut BTerm) {
         self.mode = GameMode::Options;
-        warn!("Mode -> Options");
         ctx.cls();
         ctx.print_centered(3, "Boss Level");
         ctx.print_centered(5, "(F5) Smurf");
         ctx.print_centered(8, "(F6) Gentle");
         ctx.print_centered(11, "(F7) Monstrous");
+        ctx.print_centered(13, "(ESC) Back");
         if let Some(key) = ctx.key {
             match key {
                 VirtualKeyCode::F5 => {
                     self.tick_level = u16::from(BossLevel::Smurf);
                     self.tick_count = 0;
                     self.main_menu(ctx);
+                    info!("Tick Level {}", BossLevel::Smurf);
                 }
                 VirtualKeyCode::F6 => {
                     self.tick_level = u16::from(BossLevel::Gentle);
                     self.tick_count = 0;
                     self.main_menu(ctx);
+                    info!("Tick Level {}", BossLevel::Gentle);
                 }
                 VirtualKeyCode::F7 => {
                     self.tick_level = u16::from(BossLevel::Monstrous);
                     self.tick_count = 0;
                     self.main_menu(ctx);
+                    info!("Tick Level {}", BossLevel::Monstrous);
+                }
+                VirtualKeyCode::Escape => {
+                    self.main_menu(ctx);
                 }
                 _ => {}
             }
-            info!("Tick Level {}", self.tick_level);
         }
     }
 
     fn restart(&mut self, ctx: &mut BTerm) {
         self.mode = GameMode::Playing;
-        warn!("Mode -> Playing");
         let mut gen = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut gen);
         self.map = map_builder.map;
@@ -115,7 +118,6 @@ impl State {
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
-        warn!("Mode -> End");
         ctx.cls();
         ctx.print_centered(3, "The game is over :(");
         ctx.print_centered(8, "(P) Play Again ;)");

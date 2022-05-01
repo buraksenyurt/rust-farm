@@ -9,3 +9,4 @@ pub const ROTTEN_APPLE_POINT_FOR_USER: i32 = 5;
 pub const WARP_LEVEL_PENALTY: u16 = 10;
 pub const WARP_MAX_LEVEL: u16 = 100;
 pub const BOMB_COUNT: u16 = 3;
+pub const FONT_SOURCE: &str = "mapfonts.png";

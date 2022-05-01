@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use std::time::Duration;
 
 const NUMBER_OF_TILES: usize = { DISPLAY_WIDTH * DISPLAY_HEIGHT } as usize;
 
@@ -11,6 +12,9 @@ pub struct Map {
     pub player_score: i32,
     pub bomb_count: u16,
     pub warp_level: u16,
+    pub start_time: Instant,
+    pub duration: Duration,
+    pub eated_apple_count: usize,
 }
 
 impl Map {
@@ -24,6 +28,9 @@ impl Map {
             player_score: 0,
             bomb_count: BOMB_COUNT,
             warp_level: WARP_MAX_LEVEL,
+            start_time: Instant::now(),
+            duration: Duration::ZERO,
+            eated_apple_count: 0,
         }
     }
     pub fn render(&self, ctx: &mut BTerm) {
@@ -66,8 +73,8 @@ impl Map {
             DISPLAY_WIDTH / 2,
             0,
             format!(
-                "SCR:{} BOMB:{} WARP:%{}",
-                self.player_score, self.bomb_count, self.warp_level
+                "S:{} B:{} W:%{} E:{}",
+                self.player_score, self.bomb_count, self.warp_level, self.eated_apple_count
             ),
         );
     }

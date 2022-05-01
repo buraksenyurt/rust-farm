@@ -32,6 +32,7 @@ impl Boss {
                         self.location = suggestions[index];
                         if !map.apples[id].is_eated() {
                             map.apples[id].eated();
+                            map.eated_apple_count += 1;
                             map.player_score -= RED_APPLE_POINT_FOR_BOSS;
                             map.objects[index] = ObjectType::Floor;
                         }

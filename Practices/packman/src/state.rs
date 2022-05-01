@@ -7,6 +7,7 @@ pub struct State {
     mode: GameMode,
     tick_count: u16,
     tick_level: u16,
+    end_state: EndState,
 }
 
 impl State {
@@ -21,6 +22,7 @@ impl State {
             mode: GameMode::Menu,
             tick_count: 0,
             tick_level: u16::from(BossLevel::Gentle),
+            end_state: EndState::Nothing,
         }
     }
 
@@ -93,6 +95,13 @@ impl State {
             self.main_menu(ctx)
         }
 
+        if self.map.eated_apple_count == MAX_NUM_OF_APPLES {
+            self.end_state = EndState::Winner;
+            self.map.duration = Instant::now().duration_since(self.map.start_time);
+            self.end_game(ctx);
+            return;
+        }
+
         for i in 0..5 {
             ctx.set_active_console(i);
             ctx.cls();
@@ -109,7 +118,8 @@ impl State {
             self.boss.move_to(&mut self.map);
             if is_packy_catched(&self.packy, &self.boss) {
                 warn!("Packy catched by boss");
-                self.mode = GameMode::End;
+                self.end_state = EndState::Loser;
+                self.end_game(ctx);
                 return;
             }
         }
@@ -118,10 +128,26 @@ impl State {
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
+        self.mode = GameMode::End;
         ctx.cls();
-        ctx.print_centered(3, "The game is over :(");
-        ctx.print_centered(8, "(P) Play Again ;)");
-        ctx.print_centered(11, "(Q) Quit");
+        ctx.print_centered(3, "The game is over.");
+        match self.end_state {
+            EndState::Winner => {
+                ctx.print_centered(8, "WINNER");
+                ctx.print_centered(
+                    9,
+                    format!(
+                        "{} point in {} seconds",
+                        self.map.player_score,
+                        self.map.duration.as_secs()
+                    ),
+                );
+            }
+            EndState::Loser => ctx.print_centered(8, "LOSER"),
+            _ => {}
+        }
+        ctx.print_centered(11, "(P) Play Again ;)");
+        ctx.print_centered(13, "(Q) Quit");
 
         if let Some(key) = ctx.key {
             match key {

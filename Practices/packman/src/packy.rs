@@ -71,6 +71,7 @@ impl Packy {
                         info!("+10 POINT. CURRENT SCORE IS {}", map.player_score);
                         map.apples[id].eated();
                         map.objects[index] = ObjectType::Floor;
+                        map.eated_apple_count += 1;
                     }
                     ObjectType::RottenApple(id) => {
                         info!("\t{}:{} is Rotten Apple", x, y);

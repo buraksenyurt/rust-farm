@@ -4,6 +4,7 @@ mod apple;
 mod boss;
 mod boss_level;
 mod constants;
+mod end_state;
 mod floor;
 mod game_mode;
 mod map;
@@ -19,6 +20,7 @@ mod prelude {
     pub use crate::boss::*;
     pub use crate::boss_level::*;
     pub use crate::constants::*;
+    pub use crate::end_state::*;
     pub use crate::floor::*;
     pub use crate::game_mode::*;
     pub use crate::map::*;
@@ -29,8 +31,8 @@ mod prelude {
     pub use crate::utility::*;
     pub use crate::wall::*;
     pub use bracket_lib::prelude::*;
-    pub const FONT_SOURCE: &str = "mapfonts.png";
     pub use log::*;
+    pub use std::time::Instant;
 }
 fn main() -> BError {
     let _ = env_logger::init();

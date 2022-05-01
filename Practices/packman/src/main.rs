@@ -48,6 +48,7 @@ fn main() -> BError {
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, FONT_SOURCE)
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, FONT_SOURCE)
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, FONT_SOURCE)
+        .with_title("Packyman - Version 0.1.3")
         .build()?;
 
     main_loop(context, State::new())

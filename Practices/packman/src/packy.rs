@@ -69,7 +69,6 @@ impl Packy {
                         self.location = new_location;
                         map.player_score += RED_APPLE_POINT_FOR_USER;
                         info!("+10 POINT. CURRENT SCORE IS {}", map.player_score);
-
                         map.apples[id].eated();
                         map.objects[index] = ObjectType::Floor;
                     }

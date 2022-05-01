@@ -11,6 +11,7 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
+        warn!("New game setup");
         let mut gen = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut gen);
         Self {
@@ -24,6 +25,7 @@ impl State {
     }
 
     fn main_menu(&mut self, ctx: &mut BTerm) {
+        warn!("Mode -> Menu");
         self.mode = GameMode::Menu;
         ctx.cls();
         ctx.print_centered(5, "PackyMan - Catch Apples");
@@ -43,6 +45,7 @@ impl State {
 
     fn options(&mut self, ctx: &mut BTerm) {
         self.mode = GameMode::Options;
+        warn!("Mode -> Options");
         ctx.cls();
         ctx.print_centered(3, "Boss Level");
         ctx.print_centered(5, "(F5) Smurf");
@@ -73,6 +76,7 @@ impl State {
 
     fn restart(&mut self, ctx: &mut BTerm) {
         self.mode = GameMode::Playing;
+        warn!("Mode -> Playing");
         let mut gen = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut gen);
         self.map = map_builder.map;
@@ -111,6 +115,7 @@ impl State {
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {
+        warn!("Mode -> End");
         ctx.cls();
         ctx.print_centered(3, "The game is over :(");
         ctx.print_centered(8, "(P) Play Again ;)");

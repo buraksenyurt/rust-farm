@@ -2,7 +2,7 @@ use crate::prelude::*;
 
 pub fn get_random_point(map: &Map, gen: &mut RandomNumberGenerator) -> (i32, i32, usize) {
     loop {
-        let (x, y) = (gen.range(1, DISPLAY_WIDTH), gen.range(1, DISPLAY_HEIGHT));
+        let (x, y) = (gen.range(0, DISPLAY_WIDTH), gen.range(1, DISPLAY_HEIGHT));
         let index = map_to_index(x, y);
         if map.objects[index] != ObjectType::Floor {
             continue;
@@ -53,7 +53,7 @@ pub fn map_to_index(x: i32, y: i32) -> usize {
 }
 
 pub fn is_in_bounds(point: Point) -> bool {
-    (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 0 && point.y < DISPLAY_HEIGHT)
+    (point.x >= 0 && point.x < DISPLAY_WIDTH) && (point.y >= 1 && point.y < DISPLAY_HEIGHT)
 }
 
 pub fn try_map_to_index(point: Point) -> Option<usize> {

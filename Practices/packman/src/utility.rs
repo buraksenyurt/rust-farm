@@ -63,3 +63,7 @@ pub fn try_map_to_index(point: Point) -> Option<usize> {
         Some(map_to_index(point.x, point.y))
     }
 }
+
+pub fn is_packy_catched(packy: &Packy, boss: &Boss) -> bool {
+    packy.location == boss.location
+}

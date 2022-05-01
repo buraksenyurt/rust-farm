@@ -72,12 +72,12 @@ impl State {
     }
 
     fn restart(&mut self, ctx: &mut BTerm) {
+        self.mode = GameMode::Playing;
         let mut gen = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut gen);
         self.map = map_builder.map;
         self.packy = Packy::new(map_builder.packy_start);
         self.boss = Boss::new(map_builder.boss_start);
-        self.mode = GameMode::Playing;
         self.play(ctx);
     }
 
@@ -100,26 +100,30 @@ impl State {
             //info!("Tick Counts is {}", self.tick_count);
             self.tick_count = 0;
             self.boss.move_to(&mut self.map);
+            if is_packy_catched(&self.packy, &self.boss) {
+                warn!("Packy catched by boss");
+                self.mode = GameMode::End;
+                return;
+            }
         }
 
         self.boss.render(ctx);
     }
 
-    // fn end_game(&mut self, ctx: &mut BTerm) {
-    //     ctx.cls();
-    //     ctx.print_centered(3, "The game is over!");
-    //     ctx.print_centered(8, "(P) Play Again");
-    //     ctx.print_centered(11, "(Q) Quit");
-    //
-    //     if let Some(key) = ctx.key {
-    //         match key {
-    //             VirtualKeyCode::P => self.restart(ctx),
-    //             VirtualKeyCode::Q => ctx.quitting = true,
-    //             _ => {}
-    //         }
-    //     }
-    //     self.mode = GameMode::End;
-    // }
+    fn end_game(&mut self, ctx: &mut BTerm) {
+        ctx.cls();
+        ctx.print_centered(3, "The game is over :(");
+        ctx.print_centered(8, "(P) Play Again ;)");
+        ctx.print_centered(11, "(Q) Quit");
+
+        if let Some(key) = ctx.key {
+            match key {
+                VirtualKeyCode::P => self.restart(ctx),
+                VirtualKeyCode::Q => ctx.quitting = true,
+                _ => {}
+            }
+        }
+    }
 }
 
 impl GameState for State {
@@ -128,7 +132,7 @@ impl GameState for State {
             GameMode::Menu => self.main_menu(ctx),
             GameMode::Playing => self.play(ctx),
             GameMode::Options => self.options(ctx),
-            //GameMode::End => self.end_game(ctx),
+            GameMode::End => self.end_game(ctx),
         }
     }
 }

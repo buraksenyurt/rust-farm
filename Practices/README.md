@@ -27,10 +27,11 @@
 - [x] **fizz_buzz:** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
 - [x] **fizz_bench:** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.
 - [x] **oop:** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek.
-- [x] **doc_builder:** Kendi trait nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
+- [x] **doc_builder:** Kendi **trait** nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
 - [ ] **lovelace:** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
-- [x] **state_pattern:** Bu örnekte State tasarım kalıbının nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
+- [x] **state_pattern:** Bu örnekte **State Tasarım Kalıbının** nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
 - [x] **state_pattern2:** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
-- [ ] **packman:** Bracket-Lib oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
-- [ ] **win_forms:** Amacım winit paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
-- [ ] **hello-wasm:** wasm-bindgen küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
+- [ ] **packman:** **Bracket-Lib** oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
+- [ ] **win_forms:** Amacım **winit** paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
+- [x] **hello-wasm:** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
+- [ ] **sokoban:** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.

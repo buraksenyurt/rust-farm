@@ -35,15 +35,27 @@ Ghost eklendikten sonraki duruma ait bir görüntü.
 
 ![../images/packman_4.png](../images/packman_4.png)
 
-#### Sürüm 0.1.3
+#### Sürüm 0.2.0
 
 - Hayaletin hızını ayarlayabilmek için options(O) menüsü eklendi.
 - Hayalet, kırmızı elma yediğinde rakibin puanından 3 birim azalması sağlandı.
 - Packyman ve hayaletin bazı hallerde dört tarafı duvarla örülü şekilde kalması engellendi.
+- Hayalet packyman'i yakaladığında oyunun sonlanmasının sağlanması.
+- Packyman'in skor tabelasına çıkması engellendi.
+- x=0 sütunu oyuna dahil edildi.
+- Packyman'in kırmızı elmaları toplama süresinin ölçülmesi sağlandı.
+- Kazanma ve kaybetme modları eklendi.
+- Duvar, elma ve çürük elma simgeleri elle yeniden tasarlandı.
+
+![../images/packman_5.png](../images/packman_5.png)
+
+![../images/packman_6.png](../images/packman_6.png)
+
+![../images/packman_7.png](../images/packman_7.png)
 
 *Planlananlar*
 
-- Hayalet packyman'i yakaladığında oyunun sonlanmasının sağlanması.
-- Packyman'in kırmızı elmaları toplama süresinin ölçülmesinin sağlanması.
 - Oyuncu space ile bomba patlattığında veya W ile ışınlandığında bu ekranda bilgi olarak çıksın.
 - Hayalet rastgele bomba patlatabilsin.
+- Hayalet sayılarını artıralım.
+- Hayaletin hareket sistemi geliştirilmeli. Packyman'e doğru gitmesi gerekiyor.

@@ -4,6 +4,7 @@ mod components;
 mod game;
 
 pub mod prelude {
+    pub use crate::components::*;
     pub use crate::game::Game;
     pub use ggez::conf::*;
     pub use ggez::*;

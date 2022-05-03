@@ -1,4 +1,4 @@
-use ggez::{event, Context, GameError};
+use crate::prelude::*;
 
 // Oyun nesnesi
 pub struct Game {}

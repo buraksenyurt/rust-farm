@@ -32,3 +32,7 @@ Aksi takdirde alsa kütüphanesi için bir derleme hatası alınıyor.
 Buraya Render sistemini oluşturduktan sonra deneysel olarak ekrana birkaç bileşen eklenmesine ait bir ekran görüntüsü de bırakalım.
 
 ![../images/sokoban_1.png](../images/sokoban_1.png)
+
+Harfler kullanılarak oluşturulan ilk haritanın işletilmesi sonrası oluşan ekran görüntüsü.
+
+![../images/sokoban_2.png](../images/sokoban_2.png)

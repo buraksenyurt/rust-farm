@@ -4,6 +4,7 @@ mod components;
 mod constants;
 mod entities;
 mod game;
+mod map;
 mod mocker;
 mod systems;
 
@@ -12,6 +13,7 @@ pub mod prelude {
     pub use crate::constants::*;
     pub use crate::entities::*;
     pub use crate::game::Game;
+    pub use crate::map::*;
     pub use crate::mocker::*;
     pub use crate::systems::*;
     pub use ggez::conf::*;
@@ -29,7 +31,8 @@ fn main() -> GameResult {
     register_components(&mut world);
 
     // test amaçlı birkaç entity'i ekran çizderebiliriz.
-    create_test_entites(&mut world);
+    //create_test_entites(&mut world);
+    init_first_level(&mut world);
 
     // oyuna ait context nesnesi ve ana motor döngüsü oluşturuldu
     let context_builder = ContextBuilder::new("game_1", "buraks")

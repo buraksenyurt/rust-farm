@@ -7,3 +7,9 @@ pub struct Position {
     pub y: u8,
     pub z: u8,
 }
+
+impl Position {
+    pub fn new(x: u8, y: u8, z: u8) -> Self {
+        Self { x, y, z }
+    }
+}

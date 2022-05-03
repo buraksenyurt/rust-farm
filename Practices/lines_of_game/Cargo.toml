@@ -1,0 +1,9 @@
+[package]
+name = "lines_of_game"
+description = "Oyun sahası üstüne farklı geometrik şekiller eklemenin araştırılması"
+authors = ["Burak Selim Şenyurt"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bracket-lib = "0.8.1"

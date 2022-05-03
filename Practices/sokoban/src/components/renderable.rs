@@ -3,5 +3,5 @@ use crate::prelude::*;
 #[derive(Component)]
 #[storage(VecStorage)]
 pub struct Renderable {
-    path: String,
+    pub asset_path: String,
 }

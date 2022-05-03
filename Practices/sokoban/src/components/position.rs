@@ -3,7 +3,7 @@ use crate::prelude::*;
 #[derive(Debug, Component, Copy, Clone)]
 #[storage(VecStorage)]
 pub struct Position {
-    x: u8,
-    y: u8,
-    z: u8,
+    pub x: u8,
+    pub y: u8,
+    pub z: u8,
 }

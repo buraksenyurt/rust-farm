@@ -1,10 +1,12 @@
 use prelude::*;
 
 mod components;
+mod entities;
 mod game;
 
 pub mod prelude {
     pub use crate::components::*;
+    pub use crate::entities::*;
     pub use crate::game::Game;
     pub use ggez::conf::*;
     pub use ggez::*;

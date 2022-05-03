@@ -1,24 +1,35 @@
 use prelude::*;
 
 mod components;
+mod constants;
 mod entities;
 mod game;
+mod mocker;
+mod systems;
 
 pub mod prelude {
     pub use crate::components::*;
+    pub use crate::constants::*;
     pub use crate::entities::*;
     pub use crate::game::Game;
+    pub use crate::mocker::*;
+    pub use crate::systems::*;
     pub use ggez::conf::*;
     pub use ggez::*;
+    pub use glam::*;
+    pub use graphics::*;
     pub use specs::*;
     pub use std::path::PathBuf;
 }
 
 fn main() -> GameResult {
     // Yeni bir oyun dünyası nesnesi oluşturduk
-    let mut world=World::new();
+    let mut world = World::new();
     // bileşenlerin kayıt işlemlerini üstlenen fonksiyonu çağırdık
     register_components(&mut world);
+
+    // test amaçlı birkaç entity'i ekran çizderebiliriz.
+    create_test_entites(&mut world);
 
     // oyuna ait context nesnesi ve ana motor döngüsü oluşturuldu
     let context_builder = ContextBuilder::new("game_1", "buraks")
@@ -28,7 +39,7 @@ fn main() -> GameResult {
 
     let (ctx, event_loop) = context_builder.build()?;
     // Oyun nesnemiz world'ü barındıran bir state nesnesi olarak düşünülebilir.
-    let game=Game{world};
+    let game = Game { world };
     // oyunu başlattığımız yer. Context'i ana oyun döngüsünü ve state nesnesini parametre olarak almakta.
     event::run(ctx, event_loop, game);
 }

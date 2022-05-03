@@ -12,7 +12,13 @@ impl event::EventHandler<ggez::GameError> for Game {
         Ok(())
     }
 
-    fn draw(&mut self, _ctx: &mut Context) -> Result<(), GameError> {
+    // oyunun ana döngüsünde her güncelleme sonrası nesnelerin çizilmesi işlemi uygulanacak
+    fn draw(&mut self, context: &mut Context) -> Result<(), GameError> {
+        // bu çizim işlemini RenderingSystem üstleniyor.
+        {
+            let mut rendering_system = RenderingSystem { context };
+            rendering_system.run_now(&self.world);
+        }
         Ok(())
     }
 }

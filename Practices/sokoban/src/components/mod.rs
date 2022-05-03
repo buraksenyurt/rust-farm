@@ -6,6 +6,8 @@ mod register;
 mod renderable;
 mod wall;
 
+// Bileşenlerin yer aldığı modül olarak düşünülebilir.
+
 pub use chest::*;
 pub use chest_spot::*;
 pub use player::*;

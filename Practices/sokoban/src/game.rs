@@ -1,7 +1,9 @@
 use crate::prelude::*;
 
 // Oyun nesnesi
-pub struct Game {}
+pub struct Game {
+    pub world: World,
+}
 
 // Oyun motoruna ait ana döngü. Şu an için iki davranış uygulanıyor.
 // Güncelleme ve çizim

@@ -19,7 +19,7 @@ Buna göre örneğin player, üç bileşeni de içerirken wall ve floor sadece p
 cargo run sokoban
 ```
 
-Örnekte 2 boyutlu oyunlar için kullanılabilen hafifsiklet [ggez](https://ggez.rs/) isimli bir oyun motoru kullanılmakta.
+Örnekte 2 boyutlu oyunlar için kullanılabilen hafifsiklet [ggez](https://ggez.rs/) isimli bir oyun motoru kullanılmakta. Ayrıca ECS çatısı için [specs](https://crates.io/crates/specs) isimli küfeden yararlanılıyor. İlerleyen kısımlarda [glam](https://crates.io/crates/glam) isimli 3D matematiksel işlemleri kolaylaştıran bir oyun ve grafik küfesi de işin içerisine giriyor.
 
 Örneğin ubuntu sistemde denediğim için ek bazı bağımlılıkları yüklemem gerekti.
 
@@ -28,3 +28,7 @@ sudo apt-get install libudev-dev libasound2-dev
 ```
 
 Aksi takdirde alsa kütüphanesi için bir derleme hatası alınıyor.
+
+Buraya Render sistemini oluşturduktan sonra deneysel olarak ekrana birkaç bileşen eklenmesine ait bir ekran görüntüsü de bırakalım.
+
+![../images/sokoban_1.png](../images/sokoban_1.png)

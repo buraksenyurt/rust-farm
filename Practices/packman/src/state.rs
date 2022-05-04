@@ -4,6 +4,7 @@ pub struct State {
     map: Map,
     packy: Packy,
     boss: Boss,
+    ghost: Ghost,
     mode: GameMode,
     tick_count: u16,
     tick_level: u16,
@@ -19,6 +20,7 @@ impl State {
             map: map_builder.map,
             packy: Packy::new(map_builder.packy_start),
             boss: Boss::new(map_builder.boss_start),
+            ghost: Ghost::new(map_builder.ghost_start),
             mode: GameMode::Menu,
             tick_count: 0,
             tick_level: u16::from(BossLevel::Gentle),
@@ -116,6 +118,7 @@ impl State {
             //info!("Tick Counts is {}", self.tick_count);
             self.tick_count = 0;
             self.boss.move_to(&mut self.map, &self.packy);
+            self.ghost.move_to(&mut self.map);
             if is_packy_catched(&self.packy, &self.boss) {
                 warn!("Packy catched by boss");
                 self.end_state = EndState::Loser;
@@ -125,6 +128,7 @@ impl State {
         }
 
         self.boss.render(ctx);
+        self.ghost.render(ctx);
     }
 
     fn end_game(&mut self, ctx: &mut BTerm) {

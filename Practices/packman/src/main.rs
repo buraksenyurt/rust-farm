@@ -7,6 +7,7 @@ mod constants;
 mod end_state;
 mod floor;
 mod game_mode;
+mod ghost;
 mod map;
 mod map_builder;
 mod object_type;
@@ -23,6 +24,7 @@ mod prelude {
     pub use crate::end_state::*;
     pub use crate::floor::*;
     pub use crate::game_mode::*;
+    pub use crate::ghost::*;
     pub use crate::map::*;
     pub use crate::map_builder::*;
     pub use crate::object_type::*;

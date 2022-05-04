@@ -53,9 +53,13 @@ Ghost eklendikten sonraki duruma ait bir görüntü.
 
 ![../images/packman_7.png](../images/packman_7.png)
 
+#### Sürüm 0.2.1
+
+- Hayaletin hareket mekanizması packyman'in konumuna göre yeniden programlandı. 
+- Hayalet duvarlardan geçebiliyor :D
+- Oyuna rastgele hareket eden yeni bir hayalet nesnesi eklendir.
+
 *Planlananlar*
 
 - Oyuncu space ile bomba patlattığında veya W ile ışınlandığında bu ekranda bilgi olarak çıksın.
 - Hayalet rastgele bomba patlatabilsin.
-- Hayalet sayılarını artıralım.
-- Hayaletin hareket sistemi geliştirilmeli. Packyman'e doğru gitmesi gerekiyor.

@@ -36,3 +36,7 @@ Buraya Render sistemini oluşturduktan sonra deneysel olarak ekrana birkaç bile
 Harfler kullanılarak oluşturulan ilk haritanın işletilmesi sonrası oluşan ekran görüntüsü.
 
 ![../images/sokoban_2.png](../images/sokoban_2.png)
+
+Input System eklendikten ve oyuncuyu hareket ettirme aksiyou eklendikten sonrasına ait bir görüntü.
+
+![../images/sokoban_3.png](../images/sokoban_3.png)

@@ -27,12 +27,20 @@ impl Apple {
     pub fn render(&self, ctx: &mut BTerm) {
         ctx.set_active_console(1);
         match self.fruit_type {
-            FruitType::Apple => {
-                ctx.set(self.location.x, self.location.y, GOLD, BROWN4, to_cp437('.'))
-            }
-            FruitType::RottenApple => {
-                ctx.set(self.location.x, self.location.y, GREEN, BLACK, to_cp437(','))
-            }
+            FruitType::Apple => ctx.set(
+                self.location.x,
+                self.location.y,
+                GOLD,
+                BROWN4,
+                to_cp437('.'),
+            ),
+            FruitType::RottenApple => ctx.set(
+                self.location.x,
+                self.location.y,
+                GREEN,
+                BLACK,
+                to_cp437(','),
+            ),
         }
     }
 }

@@ -115,7 +115,7 @@ impl State {
         if self.tick_count == self.tick_level {
             //info!("Tick Counts is {}", self.tick_count);
             self.tick_count = 0;
-            self.boss.move_to(&mut self.map);
+            self.boss.move_to(&mut self.map, &self.packy);
             if is_packy_catched(&self.packy, &self.boss) {
                 warn!("Packy catched by boss");
                 self.end_state = EndState::Loser;

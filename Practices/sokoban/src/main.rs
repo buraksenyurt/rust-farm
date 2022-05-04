@@ -6,6 +6,7 @@ mod entities;
 mod game;
 mod map;
 mod mocker;
+mod resources;
 mod systems;
 
 pub mod prelude {
@@ -13,22 +14,30 @@ pub mod prelude {
     pub use crate::constants::*;
     pub use crate::entities::*;
     pub use crate::game::Game;
+    pub use crate::input_events::*;
     pub use crate::map::*;
     pub use crate::mocker::*;
+    pub use crate::resources::*;
     pub use crate::systems::*;
     pub use ggez::conf::*;
+    pub use ggez::event::*;
     pub use ggez::*;
     pub use glam::*;
     pub use graphics::*;
+    pub use log::*;
     pub use specs::*;
     pub use std::path::PathBuf;
 }
 
 fn main() -> GameResult {
+    let _ = env_logger::init();
+
     // Yeni bir oyun dünyası nesnesi oluşturduk
     let mut world = World::new();
     // bileşenlerin kayıt işlemlerini üstlenen fonksiyonu çağırdık
     register_components(&mut world);
+    // kaynakların kayıt işlemlerini üstlenen fonksiyonu çağırdık
+    register_resources(&mut world);
 
     // test amaçlı birkaç entity'i ekran çizderebiliriz.
     //create_test_entites(&mut world);
@@ -44,5 +53,5 @@ fn main() -> GameResult {
     // Oyun nesnemiz world'ü barındıran bir state nesnesi olarak düşünülebilir.
     let game = Game { world };
     // oyunu başlattığımız yer. Context'i ana oyun döngüsünü ve state nesnesini parametre olarak almakta.
-    event::run(ctx, event_loop, game);
+    run(ctx, event_loop, game);
 }

@@ -22,7 +22,7 @@ fn resize_images() {
 }
 
 /// Kaynak klasördeki jpg ve png dosyalarının listesini verir
-fn get_image_files(source: PathBuf) -> Result<Vec<PathBuf>, ImagixError> {
+pub fn get_image_files(source: PathBuf) -> Result<Vec<PathBuf>, ImagixError> {
     // source parametresi ile gelen dosya yolunu alıp içeriğinde dolaşıyoruz.
     // Geçersi bir klasör olma durumunu map_err ile kontrol altına alıyoruz. ? kullanımına dikkat.
     let files = fs::read_dir(source)

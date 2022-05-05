@@ -1,16 +1,17 @@
 use crate::error::ImagixError;
 use crate::resize::get_image_files;
 use std::fmt::{Display, Formatter};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 /// Klasör içindeki imgelere ait istatistikleri verir. Klasör, toplam boyut ve dosya sayısı
 pub fn get_stats(source: PathBuf) -> Result<Statistics, ImagixError> {
-    let image_files = get_image_files(source.to_path_buf())?;
+    let source_folder = source.clone();
+    let image_files = get_image_files(source)?;
     let size = image_files
         .iter()
         .map(move |f| f.metadata().unwrap().len())
         .sum::<u64>();
-    let statistics = Statistics::new(source, image_files.len(), size as f64);
+    let statistics = Statistics::new(source_folder, image_files.len(), size as f64);
     Ok(statistics)
 }
 

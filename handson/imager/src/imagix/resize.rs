@@ -1,24 +1,41 @@
 use crate::error::ImagixError;
+use crate::mode::Mode;
+use crate::size::Size;
 use image::ImageFormat;
 use std::io::ErrorKind;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::time::Instant;
 use std::{fs, io};
 
-pub fn process_resize_request() {
-    todo!()
+/// Belirtilen mod ve boyuta göre kaynak klasördeki imgeleri küçültür
+pub fn process_resize_request(
+    size: Size,
+    mode: Mode,
+    source_folder: &mut PathBuf,
+) -> Result<(), ImagixError> {
+    let target_size = u32::from(size);
+    match mode {
+        Mode::Single => resize_single(target_size, target_size, source_folder)?,
+        Mode::Full => resize_full(target_size, target_size, source_folder)?,
+    };
+    Ok(())
 }
 
-fn resize_single() {
-    todo!()
+/// Tek bir dosyayı belirtilen boyutlarda dönüştürmek için kullanılal fonksiyon
+fn resize_single(width: u32, height: u32, source: &mut PathBuf) -> Result<(), ImagixError> {
+    let source = source;
+    resize_image(width, height, source)?;
+    Ok(())
 }
 
-fn resise_all() {
-    todo!()
-}
-
-fn resize_images() {
-    todo!()
+/// Klasördeki tüm dosyaları parametre olarak gelen genişlik ve yükseklikte küçültür.
+fn resize_full(width: u32, height: u32, source: &Path) -> Result<(), ImagixError> {
+    if let Ok(files) = get_image_files(source.to_path_buf()) {
+        for mut file in files {
+            resize_image(width, height, &mut file)?;
+        }
+    }
+    Ok(())
 }
 
 /// Kaynak klasördeki jpg ve png dosyalarının listesini verir
@@ -133,4 +150,10 @@ mod test {
             ))
         );
     }
+
+    #[test]
+    fn resize_single_mode_test() {}
+
+    #[test]
+    fn resize_full_mode_test() {}
 }

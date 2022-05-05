@@ -152,8 +152,26 @@ mod test {
     }
 
     #[test]
-    fn resize_single_mode_test() {}
+    fn resize_single_mode_test() {
+        let mut source = PathBuf::from("./images/bisiklet.jpg");
+        let process_result = process_resize_request(Size::Small, Mode::Single, &mut source);
+        match process_result {
+            Ok(_) => println!("Yeniden boyutlandırma işlemi başarılı."),
+            Err(e) => println!("Hata {:?}", e),
+        }
+        assert_eq!(true, PathBuf::from("./images/temp/bisiklet.png").exists());
+    }
 
     #[test]
-    fn resize_full_mode_test() {}
+    fn resize_full_mode_test() {
+        let mut source = PathBuf::from("./images/");
+        let process_result = process_resize_request(Size::Small, Mode::Full, &mut source);
+        match process_result {
+            Ok(_) => println!("Toplu yeniden boyutlandırma işlemi başarılı."),
+            Err(e) => println!("Hata {:?}", e),
+        }
+        assert_eq!(true, PathBuf::from("./images/temp/bisiklet.png").exists());
+        assert_eq!(true, PathBuf::from("./images/temp/horten.png").exists());
+        assert_eq!(true, PathBuf::from("./images/temp/obiwanship.png").exists());
+    }
 }

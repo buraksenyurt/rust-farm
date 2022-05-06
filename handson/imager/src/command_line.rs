@@ -3,13 +3,13 @@ use std::path::PathBuf;
 use structopt::StructOpt;
 
 /*
-    Terminalden alacağımı parametrelerin yönetimi için kullandığımız enum veri yapısı.
-    structopt paketi ile gelen makroları kullanarak gerekli bilgileri veriyoruz.
-    Program adı, hakkında, yardım gibi bilgiler haricinde,
-    parametreleri de ayrıca tanımlayabiliyoruz. Parametrelerde özellikle enum sabiti kullanılan
-    hallerde terminalden String olarak gelen içeriğin dönüştürülebilmesi için FromStr trait'inin
-    uygulanmış olması gerekiyor.
- */
+   Terminalden alacağımı parametrelerin yönetimi için kullandığımız enum veri yapısı.
+   structopt paketi ile gelen makroları kullanarak gerekli bilgileri veriyoruz.
+   Program adı, hakkında, yardım gibi bilgiler haricinde,
+   parametreleri de ayrıca tanımlayabiliyoruz. Parametrelerde özellikle enum sabiti kullanılan
+   hallerde terminalden String olarak gelen içeriğin dönüştürülebilmesi için FromStr trait'inin
+   uygulanmış olması gerekiyor.
+*/
 #[derive(StructOpt, Debug)]
 #[structopt(
     name = "resize",

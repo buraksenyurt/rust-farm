@@ -25,7 +25,9 @@ pub mod prelude {
     pub use glam::*;
     pub use graphics::*;
     pub use log::*;
+    pub use specs::world::Index;
     pub use specs::*;
+    pub use std::collections::HashMap;
     pub use std::path::PathBuf;
 }
 

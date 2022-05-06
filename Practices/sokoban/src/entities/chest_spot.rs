@@ -8,5 +8,6 @@ pub fn create_chest_spot(world: &mut World, position: Position) {
             asset_path: "/images/chest_spot.png".to_string(),
         })
         .with(ChestSpot {})
+        .with(Immovable {})
         .build();
 }

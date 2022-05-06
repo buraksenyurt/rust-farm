@@ -1,5 +1,5 @@
 mod error;
-mod mode;
+pub mod mode;
 pub mod resize;
-mod size;
+pub mod size;
 pub mod stats;

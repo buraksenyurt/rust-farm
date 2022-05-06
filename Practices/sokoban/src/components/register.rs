@@ -2,12 +2,14 @@ use crate::prelude::*;
 
 // Bileşenleri(components) oyun dünyası nesnesine kayıt etmek için kullanılan fonksiyon
 pub fn register_components(world: &mut World) {
-    world.register::<Position>();
-    world.register::<Renderable>();
-    world.register::<Player>();
-    world.register::<Chest>();
-    world.register::<ChestSpot>();
-    world.register::<Wall>();
+    world.register::<Position>(); // Bir konumu olan varlıkların bileşeni
+    world.register::<Renderable>(); // Ekrana çizilebilir varlıkların bileşeni
+    world.register::<Player>(); // Oyuncu bileşeni
+    world.register::<Chest>(); // Sandık bileşeni
+    world.register::<ChestSpot>(); // Kilitli sandık bileşeni
+    world.register::<Wall>(); // Duvar bileşeni
+    world.register::<Movable>(); // Hareket edebilir nesneler için tanımlanmış bileşen
+    world.register::<Immovable>(); // Hareket ettirilemez nesneler için tanımlanmış bileşen
 }
 
 // Basılan tuş olayları gibi genel kaynakları oyun dünyası nesnesine kayıt etmek için kullanılıyor

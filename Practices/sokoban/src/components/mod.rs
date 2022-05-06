@@ -1,5 +1,7 @@
 mod chest;
 mod chest_spot;
+mod immovable;
+mod movable;
 mod player;
 mod position;
 mod register;
@@ -10,6 +12,8 @@ mod wall;
 
 pub use chest::*;
 pub use chest_spot::*;
+pub use immovable::*;
+pub use movable::*;
 pub use player::*;
 pub use position::*;
 pub use register::*;

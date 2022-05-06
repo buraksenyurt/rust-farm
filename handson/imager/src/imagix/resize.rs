@@ -13,26 +13,25 @@ pub fn process_resize_request(
     mode: Mode,
     source_folder: &mut PathBuf,
 ) -> Result<(), ImagixError> {
-    let target_size = u32::from(size);
     match mode {
-        Mode::Single => resize_single(target_size, target_size, source_folder)?,
-        Mode::Full => resize_full(target_size, target_size, source_folder)?,
+        Mode::Single => resize_single(&size, source_folder)?,
+        Mode::Full => resize_full(&size, source_folder)?,
     };
     Ok(())
 }
 
 /// Tek bir dosyayı belirtilen boyutlarda dönüştürmek için kullanılal fonksiyon
-fn resize_single(width: u32, height: u32, source: &mut PathBuf) -> Result<(), ImagixError> {
+fn resize_single(size: &Size, source: &mut PathBuf) -> Result<(), ImagixError> {
     let source = source;
-    resize_image(width, height, source)?;
+    resize_image(size, source)?;
     Ok(())
 }
 
 /// Klasördeki tüm dosyaları parametre olarak gelen genişlik ve yükseklikte küçültür.
-fn resize_full(width: u32, height: u32, source: &Path) -> Result<(), ImagixError> {
+fn resize_full(size: &Size, source: &Path) -> Result<(), ImagixError> {
     if let Ok(files) = get_image_files(source.to_path_buf()) {
         for mut file in files {
-            resize_image(width, height, &mut file)?;
+            resize_image(size, &mut file)?;
         }
     }
     Ok(())
@@ -58,7 +57,7 @@ pub fn get_image_files(source: PathBuf) -> Result<Vec<PathBuf>, ImagixError> {
 }
 
 /// Resmi yeniden boyutlandırmak için kullanılır
-fn resize_image(width: u32, height: u32, source_folder: &mut PathBuf) -> Result<(), ImagixError> {
+fn resize_image(size: &Size, source_folder: &mut PathBuf) -> Result<(), ImagixError> {
     // kaynak klasör kullanılarak yeni bir dosya ismi oluşturulur. Uzantısı png.
     let target_file_name = source_folder
         .file_stem()
@@ -90,9 +89,10 @@ fn resize_image(width: u32, height: u32, source_folder: &mut PathBuf) -> Result<
     let timer = Instant::now();
     // parametre olarak gelen bilgiyi kullanıp dosyası image modülünde yararlanarak açıyoruz.
     let img = image::open(&source_folder)?;
-    // thumbnail işimizi epey kolaylaştırıyor. gelen genişlik ve yüksekliğe göre ölçeklenmiş yeni
-    // resim oluşturuluyor
-    let scaled = img.thumbnail(width, height);
+    let (w, h) = get_size(size, img.width() as f32, img.height() as f32);
+    // thumbnail işimizi epey kolaylaştırıyor. Verilan genişlik ve yükseklik değerlerine göre
+    // ölçeklenmiş yeni resim oluşturulur.
+    let scaled = img.thumbnail(w, h);
     // çıktıyı hedef klasöre yazmak için bir dosya oluşturuyor
     let mut output = fs::File::create(&target_folder)?;
     // ve DynamicImage türünden olan scaled içeriğini buraya Png formatında yazdırıyoruz.
@@ -101,9 +101,27 @@ fn resize_image(width: u32, height: u32, source_folder: &mut PathBuf) -> Result<
     let elapsed_time = timer.elapsed();
     println!(
         "{:?},{}X{} boyutlarında {:?} sürede oluşturuldu",
-        output, width, height, elapsed_time
+        output, w, h, elapsed_time
     );
     Ok(())
+}
+
+fn get_size(size: &Size, mut w: f32, mut h: f32) -> (u32, u32) {
+    match size {
+        Size::Small => {
+            w = w - (w * 0.75);
+            h = h - (h * 0.75);
+        }
+        Size::Medium => {
+            w = w - (w * 0.50);
+            h = h - (h * 0.50);
+        }
+        Size::Large => {
+            w = w - (w * 0.25);
+            h = h - (h * 0.25);
+        }
+    };
+    (w as u32, h as u32)
 }
 
 #[cfg(test)]
@@ -135,14 +153,14 @@ mod test {
     #[test]
     fn resize_image_works_test() {
         let mut source_directory = PathBuf::from("./images/bisiklet.jpg");
-        let result = resize_image(250, 250, &mut source_directory);
+        let result = resize_image(&Size::Small, &mut source_directory);
         assert_eq!(result, Ok(()));
     }
 
     #[test]
     fn resize_image_fails_test() {
         let mut source_directory = PathBuf::from("./images/no_file.jpg");
-        let result = resize_image(250, 250, &mut source_directory);
+        let result = resize_image(&Size::Small, &mut source_directory);
         assert_eq!(
             result,
             Err(ImagixError::ImageResizing(

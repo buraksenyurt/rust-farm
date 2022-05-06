@@ -8,5 +8,6 @@ pub fn create_chest(world: &mut World, position: Position) {
             asset_path: "/images/chest.png".to_string(),
         })
         .with(Chest {})
+        .with(Movable {})
         .build();
 }

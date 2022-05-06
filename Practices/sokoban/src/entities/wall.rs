@@ -8,5 +8,6 @@ pub fn create_wall(world: &mut World, position: Position) {
             asset_path: "/images/wall.png".to_string(),
         })
         .with(Wall {})
+        .with(Immovable {})
         .build();
 }

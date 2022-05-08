@@ -1,0 +1,7 @@
+[package]
+name = "hello_ggez"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ggez="0.7.0"

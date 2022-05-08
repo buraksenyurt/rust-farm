@@ -73,7 +73,7 @@ impl<'a> System<'a> for InputSystem {
         }
 
         // Oyuncunun hareket alanı varsa oyun durumunu tutan nesnedeki ilgili değeri artır.
-        if candidates.is_empty() {
+        if !candidates.is_empty() {
             game_play.moves_count += 1;
         }
 
@@ -89,23 +89,5 @@ impl<'a> System<'a> for InputSystem {
                 }
             }
         }
-
-        // // Sistem gelen veriyi data parametresi üstünden alıyoruz
-        // let (mut input_events, mut positions, players) = data;
-        //
-        // // konumlar ve oyuncu bilgilerini bir arada ele alan bir döngü
-        // for (position, _player) in (&mut positions, &players).join() {
-        //     // Eğer basılan tuş match ifadesindekilerden birisiyse buna göre
-        //     // x,y konum bilgisini değiştiriyoruz
-        //     if let Some(key) = input_events.pressed_keys.pop() {
-        //         match key {
-        //             KeyCode::Up => position.y -= 1,
-        //             KeyCode::Down => position.y += 1,
-        //             KeyCode::Left => position.x -= 1,
-        //             KeyCode::Right => position.x += 1,
-        //             _ => (),
-        //         }
-        //     }
-        // }
     }
 }

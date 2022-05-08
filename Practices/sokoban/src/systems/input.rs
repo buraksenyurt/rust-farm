@@ -1,3 +1,4 @@
+use crate::game_play::GamePlay;
 use crate::prelude::*;
 
 pub struct InputSystem {}
@@ -8,6 +9,7 @@ impl<'a> System<'a> for InputSystem {
     // son olarak da oyuncu verisini okuma amaçlı bir başkası.
     type SystemData = (
         Write<'a, InputEvents>,
+        Write<'a, GamePlay>,
         Entities<'a>,
         WriteStorage<'a, Position>,
         ReadStorage<'a, Player>,
@@ -16,7 +18,15 @@ impl<'a> System<'a> for InputSystem {
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (mut input_events, entities, mut positions, players, movables, immovables) = data;
+        let (
+            mut input_events,
+            mut game_play,
+            entities,
+            mut positions,
+            players,
+            movables,
+            immovables,
+        ) = data;
         let mut candidates = Vec::new();
         for (position, _player) in (&positions, &players).join() {
             if let Some(key) = input_events.pressed_keys.pop() {
@@ -60,6 +70,11 @@ impl<'a> System<'a> for InputSystem {
                     }
                 }
             }
+        }
+
+        // Oyuncunun hareket alanı varsa oyun durumunu tutan nesnedeki ilgili değeri artır.
+        if candidates.len() > 0 {
+            game_play.moves_count += 1;
         }
 
         for (key, id) in candidates {

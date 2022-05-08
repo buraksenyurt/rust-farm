@@ -1,3 +1,4 @@
+use crate::game_play::GamePlay;
 use crate::prelude::*;
 
 // Bileşenleri(components) oyun dünyası nesnesine kayıt etmek için kullanılan fonksiyon
@@ -14,5 +15,6 @@ pub fn register_components(world: &mut World) {
 
 // Basılan tuş olayları gibi genel kaynakları oyun dünyası nesnesine kayıt etmek için kullanılıyor
 pub fn register_resources(world: &mut World) {
-    world.insert(InputEvents::default())
+    world.insert(InputEvents::default());
+    world.insert(GamePlay::default());
 }

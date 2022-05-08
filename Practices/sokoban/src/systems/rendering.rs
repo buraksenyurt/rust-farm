@@ -1,3 +1,4 @@
+use crate::game_play::GamePlay;
 use crate::prelude::*;
 
 // Render sistemimiz. Oyun context'i ile çalışır.
@@ -11,11 +12,15 @@ pub struct RenderingSystem<'a> {
 impl<'a> System<'a> for RenderingSystem<'a> {
     // Render sistemine dahil olacak veri depoları.
     // Şu an için Position ve Renderable bileşenlerinin kullanıldığı nesneler ele alınıyor
-    type SystemData = (ReadStorage<'a, Position>, ReadStorage<'a, Renderable>);
+    type SystemData = (
+        Read<'a, GamePlay>,
+        ReadStorage<'a, Position>,
+        ReadStorage<'a, Renderable>,
+    );
 
     // nesnelerin render edilmesi işinin üstlenildiği fonksiyon
     fn run(&mut self, data: Self::SystemData) {
-        let (positions, renderables) = data;
+        let (gameplay, positions, renderables) = data;
         // ekranı bir arka plan rengi kullanarak temizle
         clear(self.context, Color::new(0.95, 0.95, 0.95, 1.0));
         // Renderable bileşeninin kullanan varlıkları bir toplamamız lazım
@@ -38,7 +43,28 @@ impl<'a> System<'a> for RenderingSystem<'a> {
             draw(self.context, &image, draw_params).expect("drawing operations error");
         }
 
+        self.draw_text(&gameplay.state.to_string(), 500.0, 80.0);
+        self.draw_text(&gameplay.moves_count.to_string(), 500.0, 100.0);
+
         // hazırlanan context nesnesini sunuş moduna alıyoruz.
         present(self.context).expect("presentation error");
+    }
+}
+
+impl RenderingSystem<'_> {
+    pub fn draw_text(&mut self, content: &str, x: f32, y: f32) {
+        let text = Text::new(content);
+        let location = Vec2::new(x, y);
+        let color = Some(Color::new(0.0, 0.0, 0.0, 1.0));
+        let dimensions = Vec2::new(0.0, 20.0);
+
+        queue_text(self.context, &text, dimensions, color);
+        draw_queued_text(
+            self.context,
+            DrawParam::new().dest(location),
+            None,
+            FilterMode::Linear,
+        )
+        .expect("ekrana çizim sırasında hata")
     }
 }

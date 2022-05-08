@@ -73,7 +73,7 @@ impl<'a> System<'a> for InputSystem {
         }
 
         // Oyuncunun hareket alanı varsa oyun durumunu tutan nesnedeki ilgili değeri artır.
-        if candidates.len() > 0 {
+        if candidates.is_empty() {
             game_play.moves_count += 1;
         }
 

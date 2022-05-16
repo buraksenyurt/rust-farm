@@ -1,0 +1,9 @@
+[package]
+name = "hello_sauron"
+description = "sauron web framework ile wasm tabanı basit bir web uygulaması"
+authors = ["Burak Selim Şenyurt"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sauron = "0.49.3"

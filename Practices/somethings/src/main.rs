@@ -3,6 +3,7 @@ fn main() {
     let x = Value::new(10, 10);
     println!("{:?}", x);
     println!("{:#?}", x);
+    println!("{} {}", x.r#in, x.r#for);
 }
 
 // Raw Identifier Örneği

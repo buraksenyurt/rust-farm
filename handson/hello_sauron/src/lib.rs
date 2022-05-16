@@ -30,7 +30,7 @@ impl Application<Action> for Quote {
     fn view(&self) -> Node<Action> {
         node!(
             <main>
-                <h1>"Minimal example"</h1>
+                <h1>"En basit örnek"</h1>
                 <div>
                     {text(self.text.clone())}
                 </div>

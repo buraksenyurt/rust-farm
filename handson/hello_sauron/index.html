@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Suaron ile Bir Web Uygulaması Geliştirmek</title>
+        <!--
+            lib.rs içerisinde sauron ile geliştirilen yapıyı derleyince ortaya bir js içeriği çıkmıştı.
+            Bunu aşağıdaki script bloğu ile sayfaya bağlıyoruz(link)
+        -->
+        <script type="module">
+            import init from './pkg/hello_sauron.js';
+            await init().catch(console.error);
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

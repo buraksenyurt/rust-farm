@@ -61,3 +61,7 @@ Bu işlemleri takiben HTML içeriği aşağıdaki gibi düzenlenebilir.
 Script bloğunda dikkat edileceği üzere byte array olarak wasm dosya içeriği kullanılmaktadır. WASM'ı başlatmak için WebAssembly'ın ilgili fonksiyonu kullanılır. Ardından dışaryı açılmış olan calc fonksiyonu deneysel olarak kullanılır. Sonuç console ekranına basılmıştır.
 
 ![../images/hello_wasm_03.png](../images/hello_wasm_03.png)
+
+Bu arada wasm kodları üstünde breakpoint konulup debug yapılabilir.
+
+![../images/hello_wasm_04.png](../images/hello_wasm_04.png)

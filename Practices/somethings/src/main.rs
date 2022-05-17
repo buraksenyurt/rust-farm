@@ -9,10 +9,12 @@ fn main() {
     let number1 = 32;
     let number2 = &number1;
     let number3 = &number2;
+    let number5 = number1;
 
     println!("number1 value {} and address {:p}", number1, &number1);
     println!("number2 value {} and address {:p}", number2, number2);
     println!("number3 value {} and address {:p}", number3, number3);
+    println!("number5 value {} and address {:p}", number5, &number5);
 
     let number4 = &&23;
     println!("number4 address {:p}", &&number4);
@@ -27,10 +29,10 @@ fn main() {
     Database::get_stats();
 
     let mut sql = Database::new();
-    println!("{:#?}",sql);
+    println!("{:#?}", sql);
     // Method kavramı ise nesne örneği üzerine erişilen işlev olarak düşünülebilir
     sql.setup("lizbon".to_string(), 1234);
-    println!("{:#?}",sql);
+    println!("{:#?}", sql);
 }
 
 // Raw Identifier Örneği

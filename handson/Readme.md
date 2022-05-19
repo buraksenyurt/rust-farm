@@ -9,3 +9,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **imager**: Prabhu Eshwarla'nın [Practical System Programming for Rust Developers](https://www.packtpub.com/product/practical-system-programming-for-rust-developers/9781800560963) kitabındaki *Managing Environment, Command Line, and Time* başlıklı bölümünden esinlenilerek gerçekleştirilen kodlama pratiğidir.
 - [x] **hello_sauron**: [Sauron](https://crates.io/crates/sauron), Rust ile web uygulamaları yazılmasını sağlayan bir framework. Örnekte basit bir uygulama geliştiriliyor. Önemli noktalardan birisi *WASM* tabanlı bir web uygulaması geliştiriyor olmamız.
 - [x] **hello_wasm**: Bu örnekte bir HTML sayfası içerisinden WASM kodlarını icra ettiriyoruz.
+- [ ] **hello_wasm2**: hello_wasm örneğini biraz daha geliştiriyoruz. Bu sefer nodejs ve webpack'ten de yararlanıp bir sunucuyu ayağa kaldırıyor ve wasm içeriğinin bu sunucu ile çalıştırılan html içerisinde icra edilmesini sağlıyoruz.

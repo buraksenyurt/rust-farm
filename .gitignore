@@ -10,6 +10,7 @@ Cargo.lock
 
 .idea/
 .vscode/*
+node_modules
 *.o
 *.d
 *.bin

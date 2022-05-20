@@ -2,8 +2,8 @@ async function run() {
     // Aşağıdaki nesne WASM tarafında kullanılabilir
     const logObject = {
         console: {
-            log: ()=> {
-                console.log("Örnek log");
+            log: (param)=> {
+                console.log(param+" için alan hesaplanacak.");
             }
         }
     }

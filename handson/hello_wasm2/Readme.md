@@ -107,3 +107,48 @@ npm run dev
 ```
 
 ![../images/hello_wasm_06](../images/hello_wasm_06.png)
+
+Hatta istersek import edilen nesne fonksiyonlarına parametre de verebiliriz. Örneğin loglama işini yapan fonksiyona yarıçap bilgisini atamak istediğimizi düşünelim.
+
+```text
+(module
+  (import "console" "log" (func $log(param f32)))
+  (func (export "calc") (param f32) (result f32)
+    local.get 0
+    call $log
+    f32.const 3.14    
+    local.get 0    
+    f32.mul
+    local.get 0
+    f32.mul
+))
+```
+
+ve index.js içeriğimiz
+
+```javascript
+async function run() {
+    // Aşağıdaki nesne WASM tarafında kullanılabilir
+    const logObject = {
+        console: {
+            log: (param)=> {
+                console.log(param+" için alan hesaplanacak.");
+            }
+        }
+    }
+
+    const response = await fetch("calc.wasm");
+    const buffer = await response.arrayBuffer();
+    const wasm = await WebAssembly.instantiate(buffer,logObject);
+
+    const calcFunc = wasm.instance.exports.calc;
+    const result = calcFunc(2);
+    console.log(result);
+}
+
+run();
+```
+
+Sonuç,
+
+![../images/hello_wasm_07](../images/hello_wasm_07.png)

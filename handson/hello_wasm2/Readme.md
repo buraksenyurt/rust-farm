@@ -55,3 +55,55 @@ npm run dev
 Bu işlemin ardından http://localhost:8080/ adresine gidilirse console tarafına fonksiyon sonucunun yansıdığı görülebilir.
 
 ![../images/hello_wasm_05](../images/hello_wasm_05.png)
+
+## Javascript Nesnesini Import Etmek
+
+Bir javascript nesnesini WASM tarafına import ederek kullandırabiliriz. Bunun denemek için index.js dosyasına aşağıdaki örnek kod parçası eklenir.
+
+```javascript
+async function run() {
+    // Aşağıdaki nesne WASM tarafında kullanılabilir
+    const logObject = {
+        console: {
+            log: ()=> {
+                console.log("Örnek log");
+            }
+        }
+    }
+
+    const response = await fetch("calc.wasm");
+    const buffer = await response.arrayBuffer();
+    const wasm = await WebAssembly.instantiate(buffer,logObject);
+
+    const calcFunc = wasm.instance.exports.calc;
+    const result = calcFunc(2);
+    console.log(result);
+}
+
+run();
+```
+
+Buna istinaden Web Assembly kodunu değiştirmemiz gerekiyor.
+
+```text
+(module
+  (import "console" "log" (func $log))
+  (func (export "calc") (param f32) (result f32)
+    call $log
+    f32.const 3.14    
+    local.get 0    
+    f32.mul
+    local.get 0
+    f32.mul
+))
+```
+
+Tabii WASM'ın yeniden oluşturulması gerekmekte. Bunun için [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip oluşturulan dosyayı indirmemiz lazım. İndirilen içeriği yine public klasörü altına alıyoruz.
+
+Sonrasına yine development server'ı çalıştırıp sonuçları değerlendirebiliriz.
+
+```shell
+npm run dev
+```
+
+![../images/hello_wasm_06](../images/hello_wasm_06.png)

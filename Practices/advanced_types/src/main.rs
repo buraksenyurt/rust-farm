@@ -1,3 +1,4 @@
+use crate::Entity::{get_product, ProductId};
 use std::fmt::{Display, Formatter};
 
 fn main() {
@@ -14,7 +15,15 @@ fn main() {
     let pwd = Password("P@ssw0rd".to_string());
     println!("{}", pwd);
 
-    println!("{:?}",get_product(ProductId(1234)).unwrap());
+    // Product ile ilgili türleri Entity isimli bir modüle aldık.
+    // Buna göre aşağıdaki kullanım varsayılan olarak bir hata verir.
+    // cannot initialize a tuple struct which contains private fields
+    // ProductId'nin i32 alanı private bir field olarak görünür.
+    // Bu nedenle ProductId için esasında bir constructor yazmak gerekmiştir.
+    let product_id = ProductId::new(1234);
+    print!("Aranan ürün numarası {}", &product_id.as_i32());
+    println!("{:?}", get_product(product_id));
+    //println!("{}",product_id.0); // Modüle içine alındığı için 0'a erişemeyiz.
 }
 
 // Örnek Type Alias tanımlamaları
@@ -91,27 +100,41 @@ Bunu garanti edebilmek için var olan primitive tipleri sarmalladığımız yeni
 // }
 
 // Şöyle ki,
-#[derive(Debug)]
-pub struct ProductId(i32);
-#[derive(Debug)]
-pub struct Title(String);
-#[derive(Debug)]
-pub struct ListPrice(f32);
+mod Entity {
+    #[derive(Debug)]
+    pub struct ProductId(i32);
 
-// Product veri yapısı alanları üstteki tuple struct'lar ile donatılır
-// ProductId, Title ve ListPrice türlerinde istediğimiz kuralları işletebileceğimiz
-// implemantasyonlar yapabilir veya var olanları esnetebiliriz.
-#[derive(Debug)]
-pub struct Product {
-    pub id: ProductId,
-    pub title: Title,
-    pub list_price: ListPrice,
-}
+    impl ProductId {
+        pub fn new(id: i32) -> Self {
+            Self(id)
+        }
 
-pub fn get_product(id: ProductId) -> Result<Product> {
-    Ok(Product {
-        id,
-        title: Title("Db'den gelen isim".to_string()),
-        list_price: ListPrice(10.0),
-    })
+        pub fn as_i32(&self) -> i32 {
+            self.0
+        }
+    }
+
+    #[derive(Debug)]
+    pub struct Title(String);
+
+    #[derive(Debug)]
+    pub struct ListPrice(f32);
+
+    // Product veri yapısı alanları üstteki tuple struct'lar ile donatılır
+    // ProductId, Title ve ListPrice türlerinde istediğimiz kuralları işletebileceğimiz
+    // implemantasyonlar yapabilir veya var olanları esnetebiliriz.
+    #[derive(Debug)]
+    pub struct Product {
+        pub id: ProductId,
+        pub title: Title,
+        pub list_price: ListPrice,
+    }
+
+    pub fn get_product(id: ProductId) -> Product {
+        Product {
+            id,
+            title: Title("Db'den gelen isim".to_string()),
+            list_price: ListPrice(10.0),
+        }
+    }
 }

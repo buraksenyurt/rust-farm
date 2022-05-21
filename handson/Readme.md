@@ -10,3 +10,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **hello_sauron**: [Sauron](https://crates.io/crates/sauron), Rust ile web uygulamaları yazılmasını sağlayan bir framework. Örnekte basit bir uygulama geliştiriliyor. Önemli noktalardan birisi *WASM* tabanlı bir web uygulaması geliştiriyor olmamız.
 - [x] **hello_wasm**: Bu örnekte bir HTML sayfası içerisinden WASM kodlarını icra ettiriyoruz.
 - [x] **hello_wasm2**: hello_wasm örneğini biraz daha geliştiriyoruz. Bu sefer nodejs ve webpack'ten de yararlanıp bir sunucuyu ayağa kaldırıyor ve wasm içeriğinin bu sunucu ile çalıştırılan html içerisinde icra edilmesini sağlıyoruz.
+- [ ] **bonsaidb_sample**: Rust ile yazılmış NoSQL veritabanı BonsaiDb'yi tanımaya çalıştığımı basit örnek.

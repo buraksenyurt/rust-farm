@@ -1,0 +1,12 @@
+[package]
+name = "bonsaidb_sample"
+description = "BonsaiDb ile ilgili basit bir örnek"
+authors=["Burak Selim Şenyurt"]
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# local veritabanı kullandığımız örnek için gerekli bağımlılık bildirimi
+bonsaidb = {version="0.4.1" , features=["local"]}
+# JSON serileştirme desteği için eklendi
+serde = { version = "1", features = ["derive"] }

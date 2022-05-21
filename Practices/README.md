@@ -35,3 +35,4 @@
 - [ ] **win_forms:** Amacım **winit** paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
 - [x] **hello-wasm:** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
 - [ ] **sokoban:** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.
+- [ ] **advanved_types:** Type Alias özelliği kullanım alanları ile Newtype deseninin uyarlaması.

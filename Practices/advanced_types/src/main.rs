@@ -1,5 +1,6 @@
-use crate::Entity::{get_product, ProductId};
+use crate::Entity::{get_product, ProductId, Title};
 use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 fn main() {
     let value = 12.34_f32;
@@ -22,8 +23,18 @@ fn main() {
     // Bu nedenle ProductId için esasında bir constructor yazmak gerekmiştir.
     let product_id = ProductId::new(1234);
     print!("Aranan ürün numarası {}", &product_id.as_i32());
-    println!("{:?}", get_product(product_id));
+    println!("{:#?}", get_product(product_id));
     //println!("{}",product_id.0); // Modüle içine alındığı için 0'a erişemeyiz.
+
+    // From<i32> trait'ini implemente ettiğimiz için aşağıdaki kullanım mümkündür.
+    let product_id = ProductId::from(4123);
+    // Display trait'ini uyguladığımı için aşağıdaki kullanım da mümkündür.
+    println!("Product ID {}", product_id);
+
+    // Title tipi için FromStr ve Display trait'lerini uyguladığımız için
+    // aşağıdaki kullanımlar geçerlidir
+    let caption=Title::from_str("Rayzır Kulaküstü Mikrofonlu Kulaklık")?;
+    println!("Product title '{}'",caption);
 }
 
 // Örnek Type Alias tanımlamaları
@@ -101,6 +112,9 @@ Bunu garanti edebilmek için var olan primitive tipleri sarmalladığımız yeni
 
 // Şöyle ki,
 mod Entity {
+    use std::fmt::{Display, Formatter};
+    use std::str::FromStr;
+
     #[derive(Debug)]
     pub struct ProductId(i32);
 
@@ -114,8 +128,36 @@ mod Entity {
         }
     }
 
+    // i32 türünden bir değişkeni kullanarak ProductId türünden değişken örneklenmesi sağlanır
+    impl From<i32> for ProductId {
+        fn from(value: i32) -> Self {
+            Self(value)
+        }
+    }
+
+    // Display trait'ini uygulayarak to_string fonksiyonelliği sağlanır
+    impl Display for ProductId {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
+
     #[derive(Debug)]
     pub struct Title(String);
+
+    impl FromStr for Title {
+        type Err = Box<dyn std::error::Error>;
+
+        fn from_str(s: &str) -> Result<Self, Self::Err> {
+            Ok(Title(s.to_string()))
+        }
+    }
+
+    impl Display for Title {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
 
     #[derive(Debug)]
     pub struct ListPrice(f32);

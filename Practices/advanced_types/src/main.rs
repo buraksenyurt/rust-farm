@@ -31,10 +31,18 @@ fn main() {
     // Display trait'ini uyguladığımı için aşağıdaki kullanım da mümkündür.
     println!("Product ID {}", product_id);
 
-    // Title tipi için FromStr ve Display trait'lerini uyguladığımız için
+    // Title tipi için FromStr,Display ve Deref trait'lerini uyguladığımız için
     // aşağıdaki kullanımlar geçerlidir
-    let caption=Title::from_str("Rayzır Kulaküstü Mikrofonlu Kulaklık")?;
-    println!("Product title '{}'",caption);
+    let caption = Title::from_str("Rayzır Kulaküstü Mikrofonlu Kulaklık").unwrap();
+    println!("Product title '{}'", caption);
+    // Aşağıdaki kullanımda parametre olarak gelen değişken &Title'dan &str'a dönüştürülür.
+    // Bunu deref implementasyonu ile sağlamaktayız.
+    let caption = Title::from_str("Locitek kablosuz klavye").unwrap();
+    use_product_title(&caption);
+}
+
+fn use_product_title(t: &str) {
+    println!("{} ile ilgili bir şeyler yapılacak", t);
 }
 
 // Örnek Type Alias tanımlamaları
@@ -113,6 +121,7 @@ Bunu garanti edebilmek için var olan primitive tipleri sarmalladığımız yeni
 // Şöyle ki,
 mod Entity {
     use std::fmt::{Display, Formatter};
+    use std::ops::Deref;
     use std::str::FromStr;
 
     #[derive(Debug)]
@@ -156,6 +165,16 @@ mod Entity {
     impl Display for Title {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
             write!(f, "{}", self.0)
+        }
+    }
+
+    // String kullanan tuple veri yapılarına ait değişkenlerin
+    // çeşitli fonksiyonlara referans olarak taşınmasında deref trait'i kullanılabilir
+    impl Deref for Title {
+        type Target = str;
+
+        fn deref(&self) -> &Self::Target {
+            &self.0
         }
     }
 

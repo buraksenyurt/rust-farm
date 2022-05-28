@@ -152,3 +152,72 @@ run();
 Sonuç,
 
 ![../images/hello_wasm_07](../images/hello_wasm_07.png)
+
+## Bellek(Memory) ile Çalışma
+
+Web Assembly modülü içerisinde bellek ile doğrudan çalışma şansımız var. Burada bir bellek bölgesi tanımlatıp JS tarafına açabiliriz. Benzer şekilde tam tersi durum da söz konusudur. Yani JS tarafında bir bellek tanımı oluşturup Web Assembly tarafına açabiliriz. Bu WebAssembly ile Javascript arasında veri paylaşmanın yollarından birisidir.
+
+Web assembly tarafın için aşağıdaki modülü kullanabiliriz.
+
+```text
+(module
+  (import "console" "log" (func $log(param f32)))
+  (memory $mempage 1)
+  (data (i32.const 0) "This is Sparta!")
+  (func (export "calc") (param f32) (result f32)
+    local.get 0
+    call $log
+    f32.const 3.14    
+    local.get 0    
+    f32.mul
+    local.get 0
+    f32.mul
+  )
+  (export "mem" (memory $mempage))
+)
+```
+
+(memory $mempage 1) kısmında tek bir bellek sayfası *(Memory Page)* tanımlıyoruz. Bu 64 Kb büyüklüğünde bir bellek sayfası anlamına gelmektedir. Bu bellek sayfasına kullanımı kolaylaştıran $mempage takma ismini *(alias)* verdik. İzleyen satırda da bellek sayfasının sıfırıncı konumundan başlamak suretiyle string bir veriyi bellek sayfasına aldık. Ayrıca export kısmı ile söz konusu bellek sayfasını dışarıdan kullanılabilmesi için de açıyoruz. 
+Tabii yine [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip bu WAT'a karşılık gelen binary dosyasını ürettirip indirmemiz lazım.
+
+Yeni WASM binary'si ile gelen bellek sayfasını index.js tarafında da aşağıdaki gibi ele alabiliriz.
+
+```javascript
+async function run() {
+    // Aşağıdaki nesne WASM tarafında kullanılabilir
+    const logObject = {
+        console: {
+            log: (param)=> {
+                console.log(param+" için alan hesaplanacak.");
+            }
+        }
+    }
+
+    const response = await fetch("calc.wasm");
+    const buffer = await response.arrayBuffer();
+    const wasm = await WebAssembly.instantiate(buffer,logObject);
+
+    const calcFunc = wasm.instance.exports.calc;
+    const result = calcFunc(2);
+    console.log(result);
+
+    // WASM İçerisinde tanımlanmış olan bellek sayfasına erişim sağlanıyor
+    const memoryFromWasm = wasm.instance.exports.mem;
+    // WASM İçinden gelen bellek sayfasının ilk 32 byte'ını okumak için bir array tanımlanır
+    const message_buffer = new Uint8Array(memoryFromWasm.buffer,0,32);
+    // sonrasında TextDecoder'tan yararlanılarak byte dizisi decode edilir(okunur hale getirilir)
+    const message = new TextDecoder().decode(message_buffer);
+    console.log(message);
+}
+```
+
+Bu işlemlerin ardından uygulama çalıştırılıp console'a düşen log'lara bakılabilir ve hatta bellek sayfası da analiz edilebilir.
+
+```shell
+# www klasöründeyken
+npm run dev
+```
+
+![../images/hello_wasm_08](../images/hello_wasm_08.png)
+
+![../images/hello_wasm_09](../images/hello_wasm_09.png)

@@ -1,6 +1,6 @@
-use std::error::Error;
 use wasm_bindgen_test::{wasm_bindgen_test_configure, wasm_bindgen_test};
 use futures::prelude::*;
+use js_sys::Error;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 

@@ -221,3 +221,70 @@ npm run dev
 ![../images/hello_wasm_08](../images/hello_wasm_08.png)
 
 ![../images/hello_wasm_09](../images/hello_wasm_09.png)
+
+Üstteki örnek WASM tarafındaki bir bellek sayfasının Javascript tarafında okunması ile ilgili bir senaryoyu işletmekte. Tam tersi durum da söz konusudur. Bunun için index.js dosyasında aşağıdaki değişiklikler yapılır.
+
+```javascript
+async function run() {
+
+    // 64 Kb'lık (one page) bir bellek sayfası tanımlanır
+    // bunu yine logObject içerisinde tanımlayıp WASM tarafında ele alınmasını sağlayabiliriz.
+    const js_memory = new WebAssembly.Memory({initial:1});
+
+    // Aşağıdaki nesne WASM tarafında kullanılabilir
+    const jsObject = {
+        js: {
+            mem : js_memory
+        },
+        console: {
+            log: (param)=> {
+                console.log(param+" için alan hesaplanacak.");
+            }
+        }
+    }
+
+    const response = await fetch("calc.wasm");
+    const buffer = await response.arrayBuffer();
+    const wasm = await WebAssembly.instantiate(buffer,jsObject);
+
+    const calcFunc = wasm.instance.exports.calc;
+    const result = calcFunc(2);
+    console.log(result);
+
+    // JS tarafında tanımlı bellek bölgesini yukarıda tanımlamıştık
+    const message_buffer = new Uint8Array(js_memory.buffer,0,32);
+    const message = new TextDecoder().decode(message_buffer);
+    console.log(message);
+}
+```
+
+jsObject içerisinde js niteliği üzerinden taşınan mem isimli değişken, 64 Kb boyutundaki bellek sayfasını işaret eder. Bu alan WASM tarafından da kullanılabilir. Bunun için WAT tarafının aşağıdaki gibi değiştirilmesi yeterlidir.
+
+```text
+(module
+  (import "console" "log" (func $log(param f32)))
+  (memory (import "js" "mem") 1)
+  (data (i32.const 0) "This is Sparta!")
+  (func (export "calc") (param f32) (result f32)
+    local.get 0
+    call $log
+    f32.const 3.14    
+    local.get 0    
+    f32.mul
+    local.get 0
+    f32.mul
+  )
+)
+```
+
+Tabii bir önceki örnekte kullanılan $mempage burada yer almıyor. Sonrasında yine [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip wasm dosyasını indirip www/public klasöründeki calc.wasm ile değiştirmeliyiz. 
+
+Sonrasında
+
+```shell
+npm run dev
+```
+
+![../images/hello_wasm_10](../images/hello_wasm_10.png)
+
+

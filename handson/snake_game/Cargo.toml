@@ -1,0 +1,15 @@
+[package]
+name = "snake_game"
+version = "0.1.0"
+edition = "2021"
+authors = ["Burak Selim Senyurt<burakselimsenyurt@gmail.com>"]
+description = "RUST Wasm ile yazılmış bir oyun çalışması."
+
+[dependencies]
+wasm-bindgen = "0.2.80"
+rand="0.8.5"
+getrandom = { version = "0.2.6", features = ["js"] }
+wee_alloc = "0.4.5"
+
+[lib]
+crate-type = ["cdylib"]

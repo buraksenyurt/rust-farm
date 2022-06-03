@@ -10,6 +10,8 @@ wasm-bindgen = "0.2.80"
 rand="0.8.5"
 # rand crate için wasm desteği gerekiyor. Bu nedenle aşağıdaki feature seti eklendi.
 getrandom = { version = "0.2.6", features = ["js"] }
+# wasm paket boyutunu optimize etmek için alttaki crate eklendi
+wee_alloc = "0.4.5"
 
 # shared library olacağını ifade ettik
 [lib]

@@ -119,4 +119,5 @@ import("./index.js")
 Tabii buna göre webpack.config.js ve index.html tarafındaki index.js çağrıları da bootstrap.js ile değiştirilmelidir. Bu değişiklik sonrası webpack ile yeni bir paket için build almaya gerek yoktur. Doğrudan *npm run dev* ile ilerlenebilir. 
 
 - wasm-bindgen hakkında: WebAssembly'ın kısıtlarından birisi DOM *(Document Object Model)* doğrudan erişememesidir. Bu nedenle WebAssembly içinden web sayfasındaki elementlere erişim Javascript fonksiyon çağrıları ile mümkün olabilir. Lakin bunun için de WebAssembly ile Javascript paylaşımlı bellek bölgesi kullanır ve WASM tarafında Javascript tarafına giden nesneler byte olarak gönderilir *(Marshalling)* Çok doğal olarak bu zahmetli bir iş. wasm-bindgen isimli crate bu noktada bir köprü vazifesi görür ve işleri kolaylaştırır.
+- oluşan web assembly dosyasının boyutu beklediğimizden büyük olabilir. Bu noktada optimizasyon için [https://github.com/rustwasm/wee_alloc](https://github.com/rustwasm/wee_alloc) crate'inden yararlanılabilir.
 

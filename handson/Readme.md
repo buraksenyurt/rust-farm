@@ -11,5 +11,5 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **hello_wasm**: Bu örnekte bir HTML sayfası içerisinden WASM kodlarını icra ettiriyoruz.
 - [x] **hello_wasm2**: hello_wasm örneğini biraz daha geliştiriyoruz. Bu sefer nodejs ve webpack'ten de yararlanıp bir sunucuyu ayağa kaldırıyor ve wasm içeriğinin bu sunucu ile çalıştırılan html içerisinde icra edilmesini sağlıyoruz.
 - [x] **bonsaidb_sample**: Rust ile yazılmış NoSQL veritabanı BonsaiDb'yi tanımaya çalıştığımı basit örnek.
-- [ ] **walking-cat**: Rust ve WebAssembly kullanarak web tabanlı oyun geliştirmeye girişte kullanılacak bir öğreti.
-- [ ] **hello_wasm3**: hello_wasm2'den yola çıktığımız örnekte RUST kodundan WASM binary üretilmesi ve kullanılması konularını öğreniyoruz.
+- [x] **walking-cat**: Rust ve WebAssembly kullanarak web tabanlı oyun geliştirmeye girişte kullanılacak bir öğreti.
+- [x] **hello_wasm3**: hello_wasm2'den yola çıktığımız örnekte RUST kodundan WASM binary üretilmesi ve kullanılması konularını öğreniyoruz.

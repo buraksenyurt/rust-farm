@@ -83,5 +83,40 @@ npm run dev
 
 ![../images/hello_wasm11.png](../images/hello_wasm_11.png)
 
+Sıradaki aşamada rust kodu içinden var olan bir JS fonksiyonunun çağırılması var. Örneğin javascript'in en bilinen fonksiyonlarından olan alert'i ele alalım. Bu fonksiyonu Rust kodu içinden çağırmak için lib.rs'te aşağıdaki değişiklikleri yapmak yeterli.
+
+```rust
+use rand::Rng;
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn print_temperature(city: &str) -> String {
+    let mut rng = rand::thread_rng();
+    let temperature = rng.gen_range(-10..50);
+    // alert esasında JS'in bir fonksiyonudur.
+    // Dolayısıyla buradaki çağrı sonrası tarayıca alert mesajı işletilecektir.
+    alert("Volaaa");
+    format!("{} için sıcaklık {} derece", city, temperature)
+}
+
+// Dilersek aşağıdaki gibi Javascript tarafında var olan bir fonksiyonun
+// rust tarafından çağırılması sağlayabiliriz.
+#[wasm_bindgen]
+extern "C" {
+    pub fn alert(s: &str);
+}
+```
+
+Tabii işlemlerden sonra yeni bir paket için build alınması gerekecektir. Sonrasında *npm run dev* ile ilerlenebilir.
+
+Uygulamaya eklediğimiz bir diğer şeyde bootstrap işlevi. www klasörüne eklenen bootstrap aslında sunucu başladıktan sonra ilk devreye giren setup modülü gibi düşünülebilir. Bu örnek özelinde index.js modülünün yüklenmesi ve yüklenirken olası hataların log olarak bildirimi amacıyla kullanılmaktadır. bootstrap.js içeriği oldukça basittir.
+
+```text
+import("./index.js")
+    .catch(e => console.error("Index modülün yüklenirken hata.",e))
+```
+
+Tabii buna göre webpack.config.js ve index.html tarafındaki index.js çağrıları da bootstrap.js ile değiştirilmelidir. Bu değişiklik sonrası webpack ile yeni bir paket için build almaya gerek yoktur. Doğrudan *npm run dev* ile ilerlenebilir. 
+
 - wasm-bindgen hakkında: WebAssembly'ın kısıtlarından birisi DOM *(Document Object Model)* doğrudan erişememesidir. Bu nedenle WebAssembly içinden web sayfasındaki elementlere erişim Javascript fonksiyon çağrıları ile mümkün olabilir. Lakin bunun için de WebAssembly ile Javascript paylaşımlı bellek bölgesi kullanır ve WASM tarafında Javascript tarafına giden nesneler byte olarak gönderilir *(Marshalling)* Çok doğal olarak bu zahmetli bir iş. wasm-bindgen isimli crate bu noktada bir köprü vazifesi görür ve işleri kolaylaştırır.
 

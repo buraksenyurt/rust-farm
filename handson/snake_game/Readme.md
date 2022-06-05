@@ -19,3 +19,7 @@ drawGameWorld fonksiyonunda yatay ve dikey eksen çizgileri çizidirilmekte. Bur
 x eksenine göre dikey çizgilerin çizdirilmesi.
 
 ![../images/snake_game_01.png](../images/snake_game_01.png)
+
+Yılan nesnesinin herhangibir t anındaki veri yapısına ait görüntü aşağıdaki gibi ifade edilebilir.
+
+![../images/snake_game_02.png](../images/snake_game_02.png)

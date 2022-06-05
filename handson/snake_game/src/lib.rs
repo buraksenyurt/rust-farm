@@ -15,7 +15,7 @@ impl World {
     pub fn new() -> Self {
         Self {
             width: 8,
-            snake: Snake::new(10),
+            snake: Snake::new(18),
         }
     }
 

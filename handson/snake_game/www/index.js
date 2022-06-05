@@ -37,5 +37,31 @@ init().then(_ => {
         canvas_context.stroke();
     }
 
+    // Yılanı sahaya çizmek için kullanılan fonksiyon
+    function drawSnake(){
+        // Rust kütüphanesinden yararlanarak yılanın başlangıç indeksini alalım
+        const index = world.snake_head();
+        // başlangıç konumuna göre kolon ve sütun konumlarını bulmamız lazım
+        // oyun sahasının genişliği 8 birim olduğundan mod alarak kolonu bulabiliriz
+        // yani 8e bölümden kalan hangi kolon olduğunu söyler
+        const column = index % world_width;
+        // oyun sahasına bölümdeki tam kısım satrı ifade eder
+        const row = Math.floor(index / world_width);
+
+        // çizime başlanır
+        canvas_context.beginPath();
+        // yılan nesnesinin sahip olduğu hücreler birer dörtgendir
+        // İlk iki değerle x,y başlangıç koordinatları verilir
+        // sondaki iki değer ise genişlik ve yükseklik için kullanılır
+        canvas_context.fillRect(
+            column * CELL_SIZE,
+            row * CELL_SIZE,
+            CELL_SIZE,
+            CELL_SIZE
+        );
+        canvas_context.stroke();
+    }
+
     drawGameWorld();
+    drawSnake();
 })

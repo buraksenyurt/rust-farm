@@ -23,3 +23,7 @@ x eksenine göre dikey çizgilerin çizdirilmesi.
 Yılan nesnesinin herhangibir t anındaki veri yapısına ait görüntü aşağıdaki gibi ifade edilebilir.
 
 ![../images/snake_game_02.png](../images/snake_game_02.png)
+
+Başlangıçta yılanın ilk karesini çizen fonksiyonun görsel anlatımı aşağıdaki gibi ifade edilebilir.
+
+![../images/snake_game_03.png](../images/snake_game_03.png)

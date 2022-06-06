@@ -13,12 +13,11 @@ pub struct World {
 
 #[wasm_bindgen]
 impl World {
-    pub fn new() -> Self {
-        let width = 8;
+    pub fn new(width: usize, start_index: usize) -> Self {
         Self {
             width: 8,
             cell_count: width * width,
-            snake: Snake::new(18),
+            snake: Snake::new(start_index),
         }
     }
 

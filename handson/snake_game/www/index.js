@@ -1,9 +1,16 @@
 import init, { World } from "snake_game";
 
 init().then(_ => {
-    const world = World.new();
-    const world_width = world.get_width();
     const CELL_SIZE = 20; // Oyun sahasındaki hücrelerin boyutu
+    const WORLD_WIDTH = 8; // Sütun sayısı
+    // Yılanın başlayacağı indeks değerini hesaplarken o anki zaman bilgisinin
+    // sahadaki hücre sayısına bölümünden kalan değeri hesaba katıyoruz
+    const SNAKE_START_INDEX = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
+
+    // Oyun nesnesi js tarafından gelen parametrelere göre oluşturulur.
+    const world = World.new(WORLD_WIDTH,SNAKE_START_INDEX);
+    const world_width = world.get_width();
+
     console.log("Oyun nesnesi oluşturuldu. Uzunluk " + world.get_width() + " birim.");
 
     // üzerinde çizim yapacağımız canvas elementine ulaşmalıyız
@@ -62,16 +69,31 @@ init().then(_ => {
         canvas_context.stroke();
     }
 
-    drawGameWorld();
-    drawSnake();
-
-    // her 100 saniyede bir çalışacak olan oyun döngüsü
-    setInterval(()=>{
-        // canvas alanı temizlenir
-        canvas_context.clearRect(0,0,canvas.width,canvas.height)
-        // oyun alanı ve yılan yeniden çizilir
+    function render(){
         drawGameWorld();
         drawSnake();
-        world.update_position();
-    },100);
+    }
+
+    function tick(){
+//        // her 100 saniyede bir çalışacak olan oyun döngüsü
+//        setInterval(()=>{
+//            // canvas alanı temizlenir
+//            canvas_context.clearRect(0,0,canvas.width,canvas.height);
+//            // yılan için güncel hücre pozisyonu alınır
+//            world.update_position();
+//            // oyun alanı ve yılan yeniden çizilir
+//            render();
+//        },100);
+
+        const fps = 3;
+        setTimeout(()=>{
+            canvas_context.clearRect(0,0,canvas.width,canvas.height);
+            world.update_position();
+            render();
+            requestAnimationFrame(tick);
+        },1000 / fps);
+    }
+
+    render();
+    tick();
 })

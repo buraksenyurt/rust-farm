@@ -64,4 +64,14 @@ init().then(_ => {
 
     drawGameWorld();
     drawSnake();
+
+    // her 100 saniyede bir çalışacak olan oyun döngüsü
+    setInterval(()=>{
+        // canvas alanı temizlenir
+        canvas_context.clearRect(0,0,canvas.width,canvas.height)
+        // oyun alanı ve yılan yeniden çizilir
+        drawGameWorld();
+        drawSnake();
+        world.update_position();
+    },100);
 })

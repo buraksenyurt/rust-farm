@@ -4,6 +4,14 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
+#[derive(PartialEq)]
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
 #[wasm_bindgen]
 pub struct World {
     width: usize,
@@ -31,11 +39,26 @@ impl World {
 
     // Yılanın pozisyonunu değiştiren fonksiyon
     pub fn update_position(&mut self) {
+        // hücre indeksini buluyoruz
         let index = self.snake_head();
-        // 0ncı elemanın index değerini 1 artırıyor.
+        // Hangi satırda olduğumuzu buluyoruz
+        let row = index / self.width;
         // 8 X 8 kareden oluştuğunu varsayarsak da saha dışına çıktığında 0dan başlaması için
         // modüle operatöründen yararlandık.
-        self.snake.body[0].0 = (index + 1) % self.cell_count;
+
+        // Yön tuşlarına göre yapılacak hareketlenmeleri match ifadesi ile karşılayabiliriz
+        match self.snake.direction {
+            Direction::Right => {
+                let next_column = (index + 1) % self.width;
+                self.snake.body[0].0 = (row * self.width) + next_column;
+            }
+            Direction::Left => {
+                let next_column = (index - 1) % self.width;
+                self.snake.body[0].0 = (row * self.width) + next_column;
+            }
+            Direction::Up => {}
+            Direction::Down => {}
+        }
     }
 }
 
@@ -43,12 +66,14 @@ struct SnakeCell(usize);
 
 struct Snake {
     body: Vec<SnakeCell>,
+    direction: Direction,
 }
 
 impl Snake {
     fn new(start_index: usize) -> Self {
         Self {
             body: vec![SnakeCell(start_index)],
+            direction: Direction::Right,
         }
     }
 }

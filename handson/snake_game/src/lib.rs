@@ -41,33 +41,32 @@ impl World {
     pub fn update_position(&mut self) {
         // hücre indeksini buluyoruz
         let index = self.snake_head();
-        // Hangi satırda olduğumuzu buluyoruz
-        let row = index / self.width;
-        // Hangi sütunda olduğumuzu buluyoruz
-        let column = index % self.width;
+        // Bulunduğumuz satır ve sütun bilgilerini hesaplıyoruz
+        let (row, column) = self.index_to_cell(index);
 
         // 8 X 8 kareden oluştuğunu varsayarsak da saha dışına çıktığında 0dan başlaması için
         // modüle operatöründen yararlandık.
-
         // Yön tuşlarına göre yapılacak hareketlenmeleri match ifadesi ile karşılayabiliriz
-        match self.snake.direction {
-            Direction::Right => {
-                let next_column = (index + 1) % self.width;
-                self.snake.body[0].0 = (row * self.width) + next_column;
-            }
-            Direction::Left => {
-                let next_column = (index - 1) % self.width;
-                self.snake.body[0].0 = (row * self.width) + next_column;
-            }
-            Direction::Up => {
-                let next_row = (row - 1) % self.width;
-                self.snake.body[0].0 = (next_row * self.width) + column;
-            }
-            Direction::Down => {
-                let next_row = (row + 1) % self.width;
-                self.snake.body[0].0 = (next_row * self.width) + column;
-            }
-        }
+        let (row, column) = match self.snake.direction {
+            Direction::Right => (row, (column + 1) % self.width),
+            Direction::Left => (row, (column - 1) % self.width),
+            Direction::Up => ((row - 1) % self.width, column),
+            Direction::Down => ((row + 1) % self.width, column),
+        };
+        let next_index = self.cell_to_index(row, column);
+        self.move_to_next(next_index);
+    }
+
+    fn move_to_next(&mut self, index: usize) {
+        self.snake.body[0].0 = index;
+    }
+
+    fn cell_to_index(&self, row: usize, column: usize) -> usize {
+        (row * self.width) + column
+    }
+
+    fn index_to_cell(&self, index: usize) -> (usize, usize) {
+        (index / self.width, index % self.width)
     }
 }
 
@@ -82,7 +81,7 @@ impl Snake {
     fn new(start_index: usize) -> Self {
         Self {
             body: vec![SnakeCell(start_index)],
-            direction: Direction::Down,
+            direction: Direction::Up,
         }
     }
 }

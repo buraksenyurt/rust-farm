@@ -43,6 +43,9 @@ impl World {
         let index = self.snake_head();
         // Hangi satırda olduğumuzu buluyoruz
         let row = index / self.width;
+        // Hangi sütunda olduğumuzu buluyoruz
+        let column = index % self.width;
+
         // 8 X 8 kareden oluştuğunu varsayarsak da saha dışına çıktığında 0dan başlaması için
         // modüle operatöründen yararlandık.
 
@@ -56,8 +59,14 @@ impl World {
                 let next_column = (index - 1) % self.width;
                 self.snake.body[0].0 = (row * self.width) + next_column;
             }
-            Direction::Up => {}
-            Direction::Down => {}
+            Direction::Up => {
+                let next_row = (row - 1) % self.width;
+                self.snake.body[0].0 = (next_row * self.width) + column;
+            }
+            Direction::Down => {
+                let next_row = (row + 1) % self.width;
+                self.snake.body[0].0 = (next_row * self.width) + column;
+            }
         }
     }
 }
@@ -73,7 +82,7 @@ impl Snake {
     fn new(start_index: usize) -> Self {
         Self {
             body: vec![SnakeCell(start_index)],
-            direction: Direction::Right,
+            direction: Direction::Down,
         }
     }
 }

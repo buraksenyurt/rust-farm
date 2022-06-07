@@ -27,3 +27,7 @@ Yılan nesnesinin herhangibir t anındaki veri yapısına ait görüntü aşağ�
 Başlangıçta yılanın ilk karesini çizen fonksiyonun görsel anlatımı aşağıdaki gibi ifade edilebilir.
 
 ![../images/snake_game_03.png](../images/snake_game_03.png)
+
+Hücre sağa doğru hareket ettiğinde satır sonuna gelince yine aynı satırın 0ncı hücresinden başlamasının nasıl sağlandığının matematiği.
+
+![../images/snake_game_04.png](../images/snake_game_04.png)

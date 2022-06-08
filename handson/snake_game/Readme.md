@@ -31,3 +31,7 @@ Başlangıçta yılanın ilk karesini çizen fonksiyonun görsel anlatımı aşa
 Hücre sağa doğru hareket ettiğinde satır sonuna gelince yine aynı satırın 0ncı hücresinden başlamasının nasıl sağlandığının matematiği.
 
 ![../images/snake_game_04.png](../images/snake_game_04.png)
+
+Yön tuşları için eklenen olay dinleyicisi iş başındayken tarayıcı loglarından bir görüntü.
+
+![../images/snake_game_05.png](../images/snake_game_05.png)

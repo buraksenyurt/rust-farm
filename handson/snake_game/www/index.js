@@ -3,6 +3,7 @@ import init, { World } from "snake_game";
 init().then(_ => {
     const CELL_SIZE = 20; // Oyun sahasındaki hücrelerin boyutu
     const WORLD_WIDTH = 8; // Sütun sayısı
+
     // Yılanın başlayacağı indeks değerini hesaplarken o anki zaman bilgisinin
     // sahadaki hücre sayısına bölümünden kalan değeri hesaba katıyoruz
     const SNAKE_START_INDEX = Date.now() % (WORLD_WIDTH * WORLD_WIDTH);
@@ -19,6 +20,23 @@ init().then(_ => {
     // sahanın genişlik ve yüksekliğini Rust tarafındaki World nesnesinden gelen değere göre belirliyoruz
     canvas.height = world_width * CELL_SIZE;
     canvas.width = world_width * CELL_SIZE;
+
+    document.addEventListener("keydown", (event)=>{
+        switch(event.code){
+            case "ArrowLeft":
+                console.log("Sol tuşa basıldı");
+                break;
+            case "ArrowRight":
+                console.log("Sağ tuşa basıldı");
+                break;
+            case "ArrowDown":
+                console.log("Aşağı tuşa basıldı");
+                break;
+            case "ArrowUp":
+                console.log("Yukarı tuşa basıldı");
+                break;
+        }
+    })
 
     // 2 boyutlu çizim yapmamızı sağlayacak context nesnesini alıyoruz
     const canvas_context=canvas.getContext("2d");

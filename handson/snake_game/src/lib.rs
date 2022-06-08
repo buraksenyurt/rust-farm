@@ -4,8 +4,9 @@ use wee_alloc::WeeAlloc;
 #[global_allocator]
 static ALLOC: WeeAlloc = WeeAlloc::INIT;
 
+#[wasm_bindgen]
 #[derive(PartialEq)]
-enum Direction {
+pub enum Direction {
     Up,
     Down,
     Left,
@@ -35,6 +36,10 @@ impl World {
 
     pub fn snake_head(&self) -> usize {
         self.snake.body[0].0
+    }
+
+    pub fn change_direction(&mut self, direction: Direction) {
+        self.snake.direction = direction;
     }
 
     // Yılanın pozisyonunu değiştiren fonksiyon

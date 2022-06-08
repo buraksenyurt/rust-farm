@@ -1,4 +1,4 @@
-import init, { World } from "snake_game";
+import init, { World, Direction } from "snake_game";
 
 init().then(_ => {
     const CELL_SIZE = 20; // Oyun sahasındaki hücrelerin boyutu
@@ -25,15 +25,19 @@ init().then(_ => {
         switch(event.code){
             case "ArrowLeft":
                 console.log("Sol tuşa basıldı");
+                world.change_direction(Direction.Left);
                 break;
             case "ArrowRight":
                 console.log("Sağ tuşa basıldı");
+                world.change_direction(Direction.Right);
                 break;
             case "ArrowDown":
                 console.log("Aşağı tuşa basıldı");
+                world.change_direction(Direction.Down);
                 break;
             case "ArrowUp":
                 console.log("Yukarı tuşa basıldı");
+                world.change_direction(Direction.Up);
                 break;
         }
     })

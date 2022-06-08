@@ -1,6 +1,6 @@
 import init, { World, Direction } from "snake_game";
 
-init().then(_ => {
+init().then(wasm => {
     const CELL_SIZE = 20; // Oyun sahasındaki hücrelerin boyutu
     const WORLD_WIDTH = 8; // Sütun sayısı
 
@@ -20,6 +20,21 @@ init().then(_ => {
     // sahanın genişlik ve yüksekliğini Rust tarafındaki World nesnesinden gelen değere göre belirliyoruz
     canvas.height = world_width * CELL_SIZE;
     canvas.width = world_width * CELL_SIZE;
+
+    // Rust tarafındaki fonksiyonlardan yararlanılarak yılanın gövde başlangıç adresi ve uzunluğu alınır.
+    const cellPointer=world.get_snake_body();
+    const snakeLength=world.get_snake_length();
+
+    // Rust ile JS tarafının haberleştiği noktalardan birisi memory'dir.
+    // init fonksiyonuna gelen wasm nesnesi üstünden belleğe ulaşabiliriz.
+    // Rust tarafındaki get_snake_body ile belleğe yazılan yılan hücrelerini yakalayabiliriz.
+    const snakeCells = new Uint32Array(
+        wasm.memory.buffer,
+        cellPointer,
+        snakeLength
+    )
+
+    console.log(snakeCells);
 
     document.addEventListener("keydown", (event)=>{
         switch(event.code){

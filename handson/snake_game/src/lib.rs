@@ -26,7 +26,7 @@ impl World {
         Self {
             width: 8,
             cell_count: width * width,
-            snake: Snake::new(start_index),
+            snake: Snake::new(start_index, 3),
         }
     }
 
@@ -38,8 +38,22 @@ impl World {
         self.snake.body[0].0
     }
 
+    // JS tarafından çağırılır ve yılanın basılan tuşa göre yön değiştirmesinde kullanılır
     pub fn change_direction(&mut self, direction: Direction) {
         self.snake.direction = direction;
+    }
+
+    // Yılanın gövde uzunluğunu döndürür
+    pub fn get_snake_length(&self) -> usize {
+        self.snake.body.len()
+    }
+
+    // yılanın gövdesine ait hücreleri elde etmek için JS tarafından kullanılır
+    // body'nin (vector türünün) bellek başlangıç adresini taşıyan bir raw pointer döndürülmektedir.
+    // Bu sebeple borrowing kuralları işletilmez
+    // Bu bilgiyi javascript tarafında alırken WASM nesnesinin memory özelliği kullanılır
+    pub fn get_snake_body(&self) -> *const SnakeCell {
+        self.snake.body.as_ptr()
     }
 
     // Yılanın pozisyonunu değiştiren fonksiyon
@@ -75,7 +89,7 @@ impl World {
     }
 }
 
-struct SnakeCell(usize);
+pub struct SnakeCell(usize);
 
 struct Snake {
     body: Vec<SnakeCell>,
@@ -83,10 +97,16 @@ struct Snake {
 }
 
 impl Snake {
-    fn new(start_index: usize) -> Self {
+    fn new(start_index: usize, body_size: usize) -> Self {
+        let mut body = vec![];
+
+        for i in 0..body_size {
+            body.push(SnakeCell(start_index - i));
+        }
+
         Self {
-            body: vec![SnakeCell(start_index)],
-            direction: Direction::Up,
+            body: body,
+            direction: Direction::Right,
         }
     }
 }

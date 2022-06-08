@@ -21,20 +21,20 @@ init().then(wasm => {
     canvas.height = world_width * CELL_SIZE;
     canvas.width = world_width * CELL_SIZE;
 
-    // Rust tarafındaki fonksiyonlardan yararlanılarak yılanın gövde başlangıç adresi ve uzunluğu alınır.
-    const cellPointer=world.get_snake_body();
-    const snakeLength=world.get_snake_length();
+//    // Rust tarafındaki fonksiyonlardan yararlanılarak yılanın gövde başlangıç adresi ve uzunluğu alınır.
+//    const cellPointer=world.get_snake_body();
+//    const snakeLength=world.get_snake_length();
+//
+//    // Rust ile JS tarafının haberleştiği noktalardan birisi memory'dir.
+//    // init fonksiyonuna gelen wasm nesnesi üstünden belleğe ulaşabiliriz.
+//    // Rust tarafındaki get_snake_body ile belleğe yazılan yılan hücrelerini yakalayabiliriz.
+//    const snakeCells = new Uint32Array(
+//        wasm.memory.buffer,
+//        cellPointer,
+//        snakeLength
+//    )
 
-    // Rust ile JS tarafının haberleştiği noktalardan birisi memory'dir.
-    // init fonksiyonuna gelen wasm nesnesi üstünden belleğe ulaşabiliriz.
-    // Rust tarafındaki get_snake_body ile belleğe yazılan yılan hücrelerini yakalayabiliriz.
-    const snakeCells = new Uint32Array(
-        wasm.memory.buffer,
-        cellPointer,
-        snakeLength
-    )
-
-    console.log(snakeCells);
+//    console.log(snakeCells);
 
     document.addEventListener("keydown", (event)=>{
         switch(event.code){
@@ -83,26 +83,40 @@ init().then(wasm => {
 
     // Yılanı sahaya çizmek için kullanılan fonksiyon
     function drawSnake(){
-        // Rust kütüphanesinden yararlanarak yılanın başlangıç indeksini alalım
-        const index = world.snake_head();
-        // başlangıç konumuna göre kolon ve sütun konumlarını bulmamız lazım
-        // oyun sahasının genişliği 8 birim olduğundan mod alarak kolonu bulabiliriz
-        // yani 8e bölümden kalan hangi kolon olduğunu söyler
-        const column = index % world_width;
-        // oyun sahasına bölümdeki tam kısım satrı ifade eder
-        const row = Math.floor(index / world_width);
+//        // Rust kütüphanesinden yararlanarak yılanın başlangıç indeksini alalım
+//        const index = world.snake_head();
 
-        // çizime başlanır
-        canvas_context.beginPath();
-        // yılan nesnesinin sahip olduğu hücreler birer dörtgendir
-        // İlk iki değerle x,y başlangıç koordinatları verilir
-        // sondaki iki değer ise genişlik ve yükseklik için kullanılır
-        canvas_context.fillRect(
-            column * CELL_SIZE,
-            row * CELL_SIZE,
-            CELL_SIZE,
-            CELL_SIZE
+        // wasm memory bölgesinden yararlanarak yılanın gövdesindeki hücreleri yakalıyoruz
+        const snakeCells = new Uint32Array(
+            wasm.memory.buffer,
+            world.get_snake_body(),
+            world.get_snake_length()
         );
+
+        // her bir hücrede index bilgisi var. Bunu alarak hücrelerin render işlemini gerçekleştiriyoruz.
+        snakeCells.forEach( (cell_index , i) => {
+            // Konuma göre kolon ve sütun konumlarını bulmamız lazım
+            // oyun sahasının genişliği 8 birim olduğundan mod alarak kolonu bulabiliriz
+            // yani 8e bölümden kalan hangi kolon olduğunu söyler
+            const column = cell_index % world_width;
+            // oyun sahasına bölümdeki tam kısım satrı ifade eder
+            const row = Math.floor(cell_index / world_width);
+
+            canvas_context.fillStyle = i === 0 ? "#ff5677" : "#000000";
+
+            // çizime başlanır
+            canvas_context.beginPath();
+            // yılan nesnesinin sahip olduğu hücreler birer dörtgendir
+            // İlk iki değerle x,y başlangıç koordinatları verilir
+            // sondaki iki değer ise genişlik ve yükseklik için kullanılır
+            canvas_context.fillRect(
+                column * CELL_SIZE,
+                row * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE
+            );
+        })
+
         canvas_context.stroke();
     }
 

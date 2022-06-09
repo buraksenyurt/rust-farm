@@ -1,4 +1,4 @@
-import init, {GameGrid,GridSize} from "the_grid";
+import init, {GameGrid,GridSize,get_random_color} from "the_grid";
 
 init().then(_=>{
     const CELL_SIZE = 32;
@@ -11,6 +11,9 @@ init().then(_=>{
     canvas.width = grid.size.columns * CELL_SIZE;
 
     const canvas_context=canvas.getContext("2d");
+    const line_color=get_random_color();
+    console.log("Line color is " + line_color);
+    canvas_context.strokeStyle = line_color;
 
     function drawGrid(){
         canvas_context.beginPath();

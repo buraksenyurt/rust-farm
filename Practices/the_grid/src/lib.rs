@@ -1,4 +1,5 @@
 use rand::Rng;
+use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -6,8 +7,17 @@ pub struct GameGrid {
     pub size: GridSize,
 }
 
-#[wasm_bindgen]
-pub struct ColorCode(String);
+#[derive(Serialize)]
+pub struct Color {
+    pub name: String,
+    pub code: String,
+}
+
+impl Color {
+    pub fn new(name: String, code: String) -> Self {
+        Self { name, code }
+    }
+}
 
 #[wasm_bindgen]
 #[derive(Clone, Copy)]
@@ -17,25 +27,30 @@ pub struct GridSize {
 }
 
 #[wasm_bindgen]
-pub fn get_random_color() -> String {
+pub fn get_random_color() -> JsValue {
     let mut colors = vec![];
 
-    colors.push(ColorCode("#861388".to_string()));
-    colors.push(ColorCode("#E15A97".to_string()));
-    colors.push(ColorCode("#EEABC4".to_string()));
-    colors.push(ColorCode("#C799A6".to_string()));
-    colors.push(ColorCode("#4B2840".to_string()));
-
-    // colors[0] = ("DARK_MAGENTA".to_string(), "#861388".to_string());
-    // colors[1] = ("FANDANGO_PINK".to_string(), "#E15A97".to_string());
-    // colors[2] = ("NADESHIKO_PINK".to_string(), "#EEABC4".to_string());
-    // colors[3] = ("TUSCANY".to_string(), "#C799A6".to_string());
-    // colors[4] = ("DARK_BYZANTIUM".to_string(), "#4B2840".to_string());
+    colors.push(Color::new(
+        "DARK_MAGENTA".to_string(),
+        "#861388".to_string(),
+    ));
+    colors.push(Color::new(
+        "FANDANGO_PINK".to_string(),
+        "#E15A97".to_string(),
+    ));
+    colors.push(Color::new(
+        "NADESHIKO_PINK".to_string(),
+        "#EEABC4".to_string(),
+    ));
+    colors.push(Color::new("TUSCANY".to_string(), "#C799A6".to_string()));
+    colors.push(Color::new(
+        "DARK_BYZANTIUM".to_string(),
+        "#4B2840".to_string(),
+    ));
 
     let mut rng = rand::thread_rng();
-    let index = rng.gen_range(0..5);
-
-    colors[index].0.to_string()
+    let index = rng.gen_range(0..colors.len());
+    JsValue::from_serde(&colors[index]).unwrap()
 }
 
 #[wasm_bindgen]

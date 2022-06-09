@@ -10,10 +10,13 @@ init().then(_=>{
     canvas.height = grid.size.rows * CELL_SIZE;
     canvas.width = grid.size.columns * CELL_SIZE;
 
-    const canvas_context=canvas.getContext("2d");
     const line_color=get_random_color();
-    console.log("Line color is " + line_color);
-    canvas_context.strokeStyle = line_color;
+
+    const colorInfo = document.getElementById("color-info");
+    colorInfo.textContent="Line Color Name = " + line_color.name + ". Code = " + line_color.code;
+
+    const canvas_context=canvas.getContext("2d");
+    canvas_context.strokeStyle = line_color.code;
 
     function drawGrid(){
         canvas_context.beginPath();

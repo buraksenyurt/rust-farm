@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <title>Drawing a Grid</title>
+    <style>
+        .content-wrapper {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            align-items:center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
 <h1>The Grid - A Digital Frontier</h1>
+    <div class="content-wrapper">
+        <canvas id="game-canvas"></canvas>
+    </div>
     <script src="./bootstrap.js">
     </script>
 </body>

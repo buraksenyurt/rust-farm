@@ -1,6 +1,6 @@
-import init, {GameGrid,GridSize,get_random_color} from "the_grid";
+import init, {GameGrid,GridSize,Wall,get_random_color} from "the_grid";
 
-init().then(_=>{
+init().then(wasm => {
     const CELL_SIZE = 32;
     const grid = GameGrid.new();
     console.log(grid.size.rows + ' X ' + grid.size.columns);
@@ -35,4 +35,33 @@ init().then(_=>{
     }
 
     drawGrid();
+
+    function drawBlocks(){
+        const wall=Wall.new(grid.size.rows,grid.size.columns,max_width);
+        const blocks = new Uint32Array(
+                    wasm.memory.buffer,
+                    wall.get_random_blocks(),
+                    max_width
+                );
+        blocks.forEach((cellIdx, i) => {
+            const col = cellIdx % max_width;
+            const row = Math.floor(cellIdx / max_width);
+            console.log(i + ". "+col + "x"+ row + " max width is "+max_width);
+            const fill_color=get_random_color();
+            console.log(fill_color);
+            canvas_context.fillStyle = fill_color.code;
+
+            canvas_context.beginPath();
+            canvas_context.fillRect(
+              col * CELL_SIZE,
+              row * CELL_SIZE,
+              CELL_SIZE,
+              CELL_SIZE
+            );
+          })
+
+          canvas_context.stroke();
+    }
+
+    drawBlocks();
 })

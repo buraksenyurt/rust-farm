@@ -79,3 +79,39 @@ impl GameGrid {
         }
     }
 }
+
+pub struct WallCell(usize);
+
+#[wasm_bindgen]
+pub struct Wall {
+    body: Vec<WallCell>,
+    len: usize,
+}
+
+#[wasm_bindgen]
+impl Wall {
+    pub fn new(rows_count: usize, columns_count: usize, width: usize) -> Self {
+        let mut rng = rand::thread_rng();
+        let mut walls = Vec::<WallCell>::new();
+        for row in 0..rows_count {
+            for column in 0..columns_count {
+                let number: usize = rng.gen_range(0..100);
+                if number % 2 == 0 {
+                    walls.push(WallCell((row * width) + column))
+                }
+            }
+        }
+        Self {
+            body: walls,
+            len: width,
+        }
+    }
+
+    pub fn get_random_blocks(&self) -> *const WallCell {
+        self.body.as_ptr()
+    }
+
+    pub fn get_size(&self) -> usize {
+        self.len
+    }
+}

@@ -36,4 +36,5 @@
 - [x] **hello-wasm:** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
 - [ ] **sokoban:** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.
 - [ ] **advanved_types:** Type Alias özelliği kullanım alanları ile Newtype deseninin uyarlaması.
-- [ ] **the_grid**: WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
+- [x] **the_grid**: WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
+- [ ] **booksworm**: Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.

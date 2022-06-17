@@ -1,0 +1,10 @@
+[package]
+name = "booksworm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wasm-bindgen = "0.2.80"
+
+[lib]
+crate-type = ["cdylib"]

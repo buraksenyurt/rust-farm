@@ -21,8 +21,19 @@ npm install --save copy-webpack-plugin
 # www klasörüne bir .gitignore dosyası eklenir.
 # node_modules klasörü github tarafına gitmesin diye düzenlenir
 
+touch bootstrap.js
 touch index.js
 touch index.html
 mkdir public
 touch webpack.config.js
+
+cd ..
+cargo install wasm-pack
+
+# Örneği çalıştırmak
+# root klasöründeyken wasm-pack aşağıdaki gibi build edilir
+wasm-pack build --target web
+
+# www klasöründeykende
+npm run dev
 ```

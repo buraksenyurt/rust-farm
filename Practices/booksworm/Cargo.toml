@@ -2,6 +2,8 @@
 name = "booksworm"
 version = "0.1.0"
 edition = "2021"
+authors = ["Burak Selim Senyurt<burakselimsenyurt@gmail.com>"]
+description = "RUST Wasm ile yazılmış basit bir form uygulaması"
 
 [dependencies]
 wasm-bindgen = "0.2.80"

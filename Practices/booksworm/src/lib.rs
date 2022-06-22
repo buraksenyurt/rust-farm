@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 use wasm_bindgen::prelude::*;
 
+#[derive(Serialize, Deserialize)]
 pub struct Book {
     pub title: String,
     pub authors: String,
@@ -24,10 +26,10 @@ impl Display for Book {
 }
 
 #[wasm_bindgen]
-pub fn add_book(title: String, authors: String, is_read: bool) -> bool {
+pub fn add_book(title: String, authors: String, is_read: bool) -> String {
     let book = Book::new(title, authors, is_read);
-    println!("{}", book.to_string());
-    true
+    let data = serde_json::to_string(&book).unwrap();
+    data
 }
 
 // #[cfg(test)]

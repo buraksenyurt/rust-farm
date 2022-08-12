@@ -1,13 +1,15 @@
 fn main() {
     let azoncoin = BitCredit { btc_number: 1234 };
-    azoncoin.pay(100.);
+    //azoncoin.pay(100.);
+    transact(azoncoin, 100.);
 
     let maslak_acct = DebitCard {
         owner: "Toni Burosso".to_string(),
         id: 12,
         account_number: "MSLK-12045-1234".to_string(),
     };
-    maslak_acct.pay(125.);
+    transact(maslak_acct, 125.);
+    //maslak_acct.pay(125.);
 }
 
 struct MasterCard {
@@ -53,4 +55,8 @@ impl Payment for BitCredit {
 
 trait Payment {
     fn pay(&self, amount: f32) -> bool;
+}
+
+fn transact<T: Payment>(payment: T, amount: f32) {
+    payment.pay(amount);
 }

@@ -1,0 +1,14 @@
+{
+  "name": "boring-todos-web-app",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Oldukça sıkıcı işler listesini tutan bir todo list uygulamasının önyüzü",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+
+  },
+  "author": "Burak Selim Şenyurt",
+  "license": "MIT"
+}

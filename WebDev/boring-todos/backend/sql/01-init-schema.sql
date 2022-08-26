@@ -3,7 +3,6 @@ CREATE TYPE task_state AS ENUM (
     'in-progress',
     'completed'
 );
-
 CREATE TABLE task(
     id bigserial,
     user_id bigint NOT NULL,

@@ -58,10 +58,10 @@ mod tests {
     use sqlx::Executor;
 
     #[tokio::test]
-    async fn model_database_init() -> Result<(), Box<dyn std::error::Error>> {
+    async fn should_database_initialized_succesfully() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
         let result = db.execute("SELECT COUNT(id) FROM task").await?;
-        assert!(result.rows_affected()> 0);
+        assert!(result.rows_affected() > 0, "Eklenen toplam satır sayısı");
 
         Ok(())
     }

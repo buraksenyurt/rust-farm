@@ -1,3 +1,4 @@
+use crate::model::custom_error::Error;
 use crate::model::database::Db;
 
 #[derive(sqlx::FromRow, Debug)]
@@ -10,7 +11,7 @@ pub struct Task {
 pub struct TaskMac; // Mac = Model Access Controller
 
 impl TaskMac {
-    pub async fn get_all(db: &Db) -> Result<Vec<Task>, sqlx::Error> {
+    pub async fn get_all(db: &Db) -> Result<Vec<Task>, Error> {
         let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
         let query = sqlx::query_as(&sql);
         let task_list = query.fetch_all(db).await?;

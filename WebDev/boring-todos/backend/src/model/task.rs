@@ -1,7 +1,7 @@
 use crate::model::custom_error::Error;
 use crate::model::database::Db;
 use crate::model::task_state::TaskState;
-use sqlb::{HasFields};
+use sqlb::HasFields;
 
 // Veri tabanındaki task tablosunu kod tarafındaki iz düşümü olan veri yapısı
 #[derive(sqlx::FromRow, Debug)]
@@ -30,9 +30,18 @@ pub struct TaskMac;
 // Model Access Controller fonksiyonları
 impl TaskMac {
     pub async fn get_all(db: &Db) -> Result<Vec<Task>, Error> {
-        let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
-        let query = sqlx::query_as(&sql);
-        let task_list = query.fetch_all(db).await?;
+        // let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
+        // let query = sqlx::query_as(&sql);
+        // let task_list = query.fetch_all(db).await?;
+
+        // insert sorgusunun çalıştırılmasında olduğu gibi Select tipli sorgular içinde
+        // Sql Builder tekniği kullanılabilir.
+        let sql_builder = sqlb::select()
+            .table("task")
+            .columns(&["id", "user_id", "title", "state"])
+            .order_by("!id");
+
+        let task_list = sql_builder.fetch_all(db).await?;
 
         Ok(task_list)
     }

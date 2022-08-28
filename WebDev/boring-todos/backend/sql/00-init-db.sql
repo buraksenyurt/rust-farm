@@ -1,2 +1,2 @@
-DROP DATABASE IF EXISTS task_force_db;
+--DROP DATABASE IF EXISTS task_force_db;
 CREATE DATABASE task_force_db WITH OWNER = scoth ENCODING = 'UTF8';

@@ -13,7 +13,7 @@ const SCRIPTS_ROOT_PATH: &str = "sql/";
 const TASK_DB_INIT_FILE: &str = "sql/00-init-db.sql";
 
 pub async fn init() -> Result<Db, sqlx::Error> {
-    // let con_str = format!("postrgres://{}:{}@{}/{}", USER, PASSWORD, HOST, ROOT_DB);
+    //let con_str = format!("postrgres://{}:{}@{}/{}", USER, PASSWORD, HOST, ROOT_DB);
     let con_str = format!("postrgres://{}:{}@{}/{}", USER, PASSWORD, HOST, TASK_DB);
     let root_db = PgPoolOptions::new()
         .max_connections(1)

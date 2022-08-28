@@ -1,11 +1,13 @@
 use crate::model::custom_error::Error;
 use crate::model::database::Db;
+use crate::model::task_state::TaskState;
 
 #[derive(sqlx::FromRow, Debug)]
 pub struct Task {
     pub id: i64,
     pub user_id: i64,
     pub title: String,
+    pub state: TaskState,
 }
 
 #[derive(Clone)]
@@ -26,7 +28,8 @@ impl TaskMac {
     }
 
     pub async fn create(db: &Db, payload: TaskDao) -> Result<Task, Error> {
-        let sql = "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title";
+        let sql =
+            "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title,state";
         let query = sqlx::query_as::<_, Task>(&sql)
             .bind(payload.user_id)
             .bind(payload.title);
@@ -41,6 +44,7 @@ impl TaskMac {
 mod tests {
     use crate::model::database::init;
     use crate::model::task::{TaskDao, TaskMac};
+    use crate::model::task_state::TaskState;
 
     #[tokio::test]
     async fn should_get_all_returns_more_than_one_task() -> Result<(), Box<dyn std::error::Error>> {
@@ -64,6 +68,7 @@ mod tests {
         assert!(created_task.id >= 1);
         assert_eq!(candidate_task.user_id.unwrap(), created_task.user_id);
         assert_eq!(candidate_task.title.unwrap(), created_task.title);
+        assert_eq!(TaskState::Ready, created_task.state);
         Ok(())
     }
 }

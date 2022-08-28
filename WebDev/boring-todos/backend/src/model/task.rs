@@ -19,7 +19,7 @@ pub struct Task {
 // sql insert sorgusunun alanları beslenebilir.
 #[derive(sqlb::Fields, Debug, Clone)]
 pub struct TaskDao {
-    pub user_id: Option<i64>,
+    //pub user_id: Option<i64>,
     pub title: Option<String>,
 }
 
@@ -46,10 +46,19 @@ impl TaskMac {
 
         //let created_task = query.fetch_one(db).await?;
 
-        // Üstteki teknik yerine aşağıdaki teknik tercih edilmeli
+        // Üstteki teknik yerine SQL Builder ile insert script'inin
+        // nesne veri yapıları üzerinden oluşturulduğu aşağıdaki teknik tercih edilmeli.
+        // Böylece elle script yazmak yerine var olan veri yapılarından bir tane oluşturulmasını
+        // garanti edebiliriz.
+
+        // İstersek payload olarak ifade edilen veri yapısında olmayan bir alan tanımını
+        // manuel olarak aşağıdaki gibi ekleyebiliriz.
+        let mut fields = payload.fields();
+        fields.push(("user_id", 10101).into());
+
         let sql_builder = sqlb::insert()
             .table("task")
-            .data(payload.fields())
+            .data(fields)
             .returning(&["id", "user_id", "title", "state"]);
         let created_task = sql_builder.fetch_one(db).await?;
 
@@ -73,17 +82,17 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn should_create_task_works_with_some_datas() -> Result<(), Box<dyn std::error::Error>> {
+    async fn should_create_task_with_title_works() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
 
         let candidate_task = TaskDao {
-            user_id: Some(4835),
+            //user_id: Some(4835),
             title: Some(String::from("Rust programlama için bir saat çalış")),
         };
 
         let created_task = TaskMac::create(&db, candidate_task.clone()).await?;
         assert!(created_task.id >= 1);
-        assert_eq!(candidate_task.user_id.unwrap(), created_task.user_id);
+        assert_eq!(10101, created_task.user_id);
         assert_eq!(candidate_task.title.unwrap(), created_task.title);
         assert_eq!(TaskState::Ready, created_task.state);
         Ok(())

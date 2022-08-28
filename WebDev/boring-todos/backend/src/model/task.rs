@@ -3,6 +3,7 @@ use crate::model::database::Db;
 use crate::model::task_state::TaskState;
 use sqlb::{HasFields};
 
+// Veri tabanındaki task tablosunu kod tarafındaki iz düşümü olan veri yapısı
 #[derive(sqlx::FromRow, Debug)]
 pub struct Task {
     pub id: i64,
@@ -11,14 +12,22 @@ pub struct Task {
     pub state: TaskState,
 }
 
+// insert işleminde kullanıcı tarafından girilen verileri alan yapı olarak düşünülebilir.
+// Örneğin id, create_date gibi alanlar otomatik postgresql tarafında oluşur. state için de varsayılan bir değer kullanılır
+// sqlb::Fields kullanılması insert fonksiyonundaki payload.fields() çağrımını mümkün kılar.
+// Bu sayede payload olarak ifade edilen TaskDao nesnesinin veri alanlarına göre otomatik oluşturulan
+// sql insert sorgusunun alanları beslenebilir.
 #[derive(sqlb::Fields, Debug, Clone)]
 pub struct TaskDao {
     pub user_id: Option<i64>,
     pub title: Option<String>,
 }
 
-pub struct TaskMac; // Mac = Model Access Controller
+// Mac = Model Access Controller
+// CRUD operasyonlarını ele alan kısım olarak düşünülebilir.
+pub struct TaskMac;
 
+// Model Access Controller fonksiyonları
 impl TaskMac {
     pub async fn get_all(db: &Db) -> Result<Vec<Task>, Error> {
         let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
@@ -36,6 +45,8 @@ impl TaskMac {
         //     .bind(payload.title);
 
         //let created_task = query.fetch_one(db).await?;
+
+        // Üstteki teknik yerine aşağıdaki teknik tercih edilmeli
         let sql_builder = sqlb::insert()
             .table("task")
             .data(payload.fields())

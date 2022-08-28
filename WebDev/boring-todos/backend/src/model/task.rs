@@ -1,6 +1,7 @@
 use crate::model::custom_error::Error;
 use crate::model::database::Db;
 use crate::model::task_state::TaskState;
+use sqlb::{HasFields};
 
 #[derive(sqlx::FromRow, Debug)]
 pub struct Task {
@@ -10,7 +11,7 @@ pub struct Task {
     pub state: TaskState,
 }
 
-#[derive(Clone)]
+#[derive(sqlb::Fields, Debug, Clone)]
 pub struct TaskDao {
     pub user_id: Option<i64>,
     pub title: Option<String>,
@@ -28,13 +29,18 @@ impl TaskMac {
     }
 
     pub async fn create(db: &Db, payload: TaskDao) -> Result<Task, Error> {
-        let sql =
-            "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title,state";
-        let query = sqlx::query_as::<_, Task>(&sql)
-            .bind(payload.user_id)
-            .bind(payload.title);
+        // let sql =
+        //     "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title,state";
+        // let query = sqlx::query_as::<_, Task>(&sql)
+        //     .bind(payload.user_id)
+        //     .bind(payload.title);
 
-        let created_task = query.fetch_one(db).await?;
+        //let created_task = query.fetch_one(db).await?;
+        let sql_builder = sqlb::insert()
+            .table("task")
+            .data(payload.fields())
+            .returning(&["id", "user_id", "title", "state"]);
+        let created_task = sql_builder.fetch_one(db).await?;
 
         Ok(created_task)
     }

@@ -6,3 +6,5 @@ pub enum TaskState {
     InProgress,
     Completed,
 }
+
+sqlb::bindable!(TaskState);

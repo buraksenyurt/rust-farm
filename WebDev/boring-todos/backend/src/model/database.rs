@@ -1,7 +1,7 @@
 use sqlx::postgres::PgPoolOptions;
-use sqlx::{Executor, Pool, Postgres};
-use std::fs;
-use std::path::PathBuf;
+use sqlx::{Pool, Postgres};
+//use std::fs;
+//use std::path::PathBuf;
 
 pub type Db = Pool<Postgres>;
 const HOST: &str = "localhost";
@@ -9,8 +9,8 @@ const HOST: &str = "localhost";
 const USER: &str = "scoth";
 const PASSWORD: &str = "tiger";
 const TASK_DB: &str = "task_force_db";
-const SCRIPTS_ROOT_PATH: &str = "sql/";
-const TASK_DB_INIT_FILE: &str = "sql/00-init-db.sql";
+//const SCRIPTS_ROOT_PATH: &str = "sql/";
+//const TASK_DB_INIT_FILE: &str = "sql/00-init-db.sql";
 
 pub async fn init() -> Result<Db, sqlx::Error> {
     //let con_str = format!("postrgres://{}:{}@{}/{}", USER, PASSWORD, HOST, ROOT_DB);

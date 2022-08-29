@@ -1,6 +1,7 @@
 use crate::model::custom_error::Error;
 use crate::model::database::Db;
 use crate::model::task_state::TaskState;
+use crate::security::user_context::UserContext;
 use sqlb::HasFields;
 
 // Veri tabanındaki task tablosunu kod tarafındaki iz düşümü olan veri yapısı
@@ -29,7 +30,7 @@ pub struct TaskMac;
 
 // Model Access Controller fonksiyonları
 impl TaskMac {
-    pub async fn get_all(db: &Db) -> Result<Vec<Task>, Error> {
+    pub async fn get_all(db: &Db, _uctx: &UserContext) -> Result<Vec<Task>, Error> {
         // let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
         // let query = sqlx::query_as(&sql);
         // let task_list = query.fetch_all(db).await?;
@@ -46,7 +47,7 @@ impl TaskMac {
         Ok(task_list)
     }
 
-    pub async fn create(db: &Db, payload: TaskDao) -> Result<Task, Error> {
+    pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, Error> {
         // let sql =
         //     "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title,state";
         // let query = sqlx::query_as::<_, Task>(&sql)
@@ -63,7 +64,7 @@ impl TaskMac {
         // İstersek payload olarak ifade edilen veri yapısında olmayan bir alan tanımını
         // manuel olarak aşağıdaki gibi ekleyebiliriz.
         let mut fields = payload.fields();
-        fields.push(("user_id", 10101).into());
+        fields.push(("user_id", uctx.user_id).into());
 
         let sql_builder = sqlb::insert()
             .table("task")
@@ -80,15 +81,7 @@ mod tests {
     use crate::model::database::init;
     use crate::model::task::{TaskDao, TaskMac};
     use crate::model::task_state::TaskState;
-
-    #[tokio::test]
-    async fn should_get_all_returns_more_than_one_task() -> Result<(), Box<dyn std::error::Error>> {
-        let db = init().await?;
-        let result = TaskMac::get_all(&db).await?;
-        assert!(result.len() > 0, "Görevler listesi");
-
-        Ok(())
-    }
+    use crate::security::user_context::get_user_from_token;
 
     #[tokio::test]
     async fn should_create_task_with_title_works() -> Result<(), Box<dyn std::error::Error>> {
@@ -99,11 +92,23 @@ mod tests {
             title: Some(String::from("Rust programlama için bir saat çalış")),
         };
 
-        let created_task = TaskMac::create(&db, candidate_task.clone()).await?;
+        let user_context = get_user_from_token("10101").await?;
+
+        let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
         assert!(created_task.id >= 1);
         assert_eq!(10101, created_task.user_id);
         assert_eq!(candidate_task.title.unwrap(), created_task.title);
         assert_eq!(TaskState::Ready, created_task.state);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_get_all_returns_more_than_one_task() -> Result<(), Box<dyn std::error::Error>> {
+        let db = init().await?;
+        let user_context = get_user_from_token("10101").await?;
+        let result = TaskMac::get_all(&db, &user_context).await?;
+        assert!(result.len() > 0, "Görevler listesi");
+
         Ok(())
     }
 }

@@ -114,6 +114,7 @@ impl TaskMac {
 
 #[cfg(test)]
 mod tests {
+    use crate::model::custom_error::Error;
     use crate::model::database::init;
     use crate::model::task::{TaskDao, TaskMac};
     use crate::model::task_state::TaskState;
@@ -163,8 +164,15 @@ mod tests {
     {
         let db = init().await?;
         let user_context = get_user_from_token("9999").await?;
-        let result = TaskMac::get_single(&db, &user_context, -1).await;
-        println!("{:?}", result);
+        let result = TaskMac::get_single(&db, &user_context, 0).await;
+       match result{
+           Ok(_)=>assert!(false,"Başarılı değil"),
+           Err(Error::EntityNotFound(t,id))=>{
+               assert_eq!("task",t);
+               assert_eq!(0.to_string(),id);
+           },
+           other=>assert!(false,"Başımız dertte {:?}",other)
+       }
         Ok(())
     }
 

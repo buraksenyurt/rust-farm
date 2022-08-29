@@ -22,6 +22,7 @@ pub struct Task {
 pub struct TaskDao {
     //pub user_id: Option<i64>,
     pub title: Option<String>,
+    pub state: Option<TaskState>,
 }
 
 // Mac = Model Access Controller
@@ -61,6 +62,22 @@ impl TaskMac {
         let task = sql_builder.fetch_one(db).await?;
 
         Ok(task)
+    }
+
+    pub async fn update(
+        db: &Db,
+        _uctx: &UserContext,
+        id: i64,
+        data: TaskDao,
+    ) -> Result<Task, Error> {
+        let sql_builder = sqlb::update()
+            .table(Self::TABLE)
+            .data(data.fields())
+            .and_where_eq("id", id)
+            .returning(Self::FIELDS);
+
+        let updated_task = sql_builder.fetch_one(db).await?;
+        Ok(updated_task)
     }
 
     pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, Error> {
@@ -106,6 +123,7 @@ mod tests {
         let candidate_task = TaskDao {
             //user_id: Some(4835),
             title: Some(String::from("Rust programlama için bir saat çalış")),
+            state: None,
         };
 
         let user_context = get_user_from_token("10101").await?;
@@ -127,6 +145,7 @@ mod tests {
             title: Some(String::from(
                 "Akşam Red Alert oyun partisi var. Cipsleri al :)",
             )),
+            state: None,
         };
         let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
 
@@ -142,6 +161,30 @@ mod tests {
         let user_context = get_user_from_token("10101").await?;
         let result = TaskMac::get_all(&db, &user_context).await?;
         assert!(result.len() > 0, "Görevler listesi");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_update_some_task_works() -> Result<(), Box<dyn std::error::Error>> {
+        let db = init().await?;
+        let user_context = get_user_from_token("9999").await?;
+
+        let candidate_task = TaskDao {
+            title: Some(String::from(
+                "Akşam Red Alert oyun partisi var. Cipsleri al :)",
+            )),
+            state: None,
+        };
+        let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
+        let update_candidate = TaskDao {
+            title: Some(created_task.title),
+            state: Some(TaskState::Completed),
+        };
+
+        let updated_task =
+            TaskMac::update(&db, &user_context, created_task.id, update_candidate).await?;
+        assert_eq!(updated_task.state, TaskState::Completed);
 
         Ok(())
     }

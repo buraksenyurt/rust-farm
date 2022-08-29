@@ -59,7 +59,10 @@ impl TaskMac {
             .columns(Self::FIELDS)
             .and_where_eq("id", id);
 
-        let task = sql_builder.fetch_one(db).await?;
+        let task = sql_builder.fetch_one(db).await.map_err(|serr| match serr {
+            sqlx::Error::RowNotFound => Error::EntityNotFound(Self::TABLE, id.to_string()),
+            other => Error::SqlxError(other),
+        })?;
 
         Ok(task)
     }
@@ -152,6 +155,16 @@ mod tests {
         let result = TaskMac::get_single(&db, &user_context, created_task.id).await?;
         assert_eq!(result.id, created_task.id);
 
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_get_single_task_fails_with_wrong_id() -> Result<(), Box<dyn std::error::Error>>
+    {
+        let db = init().await?;
+        let user_context = get_user_from_token("9999").await?;
+        let result = TaskMac::get_single(&db, &user_context, -1).await;
+        println!("{:?}", result);
         Ok(())
     }
 

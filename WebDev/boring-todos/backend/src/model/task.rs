@@ -28,6 +28,11 @@ pub struct TaskDao {
 // CRUD operasyonlarını ele alan kısım olarak düşünülebilir.
 pub struct TaskMac;
 
+impl TaskMac {
+    const TABLE: &'static str = "task";
+    const FIELDS: &'static [&'static str] = &["id", "user_id", "title", "state"];
+}
+
 // Model Access Controller fonksiyonları
 impl TaskMac {
     pub async fn get_all(db: &Db, _uctx: &UserContext) -> Result<Vec<Task>, Error> {
@@ -38,13 +43,24 @@ impl TaskMac {
         // insert sorgusunun çalıştırılmasında olduğu gibi Select tipli sorgular içinde
         // Sql Builder tekniği kullanılabilir.
         let sql_builder = sqlb::select()
-            .table("task")
-            .columns(&["id", "user_id", "title", "state"])
+            .table(Self::TABLE)
+            .columns(Self::FIELDS)
             .order_by("!id");
 
         let task_list = sql_builder.fetch_all(db).await?;
 
         Ok(task_list)
+    }
+
+    pub async fn get_single(db: &Db, _uctx: &UserContext, id: i64) -> Result<Task, Error> {
+        let sql_builder = sqlb::select()
+            .table(Self::TABLE)
+            .columns(Self::FIELDS)
+            .and_where_eq("id", id);
+
+        let task = sql_builder.fetch_one(db).await?;
+
+        Ok(task)
     }
 
     pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, Error> {
@@ -67,9 +83,9 @@ impl TaskMac {
         fields.push(("user_id", uctx.user_id).into());
 
         let sql_builder = sqlb::insert()
-            .table("task")
+            .table(Self::TABLE)
             .data(fields)
-            .returning(&["id", "user_id", "title", "state"]);
+            .returning(Self::FIELDS);
         let created_task = sql_builder.fetch_one(db).await?;
 
         Ok(created_task)
@@ -99,6 +115,24 @@ mod tests {
         assert_eq!(10101, created_task.user_id);
         assert_eq!(candidate_task.title.unwrap(), created_task.title);
         assert_eq!(TaskState::Ready, created_task.state);
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_get_single_task_works() -> Result<(), Box<dyn std::error::Error>> {
+        let db = init().await?;
+        let user_context = get_user_from_token("9999").await?;
+
+        let candidate_task = TaskDao {
+            title: Some(String::from(
+                "Akşam Red Alert oyun partisi var. Cipsleri al :)",
+            )),
+        };
+        let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
+
+        let result = TaskMac::get_single(&db, &user_context, created_task.id).await?;
+        assert_eq!(result.id, created_task.id);
+
         Ok(())
     }
 

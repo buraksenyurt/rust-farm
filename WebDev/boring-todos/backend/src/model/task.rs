@@ -59,12 +59,9 @@ impl TaskMac {
             .columns(Self::FIELDS)
             .and_where_eq("id", id);
 
-        let task = sql_builder.fetch_one(db).await.map_err(|serr| match serr {
-            sqlx::Error::RowNotFound => Error::EntityNotFound(Self::TABLE, id.to_string()),
-            other => Error::SqlxError(other),
-        })?;
+        let task = sql_builder.fetch_one(db).await;
 
-        Ok(task)
+        handle(task, Self::TABLE, id)
     }
 
     pub async fn update(
@@ -79,8 +76,9 @@ impl TaskMac {
             .and_where_eq("id", id)
             .returning(Self::FIELDS);
 
-        let updated_task = sql_builder.fetch_one(db).await?;
-        Ok(updated_task)
+        let updated_task = sql_builder.fetch_one(db).await;
+
+        handle(updated_task, Self::TABLE, id)
     }
 
     pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, Error> {
@@ -110,6 +108,17 @@ impl TaskMac {
 
         Ok(created_task)
     }
+}
+
+fn handle(
+    result: Result<Task, sqlx::Error>,
+    t: &'static str,
+    record_id: i64,
+) -> Result<Task, Error> {
+    result.map_err(|serr| match serr {
+        sqlx::Error::RowNotFound => Error::EntityNotFound(t, record_id.to_string()),
+        other => Error::SqlxError(other),
+    })
 }
 
 #[cfg(test)]
@@ -165,14 +174,14 @@ mod tests {
         let db = init().await?;
         let user_context = get_user_from_token("9999").await?;
         let result = TaskMac::get_single(&db, &user_context, 0).await;
-       match result{
-           Ok(_)=>assert!(false,"Başarılı değil"),
-           Err(Error::EntityNotFound(t,id))=>{
-               assert_eq!("task",t);
-               assert_eq!(0.to_string(),id);
-           },
-           other=>assert!(false,"Başımız dertte {:?}",other)
-       }
+        match result {
+            Ok(_) => assert!(false, "Başarılı değil"),
+            Err(Error::EntityNotFound(t, id)) => {
+                assert_eq!("task", t);
+                assert_eq!(0.to_string(), id);
+            }
+            other => assert!(false, "Başımız dertte {:?}", other),
+        }
         Ok(())
     }
 

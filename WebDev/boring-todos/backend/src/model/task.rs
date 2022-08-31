@@ -53,15 +53,15 @@ impl TaskMac {
         Ok(task_list)
     }
 
-    pub async fn get_single(db: &Db, _uctx: &UserContext, id: i64) -> Result<Task, Error> {
+    pub async fn get_single(db: &Db, _uctx: &UserContext, record_id: i64) -> Result<Task, Error> {
         let sql_builder = sqlb::select()
             .table(Self::TABLE)
             .columns(Self::FIELDS)
-            .and_where_eq("id", id);
+            .and_where_eq("id", record_id);
 
         let task = sql_builder.fetch_one(db).await;
 
-        handle(task, Self::TABLE, id)
+        handle(task, Self::TABLE, record_id)
     }
 
     pub async fn update(
@@ -114,6 +114,17 @@ impl TaskMac {
         let created_task = sql_builder.fetch_one(db).await?;
 
         Ok(created_task)
+    }
+
+    pub async fn delete(db: &Db, _uctx: &UserContext, record_id: i64) -> Result<Task, Error> {
+        let sql_builder = sqlb::delete()
+            .table(Self::TABLE)
+            .returning(Self::FIELDS)
+            .and_where_eq("id", record_id);
+
+        let deleted = sql_builder.fetch_one(db).await;
+
+        handle(deleted, Self::TABLE, record_id)
     }
 }
 
@@ -223,6 +234,27 @@ mod tests {
         let updated_task =
             TaskMac::update(&db, &user_context, created_task.id, update_candidate).await?;
         assert_eq!(updated_task.state, TaskState::Completed);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_delete_task_works() -> Result<(), Box<dyn std::error::Error>> {
+        let db = init().await?;
+        let user_context = get_user_from_token("10101").await?;
+
+        let candidate_task = TaskDao {
+            title: Some(String::from(
+                "Bu görev 5 saniye içinde kendi kendini yok edecektir. Boş şans Ethan Hunt :D",
+            )),
+            state: None,
+        };
+        let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
+
+        let deleted_task = TaskMac::delete(&db, &user_context, created_task.id).await?;
+
+        assert_eq!(deleted_task.id, created_task.id);
+        assert_eq!(deleted_task.title, created_task.title);
 
         Ok(())
     }

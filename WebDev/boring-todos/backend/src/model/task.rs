@@ -2,7 +2,7 @@ use crate::model::custom_error::Error;
 use crate::model::database::Db;
 use crate::model::task_state::TaskState;
 use crate::security::user_context::UserContext;
-use sqlb::HasFields;
+use sqlb::{HasFields, Raw};
 
 // Veri tabanındaki task tablosunu kod tarafındaki iz düşümü olan veri yapısı
 #[derive(sqlx::FromRow, Debug)]
@@ -66,13 +66,20 @@ impl TaskMac {
 
     pub async fn update(
         db: &Db,
-        _uctx: &UserContext,
+        uctx: &UserContext,
         id: i64,
         data: TaskDao,
     ) -> Result<Task, Error> {
+        // Veritabanındaki Task tablosuna güncelleme yapan kullanıcı ve zaman bilgisini eklemiştik.
+        // Bu alanları Task veri yapısına koymadan da kullanmamız mümkün.
+        // Bunun için Fields vektörüne ilgili alanları eklemek yeterli.
+        let mut fields = data.fields();
+        fields.push(("modify_user_id", uctx.user_id).into());
+        fields.push(("modify_date", Raw("now()")).into());
+
         let sql_builder = sqlb::update()
             .table(Self::TABLE)
-            .data(data.fields())
+            .data(fields)
             .and_where_eq("id", id)
             .returning(Self::FIELDS);
 
@@ -212,6 +219,7 @@ mod tests {
             state: Some(TaskState::Completed),
         };
 
+        let user_context = get_user_from_token("5001").await?;
         let updated_task =
             TaskMac::update(&db, &user_context, created_task.id, update_candidate).await?;
         assert_eq!(updated_task.state, TaskState::Completed);

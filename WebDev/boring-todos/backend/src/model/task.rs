@@ -2,10 +2,13 @@ use crate::model::custom_error::Error;
 use crate::model::database::Db;
 use crate::model::task_state::TaskState;
 use crate::security::user_context::UserContext;
+use serde::{Deserialize, Serialize};
 use sqlb::{HasFields, Raw};
 
 // Veri tabanındaki task tablosunu kod tarafındaki iz düşümü olan veri yapısı
-#[derive(sqlx::FromRow, Debug)]
+// web tarafında rest çağrılarında json formatında kullanılacağından Serialize trait'i ile
+// de donatılmıştır.
+#[derive(sqlx::FromRow, Debug, Serialize, Deserialize)]
 pub struct Task {
     pub id: i64,
     pub user_id: i64,

@@ -1,3 +1,6 @@
+mod task;
+mod utility;
+
 use crate::model::database::Db;
 use std::path::Path;
 use std::sync::Arc;
@@ -10,7 +13,7 @@ pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result
     if !Path::new(web_folder).exists() {
         return Err(Error::WebFolderNotFound(web_folder.to_string()));
     }
-    println!("Kullanılacak path {}",web_folder);
+    println!("Kullanılacak path {}", web_folder);
     //region Statik içerik kullanımı
 
     // İlk etapta statik bir içerik basılacağı için aşağıdaki hazırlıklar yapılır.
@@ -21,7 +24,7 @@ pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result
         .and(warp::fs::file(format!("{}/index.html", web_folder)));
     let web_site = content.or(rootx);
     let routes = web_site;
-    println!("127.0.0.1:{} adresinden sunucu hizmeti açılacak",port);
+    println!("127.0.0.1:{} adresinden sunucu hizmeti açılacak", port);
     warp::serve(routes).run(([127, 0, 0, 1], port)).await;
 
     //endregion Statik içerik kullanımı

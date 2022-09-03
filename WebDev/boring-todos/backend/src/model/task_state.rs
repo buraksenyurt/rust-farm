@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
+
 // veri tabanındaki task_state isimli tipin kod tarafındaki iz düşümü olan enum yapısıdır
 
-#[derive(sqlx::Type, Debug, Clone, Eq, PartialEq)]
+#[derive(sqlx::Type, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 #[sqlx(type_name = "task_state")]
 #[sqlx(rename_all = "lowercase")]
 pub enum TaskState {

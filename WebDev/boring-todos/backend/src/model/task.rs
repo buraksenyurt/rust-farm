@@ -1,5 +1,5 @@
-use crate::model::custom_error::Error;
 use crate::model::database::Db;
+use crate::model::error::ModelError;
 use crate::model::task_state::TaskState;
 use crate::security::user_context::UserContext;
 use serde::{Deserialize, Serialize};
@@ -39,7 +39,7 @@ impl TaskMac {
 
 // Model Access Controller fonksiyonları
 impl TaskMac {
-    pub async fn get_all(db: &Db, _uctx: &UserContext) -> Result<Vec<Task>, Error> {
+    pub async fn get_all(db: &Db, _uctx: &UserContext) -> Result<Vec<Task>, ModelError> {
         // let sql = "SELECT id,user_id,title,state FROM task ORDER By id DESC";
         // let query = sqlx::query_as(&sql);
         // let task_list = query.fetch_all(db).await?;
@@ -56,7 +56,11 @@ impl TaskMac {
         Ok(task_list)
     }
 
-    pub async fn get_single(db: &Db, _uctx: &UserContext, record_id: i64) -> Result<Task, Error> {
+    pub async fn get_single(
+        db: &Db,
+        _uctx: &UserContext,
+        record_id: i64,
+    ) -> Result<Task, ModelError> {
         let sql_builder = sqlb::select()
             .table(Self::TABLE)
             .columns(Self::FIELDS)
@@ -72,7 +76,7 @@ impl TaskMac {
         uctx: &UserContext,
         id: i64,
         data: TaskDao,
-    ) -> Result<Task, Error> {
+    ) -> Result<Task, ModelError> {
         // Veritabanındaki Task tablosuna güncelleme yapan kullanıcı ve zaman bilgisini eklemiştik.
         // Bu alanları Task veri yapısına koymadan da kullanmamız mümkün.
         // Bunun için Fields vektörüne ilgili alanları eklemek yeterli.
@@ -91,7 +95,7 @@ impl TaskMac {
         handle(updated_task, Self::TABLE, id)
     }
 
-    pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, Error> {
+    pub async fn create(db: &Db, uctx: &UserContext, payload: TaskDao) -> Result<Task, ModelError> {
         // let sql =
         //     "INSERT INTO task (user_id,title) VALUES ($1,$2) returning id,user_id,title,state";
         // let query = sqlx::query_as::<_, Task>(&sql)
@@ -119,7 +123,7 @@ impl TaskMac {
         Ok(created_task)
     }
 
-    pub async fn delete(db: &Db, _uctx: &UserContext, record_id: i64) -> Result<Task, Error> {
+    pub async fn delete(db: &Db, _uctx: &UserContext, record_id: i64) -> Result<Task, ModelError> {
         let sql_builder = sqlb::delete()
             .table(Self::TABLE)
             .returning(Self::FIELDS)
@@ -135,17 +139,17 @@ fn handle(
     result: Result<Task, sqlx::Error>,
     t: &'static str,
     record_id: i64,
-) -> Result<Task, Error> {
+) -> Result<Task, ModelError> {
     result.map_err(|serr| match serr {
-        sqlx::Error::RowNotFound => Error::EntityNotFound(t, record_id.to_string()),
-        other => Error::SqlxError(other),
+        sqlx::Error::RowNotFound => ModelError::EntityNotFound(t, record_id.to_string()),
+        other => ModelError::SqlxError(other),
     })
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::model::custom_error::Error;
     use crate::model::database::init;
+    use crate::model::error::ModelError;
     use crate::model::task::{TaskDao, TaskMac};
     use crate::model::task_state::TaskState;
     use crate::security::user_context::get_user_from_token;
@@ -197,7 +201,7 @@ mod tests {
         let result = TaskMac::get_single(&db, &user_context, 0).await;
         match result {
             Ok(_) => assert!(false, "Başarılı değil"),
-            Err(Error::EntityNotFound(t, id)) => {
+            Err(ModelError::EntityNotFound(t, id)) => {
                 assert_eq!("task", t);
                 assert_eq!(0.to_string(), id);
             }

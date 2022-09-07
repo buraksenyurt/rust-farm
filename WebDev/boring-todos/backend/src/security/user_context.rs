@@ -1,4 +1,4 @@
-use thiserror::Error as ThisError;
+use crate::security::error::TokenError;
 
 // Task kaydeden kullanıcı bilgisini güvenli bir token içinden almayı planlıyoruz.
 // Bu token içeriğindeki user_id bilgisi task oluşturan kullanıcı bilgisi olarak kullanılabilir.
@@ -11,12 +11,6 @@ impl UserContext {
     pub fn new(user_id: i64) -> Self {
         Self { user_id }
     }
-}
-
-#[derive(ThisError, Debug)]
-pub enum TokenError {
-    #[error("Geçersiz token {0}")]
-    InvalidToken(String),
 }
 
 // Sembolik olarak yazdığımız ve bir token içinden kullanıcı id bilgisini çeken fonksiyon

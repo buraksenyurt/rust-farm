@@ -1,17 +1,20 @@
 mod task;
 mod utility;
+mod error;
 
 use crate::model::database::Db;
+use crate::{model, model::error::ModelError, security::TokenError};
 use std::path::Path;
 use std::sync::Arc;
 use warp::Filter;
+use crate::web::error::WebError;
 
 // Web sunucusunu başlatma işlemini üstlenen fonksiyondur
-pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result<(), Error> {
+pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result<(), WebError> {
     // İlk önce web klasörünün var olup olmadığına bakılır. Yoksa Error basılır
 
     if !Path::new(web_folder).exists() {
-        return Err(Error::WebFolderNotFound(web_folder.to_string()));
+        return Err(WebError::WebFolderNotFound(web_folder.to_string()));
     }
     println!("Kullanılacak path {}", web_folder);
     //region Statik içerik kullanımı
@@ -30,10 +33,4 @@ pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result
     //endregion Statik içerik kullanımı
 
     Ok(())
-}
-
-#[derive(thiserror::Error, Debug)]
-pub enum Error {
-    #[error("Web sunucu başlatma hatası. {0} klasörü bulunamadı")]
-    WebFolderNotFound(String),
 }

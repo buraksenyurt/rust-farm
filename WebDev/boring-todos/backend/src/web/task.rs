@@ -29,7 +29,7 @@ pub fn task_router(
 
 // Tüm görev listesini JSON formatında(başarılı olursa) döndüren fonksiyon
 async fn get_all_tasks(db: Arc<Db>, user_context: UserContext) -> Result<Json, warp::Rejection> {
-    let tasks = TaskMac::get_all(&db, &user_context).await.unwrap();
+    let tasks = TaskMac::get_all(&db, &user_context).await?;
     let response = json!({ "data": tasks });
     Ok(warp::reply::json(&response))
 }
@@ -52,6 +52,7 @@ mod test {
 
         let response = warp::test::request()
             .method("GET")
+            .header("X-Auth-Token", "10101")
             .path("/api/tasks")
             .reply(&api)
             .await;

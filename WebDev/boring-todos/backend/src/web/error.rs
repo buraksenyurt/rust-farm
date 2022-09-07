@@ -3,8 +3,10 @@ use crate::security::TokenError;
 
 #[derive(thiserror::Error, Debug)]
 pub enum WebError {
-    #[error("Web sunucu başlatma hatası. {0} klasörü bulunamadı")]
+    #[error("Web sunucu başlatma hatası. {0} klasörü bulunamadı.")]
     WebFolderNotFound(String),
+    #[error("Doğrulama geçersiz. X-Auth-Token header bilgisi bulunamadı.")]
+    MissingXAuth,
 }
 #[derive(Debug)]
 pub struct WebErrorMessage {

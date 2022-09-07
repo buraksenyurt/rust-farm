@@ -1,5 +1,6 @@
 use crate::model::database::Db;
 use crate::security::user_context::{get_user_from_token, UserContext};
+use crate::web::error::WebError;
 use std::convert::Infallible;
 use std::sync::Arc;
 use warp::{Filter, Rejection};
@@ -13,8 +14,19 @@ pub fn add_db(db: Arc<Db>) -> impl Filter<Extract = (Arc<Db>,), Error = Infallib
     warp::any().map(move || db.clone())
 }
 
-pub fn add_auth(_db: Arc<Db>) -> impl Filter<Extract = (UserContext,), Error = Rejection> + Clone {
-    warp::any().and_then(|| async {
-        Ok::<UserContext, Rejection>(get_user_from_token("10101").await.unwrap())
-    })
+// Header'da bir X-Auth-Token bilgisi olması halinde bunun içerisinden User Context'i yakaladığımız
+// filtre fonksiyonudur.
+pub fn add_auth(db: Arc<Db>) -> impl Filter<Extract = (UserContext,), Error = Rejection> + Clone {
+    warp::any()
+        .and(add_db(db))
+        .and(warp::header::optional("X-Auth-Token"))
+        .and_then(|db: Arc<Db>, xauth: Option<String>| async move {
+            match xauth {
+                Some(token) => {
+                    let user_context = get_user_from_token(&db, &token).await?;
+                    Ok::<UserContext, Rejection>(user_context)
+                }
+                None => Err(WebError::MissingXAuth.into()),
+            }
+        })
 }

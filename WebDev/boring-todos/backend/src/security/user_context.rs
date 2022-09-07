@@ -1,3 +1,4 @@
+use crate::model::database::Db;
 use crate::security::error::TokenError;
 
 // Task kaydeden kullanıcı bilgisini güvenli bir token içinden almayı planlıyoruz.
@@ -14,7 +15,7 @@ impl UserContext {
 }
 
 // Sembolik olarak yazdığımız ve bir token içinden kullanıcı id bilgisini çeken fonksiyon
-pub async fn get_user_from_token(token: &str) -> Result<UserContext, TokenError> {
+pub async fn get_user_from_token(_db: &Db, token: &str) -> Result<UserContext, TokenError> {
     match token.parse::<i64>() {
         Ok(id) => Ok(UserContext::new(id)),
         Err(_) => Err(TokenError::InvalidToken(token.to_string())),

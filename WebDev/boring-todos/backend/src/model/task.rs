@@ -164,7 +164,7 @@ mod tests {
             state: None,
         };
 
-        let user_context = get_user_from_token("10101").await?;
+        let user_context = get_user_from_token(&db, "10101").await?;
 
         let created_task = TaskMac::create(&db, &user_context, candidate_task.clone()).await?;
         assert!(created_task.id >= 1);
@@ -177,7 +177,7 @@ mod tests {
     #[tokio::test]
     async fn should_get_single_task_works() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
-        let user_context = get_user_from_token("9999").await?;
+        let user_context = get_user_from_token(&db, "9999").await?;
 
         let candidate_task = TaskDao {
             title: Some(String::from(
@@ -197,7 +197,7 @@ mod tests {
     async fn should_get_single_task_fails_with_wrong_id() -> Result<(), Box<dyn std::error::Error>>
     {
         let db = init().await?;
-        let user_context = get_user_from_token("9999").await?;
+        let user_context = get_user_from_token(&db, "9999").await?;
         let result = TaskMac::get_single(&db, &user_context, 0).await;
         match result {
             Ok(_) => assert!(false, "Başarılı değil"),
@@ -213,7 +213,7 @@ mod tests {
     #[tokio::test]
     async fn should_get_all_returns_more_than_one_task() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
-        let user_context = get_user_from_token("10101").await?;
+        let user_context = get_user_from_token(&db, "10101").await?;
         let result = TaskMac::get_all(&db, &user_context).await?;
         assert!(result.len() > 0, "Görevler listesi");
 
@@ -223,7 +223,7 @@ mod tests {
     #[tokio::test]
     async fn should_update_some_task_works() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
-        let user_context = get_user_from_token("9999").await?;
+        let user_context = get_user_from_token(&db, "9999").await?;
 
         let candidate_task = TaskDao {
             title: Some(String::from(
@@ -237,7 +237,7 @@ mod tests {
             state: Some(TaskState::Completed),
         };
 
-        let user_context = get_user_from_token("5001").await?;
+        let user_context = get_user_from_token(&db, "5001").await?;
         let updated_task =
             TaskMac::update(&db, &user_context, created_task.id, update_candidate).await?;
         assert_eq!(updated_task.state, TaskState::Completed);
@@ -248,7 +248,7 @@ mod tests {
     #[tokio::test]
     async fn should_delete_task_works() -> Result<(), Box<dyn std::error::Error>> {
         let db = init().await?;
-        let user_context = get_user_from_token("10101").await?;
+        let user_context = get_user_from_token(&db, "10101").await?;
 
         let candidate_task = TaskDao {
             title: Some(String::from(

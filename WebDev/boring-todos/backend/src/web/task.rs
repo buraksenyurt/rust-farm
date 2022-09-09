@@ -1,8 +1,7 @@
 use crate::model::database::Db;
 use crate::model::task::{TaskDao, TaskMac};
 use crate::security::user_context::UserContext;
-use crate::web::utility::{add_auth, add_db};
-use serde_json::json;
+use crate::web::utility::{add_auth, add_db, to_json_response};
 use std::sync::Arc;
 use warp::reply::Json;
 use warp::Filter;
@@ -52,8 +51,7 @@ pub fn task_router(
 async fn get_all_tasks(db: Arc<Db>, user_context: UserContext) -> Result<Json, warp::Rejection> {
     log::info!("Get All Task metodu çağrıldı");
     let tasks = TaskMac::get_all(&db, &user_context).await?;
-    let response = json!({ "data": tasks });
-    Ok(warp::reply::json(&response))
+    to_json_response(tasks)
 }
 
 // Belli bir ID değerindeki görevi çeken fonksiyon
@@ -63,8 +61,7 @@ async fn get_task(
     record_id: i64,
 ) -> Result<Json, warp::Rejection> {
     let task = TaskMac::get_single(&db, &user_context, record_id).await?;
-    let response = json!({ "data": task });
-    Ok(warp::reply::json(&response))
+    to_json_response(task)
 }
 
 // Yeni bir görev ekleme için kullanılan fonksiyon
@@ -74,8 +71,7 @@ async fn create_task(
     payload: TaskDao,
 ) -> Result<Json, warp::Rejection> {
     let created_task = TaskMac::create(&db, &user_context, payload).await?;
-    let response = json!({ "data": created_task });
-    Ok(warp::reply::json(&response))
+    to_json_response(created_task)
 }
 
 #[cfg(test)]

@@ -1,8 +1,15 @@
 use crate::model::database::Db;
+use crate::model::task::Task;
 use crate::security::user_context::{get_user_from_token, UserContext};
 use crate::web::error::WebError;
+use anyhow::Context;
+use serde::Serialize;
+use serde_json::{from_str, from_value, json, Value};
 use std::convert::Infallible;
+use std::str::from_utf8;
 use std::sync::Arc;
+use warp::hyper::body::Bytes;
+use warp::reply::{Json, Response};
 use warp::{Filter, Rejection};
 
 // Her rest operasyonun (görev listesini çekmek, yeni görev eklemek, silmek ve güncellemek)
@@ -29,4 +36,12 @@ pub fn add_auth(db: Arc<Db>) -> impl Filter<Extract = (UserContext,), Error = Re
                 None => Err(WebError::MissingXAuth.into()),
             }
         })
+}
+
+// Özellikle web modülündeki task sınıfındaki CRUD işlemlerinde sıklıkla JSON ters
+// serileştirme işi uygulanıyor. Bu birkaç satırdan oluşan ve tekrarlı kodlara sebebiyet veriyor.
+// Aşağıdaki yardımcı fonksiyon ile kod tekrarını önlüyoruz
+pub fn to_json_response<P: Serialize>(payload: P) -> Result<Json, Rejection> {
+    let response = json!({ "data": payload });
+    Ok(warp::reply::json(&response))
 }

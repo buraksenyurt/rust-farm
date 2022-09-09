@@ -43,8 +43,31 @@ pub fn task_router(
         .and(warp::body::json())
         .and_then(create_task);
 
+    // Bir görevi silmek için kullanılacak route tanımı
+    // HTTP DELETE ile çalışır
+    // api/tasks/35 gibi parametrikdir
+    let delete_task = task_route
+        .and(warp::delete())
+        .and(filters.clone())
+        .and(warp::path::param())
+        .and_then(delete_task);
+
+    // Görev bilgisini güncellemek için gerekli route tanımı
+    // HTTP PATCH ile çalışır
+    // api/tasks/10 gibi parametrikdir
+    let update_task = task_route
+        .and(warp::patch())
+        .and(filters.clone())
+        .and(warp::path::param())
+        .and(warp::body::json())
+        .and_then(update_task);
+
     // Tüm route tanımlarının bağlandığı yer
-    all_tasks.or(get_single_task).or(create_task)
+    all_tasks
+        .or(get_single_task)
+        .or(create_task)
+        .or(delete_task)
+        .or(update_task)
 }
 
 // Tüm görev listesini JSON formatında(başarılı olursa) döndüren fonksiyon
@@ -74,6 +97,27 @@ async fn create_task(
     to_json_response(created_task)
 }
 
+// Bir görevi silmek için kullanılan tokio fonksiyonu
+async fn delete_task(
+    db: Arc<Db>,
+    user_context: UserContext,
+    record_id: i64,
+) -> Result<Json, warp::Rejection> {
+    let deleted = TaskMac::delete(&db, &user_context, record_id).await?;
+    to_json_response(deleted)
+}
+
+// Görev içeriğini güncellemek için kullanılan tokio fonksiyonu
+async fn update_task(
+    db: Arc<Db>,
+    user_context: UserContext,
+    record_id: i64,
+    payload: TaskDao,
+) -> Result<Json, warp::Rejection> {
+    let updated = TaskMac::update(&db, &user_context, record_id, payload).await?;
+    to_json_response(updated)
+}
+
 #[cfg(test)]
 mod test {
     use crate::init;
@@ -85,6 +129,7 @@ mod test {
     use std::str::from_utf8;
     use std::sync::Arc;
     use warp::Filter;
+    use crate::model::task_state::TaskState;
 
     #[tokio::test]
     async fn should_tasks_http_get_works() -> Result<()> {
@@ -160,7 +205,108 @@ mod test {
         let get_data = body["data"].take();
         let get_data: Task = from_value(get_data)?;
 
-        assert!(data.id == get_data.id, "Tek görev ekleme ve çekme");
+        assert_eq!(data.id, get_data.id, "Tek görev ekleme ve çekme");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_create_task_and_delete_works() -> Result<()> {
+        let db = init().await?;
+        let db = Arc::new(db);
+        let api = task_router("api", db.clone());
+
+        let body = json!({"title":"Bu görev az sonra kendisini yok edecektir"});
+
+        let response = warp::test::request()
+            .method("POST")
+            .header("X-Auth-Token", "10101")
+            .path("/api/tasks")
+            .json(&body)
+            .reply(&api)
+            .await;
+
+        assert_eq!(response.status(), 200, "Yeni görev ekleme");
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let data = body["data"].take();
+        let data: Task = from_value(data)?;
+        let path = format!("/api/tasks/{}", data.id);
+
+        let response = warp::test::request()
+            .method("DELETE")
+            .header("X-Auth-Token", "10101")
+            .path(&path)
+            .reply(&api)
+            .await;
+
+        assert_eq!(
+            response.status(),
+            200,
+            "Görev listesi için HTTP Get çağrımı"
+        );
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let deleted_data = body["data"].take();
+        let deleted_data: Task = from_value(deleted_data)?;
+
+        assert_eq!(data.id, deleted_data.id, "Tek görev ekleme ve silme");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_create_task_and_update_works() -> Result<()> {
+        let db = init().await?;
+        let db = Arc::new(db);
+        let api = task_router("api", db.clone());
+
+        let body = json!({"title":"Ubuntu versiyonunu yükselt."});
+
+        let response = warp::test::request()
+            .method("POST")
+            .header("X-Auth-Token", "10101")
+            .path("/api/tasks")
+            .json(&body)
+            .reply(&api)
+            .await;
+
+        assert_eq!(response.status(), 200, "Yeni görev ekleme");
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let data = body["data"].take();
+        let data: Task = from_value(data)?;
+        let update_data = json!({"title":data.title,"state":"Completed"});
+
+        let path = format!("/api/tasks/{}", data.id);
+
+        let response = warp::test::request()
+            .method("PATCH")
+            .header("X-Auth-Token", "10101")
+            .path(&path)
+            .json(&update_data)
+            .reply(&api)
+            .await;
+
+        assert_eq!(
+            response.status(),
+            200,
+            "Görev listesi için HTTP Get çağrımı"
+        );
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let updated_data = body["data"].take();
+        let updated_data: Task = from_value(updated_data)?;
+
+        assert_eq!(updated_data.state, TaskState::Completed, "Tek görev ekleme ve silme");
 
         Ok(())
     }

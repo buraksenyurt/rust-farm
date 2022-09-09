@@ -1,15 +1,11 @@
 use crate::model::database::Db;
-use crate::model::task::Task;
 use crate::security::user_context::{get_user_from_token, UserContext};
 use crate::web::error::WebError;
-use anyhow::Context;
 use serde::Serialize;
-use serde_json::{from_str, from_value, json, Value};
+use serde_json::json;
 use std::convert::Infallible;
-use std::str::from_utf8;
 use std::sync::Arc;
-use warp::hyper::body::Bytes;
-use warp::reply::{Json, Response};
+use warp::reply::Json;
 use warp::{Filter, Rejection};
 
 // Her rest operasyonun (görev listesini çekmek, yeni görev eklemek, silmek ve güncellemek)

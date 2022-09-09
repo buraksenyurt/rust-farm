@@ -22,4 +22,22 @@ Kodlamamıza göre bu http://localhost:5001 adresini etkinleştirecektir. Buna a
 
 İlerleyen kısımlarda buraya görevler listesine ait CRUD operasyonları için gerekli önyüz düzenlemelerini ekleyeceğiz.
 
+Web API tarafının testleri için backend uygulamasını çalıştırdıktan sonra Postman ile bazı denemeler yapabiliriz.
+
+İlk denemede Header'da Token bilgisi kullanmadan ilerliyoruz. Buna göre tasarladığımı hata mesajının dönmesi gerekiyor.
+
+![assets/screenshot_03.png](assets/screenshot_3.png)
+
+Eğer token bilgisi kullanırsak aşağıdaki ekran görüntüsünde olduğu gibi başarılı bir sonuç alabiliriz.
+
+![assets/screenshot_04.png](assets/screenshot_4.png)
+
+HTTP Post üstünden yeni görev eklenmesine ait örnek;
+
+![assets/screenshot_05.png](assets/screenshot_5.png)
+
+HTTP Patch ile az önce eklenen görevin durumunun güncellenmesine ait örnek;
+
+![assets/screenshot_06.png](assets/screenshot_6.png)
+
 ...

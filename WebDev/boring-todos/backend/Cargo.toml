@@ -14,6 +14,8 @@ serde_derive = "1.0.144"
 warp = "0.3.2"
 sqlx = { version = "0.6.1", features = [ "runtime-tokio-rustls", "postgres" ] }
 sqlb = "0.0.8"
+log = "0.4.17"
+env_logger = "0.9.0"
 
 [dev-dependencies]
 anyhow = "1.0.62"

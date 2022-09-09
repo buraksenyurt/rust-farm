@@ -14,6 +14,7 @@ const DEFAULT_PORT: u16 = 5001;
 
 #[tokio::main]
 async fn main() {
+    env_logger::init();
     // Web klasörünün adını parametre olarak komut satırından alabiliriz
     // eğer bir şey girilmeze varsayılan path kullanılır
     let mut args: Vec<String> = env::args().collect();

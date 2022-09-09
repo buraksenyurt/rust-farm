@@ -15,7 +15,7 @@ pub async fn run_web_server(web_folder: &str, port: u16, _db: Arc<Db>) -> Result
     if !Path::new(web_folder).exists() {
         return Err(WebError::WebFolderNotFound(web_folder.to_string()));
     }
-    println!("Kullanılacak path {}", web_folder);
+    log::info!("Kullanılacak path {}", web_folder);
     //region Statik içerik kullanımı
 
     // İlk etapta statik bir içerik basılacağı için aşağıdaki hazırlıklar yapılır.

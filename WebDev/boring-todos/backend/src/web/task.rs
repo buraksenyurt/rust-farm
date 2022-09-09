@@ -29,6 +29,7 @@ pub fn task_router(
 
 // Tüm görev listesini JSON formatında(başarılı olursa) döndüren fonksiyon
 async fn get_all_tasks(db: Arc<Db>, user_context: UserContext) -> Result<Json, warp::Rejection> {
+    log::info!("Get All Task metodu çağrıldı");
     let tasks = TaskMac::get_all(&db, &user_context).await?;
     let response = json!({ "data": tasks });
     Ok(warp::reply::json(&response))

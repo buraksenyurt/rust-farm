@@ -27,18 +27,21 @@ impl WebErrorMessage {
 
 impl From<WebError> for warp::Rejection {
     fn from(other: WebError) -> Self {
+        log::error!("WebError");
         WebErrorMessage::throw("web::Error", format!("{:?}", other))
     }
 }
 
 impl From<ModelError> for warp::Rejection {
     fn from(other: ModelError) -> Self {
+        log::error!("ModelError");
         WebErrorMessage::throw("model::Error", format!("{:?}", other))
     }
 }
 
 impl From<TokenError> for warp::Rejection {
     fn from(other: TokenError) -> Self {
+        log::error!("TokenError");
         WebErrorMessage::throw("security::Error", format!("{:?}", other))
     }
 }

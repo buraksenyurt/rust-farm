@@ -39,11 +39,13 @@ async fn get_all_tasks(db: Arc<Db>, user_context: UserContext) -> Result<Json, w
 mod test {
     use crate::init;
     use crate::model::task::Task;
+    use crate::web::handle_web_error;
     use crate::web::task::task_router;
     use anyhow::{Context, Result};
     use serde_json::{from_str, from_value, Value};
     use std::str::from_utf8;
     use std::sync::Arc;
+    use warp::Filter;
 
     #[tokio::test]
     async fn should_tasks_http_get_works() -> Result<()> {
@@ -71,6 +73,23 @@ mod test {
         let data: Vec<Task> = from_value(data)?;
 
         assert!(data.len() > 0, "Görev sayısı");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_tasks_http_get_throw_rejection() -> Result<()> {
+        let db = init().await?;
+        let db = Arc::new(db);
+        let api = task_router("api", db.clone()).recover(handle_web_error);
+
+        let response = warp::test::request()
+            .method("GET")
+            .path("/api/tasks")
+            .reply(&api)
+            .await;
+
+        assert_eq!(response.status(), 400, "Recover kontrol testi");
 
         Ok(())
     }

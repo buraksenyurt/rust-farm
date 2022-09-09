@@ -21,7 +21,7 @@ pub struct Task {
 // sqlb::Fields kullanılması insert fonksiyonundaki payload.fields() çağrımını mümkün kılar.
 // Bu sayede payload olarak ifade edilen TaskDao nesnesinin veri alanlarına göre otomatik oluşturulan
 // sql insert sorgusunun alanları beslenebilir.
-#[derive(sqlb::Fields, Debug, Clone)]
+#[derive(sqlb::Fields, Debug, Clone, Deserialize)]
 pub struct TaskDao {
     //pub user_id: Option<i64>,
     pub title: Option<String>,

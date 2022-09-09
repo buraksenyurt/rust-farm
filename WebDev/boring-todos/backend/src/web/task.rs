@@ -1,5 +1,5 @@
 use crate::model::database::Db;
-use crate::model::task::TaskMac;
+use crate::model::task::{TaskDao, TaskMac};
 use crate::security::user_context::UserContext;
 use crate::web::utility::{add_auth, add_db};
 use serde_json::json;
@@ -19,6 +19,7 @@ pub fn task_router(
     let filters = add_db(db.clone()).and(add_auth(db.clone()));
 
     // Tüm görevleri çeken route tanımı
+    // HTTP GET ile çalışır
     // api/tasks
     let all_tasks = task_route
         .and(warp::get())
@@ -27,6 +28,7 @@ pub fn task_router(
         .and_then(get_all_tasks);
 
     // Tek bir task çekmek için gerekli route tanımı
+    // HTTP GET ile çalışır
     // api/tasks/35 gibi parametrik
     let get_single_task = task_route
         .and(warp::get())
@@ -34,8 +36,16 @@ pub fn task_router(
         .and(warp::path::param())
         .and_then(get_task);
 
+    // yeni task oluşturmak için gerekli route tanımı
+    // HTTP POST ile çalışır ve gövdede JSON formatı kullanılır
+    let create_task = task_route
+        .and(warp::post())
+        .and(filters.clone())
+        .and(warp::body::json())
+        .and_then(create_task);
+
     // Tüm route tanımlarının bağlandığı yer
-    all_tasks.or(get_single_task)
+    all_tasks.or(get_single_task).or(create_task)
 }
 
 // Tüm görev listesini JSON formatında(başarılı olursa) döndüren fonksiyon
@@ -57,6 +67,17 @@ async fn get_task(
     Ok(warp::reply::json(&response))
 }
 
+// Yeni bir görev ekleme için kullanılan fonksiyon
+async fn create_task(
+    db: Arc<Db>,
+    user_context: UserContext,
+    payload: TaskDao,
+) -> Result<Json, warp::Rejection> {
+    let created_task = TaskMac::create(&db, &user_context, payload).await?;
+    let response = json!({ "data": created_task });
+    Ok(warp::reply::json(&response))
+}
+
 #[cfg(test)]
 mod test {
     use crate::init;
@@ -64,7 +85,7 @@ mod test {
     use crate::web::handle_web_error;
     use crate::web::task::task_router;
     use anyhow::{Context, Result};
-    use serde_json::{from_str, from_value, Value};
+    use serde_json::{from_str, from_value, json, Value};
     use std::str::from_utf8;
     use std::sync::Arc;
     use warp::Filter;
@@ -100,15 +121,34 @@ mod test {
     }
 
     #[tokio::test]
-    async fn should_single_task_http_get_works() -> Result<()> {
+    async fn should_create_task_and_get_works() -> Result<()> {
         let db = init().await?;
         let db = Arc::new(db);
         let api = task_router("api", db.clone());
 
+        let body = json!({"title":"10 Km yürü"});
+
+        let response = warp::test::request()
+            .method("POST")
+            .header("X-Auth-Token", "10101")
+            .path("/api/tasks")
+            .json(&body)
+            .reply(&api)
+            .await;
+
+        assert_eq!(response.status(), 200, "Yeni görev ekleme");
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let data = body["data"].take();
+        let data: Task = from_value(data)?;
+        let path = format!("/api/tasks/{}", data.id);
+
         let response = warp::test::request()
             .method("GET")
             .header("X-Auth-Token", "10101")
-            .path("/api/tasks/35")
+            .path(&path)
             .reply(&api)
             .await;
 
@@ -121,10 +161,10 @@ mod test {
         let body = from_utf8(response.body())?;
         let mut body: Value = from_str(body)
             .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
-        let data = body["data"].take();
-        let data: Task = from_value(data)?;
+        let get_data = body["data"].take();
+        let get_data: Task = from_value(get_data)?;
 
-        assert!(data.id == 35, "Tek görev");
+        assert!(data.id == get_data.id, "Tek görev ekleme ve çekme");
 
         Ok(())
     }

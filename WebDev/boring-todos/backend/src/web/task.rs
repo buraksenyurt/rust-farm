@@ -18,13 +18,24 @@ pub fn task_router(
     // aşağıdaki REST operasyonlarında ortaklaşa kullanılacaklar.
     let filters = add_db(db.clone()).and(add_auth(db.clone()));
 
+    // Tüm görevleri çeken route tanımı
+    // api/tasks
     let all_tasks = task_route
         .and(warp::get())
         .and(warp::path::end())
         .and(filters.clone())
         .and_then(get_all_tasks);
 
-    all_tasks
+    // Tek bir task çekmek için gerekli route tanımı
+    // api/tasks/35 gibi parametrik
+    let get_single_task = task_route
+        .and(warp::get())
+        .and(filters.clone())
+        .and(warp::path::param())
+        .and_then(get_task);
+
+    // Tüm route tanımlarının bağlandığı yer
+    all_tasks.or(get_single_task)
 }
 
 // Tüm görev listesini JSON formatında(başarılı olursa) döndüren fonksiyon
@@ -32,6 +43,17 @@ async fn get_all_tasks(db: Arc<Db>, user_context: UserContext) -> Result<Json, w
     log::info!("Get All Task metodu çağrıldı");
     let tasks = TaskMac::get_all(&db, &user_context).await?;
     let response = json!({ "data": tasks });
+    Ok(warp::reply::json(&response))
+}
+
+// Belli bir ID değerindeki görevi çeken fonksiyon
+async fn get_task(
+    db: Arc<Db>,
+    user_context: UserContext,
+    record_id: i64,
+) -> Result<Json, warp::Rejection> {
+    let task = TaskMac::get_single(&db, &user_context, record_id).await?;
+    let response = json!({ "data": task });
     Ok(warp::reply::json(&response))
 }
 
@@ -73,6 +95,36 @@ mod test {
         let data: Vec<Task> = from_value(data)?;
 
         assert!(data.len() > 0, "Görev sayısı");
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn should_single_task_http_get_works() -> Result<()> {
+        let db = init().await?;
+        let db = Arc::new(db);
+        let api = task_router("api", db.clone());
+
+        let response = warp::test::request()
+            .method("GET")
+            .header("X-Auth-Token", "10101")
+            .path("/api/tasks/35")
+            .reply(&api)
+            .await;
+
+        assert_eq!(
+            response.status(),
+            200,
+            "Görev listesi için HTTP Get çağrımı"
+        );
+
+        let body = from_utf8(response.body())?;
+        let mut body: Value = from_str(body)
+            .with_context(|| "Mesaj içeriği JSON formatında ters serileştirilemedi.")?;
+        let data = body["data"].take();
+        let data: Task = from_value(data)?;
+
+        assert!(data.id == 35, "Tek görev");
 
         Ok(())
     }

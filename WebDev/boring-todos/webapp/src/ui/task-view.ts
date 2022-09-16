@@ -1,4 +1,5 @@
 import {BaseHTMLElement, customElement, getFirst, html} from 'dom-native';
+import {Task} from '../model/task-model';
 
 @customElement("task-view")
 class TaskView extends BaseHTMLElement {
@@ -18,7 +19,7 @@ class TaskView extends BaseHTMLElement {
     }
 
     async refresh() {
-        let task_list=[
+        let task_list:Task[]=[
             {id:1,title:"Bulaşıkları yıka",state:"Ready"},
             {id:2,title:"10 Km koş",state:"Inprogress"}
         ];
@@ -26,6 +27,7 @@ class TaskView extends BaseHTMLElement {
         let htmlContent=document.createDocumentFragment();
         for(const task of task_list){
             const ti=document.createElement('task-item');
+            ti.data=task;
             htmlContent.append(ti);
         }
 
@@ -56,6 +58,19 @@ declare global{
 @customElement("task-item")
 class TaskItem extends BaseHTMLElement {
     #titleEl!: HTMLElement;
+    #data!: Task;
+
+    set data(data:Task){
+        let oldData=this.#data;
+        this.#data=Object.freeze(data);
+        if (this.isConnected){
+            this.refresh(oldData);
+        }
+    }
+
+    get data(){
+        return this.#data
+    }
 
     init(){
         let htmlContent = html`
@@ -65,6 +80,20 @@ class TaskItem extends BaseHTMLElement {
         `;
         this.#titleEl = getFirst(htmlContent,'div');
         this.append(htmlContent);
+        this.refresh();
+    }
+
+    refresh(old?:Task){
+
+        if (old!=null){
+            this.classList.remove(`Task-${old.id}`);
+            this.classList.remove(old.state);
+        }
+
+        const task=this.#data;
+        this.classList.add(`Task-${task.id}`);
+        this.classList.add(task.state);
+        this.#titleEl.textContent=task.title;
     }
 }
 

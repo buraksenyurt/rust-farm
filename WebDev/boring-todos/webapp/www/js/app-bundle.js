@@ -1045,7 +1045,7 @@
         };
     }
 
-    var _TaskView_taskInputElement, _TaskView_taskListElement, _TaskInput_inputEl, _TaskItem_titleEl;
+    var _TaskView_taskInputElement, _TaskView_taskListElement, _TaskInput_inputEl, _TaskItem_titleEl, _TaskItem_data;
     let TaskView = class TaskView extends BaseHTMLElement {
         constructor() {
             super(...arguments);
@@ -1072,6 +1072,7 @@
             let htmlContent = document.createDocumentFragment();
             for (const task of task_list) {
                 const ti = document.createElement('task-item');
+                ti.data = task;
                 htmlContent.append(ti);
             }
             __classPrivateFieldGet(this, _TaskView_taskListElement, "f").innerHTML = '';
@@ -1103,6 +1104,17 @@
         constructor() {
             super(...arguments);
             _TaskItem_titleEl.set(this, void 0);
+            _TaskItem_data.set(this, void 0);
+        }
+        set data(data) {
+            let oldData = __classPrivateFieldGet(this, _TaskItem_data, "f");
+            __classPrivateFieldSet(this, _TaskItem_data, Object.freeze(data), "f");
+            if (this.isConnected) {
+                this.refresh(oldData);
+            }
+        }
+        get data() {
+            return __classPrivateFieldGet(this, _TaskItem_data, "f");
         }
         init() {
             let htmlContent = html `
@@ -1112,9 +1124,20 @@
         `;
             __classPrivateFieldSet(this, _TaskItem_titleEl, getFirst(htmlContent, 'div'), "f");
             this.append(htmlContent);
+            this.refresh();
+        }
+        refresh(old) {
+            if (old != null) {
+                this.classList.remove(`Task-${old.id}`);
+                this.classList.remove(old.state);
+            }
+            const task = __classPrivateFieldGet(this, _TaskItem_data, "f");
+            this.classList.add(`Task-${task.id}`);
+            this.classList.add(task.state);
+            __classPrivateFieldGet(this, _TaskItem_titleEl, "f").textContent = task.title;
         }
     };
-    _TaskItem_titleEl = new WeakMap();
+    _TaskItem_titleEl = new WeakMap(), _TaskItem_data = new WeakMap();
     TaskItem = __decorate([
         customElement("task-item")
     ], TaskItem);

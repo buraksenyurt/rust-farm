@@ -1,5 +1,5 @@
 import {BaseHTMLElement, customElement, getFirst, html} from 'dom-native';
-import {Task} from '../model/task-model';
+import {Task, taskMac} from '../model/task-model';
 
 @customElement("task-view")
 class TaskView extends BaseHTMLElement {
@@ -19,11 +19,8 @@ class TaskView extends BaseHTMLElement {
     }
 
     async refresh() {
-        let task_list:Task[]=[
-            {id:1,title:"Bulaşıkları yıka",state:"Ready"},
-            {id:2,title:"10 Km koş",state:"Inprogress"}
-        ];
-
+        let task_list:Task[] = await taskMac.getAllTasks();
+        console.log(task_list);
         let htmlContent=document.createDocumentFragment();
         for(const task of task_list){
             const ti=document.createElement('task-item');

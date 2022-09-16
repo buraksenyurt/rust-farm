@@ -1045,6 +1045,41 @@
         };
     }
 
+    const API_BASE_PATH = '/api';
+    // HTTP Get,Post,Put ve Delete talepleri için modülden dışarıya açılan fonksiyonlar.
+    // Her biri restCall fonksiyonunu çağırmakta
+    async function get(path, data) {
+        return restCall("GET", path, data);
+    }
+    async function restCall(httpMethod, path, data) {
+        // Tipik olarak bir HTTP talebi gönderiyoruz
+        // Bunun için fetch fonksiyonu kullanılmakta.
+        // Fonksiyona gerekli header bilgileri dışında body kısmı da aktarılıyor(JSON formatında)
+        const url = `${API_BASE_PATH}/${path}`;
+        const response = await fetch(url, {
+            method: httpMethod,
+            mode: 'same-origin',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Token': '10101'
+            },
+            body: JSON.stringify(data)
+        });
+        // Çağrıdan gelen veriyi geriye dönüyoruz
+        let result = await response.json();
+        return result.data;
+    }
+
+    // Model Access Coordinator
+    class TaskMac {
+        async getAllTasks() {
+            const taskList = await get("tasks");
+            return taskList;
+        }
+    }
+    const taskMac = new TaskMac();
+
     var _TaskView_taskInputElement, _TaskView_taskListElement, _TaskInput_inputEl, _TaskItem_titleEl, _TaskItem_data;
     let TaskView = class TaskView extends BaseHTMLElement {
         constructor() {
@@ -1065,10 +1100,8 @@
             this.refresh();
         }
         async refresh() {
-            let task_list = [
-                { id: 1, title: "Bulaşıkları yıka", state: "Ready" },
-                { id: 2, title: "10 Km koş", state: "Inprogress" }
-            ];
+            let task_list = await taskMac.getAllTasks();
+            console.log(task_list);
             let htmlContent = document.createDocumentFragment();
             for (const task of task_list) {
                 const ti = document.createElement('task-item');

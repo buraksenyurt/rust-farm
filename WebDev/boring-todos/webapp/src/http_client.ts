@@ -16,7 +16,7 @@ export async function patch(path:string,data?:any){
     return restCall("PATCH",path,data);
 }
 
-export async function delete(path:string,data?:any){
+export async function del(path:string,data?:any){
     return restCall("DELETE",path,data);
 }
 

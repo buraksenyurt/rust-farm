@@ -8,10 +8,12 @@ class TaskView extends BaseHTMLElement {
 
     init(){
         let htmlContent: DocumentFragment = html`
-            <div><div>
-            <h1>Görevler</h1>
-            <task-input></task-input>
-            <task-list>/<task-list>
+            <div></div>
+            <div class="container">
+                <h3>Gündem</h3>
+                <task-input></task-input>
+                <task-list>/<task-list>
+            </div>
         `;
         [this.#taskInputElement,this.#taskListElement] = getFirst(htmlContent,'task-input','task-list');
         this.append(htmlContent);
@@ -54,7 +56,7 @@ declare global{
 
 @customElement("task-item")
 class TaskItem extends BaseHTMLElement {
-    #titleEl!: HTMLElement;
+    #titleLabelEl!: HTMLElement;
     #data!: Task;
 
     set data(data:Task){
@@ -71,11 +73,13 @@ class TaskItem extends BaseHTMLElement {
 
     init(){
         let htmlContent = html`
-            <c-check><c-ico name="ico-done"></c-ico></c-check>
-            <div>Görev Başlığı Gelecek</div>
-            <c-ico name="del"></c-ico>
+            <div>
+                <input type="checkbox" value="">
+                <label>Görev Başlığı Gelecek</label>
+                <button type="button" class="btn btn-danger">Sil</button>
+            </div>
         `;
-        this.#titleEl = getFirst(htmlContent,'div');
+        this.#titleLabelEl = getFirst(htmlContent,'label');
         this.append(htmlContent);
         this.refresh();
     }
@@ -90,7 +94,7 @@ class TaskItem extends BaseHTMLElement {
         const task=this.#data;
         this.classList.add(`Task-${task.id}`);
         this.classList.add(task.state);
-        this.#titleEl.textContent=task.title;
+        this.#titleLabelEl.textContent=task.title;
     }
 }
 

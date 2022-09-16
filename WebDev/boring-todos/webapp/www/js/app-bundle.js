@@ -1080,7 +1080,7 @@
     }
     const taskMac = new TaskMac();
 
-    var _TaskView_taskInputElement, _TaskView_taskListElement, _TaskInput_inputEl, _TaskItem_titleEl, _TaskItem_data;
+    var _TaskView_taskInputElement, _TaskView_taskListElement, _TaskInput_inputEl, _TaskItem_titleLabelEl, _TaskItem_data;
     let TaskView = class TaskView extends BaseHTMLElement {
         constructor() {
             super(...arguments);
@@ -1090,10 +1090,12 @@
         init() {
             var _a, _b;
             let htmlContent = html `
-            <div><div>
-            <h1>Görevler</h1>
-            <task-input></task-input>
-            <task-list>/<task-list>
+            <div></div>
+            <div class="container">
+                <h3>Gündem</h3>
+                <task-input></task-input>
+                <task-list>/<task-list>
+            </div>
         `;
             _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _TaskView_taskInputElement, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _TaskView_taskListElement, _c, "f"); } }).value] = getFirst(htmlContent, 'task-input', 'task-list');
             this.append(htmlContent);
@@ -1136,7 +1138,7 @@
     let TaskItem = class TaskItem extends BaseHTMLElement {
         constructor() {
             super(...arguments);
-            _TaskItem_titleEl.set(this, void 0);
+            _TaskItem_titleLabelEl.set(this, void 0);
             _TaskItem_data.set(this, void 0);
         }
         set data(data) {
@@ -1151,11 +1153,13 @@
         }
         init() {
             let htmlContent = html `
-            <c-check><c-ico name="ico-done"></c-ico></c-check>
-            <div>Görev Başlığı Gelecek</div>
-            <c-ico name="del"></c-ico>
+            <div>
+                <input type="checkbox" value="">
+                <label>Görev Başlığı Gelecek</label>
+                <button type="button" class="btn btn-danger">Sil</button>
+            </div>
         `;
-            __classPrivateFieldSet(this, _TaskItem_titleEl, getFirst(htmlContent, 'div'), "f");
+            __classPrivateFieldSet(this, _TaskItem_titleLabelEl, getFirst(htmlContent, 'label'), "f");
             this.append(htmlContent);
             this.refresh();
         }
@@ -1167,10 +1171,10 @@
             const task = __classPrivateFieldGet(this, _TaskItem_data, "f");
             this.classList.add(`Task-${task.id}`);
             this.classList.add(task.state);
-            __classPrivateFieldGet(this, _TaskItem_titleEl, "f").textContent = task.title;
+            __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").textContent = task.title;
         }
     };
-    _TaskItem_titleEl = new WeakMap(), _TaskItem_data = new WeakMap();
+    _TaskItem_titleLabelEl = new WeakMap(), _TaskItem_data = new WeakMap();
     TaskItem = __decorate([
         customElement("task-item")
     ], TaskItem);

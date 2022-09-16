@@ -57,6 +57,7 @@ declare global{
 @customElement("task-item")
 class TaskItem extends BaseHTMLElement {
     #titleLabelEl!: HTMLElement;
+    #checkboxEl!: HTMLInputElement;
     #data!: Task;
 
     set data(data:Task){
@@ -74,27 +75,37 @@ class TaskItem extends BaseHTMLElement {
     init(){
         let htmlContent = html`
             <div>
-                <input type="checkbox" value="">
+                <input type="checkbox" value="" id="taskState">
                 <label>Görev Başlığı Gelecek</label>
                 <button type="button" class="btn btn-danger">Sil</button>
             </div>
         `;
         this.#titleLabelEl = getFirst(htmlContent,'label');
+        this.#checkboxEl = getFirst(htmlContent,'input');
         this.append(htmlContent);
         this.refresh();
     }
 
     refresh(old?:Task){
-
-        if (old!=null){
-            this.classList.remove(`Task-${old.id}`);
-            this.classList.remove(old.state);
-        }
+//         if (old!=null){
+//             this.classList.remove(`Task-${old.id}`);
+//             this.classList.remove(old.state);
+//         }
 
         const task=this.#data;
-        this.classList.add(`Task-${task.id}`);
-        this.classList.add(task.state);
+        console.log(task.state);
+//         this.classList.add(`Task-${task.id}`);
+//         this.classList.add(task.state);
         this.#titleLabelEl.textContent=task.title;
+        if(task.state=="Completed"){
+            this.#titleLabelEl.classList.add(`text-success`);
+            this.#checkboxEl.checked=true;
+        }else if (task.state=="Ready"){
+            this.#titleLabelEl.classList.add(`text-warning`);
+        }
+        else if (task.state=="Inprogress"){
+            this.#titleLabelEl.classList.add(`text-important`);
+        }
     }
 }
 

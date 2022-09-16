@@ -58,10 +58,21 @@ sudo npm install dom-native
 # Web tarafını deneme amaçlı ayağa kaldırmak için
 npm run build -- -w
 
+# Üstteki komut çalıştırıldığında kod değişiklilerinin son hallerini içeren bir paket oluşur
+# js klasöründe index.html'in kullandığı bundle dosyalarına dikkat edelim.
+# sonrasında backend tarafında aşağıdaki komut ile sunucuyu etkinleştirebiliriz.
+cargo run ../webapp/www
+# Ardından http://localhost:5001/ adresine gitmemiz yeterli.
+
 # Eğer
 # [!] (plugin typescript) Error: @rollup/plugin-typescript: Could not find module 'tslib', which is required by this plugin. Is it installed?
 # şeklinde bir hata alırsak tslib sistemde yüklü olmadığı içindir.
 # Aşağıdaki komut ile bunu yükleyebiliriz.
 sudo npm i -D tslib
 ```
-...
+
+Tüm listeyi çeken web çağrı metodunu view'a ilk eklediğim gün elde ettiğim ekran görüntüsü aşağıdaki gibi.
+
+![assets/screenshot_07.png](assets/screenshot_7.png)
+
+__Serüven devam edecek__

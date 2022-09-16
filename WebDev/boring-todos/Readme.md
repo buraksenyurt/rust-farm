@@ -44,9 +44,24 @@ HTTP Patch ile az önce eklenen görevin durumunun güncellenmesine ait örnek;
 
 Web uygulamasında typescript kullanılıyor. Gerekli node paketlerini de aşağıdaki gibi yükleyebiliriz.
 
+- __rollup__ Javascript tarafı için geliştirilmiş bir Module Bundler sistemidir. Küçük kod parçalarını kütüphane şeklinde daha büyük modüllere derlemek için kullanılır. 
+- __@rollup/plugin-commonjs__ CommonJS modüllerini ES6 formatına çevirir ki Rollup Bundle ile birlikte kullanılabilsinler.
+- __@rollup/plugin-node-resolve__ Nore Resolution algoritmasına göre node_modules altındaki üçüncü parti modüllerin yerleştirilmesine kullanılan Rollup eklentisidir.
+- __@rollup/plugin-typescript__ Rollup ile Typescript arasındaki entegrasyonda kullanılır.
+- __rollup-plugin-terser__ Rollup Bundle'ı ufalamak(minify) için kullanılır.
+
 ```shell
 sudo npm install @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-typescript rollup-plugin-terser rollup --save-dev
 
 sudo npm install dom-native
+
+# Web tarafını deneme amaçlı ayağa kaldırmak için
+npm run build -- -w
+
+# Eğer
+# [!] (plugin typescript) Error: @rollup/plugin-typescript: Could not find module 'tslib', which is required by this plugin. Is it installed?
+# şeklinde bir hata alırsak tslib sistemde yüklü olmadığı içindir.
+# Aşağıdaki komut ile bunu yükleyebiliriz.
+sudo npm i -D tslib
 ```
 ...

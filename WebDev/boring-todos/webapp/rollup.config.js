@@ -5,7 +5,7 @@ export default [
   {
     input: './src/main.ts',
     output: {
-      file: './web-folder/js/app-bundle.js',
+      file: './www/js/app-bundle.js',
       format: 'iife',
       name: 'bundle',
       sourcemap: true

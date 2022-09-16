@@ -1,1 +1,1 @@
-console.log("it is working!");
+import './ui/task-view.js';

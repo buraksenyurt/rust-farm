@@ -40,4 +40,13 @@ HTTP Patch ile az önce eklenen görevin durumunun güncellenmesine ait örnek;
 
 ![assets/screenshot_06.png](assets/screenshot_6.png)
 
+## Web Uygulaması
+
+Web uygulamasında typescript kullanılıyor. Gerekli node paketlerini de aşağıdaki gibi yükleyebiliriz.
+
+```shell
+sudo npm install @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-typescript rollup-plugin-terser rollup --save-dev
+
+sudo npm install dom-native
+```
 ...

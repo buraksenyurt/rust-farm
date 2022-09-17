@@ -1,4 +1,4 @@
-import {BaseHTMLElement, customElement, getFirst, html} from 'dom-native';
+import {BaseHTMLElement, customElement, getFirst, html, OnEvent, onEvent,onHub, first } from 'dom-native';
 import {Task, taskMac} from '../model/task-model';
 
 @customElement("task-view")
@@ -22,7 +22,7 @@ class TaskView extends BaseHTMLElement {
 
     async refresh() {
         let task_list:Task[] = await taskMac.getAllTasks();
-        console.log(task_list);
+        //console.log(task_list);
         let htmlContent=document.createDocumentFragment();
         for(const task of task_list){
             const ti=document.createElement('task-item');
@@ -32,6 +32,12 @@ class TaskView extends BaseHTMLElement {
 
         this.#taskListElement.innerHTML = '';
         this.#taskListElement.append(htmlContent);
+    }
+
+    // Yeni bir görev eklendiğinde çalışır
+    @onHub('taskHub','Task','create')
+    onTaskCreate(data:Task){
+        this.refresh();
     }
 }
 
@@ -45,6 +51,17 @@ class TaskInput extends BaseHTMLElement {
         `;
         this.#inputEl = getFirst(htmlContent,'input');
         this.append(htmlContent);
+    }
+
+    // Kullanıcı title kutusunda enter tuşuna bastığında
+    // bir görev eklenmesi için model access coordinator'a çağrı yapılır
+    @onEvent('keyup','input')
+    onInputKeyup(event:KeyboardEvent){
+        if(event.key=="Enter"){
+            const title = this.#inputEl.value;
+            taskMac.createTask({title});
+            this.#inputEl.value='';
+        }
     }
 }
 
@@ -93,7 +110,7 @@ class TaskItem extends BaseHTMLElement {
 //         }
 
         const task=this.#data;
-        console.log(task.state);
+        //console.log(task.state);
 //         this.classList.add(`Task-${task.id}`);
 //         this.classList.add(task.state);
         this.#titleLabelEl.textContent=task.title;

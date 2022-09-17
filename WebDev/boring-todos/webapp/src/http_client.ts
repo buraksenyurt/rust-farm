@@ -33,7 +33,7 @@ async function restCall(httpMethod:WebMethod,path:string,data?:any){
         cache:'no-cache',
         headers: {
             'Content-Type':'application/json',
-            'X-Auth-Token':'10101'
+            'X-Auth-Token':'10101' // Normalde bu bilgi bir user identity sistem üstünden gelmeli tabii.
         },
         body: JSON.stringify(data)
     });

@@ -639,6 +639,36 @@
 
     const _onEventsByConstructor = new Map();
     const _computedOnDOMEventsByConstructor = new WeakMap();
+    //#region    ---------- Public onEvent Decorator ---------- 
+    function onEvent(type, selector_or_opts, opts) {
+        return _onDOMEvent(null, type, selector_or_opts, opts);
+    }
+    //#endregion ---------- /Public onEvent Decorator ---------- 
+    // the decorator function
+    function _onDOMEvent(evtTarget, type, selector_or_opts, opts) {
+        let selector = (typeof selector_or_opts == 'string') ? selector_or_opts : null;
+        opts = (selector === null) ? selector_or_opts : opts;
+        // target references the element's class. It will be the constructor function for a static method or the prototype of the class for an instance member
+        return function (target, propertyKey, descriptor) {
+            descriptor.value;
+            const clazz = target.constructor;
+            // get the onEvents array for this clazz
+            let onEvents = _onEventsByConstructor.get(clazz);
+            if (onEvents == null) {
+                onEvents = [];
+                _onEventsByConstructor.set(clazz, onEvents);
+            }
+            // create and push the event
+            const onEvent = {
+                target: evtTarget,
+                name: propertyKey,
+                type: type,
+                selector: selector,
+                opts
+            };
+            onEvents.push(onEvent);
+        };
+    }
     /** Bind the element OnDOMEvent registred in the decorator _onDOMEvent  */
     function bindOnElementEventsDecorators(el) {
         const clazz = el.constructor;
@@ -760,6 +790,30 @@
 
     const _onHubEventByConstructor = new Map();
     const _computedOnHubEventByConstructor = new WeakMap();
+    //#region    ---------- Public onEvent Decorator ---------- 
+    /**
+     * `onHub` decorator to bind a hub event to this instance.
+     */
+    function onHub(hubName, topic, label) {
+        // target references the element's class. It will be the constructor function for a static method or the prototype of the class for an instance member
+        return function (target, propertyKey, descriptor) {
+            const clazz = target.constructor;
+            // get the onEvents array for this clazz
+            let onEvents = _onHubEventByConstructor.get(clazz);
+            if (onEvents == null) {
+                onEvents = [];
+                _onHubEventByConstructor.set(clazz, onEvents);
+            }
+            // create and push the event
+            const onEvent = {
+                methodName: propertyKey,
+                hubName,
+                topic,
+                label
+            };
+            onEvents.push(onEvent);
+        };
+    }
     //#endregion ---------- /Public onEvent Decorator ---------- 
     function hasHubEventDecorators(el) {
         return getComputedOnHubEvents(el.constructor) != null;
@@ -1071,7 +1125,7 @@
             cache: 'no-cache',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Auth-Token': '10101'
+                'X-Auth-Token': '10101' // Normalde bu bilgi bir user identity sistem üstünden gelmeli tabii.
             },
             body: JSON.stringify(data)
         });
@@ -1141,7 +1195,7 @@
         }
         async refresh() {
             let task_list = await taskMac.getAllTasks();
-            console.log(task_list);
+            //console.log(task_list);
             let htmlContent = document.createDocumentFragment();
             for (const task of task_list) {
                 const ti = document.createElement('task-item');
@@ -1151,8 +1205,15 @@
             __classPrivateFieldGet(this, _TaskView_taskListElement, "f").innerHTML = '';
             __classPrivateFieldGet(this, _TaskView_taskListElement, "f").append(htmlContent);
         }
+        // Yeni bir görev eklendiğinde çalışır
+        onTaskCreate(data) {
+            this.refresh();
+        }
     };
     _TaskView_taskInputElement = new WeakMap(), _TaskView_taskListElement = new WeakMap();
+    __decorate([
+        onHub('taskHub', 'Task', 'create')
+    ], TaskView.prototype, "onTaskCreate", null);
     TaskView = __decorate([
         customElement("task-view")
     ], TaskView);
@@ -1168,8 +1229,20 @@
             __classPrivateFieldSet(this, _TaskInput_inputEl, getFirst(htmlContent, 'input'), "f");
             this.append(htmlContent);
         }
+        // Kullanıcı title kutusunda enter tuşuna bastığında
+        // bir görev eklenmesi için model access coordinator'a çağrı yapılır
+        onInputKeyup(event) {
+            if (event.key == "Enter") {
+                const title = __classPrivateFieldGet(this, _TaskInput_inputEl, "f").value;
+                taskMac.createTask({ title });
+                __classPrivateFieldGet(this, _TaskInput_inputEl, "f").value = '';
+            }
+        }
     };
     _TaskInput_inputEl = new WeakMap();
+    __decorate([
+        onEvent('keyup', 'input')
+    ], TaskInput.prototype, "onInputKeyup", null);
     TaskInput = __decorate([
         customElement("task-input")
     ], TaskInput);
@@ -1209,7 +1282,7 @@
             //             this.classList.remove(old.state);
             //         }
             const task = __classPrivateFieldGet(this, _TaskItem_data, "f");
-            console.log(task.state);
+            //console.log(task.state);
             //         this.classList.add(`Task-${task.id}`);
             //         this.classList.add(task.state);
             __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").textContent = task.title;

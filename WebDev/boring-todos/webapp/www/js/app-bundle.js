@@ -1205,13 +1205,20 @@
             __classPrivateFieldGet(this, _TaskView_taskListElement, "f").innerHTML = '';
             __classPrivateFieldGet(this, _TaskView_taskListElement, "f").append(htmlContent);
         }
-        // Yeni bir görev eklendiğinde çalışır
+        // Yeni bir görev eklendiğinde çalışır.
         onTaskCreate(data) {
             console.log("Yeni görev eklendi");
             this.refresh();
         }
+        // Ben burada kolaya kaçtım. Herhangi bir item güncellendiğinde
+        // tüm listeyi tazeliyorum. Aslında bu dinlemeyi task-item içerisinde
+        // yapmak lazım.
         onTaskUpdate(data) {
-            console.log("Güncelleme");
+            console.log("Güncelleme oldu");
+            this.refresh();
+        }
+        onDeleteTask(data) {
+            console.log("Silme işlemi");
             this.refresh();
         }
     };
@@ -1222,6 +1229,9 @@
     __decorate([
         onHub('taskHub', 'Task', 'update')
     ], TaskView.prototype, "onTaskUpdate", null);
+    __decorate([
+        onHub('taskHub', 'Task', 'delete')
+    ], TaskView.prototype, "onDeleteTask", null);
     TaskView = __decorate([
         customElement("task-view")
     ], TaskView);
@@ -1238,7 +1248,7 @@
             this.append(htmlContent);
         }
         // Kullanıcı title kutusunda enter tuşuna bastığında
-        // bir görev eklenmesi için model access coordinator'a çağrı yapılır
+        // bir görev eklenmesi için model access coordinator'a çağrı yapılır.
         onInputKeyup(event) {
             if (event.key == "Enter") {
                 const title = __classPrivateFieldGet(this, _TaskInput_inputEl, "f").value;
@@ -1284,10 +1294,14 @@
             this.append(htmlContent);
             this.refresh();
         }
+        // checkbox kontrolüne tıklandığında devereye giren olay metodu
         onCheckTask(event) {
+            // güncel task bilgilerini alıp state içeriğine bakıyoruz
             const taskItem = event.selectTarget.closest("task-item");
             let currentState = taskItem.data.state;
             //console.log(`Current State${currentState}`);
+            // state durumuna göre yeni bir PATCH talebi göndermekteyiz
+            // Ready modda ise Inprogress'e, Inprogress ise Completed'e alınıyorlar
             if (currentState == 'InProgress') {
                 taskMac.updateTask(taskItem.data.id, { state: 'Completed' });
             }
@@ -1295,7 +1309,17 @@
                 taskMac.updateTask(taskItem.data.id, { state: 'InProgress' });
             }
         }
-        refresh(old) {
+        // Sil butonuna tıklama olayını yakalamaktayız
+        onDeleteTask(event) {
+            const taskItem = event.selectTarget.closest("task-item");
+            let task_id = taskItem.data.id;
+            console.log(`${task_id} numaralı görev silinecek`);
+            taskMac.deleteTask(task_id);
+        }
+        // Task-Item elementi yenilenirken görevin durumuna bakarak
+        // bir şeyler yapıyoruz. Renkler değişiyor, veya checkbox
+        // elementi seçili hale geliyor.
+        refresh(oldData) {
             const task = __classPrivateFieldGet(this, _TaskItem_data, "f");
             __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").textContent = task.title;
             if (task.state == "Completed") {
@@ -1315,6 +1339,9 @@
     __decorate([
         onEvent('pointerup', 'input')
     ], TaskItem.prototype, "onCheckTask", null);
+    __decorate([
+        onEvent('pointerup', 'button')
+    ], TaskItem.prototype, "onDeleteTask", null);
     TaskItem = __decorate([
         customElement("task-item")
     ], TaskItem);

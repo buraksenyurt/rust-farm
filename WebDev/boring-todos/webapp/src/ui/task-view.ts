@@ -34,16 +34,25 @@ class TaskView extends BaseHTMLElement {
         this.#taskListElement.append(htmlContent);
     }
 
-    // Yeni bir görev eklendiğinde çalışır
+    // Yeni bir görev eklendiğinde çalışır.
     @onHub('taskHub','Task','create')
     onTaskCreate(data:Task){
         console.log("Yeni görev eklendi");
         this.refresh();
     }
 
+    // Ben burada kolaya kaçtım. Herhangi bir item güncellendiğinde
+    // tüm listeyi tazeliyorum. Aslında bu dinlemeyi task-item içerisinde
+    // yapmak lazım.
     @onHub('taskHub','Task','update')
     onTaskUpdate(data:Task){
-        console.log("Güncelleme");
+        console.log("Güncelleme oldu");
+        this.refresh();
+    }
+
+    @onHub('taskHub','Task','delete')
+    onDeleteTask(data:Task){
+        console.log("Silme işlemi");
         this.refresh();
     }
 }
@@ -61,7 +70,7 @@ class TaskInput extends BaseHTMLElement {
     }
 
     // Kullanıcı title kutusunda enter tuşuna bastığında
-    // bir görev eklenmesi için model access coordinator'a çağrı yapılır
+    // bir görev eklenmesi için model access coordinator'a çağrı yapılır.
     @onEvent('keyup','input')
     onInputKeyup(event:KeyboardEvent){
         if(event.key=="Enter"){
@@ -110,11 +119,15 @@ class TaskItem extends BaseHTMLElement {
         this.refresh();
     }
 
+    // checkbox kontrolüne tıklandığında devereye giren olay metodu
     @onEvent('pointerup','input')
     onCheckTask(event:PointerEvent & OnEvent){
+        // güncel task bilgilerini alıp state içeriğine bakıyoruz
         const taskItem = event.selectTarget.closest("task-item")!;
         let currentState = taskItem.data.state;
         //console.log(`Current State${currentState}`);
+        // state durumuna göre yeni bir PATCH talebi göndermekteyiz
+        // Ready modda ise Inprogress'e, Inprogress ise Completed'e alınıyorlar
         if(currentState=='InProgress'){
            taskMac.updateTask(taskItem.data.id,{state:'Completed'});
         }else if(currentState=='Ready'){
@@ -122,7 +135,19 @@ class TaskItem extends BaseHTMLElement {
         }
     }
 
-    refresh(old?:Task){
+    // Sil butonuna tıklama olayını yakalamaktayız
+    @onEvent('pointerup','button')
+    onDeleteTask(event:PointerEvent & OnEvent){
+        const taskItem = event.selectTarget.closest("task-item")!;
+        let task_id = taskItem.data.id;
+        console.log(`${task_id} numaralı görev silinecek`);
+        taskMac.deleteTask(task_id);
+    }
+
+    // Task-Item elementi yenilenirken görevin durumuna bakarak
+    // bir şeyler yapıyoruz. Renkler değişiyor, veya checkbox
+    // elementi seçili hale geliyor.
+    refresh(oldData?:Task){
         const task=this.#data;
         this.#titleLabelEl.textContent=task.title;
         if(task.state=="Completed"){

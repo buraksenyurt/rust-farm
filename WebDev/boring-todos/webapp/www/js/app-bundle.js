@@ -1051,6 +1051,15 @@
     async function get(path, data) {
         return restCall("GET", path, data);
     }
+    async function post(path, data) {
+        return restCall("POST", path, data);
+    }
+    async function patch(path, data) {
+        return restCall("PATCH", path, data);
+    }
+    async function del(path, data) {
+        return restCall("DELETE", path, data);
+    }
     async function restCall(httpMethod, path, data) {
         // Tipik olarak bir HTTP talebi gönderiyoruz
         // Bunun için fetch fonksiyonu kullanılmakta.
@@ -1073,9 +1082,38 @@
 
     // Model Access Coordinator
     class TaskMac {
+        // Tüm görevlerin çekilmesini sağlayan fonksiyon
         async getAllTasks() {
             const taskList = await get("tasks");
             return taskList;
+        }
+        // Yeni bir görev oluşturmak için kullanılan fonksiyon
+        async createTask(data) {
+            // Şimdilik gelen verinin title bilgisini kontrol ediyoruz.
+            // Daha gelişmiş bir doğrulama sistemi entegre edilebilir
+            if (data.title == null || data.title.trim().length == 0) {
+                throw new Error("Görev başlığı girilmemiş");
+            }
+            // servis tarafına post çağrısı yapıyoruz.
+            const created = await post(`tasks`, data);
+            // client-side message broker olan hub nesnesinden yararlanarak
+            // Task isimli bir topic altında create başlığında(label) yeni bir task
+            // nesnesinin oluştuğunu taskHub isimli olay çerçevesinde yayınlıyoruz(publish).
+            // Bu event hub yardımıyla diğer bileşenleri kolayca haberdar edebiliriz.
+            hub('taskHub').pub('Task', 'create', created);
+            return created;
+        }
+        // Bir görevi güncellemek için kullanılan fonksiyon.
+        async updateTask(task_id, data) {
+            const updated = await patch(`tasks/${task_id}`, data);
+            hub('taskHub').pub('Task', 'update', updated);
+            return updated;
+        }
+        // Bu da bir görevi silmek için kullanılan fonksiyon
+        async deleteTask(task_id) {
+            const deleted = await del(`tasks/${task_id}`);
+            hub('taskHub').pub('Task', 'delete', deleted);
+            return deleted;
         }
     }
     const taskMac = new TaskMac();
@@ -1125,7 +1163,7 @@
         }
         init() {
             let htmlContent = html `
-            <input type="text" placeholder="Sıkıcı bir görev ekleyebilirsin?">
+            <input type="text" placeholder="Sıkıcı bir görev ekleyebilirsin?"></input>
         `;
             __classPrivateFieldSet(this, _TaskInput_inputEl, getFirst(htmlContent, 'input'), "f");
             this.append(htmlContent);

@@ -41,7 +41,7 @@ class TaskInput extends BaseHTMLElement {
 
     init(){
         let htmlContent = html`
-            <input type="text" placeholder="Sıkıcı bir görev ekleyebilirsin?">
+            <input type="text" placeholder="Sıkıcı bir görev ekleyebilirsin?"></input>
         `;
         this.#inputEl = getFirst(htmlContent,'input');
         this.append(htmlContent);

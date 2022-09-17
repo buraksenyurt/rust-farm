@@ -75,4 +75,6 @@ Tüm listeyi çeken web çağrı metodunu view'a ilk eklediğim gün elde ettiğ
 
 ![assets/screenshot_07.png](assets/screenshot_7.png)
 
-__Serüven devam edecek__
+En son olarak geldiğimiz noktada görev ekleme, silme ve güncelleme işlemlerini gerçekleştirebilmekteyiz.
+
+![assets/webapp.gif](assets/webapp.gif)

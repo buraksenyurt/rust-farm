@@ -1207,6 +1207,11 @@
         }
         // Yeni bir görev eklendiğinde çalışır
         onTaskCreate(data) {
+            console.log("Yeni görev eklendi");
+            this.refresh();
+        }
+        onTaskUpdate(data) {
+            console.log("Güncelleme");
             this.refresh();
         }
     };
@@ -1214,6 +1219,9 @@
     __decorate([
         onHub('taskHub', 'Task', 'create')
     ], TaskView.prototype, "onTaskCreate", null);
+    __decorate([
+        onHub('taskHub', 'Task', 'update')
+    ], TaskView.prototype, "onTaskUpdate", null);
     TaskView = __decorate([
         customElement("task-view")
     ], TaskView);
@@ -1276,29 +1284,37 @@
             this.append(htmlContent);
             this.refresh();
         }
+        onCheckTask(event) {
+            const taskItem = event.selectTarget.closest("task-item");
+            let currentState = taskItem.data.state;
+            //console.log(`Current State${currentState}`);
+            if (currentState == 'InProgress') {
+                taskMac.updateTask(taskItem.data.id, { state: 'Completed' });
+            }
+            else if (currentState == 'Ready') {
+                taskMac.updateTask(taskItem.data.id, { state: 'InProgress' });
+            }
+        }
         refresh(old) {
-            //         if (old!=null){
-            //             this.classList.remove(`Task-${old.id}`);
-            //             this.classList.remove(old.state);
-            //         }
             const task = __classPrivateFieldGet(this, _TaskItem_data, "f");
-            //console.log(task.state);
-            //         this.classList.add(`Task-${task.id}`);
-            //         this.classList.add(task.state);
             __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").textContent = task.title;
             if (task.state == "Completed") {
                 __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").classList.add(`text-success`);
                 __classPrivateFieldGet(this, _TaskItem_checkboxEl, "f").checked = true;
+                __classPrivateFieldGet(this, _TaskItem_checkboxEl, "f").disabled = true;
             }
             else if (task.state == "Ready") {
                 __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").classList.add(`text-warning`);
             }
-            else if (task.state == "Inprogress") {
+            else if (task.state == "InProgress") {
                 __classPrivateFieldGet(this, _TaskItem_titleLabelEl, "f").classList.add(`text-important`);
             }
         }
     };
     _TaskItem_titleLabelEl = new WeakMap(), _TaskItem_checkboxEl = new WeakMap(), _TaskItem_data = new WeakMap();
+    __decorate([
+        onEvent('pointerup', 'input')
+    ], TaskItem.prototype, "onCheckTask", null);
     TaskItem = __decorate([
         customElement("task-item")
     ], TaskItem);

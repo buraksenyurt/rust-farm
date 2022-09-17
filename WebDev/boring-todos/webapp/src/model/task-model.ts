@@ -4,7 +4,7 @@ import {hub} from 'dom-native';
 export interface Task{
     id:number,
     title:string;
-    state : 'Ready'|'Inprogress'|'Completed';
+    state : 'Ready'|'InProgress'|'Completed';
 }
 
 export type TaskDao = Partial<Omit<Task,'id'>>;

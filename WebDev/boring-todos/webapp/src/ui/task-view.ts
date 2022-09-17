@@ -37,6 +37,13 @@ class TaskView extends BaseHTMLElement {
     // Yeni bir görev eklendiğinde çalışır
     @onHub('taskHub','Task','create')
     onTaskCreate(data:Task){
+        console.log("Yeni görev eklendi");
+        this.refresh();
+    }
+
+    @onHub('taskHub','Task','update')
+    onTaskUpdate(data:Task){
+        console.log("Güncelleme");
         this.refresh();
     }
 }
@@ -103,24 +110,29 @@ class TaskItem extends BaseHTMLElement {
         this.refresh();
     }
 
-    refresh(old?:Task){
-//         if (old!=null){
-//             this.classList.remove(`Task-${old.id}`);
-//             this.classList.remove(old.state);
-//         }
+    @onEvent('pointerup','input')
+    onCheckTask(event:PointerEvent & OnEvent){
+        const taskItem = event.selectTarget.closest("task-item")!;
+        let currentState = taskItem.data.state;
+        //console.log(`Current State${currentState}`);
+        if(currentState=='InProgress'){
+           taskMac.updateTask(taskItem.data.id,{state:'Completed'});
+        }else if(currentState=='Ready'){
+           taskMac.updateTask(taskItem.data.id,{state:'InProgress'});
+        }
+    }
 
+    refresh(old?:Task){
         const task=this.#data;
-        //console.log(task.state);
-//         this.classList.add(`Task-${task.id}`);
-//         this.classList.add(task.state);
         this.#titleLabelEl.textContent=task.title;
         if(task.state=="Completed"){
             this.#titleLabelEl.classList.add(`text-success`);
             this.#checkboxEl.checked=true;
+            this.#checkboxEl.disabled=true;
         }else if (task.state=="Ready"){
             this.#titleLabelEl.classList.add(`text-warning`);
         }
-        else if (task.state=="Inprogress"){
+        else if (task.state=="InProgress"){
             this.#titleLabelEl.classList.add(`text-important`);
         }
     }

@@ -14,3 +14,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **walking-cat**: Rust ve WebAssembly kullanarak web tabanlı oyun geliştirmeye girişte kullanılacak bir öğreti.
 - [x] **hello_wasm3**: hello_wasm2'den yola çıktığımız örnekte RUST kodundan WASM binary üretilmesi ve kullanılması konularını öğreniyoruz.
 - [ ] **snake_game**: Çalışmakta olduğum *[Rust & WebAssembly with JS(TS)](https://www.udemy.com/share/105FWE3@Hpnvamh4ENZu5y5aObIjO8bkcROyUFeKgIHqryuwCh57TADfqevU_-N3mQBQeGbgkA==/)* isimli Udemy kursundaki oyun.
+- [ ] **hello-tauri**: Bu örnekte tauri ile Ubuntu üstünde çalışan bir desktop uygulaması geliştirilmekte. [Tauri](https://tauri.app/) ile cross-platform çalışan masaüstü uygulamalar geliştirmek oldukça kolay.  

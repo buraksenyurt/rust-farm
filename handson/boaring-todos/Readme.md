@@ -35,4 +35,7 @@ cargo create-tauri-app
 ```shell
 cd boaring-todos
 npm install
+
+# çalıştırma içinse
+npm run tauri dev
 ```

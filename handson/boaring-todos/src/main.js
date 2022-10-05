@@ -1,16 +1,17 @@
 const { invoke } = window.__TAURI__.tauri;
 
-let greetInputEl;
-let greetMsgEl;
+let xInputEl;
+let yInputEl;
+let resultEl;
 
 window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
+  xInputEl = document.querySelector("#x-value");
+  yInputEl = document.querySelector("#y-value");
+  resultEl = document.querySelector("#result");
 });
 
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
+async function sum() {  
+  resultEl.textContent = await invoke("sum_of_two", { x: xInputEl.value,y: yInputEl.value });
 }
 
-window.greet = greet;
+window.sum = sum;

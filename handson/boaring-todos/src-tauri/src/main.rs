@@ -3,15 +3,20 @@
     windows_subsystem = "windows"
 )]
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn sum_of_two(x: String, y: String) -> String {
+    if let Ok(x) = x.parse::<f32>() {
+        if let Ok(y) = y.parse::<f32>() {
+            let result = x + y;
+            return format!("{} + {} = {}", x, y, result);
+        }
+    }
+    "Toplama için sayısal değerler bekliyorum".to_string()
 }
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![sum_of_two])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

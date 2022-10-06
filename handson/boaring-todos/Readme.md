@@ -36,6 +36,38 @@ cargo create-tauri-app
 cd boaring-todos
 npm install
 
-# çalıştırma içinse
+# Çalıştırmak için aşağıdaki komut kullanılabilir.
 npm run tauri dev
 ```
+
+Örnekte geliştirme ortamına ait çalışma zamanı local http server olarak kullanılmak isteniyor. Bunun için servor isimli node paketinden yararlanılmakta. Kurmak için boaring-todos root klasöründeyken aşağıdaki komutu vermek yeterlir.
+
+```shell
+npm install servor
+```
+
+Bu işlem sonrasında package.json dosyasındaki script kısmına yeni bir komut eklenir. Bu komut hotreload özelliğini etkinleştirecektir ve dist klasöründeki index.html dosyasında yapılan herhangibir değişiklik anında uygulamaya da yansıyacaktır.
+
+```text
+"localhost":"./node_modules/.bin/servor dist index.html 8080 --reload"
+```
+
+Tabii bu tek başına yeterli değil. tauri.conf.json dosyasında da build sekmesine aşağıdaki key:value çifti eklenir.
+
+```text
+"devPath": "http://localhost:8080/",
+```
+
+Bu değişiklikler sonrası örneği çalıştırmak için aşağıdaki yol izlenir.
+
+```shell
+# root klasöründeyken
+npm run localhost
+
+# src-tauri klasörü altındayken ise
+npm run tauri dev
+```
+
+_Tabii ilk etapta index.html'i manuel olarak dist klasörü altına kopyalamak gerekebilir._
+
+![../images/hello_tauri_02.gif](../images/hello_tauri_02.gif)

@@ -5,10 +5,15 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "localhost":"./node_modules/.bin/servor dist index.html 8080 --reload"
+    "localhost": "./node_modules/.bin/servor dist index.html 8080 --reload",
+    "ui-build": "./node_modules/.bin/rollup -c",
+    "ui-dev": "./node_modules/.bin/rollup -c -w & npm run localhost"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.1.0"
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@tauri-apps/cli": "^1.1.0",
+    "rollup": "^2.79.1"
   },
   "dependencies": {
     "@tauri-apps/cli": "^1.1.0",

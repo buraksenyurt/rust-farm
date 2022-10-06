@@ -4,9 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "localhost":"./node_modules/.bin/servor dist index.html 8080 --reload"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.1.0"
+  },
+  "dependencies": {
+    "@tauri-apps/cli": "^1.1.0",
+    "servor": "^4.0.2"
   }
 }

@@ -37,8 +37,7 @@ async fn get_random_quote() -> String {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![sum_of_two])
-        .invoke_handler(tauri::generate_handler![get_random_quote])
+        .invoke_handler(tauri::generate_handler![sum_of_two, get_random_quote])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -4,6 +4,25 @@
 )]
 
 use rand::Rng;
+use std::sync::{Arc, Mutex};
+use tauri::State;
+
+#[derive(Default)]
+struct BusinessValue(Arc<Mutex<i32>>);
+
+#[tauri::command]
+fn increase_value(v: i32, business_value: State<'_, BusinessValue>) -> String {
+    let mut bv = business_value.0.lock().unwrap();
+    *bv += v;
+    format!("{bv}")
+}
+
+#[tauri::command]
+fn decrease_value(v: i32, business_value: State<'_, BusinessValue>) -> String {
+    let mut bv = business_value.0.lock().unwrap();
+    *bv -= v;
+    format!("{bv}")
+}
 
 #[tauri::command]
 fn sum_of_two(x: String, y: String) -> String {
@@ -37,7 +56,13 @@ async fn get_random_quote() -> String {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![sum_of_two, get_random_quote])
+        .manage(BusinessValue(Default::default()))
+        .invoke_handler(tauri::generate_handler![
+            sum_of_two,
+            get_random_quote,
+            increase_value,
+            decrease_value
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

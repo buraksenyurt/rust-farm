@@ -61,16 +61,19 @@ Tabii bu tek başına yeterli değil. tauri.conf.json dosyasında da build sekme
 Bu değişiklikler sonrası örneği çalıştırmak için aşağıdaki yol izlenir.
 
 ```shell
-# root klasöründeyken
+# root klasöründeyken js değişikliklerinin app-bundle'a dağıtımı için
+npm run ui-build
+
+# server tarafını çalıştırma için
 npm run localhost
 
-# src-tauri klasörü altındayken ise
+# src-tauri klasörü altındayken şse
 npm run tauri dev
 ```
 
 _Tabii ilk etapta index.html'i manuel olarak dist klasörü altına kopyalamak gerekebilir._
 
-Örnekte dikkat edileceği üzere frontend tarafı src klasörü altında konuşlanmış durumda. Buradaki html,css ve js kökenli çıktının paketlenerk dağıtılması için rollup kütüphanesinden yararlanılıyor. Gerekli modülleri aşağıdaki komut ile uygulamaya ekleyebiliriz.
+Örnekte dikkat edileceği üzere frontend tarafı src klasörü altında konuşlanmış durumda. Buradaki html,css ve js kökenli çıktının paketlenerek dağıtılması için rollup kütüphanesinden yararlanılıyor. Gerekli modülleri aşağıdaki komut ile uygulamaya ekleyebiliriz.
 
 ```shell
 npm install -D rollup @rollup/plugin-node-resolve @rollup/plugin-commonjs
@@ -80,6 +83,6 @@ Sonrasında birkaç manuel işlem gerekebilir. Örneğin root klasörde rollup.c
 
 index.html dosyasını da src klasöründe değil de dist klasörü altında geliştirmeye devam etmek yeterlidir. Hatta src altındaki css'i de buraya atabiliriz. _(Belki src altından dist içerisine otomatik olarak taşınmalarının bir yolu vardır ama henüz keşfedemedim)_
 
-Uygulamanın şu anki versiyonu aşağıdaki gibi çalışmakta. Basit toplama işlemi yapmakta ve tıklama sonrası ekrana rastgele bir söz getirmekte.
+Uygulamanın şu anki versiyonu aşağıdaki gibi çalışmakta.
 
 ![../images/hello_tauri_02.gif](../images/hello_tauri_02.gif)

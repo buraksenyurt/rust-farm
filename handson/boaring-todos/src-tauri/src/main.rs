@@ -5,7 +5,7 @@
 
 use rand::Rng;
 use std::sync::{Arc, Mutex};
-use tauri::State;
+use tauri::{CustomMenuItem, Menu, State, Submenu};
 
 #[derive(Default)]
 struct BusinessValue(Arc<Mutex<i32>>);
@@ -56,6 +56,27 @@ async fn get_random_quote() -> String {
 
 fn main() {
     tauri::Builder::default()
+        .menu(
+            Menu::new().add_submenu(Submenu::new(
+                "Dosya",
+                Menu::new()
+                    .add_item(CustomMenuItem::new("open", "Aç").accelerator("cmdOrControl+O"))
+                    .add_item(CustomMenuItem::new("save", "Kaydet").accelerator("cmdOrControl+S"))
+                    .add_item(CustomMenuItem::new("close", "Kapat").accelerator("cmdOrControl+Q")),
+            )),
+        )
+        .on_menu_event(|event| match event.menu_item_id() {
+            "save" => {
+                let _ = event.window().emit("menu-event", "File save").unwrap();
+            }
+            "open" => {
+                let _ = event.window().emit("menu-event", "File open").unwrap();
+            }
+            "close" => {
+                event.window().close().unwrap();
+            }
+            _ => {}
+        })
         .manage(BusinessValue(Default::default()))
         .invoke_handler(tauri::generate_handler![
             sum_of_two,

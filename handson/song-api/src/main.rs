@@ -37,15 +37,15 @@ static SONG_QUEUE: Mutex<LinkedList<Song>> = Mutex::new(LinkedList::new());
 
 #[launch]
 fn rocket() -> Rocket<Build> {
-    Rocket::build().mount("/", routes![add_song,view])
+    Rocket::build().mount("/", routes![add_song, view])
 }
 
 #[post("/add", data = "<s>")]
 fn add_song(s: Json<Song>) -> String {
     let mut locked_object = get_queue();
 
-    if locked_object.is_empty(){
-        thread::spawn(play_song());
+    if locked_object.is_empty() {
+        thread::spawn(play_song);
     }
 
     locked_object.push_back(s.0.clone());
@@ -68,8 +68,8 @@ fn get_queue<'a>() -> MutexGuard<'a, LinkedList<Song>> {
 }
 
 // Farazi şarkıyı çalan fonksiyon
-fn play_song(){
-    while !get_queue().is_empty(){
+fn play_song() {
+    while !get_queue().is_empty() {
         // Şarkı çalınmasını simüle etmek için 30 saniyelik bir sleep
         thread::sleep(Duration::from_secs(30));
         // ilk eklenen şarkıyı listeden çıkartıyoruz. Çalınmış olduğunu kabul ederek.

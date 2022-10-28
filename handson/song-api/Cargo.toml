@@ -1,0 +1,8 @@
+[package]
+name = "song-api"
+version = "0.1.0"
+edition = "2021"
+description = "İstek parçalar için kuyruk tabanlı liste desteği veren bir restful api"
+
+[dependencies]
+rocket="0.5.0-rc.2"

@@ -1,0 +1,11 @@
+[package]
+name = "simple-web-app"
+version = "0.1.0"
+edition = "2021"
+description = "Basit bir web uygulaması örneği"
+
+[dependencies]
+axum = "0.5.17"
+minijinja = { version = "0.24.0", features = ["builtins"] }
+serde = { version = "1.0.147", features = ["derive"] }
+tokio = { version = "1.21.2", features = ["full"] }

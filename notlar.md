@@ -272,3 +272,9 @@ path="src/imagix/mod.rs"
 name="imager"
 path="src/imager.rs"
 ```
+
+- toml dosyasına cargo ile komut satırından paket yüklemek de mümkündür. Örneğin aşağıdaki komut ile projeye axum, tokio, serde ve minijinja küfeleri eklenir. Üstelik bazı feature'ları ile birlikte.
+
+```shell
+cargo add axum tokio -F tokio/full serde -F serde/derive minijinja -F minijinja/builtins
+```

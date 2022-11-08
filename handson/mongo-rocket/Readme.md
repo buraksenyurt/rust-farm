@@ -50,3 +50,7 @@ db.Product.find().pretty()
 Bir dokümanı aramak içinse HTTP Get çağrısı yapılabilir. Parametre ilgili ürünün object id bilgisidir.
 
 ![../images/mongo_rocket_02.png](../images/mongo_rocket_02.png)
+
+Silme işlemi için yine doküman id bilgisinden yararlanılır. Örnek bir HTTP Delete çağrısı http://localhost:8000/product/636a96e705a8de2f701bc22a gibidir. İşte postman görüntüsü.
+
+![../images/mongo_rocket_03.png](../images/mongo_rocket_03.png)

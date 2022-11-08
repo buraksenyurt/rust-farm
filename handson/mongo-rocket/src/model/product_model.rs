@@ -7,6 +7,6 @@ pub struct Product {
     pub id: Option<ObjectId>,
     pub title: String,
     pub price: f32,
-    pub stock_level: u16,
+    pub stock_level: i32,
     pub category: String,
 }

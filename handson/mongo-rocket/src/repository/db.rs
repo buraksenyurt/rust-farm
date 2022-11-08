@@ -1,7 +1,7 @@
 use crate::model::product_model::Product;
 use dotenv::dotenv;
 use mongodb::bson::{doc, extjson::de::Error, oid::ObjectId};
-use mongodb::results::{DeleteResult, InsertOneResult};
+use mongodb::results::{DeleteResult, InsertOneResult, UpdateResult};
 use mongodb::sync::{Client, Collection};
 use std::env;
 
@@ -50,6 +50,16 @@ impl Db {
         Ok(product.unwrap())
     }
 
+    pub fn get_products(&self) -> Result<Vec<Product>, Error> {
+        let query = self
+            .col
+            .find(None, None)
+            .ok()
+            .expect("Error getting product");
+        let products = query.map(|d| d.unwrap()).collect();
+        Ok(products)
+    }
+
     pub fn delete_product(&self, id: &String) -> Result<DeleteResult, Error> {
         let object_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id":object_id};
@@ -59,5 +69,26 @@ impl Db {
             .ok()
             .expect("Error deleting product");
         Ok(product)
+    }
+
+    pub fn update_product(&self, id: &String, payload: Product) -> Result<UpdateResult, Error> {
+        let object_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id":object_id};
+        let incoming = doc! {
+            "$set":
+                {
+                    "id": payload.id,
+                    "title": payload.title,
+                    "price": payload.price,
+                    "stock_level": payload.stock_level,
+                    "category": payload.category
+                },
+        };
+        let updated = self
+            .col
+            .update_one(filter, incoming, None)
+            .ok()
+            .expect("Error on update product");
+        Ok(updated)
     }
 }

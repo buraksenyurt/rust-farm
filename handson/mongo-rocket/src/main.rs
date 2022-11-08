@@ -16,7 +16,8 @@ use crate::repository::db::Db;
 #[launch]
 fn rocket() -> _ {
     let mongo_db = Db::init();
-    rocket::build()
-        .manage(mongo_db)
-        .mount("/", routes![create_product, get_product, delete_product])
+    rocket::build().manage(mongo_db).mount(
+        "/",
+        routes![create_product, get_product, delete_product, get_products,update_product],
+    )
 }

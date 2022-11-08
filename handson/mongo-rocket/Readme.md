@@ -46,3 +46,7 @@ Dikkat edileceği üzere eklenen ürün bilgisini görüntülemek için aşağı
 ```text
 db.Product.find().pretty()
 ```
+
+Bir dokümanı aramak içinse HTTP Get çağrısı yapılabilir. Parametre ilgili ürünün object id bilgisidir.
+
+![../images/mongo_rocket_02.png](../images/mongo_rocket_02.png)

@@ -29,3 +29,21 @@ pub fn get_product(db: &State<Db>, object_id: String) -> Result<Json<Product>, S
         Err(_) => Err(Status::NotFound),
     }
 }
+
+#[delete("/product/<object_id>")]
+pub fn delete_product(db: &State<Db>, object_id: String) -> Result<Json<&str>, Status> {
+    if object_id.is_empty() {
+        return Err(Status::BadRequest);
+    }
+    let result = db.delete_product(&object_id);
+    match result {
+        Ok(response) => {
+            if response.deleted_count == 1 {
+                return Ok(Json("Product deleted"));
+            } else {
+                return Err(Status::NotFound);
+            }
+        }
+        Err(_) => Err(Status::InternalServerError),
+    }
+}

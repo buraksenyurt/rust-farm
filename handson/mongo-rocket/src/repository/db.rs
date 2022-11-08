@@ -1,7 +1,7 @@
 use crate::model::product_model::Product;
 use dotenv::dotenv;
 use mongodb::bson::{doc, extjson::de::Error, oid::ObjectId};
-use mongodb::results::InsertOneResult;
+use mongodb::results::{DeleteResult, InsertOneResult};
 use mongodb::sync::{Client, Collection};
 use std::env;
 
@@ -46,7 +46,18 @@ impl Db {
             .col
             .find_one(filter, None)
             .ok()
-            .expect("Error getting product detail");
+            .expect("Error getting product");
         Ok(product.unwrap())
+    }
+
+    pub fn delete_product(&self, id: &String) -> Result<DeleteResult, Error> {
+        let object_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id":object_id};
+        let product = self
+            .col
+            .delete_one(filter, None)
+            .ok()
+            .expect("Error deleting product");
+        Ok(product)
     }
 }

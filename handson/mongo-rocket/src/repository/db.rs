@@ -17,7 +17,7 @@ impl Db {
             Err(_) => format!("Environment variable error"),
         };
         let client = Client::with_uri_str(server_address).expect("Client connection error");
-        let database = client.database("AzonDB");
+        let database = client.database("AdventureWorks");
         let col: Collection<Product> = database.collection("Product");
         Db { col }
     }

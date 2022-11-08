@@ -18,3 +18,14 @@ pub fn create_product(db: &State<Db>, p: Json<Product>) -> Result<Json<InsertOne
         Err(_) => Err(Status::InternalServerError),
     }
 }
+#[get("/product/<object_id>")]
+pub fn get_product(db: &State<Db>, object_id: String) -> Result<Json<Product>, Status> {
+    if object_id.is_empty() {
+        return Err(Status::BadRequest);
+    };
+    let product = db.get_product(&object_id);
+    match product {
+        Ok(p) => Ok(Json(p)),
+        Err(_) => Err(Status::NotFound),
+    }
+}

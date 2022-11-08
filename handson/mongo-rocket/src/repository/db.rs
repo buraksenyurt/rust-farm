@@ -1,6 +1,6 @@
 use crate::model::product_model::Product;
 use dotenv::dotenv;
-use mongodb::bson::extjson::de::Error;
+use mongodb::bson::{doc, extjson::de::Error, oid::ObjectId};
 use mongodb::results::InsertOneResult;
 use mongodb::sync::{Client, Collection};
 use std::env;
@@ -37,5 +37,16 @@ impl Db {
             .expect("Error creating product");
 
         Ok(product)
+    }
+
+    pub fn get_product(&self, id: &String) -> Result<Product, Error> {
+        let object_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id":object_id};
+        let product = self
+            .col
+            .find_one(filter, None)
+            .ok()
+            .expect("Error getting product detail");
+        Ok(product.unwrap())
     }
 }

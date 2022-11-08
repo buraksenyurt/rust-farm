@@ -51,6 +51,23 @@ Bir dokümanı aramak içinse HTTP Get çağrısı yapılabilir. Parametre ilgil
 
 ![../images/mongo_rocket_02.png](../images/mongo_rocket_02.png)
 
+Product koleksiyonundaki tüm verileri çekmek istersek bu durumda http://localhost:8000/products adresine bir HTTP Get çağrısı göndermek yeterlidir.
+
+![../images/mongo_rocket_04.png](../images/mongo_rocket_04.png)
+
 Silme işlemi için yine doküman id bilgisinden yararlanılır. Örnek bir HTTP Delete çağrısı http://localhost:8000/product/636a96e705a8de2f701bc22a gibidir. İşte postman görüntüsü.
 
 ![../images/mongo_rocket_03.png](../images/mongo_rocket_03.png)
+
+Son olarak birde güncelleme işlemi deneyelim. Bu sefer HTTP Put ile örneğin http://localhost:8000/product/636aa3734a79a567ce4366ae şeklinde bir talep ile güncelleme yapılabilir. Tabii sizin örneklerinizde object_id değeri farklı olacaktır.
+
+```json
+{
+    "title":"İnce uçlu çizim kalemi",
+    "stock_level":150,
+    "price":34.49,
+    "category":"Kırtasiye"
+}
+```
+
+![../images/mongo_rocket_05.png](../images/mongo_rocket_05.png)

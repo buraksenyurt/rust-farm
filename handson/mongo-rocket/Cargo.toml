@@ -1,0 +1,16 @@
+[package]
+name = "mongo-rocket"
+version = "0.1.0"
+edition = "2021"
+description = "A simple rest api with mongodb"
+
+[dependencies]
+rocket = { version = "0.5.0-rc.2",features = ["json"]} # Web uygulamaları geliştirmek için kullanılabilen framework
+serde = "1.0.147" # veri yapılarını json formatında serileştirebilmek için
+dotenv = "0.15.0" # çevre değişkenlerine kolayca ulaşmak için
+
+# MongoDB driver'ı iin gerekli tanımlamalar
+[dependencies.mongodb]
+version = "2.3.1"
+default-features = false
+features = ["sync"]

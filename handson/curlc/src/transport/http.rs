@@ -10,8 +10,8 @@ pub enum Method {
     Post { body: String },
 }
 
-#[derive(Debug, PartialEq)]
-pub enum HttpParseError {
-    UnrecognizedMethod,
-    UnrecognizedFormat,
-}
+// #[derive(Debug, PartialEq)]
+// pub enum HttpParseError {
+//     UnrecognizedMethod,
+//     UnrecognizedFormat,
+// }

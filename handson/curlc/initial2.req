@@ -1,0 +1,4 @@
+GET dummyjson.com/products/1
+GET dummyjson.com/quotes/6
+# It's comment line
+POST dummyjson.com/products/add {"id":1,"title":"Atari 500","price":100,"discountPercentage":5.49,"rating":3.2,"stock":1,"brand":"commodore","category":"game consoles"}

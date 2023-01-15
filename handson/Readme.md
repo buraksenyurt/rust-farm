@@ -19,3 +19,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **simple-web-app**: Bu yeni çalışmada axum, tokio, serde ve minijinja paketleri ile basit bir web uygulaması yazılıyor. Kaynak olarak [şu adresteki](https://woile.dev/posts/web-app-with-template-in-rust/) yazıyı kullanıyorum. Bu basit çalışma ile minijinja ile HTML template kullanımını da öğreniyorum.
 - [x] **mongo-rocket**: Rocket ile hazırlanan bu web api uygulamasında mongodb veritabanı da kullanılıyor.
 - [x] **curlc**: [Şu adresteki örneği](https://www.bekk.christmas/post/2022/1/introduction-to-rust) yapıp terminalden çalışan curl benzeri bir uygulamanın nasıl oluşturulabileceğini öğreniyorum. Araç, bir dosyadaki basit HTTP Get, Post taleplerini alıp topluca işleme yeteneğine sahip.
+- [ ] **procs-sign**:Practical System Programming for Rust Developers kitabındaki Working with Process and Signals bölümüne ait konuların ele alındığı örnek.

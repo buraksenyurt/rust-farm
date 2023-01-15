@@ -3,8 +3,8 @@
    Working with Process and Signals bölümüne ait kodlar ve açıklamaları.
 */
 use std::io::{Read, Write};
-use std::process;
 use std::process::{Command, Stdio};
+use std::{panic, process};
 
 fn main() {
     // // İşletim sisteminden bir programı process olarak açmak için
@@ -103,6 +103,54 @@ fn main() {
         Ok(_) => println!("\t{}", child_output),
         Err(e) => println!("rev işlem sonucu alınamadı.{}", e),
     };
+
+    // // Bir alt process'in başlatılması sırasında hata alınabilir
+    // // match expression tarafında bunları ele alabiliriz ve
+    // // panic! makrosu ile thread'i anında kesip, çağıran tarafı(caller) bilgilendirebiliriz.
+    // // hatta bu durumda tüm destructor'lar da otomatik olarak çalışacaktır.
+    // // Aşağıda örnek bir kullanım yer alıyor. Sistem çalıştırılabilecek there-is-no-spoon isimli
+    // // bir program bulunmuyor.
+    // let _missing_process = match Command::new("there-is-no-spoon")
+    //     .stdout(Stdio::piped())
+    //     .spawn()
+    // {
+    //     Ok(handler) => {
+    //         println!("Alt process başlatıldı");
+    //     }
+    //     // panic! yerine abort veya exit ile de çıkış denenebilir. Duruma göre tercih yapılabilir.
+    //     // en büyük fark panic! makrosu sonrası ana thread kesilirken
+    //     // tüm destructor'ların otomatik işlemesi.
+    //     // !!! non-recoverable hata durumları söz konusu ise panic! kullanmak mantıklıdır.
+    //     Err(e) => panic!("Process çalıştırmada hata,{}", e),
+    // };
+
+    // // panic run-time çalışmadan önce çalışacak şekilde bir kancada atabiliriz.
+    // // panic kütüphanesindeki set_hook fonksiyonu bu amaçla aşağıdaki gibi kullanılabiliyor.
+    // panic::set_hook(Box::new(|_| println!("inside hook and before panic! run-time")));
+    // let _missing_process = match Command::new("there-is-no-spoon")
+    //     .stdout(Stdio::piped())
+    //     .spawn()
+    // {
+    //     Ok(_handler) => {
+    //         println!("Alt process başlatıldı");
+    //     }
+    //     // panic! yerine abort veya exit ile de çıkış denenebilir. Duruma göre tercih yapılabilir.
+    //     // en büyük fark panic! makrosu sonrası ana thread kesilirken
+    //     // tüm destructor'ların otomatik işlemesi.
+    //     // !!! non-recoverable hata durumları söz konusu ise panic! kullanmak mantıklıdır.
+    //     Err(e) => panic!("Process çalıştırmada hata,{}", e),
+    // };
+    // println!("Hook kullanımında bu satıra inilmeyecektir");
+
+    // // Bazı hallerde alt process'ler için ortam parametrelerini ya da çevre değişkenlerini
+    // // ayarlamak da gerekebilir.
+    // // cargo run ile çalıştırdığımızda tüm environment variable içeriği görünür ve
+    // // SOURCE_PATH'te bunlara dahildir.
+    // // cargo run | grep SOURCE_PATH ile kod parçası denenebilir.
+    // Command::new("env")
+    //     .env("SOURCE_PATH", "/temp")
+    //     .spawn()
+    //     .expect("env komutu çalıştırılırken hata");
 
     // // Bir process'si sonlandırmak için iki yöntem var.
     // // abort ve exit.

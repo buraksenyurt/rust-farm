@@ -1,0 +1,9 @@
+appenders:
+  stdout_logger:
+    kind: console
+    encoder:
+      pattern:  "{h({d(%Y-%m-%d %H:%M:%S)(utc)} - {l}: {m}{n})}"
+root:
+  level:  debug
+  appenders:
+    - stdout_logger

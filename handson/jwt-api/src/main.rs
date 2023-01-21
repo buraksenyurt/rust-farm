@@ -1,10 +1,12 @@
 mod data;
+mod error;
 mod model;
 mod network;
 mod security;
 mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
+use crate::error::handler::catch_rejection;
 use crate::network::handler::{create_user, login};
 use log::info;
 use std::collections::HashMap;
@@ -62,7 +64,8 @@ async fn main() {
     let routes = root
         .or(login_route)
         .or(register_route)
-        .with(warp::cors().allow_any_origin());
+        .with(warp::cors().allow_any_origin())
+        .recover(catch_rejection);
 
     info!("Sunucu dinlemede. http:://127.0.0.1:5555");
     // 127.0.0.1:5555 porttan sunucu açılır

@@ -1,4 +1,6 @@
 use crate::data::db::UsersDb;
+use crate::error::custom_error::CustomError;
+use crate::error::handler::Result;
 use crate::model::login_user::LoginUser;
 use crate::model::user::User;
 use crate::model::user_dao::UserDao;
@@ -6,11 +8,11 @@ use crate::security::{create_hashed_pwd, create_jwt, verify_pwd};
 use log::{error, info};
 use warp::{
     http::{Response, StatusCode},
-    Rejection, Reply,
+    reject, Reply,
 };
 
 // Kullanıcı oluşturma işini üstlenen fonksiyon.
-pub async fn create_user(user: UserDao, db: UsersDb) -> Result<impl Reply, Rejection> {
+pub async fn create_user(user: UserDao, db: UsersDb) -> Result<impl Reply> {
     info!("Gelen kullanıcı verisi {:?}", user);
     // veritabanını kullanım için güvenli bir şekilde kilitliyoruz
     let mut users_db = db.lock().await;
@@ -18,9 +20,10 @@ pub async fn create_user(user: UserDao, db: UsersDb) -> Result<impl Reply, Rejec
     // Eğer kullanıcı adı hashmap'te var olan bir key ise geriye HTTP 400 Bad Request dönüyoruz
     if users_db.contains_key(&user.username) {
         error!("Bu kullanıcı zaten kayıtlı");
-        return Ok(Response::builder()
-            .status(StatusCode::BAD_REQUEST)
-            .body("Kullanıcı zaten kayıtlı.".to_string()));
+        // return Ok(Response::builder()
+        //     .status(StatusCode::BAD_REQUEST)
+        //     .body("Kullanıcı zaten kayıtlı.".to_string()));
+        return Err(reject::custom(CustomError::UserExists(user.username)));
     }
 
     // HashMap uzunluğu kullanılıp yeni bir id yakalınır.
@@ -43,7 +46,7 @@ pub async fn create_user(user: UserDao, db: UsersDb) -> Result<impl Reply, Rejec
 }
 
 // Login işleminin gerçekleştirildiği handler fonksiyonu
-pub async fn login(login_user: LoginUser, db: UsersDb) -> Result<impl Reply, Rejection> {
+pub async fn login(login_user: LoginUser, db: UsersDb) -> Result<impl Reply> {
     // Kullanmak üzere db nesnesi için thread safe bir kilitleme yapılır
     let users_db = db.lock().await;
 
@@ -52,9 +55,10 @@ pub async fn login(login_user: LoginUser, db: UsersDb) -> Result<impl Reply, Rej
         Some(u) => u,
         None => {
             error!("{} isimli kullanıcı bulunamadı", &login_user.username);
-            return Ok(Response::builder()
-                .status(StatusCode::BAD_REQUEST)
-                .body("Kullanıcı bulunamadı".to_string()));
+            return Err(reject::custom(CustomError::InvalidCredentials));
+            // return Ok(Response::builder()
+            //     .status(StatusCode::BAD_REQUEST)
+            //     .body("Kullanıcı bulunamadı".to_string()));
         }
     };
 

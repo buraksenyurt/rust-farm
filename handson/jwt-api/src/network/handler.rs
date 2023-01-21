@@ -1,7 +1,7 @@
 use crate::data::db::UsersDb;
-use crate::data::security::create_hashed_pwd;
 use crate::model::user::User;
 use crate::model::user_dao::UserDao;
+use crate::security::create_hashed_pwd;
 use log::{error, info};
 use warp::{
     http::{Response, StatusCode},

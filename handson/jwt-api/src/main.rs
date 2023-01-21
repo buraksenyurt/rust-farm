@@ -1,6 +1,7 @@
 mod data;
 mod model;
 mod network;
+mod security;
 mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
@@ -20,6 +21,10 @@ use warp::Filter;
 
 #[tokio::main]
 async fn main() {
+    // JWT token oluşturma işinde kullanılan Secret Key bilgisi environment'ten geliyor.
+    // Uygulamada environment erişimi için aşağıdaki satır işletilir.
+    dotenv::dotenv().ok();
+
     // loglama ayarlarını içeren dosyayı yüklüyoruz
     log4rs::init_file("log_config.yml", Default::default()).expect("Config dosyası bulunamadı");
 

@@ -1,4 +1,5 @@
 use crate::data::db::UsersDb;
+use crate::data::security::create_hashed_pwd;
 use crate::model::user::User;
 use crate::model::user_dao::UserDao;
 use log::{error, info};
@@ -27,7 +28,7 @@ pub async fn create_user(user: UserDao, db: UsersDb) -> Result<impl Reply, Rejec
     let registered_user = User {
         id: last_index,
         username: user.username,
-        password: user.password,
+        password: create_hashed_pwd(&user.password),
         role: user.role,
     };
     // sahte veritabanına kullanıcı bilgisi eklenir

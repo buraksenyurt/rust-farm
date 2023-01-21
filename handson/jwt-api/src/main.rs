@@ -1,6 +1,7 @@
 mod data;
 mod model;
 mod network;
+mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
 use crate::network::handler::create_user;
@@ -11,11 +12,11 @@ use tokio::sync::Mutex;
 use warp::Filter;
 
 /*
-    Örnek curl ifadeleri.
+   Örnek curl ifadeleri.
 
-    Yeni kullanıcı kayıt etme.
-    curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234", "role": "admin"}'
- */
+   Yeni kullanıcı kayıt etme.
+   curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234", "role": "admin"}'
+*/
 
 #[tokio::main]
 async fn main() {

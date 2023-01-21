@@ -5,7 +5,7 @@ mod security;
 mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
-use crate::network::handler::create_user;
+use crate::network::handler::{create_user, login};
 use log::info;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -17,6 +17,9 @@ use warp::Filter;
 
    Yeni kullanıcı kayıt etme.
    curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234", "role": "admin"}'
+
+   Login olma örneği
+   curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234"}'
 */
 
 #[tokio::main]
@@ -45,9 +48,19 @@ async fn main() {
         .and(add_users_db(db.clone()))
         .and_then(create_user);
 
+    // login işlemleri için kullanılacak endpoint'e ait route tanımlamaları
+    // HTTP Post ve JSON body kullanır.
+    // İşlemler için handler.rs'teki login fonksiyonu çağırılır.
+    let login_route = warp::path("login")
+        .and(warp::post())
+        .and(warp::body::json())
+        .and(add_users_db(db.clone()))
+        .and_then(login);
+
     // route tanımlamaları çalışma zamanına eklenir.
     // CORS ayarına göre herkes erişebilir
     let routes = root
+        .or(login_route)
         .or(register_route)
         .with(warp::cors().allow_any_origin());
 

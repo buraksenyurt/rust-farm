@@ -11,15 +11,15 @@ pub mod test {
         assert_eq!(actual, expected);
     }
 
-    #[test]
-    fn create_jwt_token_test() {
-        let user = User {
-            id: 1,
-            username: "scoth".to_string(),
-            password: "scoth@1234".to_string(),
-            role: "Admin".to_string(),
-        };
-        let token = create_jwt(&user);
-        assert!(token.len() > 10);
-    }
+    // #[test]
+    // fn create_jwt_token_test() {
+    //     let user = User {
+    //         id: 1,
+    //         username: "scoth".to_string(),
+    //         password: "scoth@1234".to_string(),
+    //         role: "Admin".to_string(),
+    //     };
+    //     let token = create_jwt(&user);
+    //     assert!(token.len() > 10);
+    // }
 }

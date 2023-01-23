@@ -23,17 +23,24 @@ pub async fn catch_rejection(err: Rejection) -> std::result::Result<impl Reply, 
     }
 
     if let Some(e) = err.find::<CustomError>() {
-        match e {
-            CustomError::UserExists(username) => {
-                return Ok(reply_with_status(
-                    StatusCode::BAD_REQUEST,
-                    &format!("{} zaten mevcut", username),
-                ));
-            }
+        return match e {
+            CustomError::UserExists(username) => Ok(reply_with_status(
+                StatusCode::BAD_REQUEST,
+                &format!("{} zaten mevcut", username),
+            )),
             CustomError::InvalidCredentials => {
-                return Ok(reply_with_status(StatusCode::FORBIDDEN, &e.to_string()));
+                Ok(reply_with_status(StatusCode::FORBIDDEN, &e.to_string()))
             }
-        }
+            CustomError::AutoHeaderRequired
+            | CustomError::NotAuthorized
+            | CustomError::InvalidToken => {
+                Ok(reply_with_status(StatusCode::UNAUTHORIZED, &e.to_string()))
+            }
+            CustomError::TokenCreation => Ok(reply_with_status(
+                StatusCode::INTERNAL_SERVER_ERROR,
+                &e.to_string(),
+            )),
+        };
     } else if err.find::<MethodNotAllowed>().is_some() {
         return Ok(reply_with_status(
             StatusCode::METHOD_NOT_ALLOWED,

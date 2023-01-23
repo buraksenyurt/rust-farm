@@ -11,8 +11,6 @@ pub enum CustomError {
     AutoHeaderRequired,
     #[error("Geçersiz bilet")]
     InvalidToken,
-    #[error("JWT token üretim hatası")]
-    TokenCreation,
     #[error("Eksik yetki")]
     NotAuthorized,
 }

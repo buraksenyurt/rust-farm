@@ -36,10 +36,6 @@ pub async fn catch_rejection(err: Rejection) -> std::result::Result<impl Reply, 
             | CustomError::InvalidToken => {
                 Ok(reply_with_status(StatusCode::UNAUTHORIZED, &e.to_string()))
             }
-            CustomError::TokenCreation => Ok(reply_with_status(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                &e.to_string(),
-            )),
         };
     } else if err.find::<MethodNotAllowed>().is_some() {
         return Ok(reply_with_status(

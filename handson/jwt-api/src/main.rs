@@ -7,7 +7,10 @@ mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
 use crate::error::handler::catch_rejection;
+use crate::model::stats::get_salary_stats;
 use crate::network::handler::{create_user, login};
+use crate::security::auditer::with_auth;
+use crate::security::role::Role;
 use log::info;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -18,10 +21,19 @@ use warp::Filter;
    Örnek curl ifadeleri.
 
    Yeni kullanıcı kayıt etme.
+   #Admin rolünde bir kullanıcı
    curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234", "role": "admin"}'
 
-   Login olma örneği
+   # Normal User rolünde bir kullanıcı
+   curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "edison", "password": "edison@1234", "role": "user"}'
+
+   Login olma örnekleri
    curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234"}'
+
+   curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "edison", "password": "edison@1234"}'
+
+   Sadece Admin yetkisi ile girilen stats alanı için
+   curl -X GET 'localhost:5555/stats' -H 'Authorization: Bearer token_bilgisi_gelir'
 */
 
 #[tokio::main]
@@ -59,11 +71,19 @@ async fn main() {
         .and(add_users_db(db.clone()))
         .and_then(login);
 
+    // stats_route tanımında sadece Admin yetkisine sahip olanların
+    // gidebileceği bir yönlendirme bildirimi söz konusu.
+    let stats_route = warp::path("stats")
+        .and(warp::get())
+        .and(with_auth(Role::Admin))
+        .and_then(get_salary_stats);
+
     // route tanımlamaları çalışma zamanına eklenir.
     // CORS ayarına göre herkes erişebilir
     let routes = root
         .or(login_route)
         .or(register_route)
+        .or(stats_route)
         .with(warp::cors().allow_any_origin())
         .recover(catch_rejection);
 

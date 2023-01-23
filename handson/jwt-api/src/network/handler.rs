@@ -1,11 +1,13 @@
 use crate::data::db::UsersDb;
 use crate::error::custom_error::CustomError;
 use crate::error::handler::Result;
+use crate::model::category::Category;
 use crate::model::login_user::LoginUser;
 use crate::model::user::User;
 use crate::model::user_dao::UserDao;
 use crate::security::auditer::{create_hashed_pwd, create_jwt, verify_pwd};
 use log::{error, info};
+use warp::reply::html;
 use warp::{
     http::{Response, StatusCode},
     reject, Reply,
@@ -78,4 +80,46 @@ pub async fn login(login_user: LoginUser, db: UsersDb) -> Result<impl Reply> {
     let token = create_jwt(user);
     info!("Üretilen token {}", token);
     Ok(Response::builder().status(StatusCode::OK).body(token))
+}
+
+// Sadece admin yetkisinde olanların görebileceği demo HTML sayfasını üreten fonksiyon
+pub async fn get_salary_stats(username: String) -> Result<impl Reply> {
+    info!("This is a private zone. Only admins.");
+
+    Ok(html(format!(
+        r#"
+            <html>
+                <head>
+                    <title>Salary Statistics</title>
+                </head>
+                <body>
+                    <h1>Salary Statistics</h1>
+                    <div>Wellcom {}</div>
+                </body>
+            </html>
+        "#,
+        &username
+    )))
+}
+
+// Bu da sadece user rolündekilerin erişebileceği bir endpoint temsili olsun.
+pub async fn get_categories(_username:String) -> Result<impl Reply> {
+    let categories = vec![
+        Category {
+            id: 1,
+            title: "Books".to_string(),
+        },
+        Category {
+            id: 2,
+            title: "Magazines".to_string(),
+        },
+        Category {
+            id: 3,
+            title: "Computers".to_string(),
+        },
+    ];
+
+    Ok(Response::builder()
+        .status(StatusCode::OK)
+        .body(serde_json::to_string(&categories).unwrap()))
 }

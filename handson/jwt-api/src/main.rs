@@ -7,8 +7,7 @@ mod test;
 
 use crate::data::db::{add_users_db, UsersDb};
 use crate::error::handler::catch_rejection;
-use crate::model::stats::get_salary_stats;
-use crate::network::handler::{create_user, login};
+use crate::network::handler::{create_user, get_categories, get_salary_stats, login};
 use crate::security::auditer::with_auth;
 use crate::security::role::Role;
 use log::info;
@@ -32,8 +31,14 @@ use warp::Filter;
 
    curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "edison", "password": "edison@1234"}'
 
+   Aşağıdakileri denemek için tabii önce Login olmak gerekli. Login başarılı olduğunda dönen token bilgisi alınıp
+   Bearer sonrasındaki kısma yazılmalı.
+
    Sadece Admin yetkisi ile girilen stats alanı için
    curl -X GET 'localhost:5555/stats' -H 'Authorization: Bearer token_bilgisi_gelir'
+
+   Sadece User yetkisindekilerin erişebildiği categories alanı
+   curl -X GET 'localhost:5555/categories' -H 'Authorization: Bearer token_bilgisi_gelir'
 */
 
 #[tokio::main]
@@ -78,12 +83,20 @@ async fn main() {
         .and(with_auth(Role::Admin))
         .and_then(get_salary_stats);
 
+    // kategorileri çekebileceğim bir endpoint tanımı.
+    // Sadece user rolündekiler erişebilirler
+    let categories_route = warp::path("categories")
+        .and(warp::get())
+        .and(with_auth(Role::User))
+        .and_then(get_categories);
+
     // route tanımlamaları çalışma zamanına eklenir.
     // CORS ayarına göre herkes erişebilir
     let routes = root
         .or(login_route)
         .or(register_route)
         .or(stats_route)
+        .or(categories_route)
         .with(warp::cors().allow_any_origin())
         .recover(catch_rejection);
 

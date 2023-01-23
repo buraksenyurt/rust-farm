@@ -103,7 +103,7 @@ pub async fn get_salary_stats(username: String) -> Result<impl Reply> {
 }
 
 // Bu da sadece user rolündekilerin erişebileceği bir endpoint temsili olsun.
-pub async fn get_categories(_username:String) -> Result<impl Reply> {
+pub async fn get_categories(_username: String) -> Result<impl Reply> {
     let categories = vec![
         Category {
             id: 1,

@@ -10,10 +10,12 @@ dotenv = "0.15.0"
 jsonwebtoken = "8.2.0"
 log = "0.4.17"
 log4rs = "1.2.0"
+mobc = "0.8.1"
 scrypt = "0.10.0"
 serde = {version="1.0.152",features=["derive"]}
 serde_json = "1.0.91"
 thiserror = "1.0.38"
 tokio = {version="1.24.2",features=["full"]}
+tokio-postgres = "0.7.7"
 uuid = {version="1.2.2",features=["serde","v8"]}
 warp = "0.3.3"

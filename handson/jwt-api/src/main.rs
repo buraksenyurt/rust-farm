@@ -16,31 +16,6 @@ use std::sync::Arc;
 use tokio::sync::Mutex;
 use warp::Filter;
 
-/*
-   Örnek curl ifadeleri.
-
-   Yeni kullanıcı kayıt etme.
-   #Admin rolünde bir kullanıcı
-   curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234", "role": "admin"}'
-
-   # Normal User rolünde bir kullanıcı
-   curl -X POST 'localhost:5555/register' -H "Content-Type: application/json" -d '{"username": "edison", "password": "edison@1234", "role": "user"}'
-
-   Login olma örnekleri
-   curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "scoth", "password": "tiger@1234"}'
-
-   curl -X POST 'localhost:5555/login' -H "Content-Type: application/json" -d '{"username": "edison", "password": "edison@1234"}'
-
-   Aşağıdakileri denemek için tabii önce Login olmak gerekli. Login başarılı olduğunda dönen token bilgisi alınıp
-   Bearer sonrasındaki kısma yazılmalı.
-
-   Sadece Admin yetkisi ile girilen stats alanı için
-   curl -X GET 'localhost:5555/stats' -H 'Authorization: Bearer token_bilgisi_gelir'
-
-   Sadece User yetkisindekilerin erişebildiği categories alanı
-   curl -X GET 'localhost:5555/categories' -H 'Authorization: Bearer token_bilgisi_gelir'
-*/
-
 #[tokio::main]
 async fn main() {
     // JWT token oluşturma işinde kullanılan Secret Key bilgisi environment'ten geliyor.
@@ -51,6 +26,18 @@ async fn main() {
     log4rs::init_file("log_config.yml", Default::default()).expect("Config dosyası bulunamadı");
 
     info!("Veritabanı örneği hazırlanıyor...");
+
+    // let (client, connection) =
+    //     tokio_postgres::connect("host=localhost user=scoth password=tiger", NoTls)
+    //         .await
+    //         .unwrap();
+    //
+    // tokio::spawn(async move {
+    //     if let Err(e) = connection.await {
+    //         info!("Postgresql bağlantı hatası: {}", e);
+    //     }
+    // });
+
     let db: UsersDb = Arc::new(Mutex::new(HashMap::new()));
 
     info!("Sunucu çalıştırılıyor...");

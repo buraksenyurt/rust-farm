@@ -49,8 +49,8 @@ pub async fn catch_rejection(err: Rejection) -> std::result::Result<impl Reply, 
     }
 
     error!("unhandled error: {:?}", err);
-    return Ok(reply_with_status(
+    Ok(reply_with_status(
         StatusCode::INTERNAL_SERVER_ERROR,
         "Internal Server Error",
-    ));
+    ))
 }

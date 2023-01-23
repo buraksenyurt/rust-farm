@@ -4,7 +4,7 @@ use crate::error::handler::Result;
 use crate::model::login_user::LoginUser;
 use crate::model::user::User;
 use crate::model::user_dao::UserDao;
-use crate::security::{create_hashed_pwd, create_jwt, verify_pwd};
+use crate::security::auditer::{create_hashed_pwd, get_jwt_for_user, verify_pwd};
 use log::{error, info};
 use warp::{
     http::{Response, StatusCode},
@@ -75,6 +75,6 @@ pub async fn login(login_user: LoginUser, db: UsersDb) -> Result<impl Reply> {
     info!("Giriş başarılı");
     // HTTP 200 Ok
     // Kullanıcı ve şifre geçerli. Bu durumda JWT token bilgisi üretip geriye dönüyoruz.
-    let token = create_jwt(user);
+    let token = get_jwt_for_user(user);
     Ok(Response::builder().status(StatusCode::OK).body(token))
 }

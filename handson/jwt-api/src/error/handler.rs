@@ -8,6 +8,7 @@ use warp::reply::{json, with_status, WithStatus};
 use warp::{Rejection, Reply};
 
 pub type Result<T> = std::result::Result<T, Rejection>;
+pub type DbResult<T> = std::result::Result<T, Rejection>;
 
 pub fn reply_with_status(status: StatusCode, message: &str) -> WithStatus<impl Reply> {
     let json = json(&ErrorResponse {
@@ -33,7 +34,8 @@ pub async fn catch_rejection(err: Rejection) -> std::result::Result<impl Reply, 
             }
             CustomError::AutoHeaderRequired
             | CustomError::NotAuthorized
-            | CustomError::InvalidToken => {
+            | CustomError::InvalidToken
+            | CustomError::InternalError => {
                 Ok(reply_with_status(StatusCode::UNAUTHORIZED, &e.to_string()))
             }
         };

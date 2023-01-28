@@ -13,6 +13,8 @@ pub enum CustomError {
     InvalidToken,
     #[error("Eksik yetki")]
     NotAuthorized,
+    #[error("sunucu hatası")]
+    InternalError,
 }
 
 impl Reject for CustomError {}

@@ -5,7 +5,6 @@ use crate::model::category::Category;
 use crate::model::login_user::LoginUser;
 use crate::model::registered_user::RegisteredUser;
 use crate::model::user::User;
-use crate::model::user_dao::UserDao;
 use crate::security::auditer::{create_hashed_pwd, create_jwt, verify_pwd};
 use log::{error, info};
 use warp::reply::html;
@@ -15,7 +14,7 @@ use warp::{
 };
 
 // Kullanıcı oluşturma işini üstlenen fonksiyon.
-pub async fn create_user(user: UserDao, conn_pool: ConnPool) -> Result<impl Reply> {
+pub async fn create_user(user: LoginUser, conn_pool: ConnPool) -> Result<impl Reply> {
     info!("Gelen kullanıcı verisi {:?}", user);
     let db = get_db_conn(&conn_pool)
         .await
@@ -41,7 +40,7 @@ pub async fn create_user(user: UserDao, conn_pool: ConnPool) -> Result<impl Repl
 
     let registered_user = RegisteredUser {
         username: user.username,
-        role: user.role,
+        role: user.role.unwrap(),
     };
     info!("Kullanıcı veritabanına eklendi {:?}", &registered_user);
 
@@ -72,18 +71,13 @@ pub async fn login(login_user: LoginUser, conn_pool: ConnPool) -> Result<impl Re
         role: q.get::<&str, String>("role"),
     };
     info!("Kullanıcı bulundu. Şifre kontrol ediliyor...");
-    // kullanıcının girdiği şifre veritabanına hashlenerek kaydedilen ile karşılaştırılıyor.
-    // eğer hatalı şifre ise Bad Request ile cezalandırılıyor.
     if !verify_pwd(&login_user.password, &user.password) {
         error!("{} için hatalı şifre", &login_user.username);
         return Ok(Response::builder()
             .status(StatusCode::BAD_REQUEST)
             .body("Login hatası".to_string()));
     }
-
     info!("Giriş başarılı");
-    // HTTP 200 Ok
-    // Kullanıcı ve şifre geçerli. Bu durumda JWT token bilgisi üretip geriye dönüyoruz.
     let token = create_jwt(&user);
     info!("Üretilen token {}", token);
     Ok(Response::builder().status(StatusCode::OK).body(token))

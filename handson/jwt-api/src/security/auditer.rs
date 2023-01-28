@@ -80,7 +80,7 @@ fn is_authorized(required_role: Role, claims_role: &str) -> bool {
         "Gerekli rol: {}, Kullanıcı rolü: {}",
         required_role, claims_role
     );
-    required_role == claims_role || claims_role == Role::Admin
+    required_role == claims_role
 }
 
 // Talebe ait Header bilgisinden JWT token'ı çeken fonksiyon

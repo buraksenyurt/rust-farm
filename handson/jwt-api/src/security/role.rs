@@ -21,8 +21,8 @@ impl Role {
 impl Display for Role {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Role::Admin => write!(f, "Admin"),
-            Role::User => write!(f, "User"),
+            Role::Admin => write!(f, "admin"),
+            Role::User => write!(f, "user"),
         }
     }
 }

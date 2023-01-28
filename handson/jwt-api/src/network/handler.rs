@@ -19,28 +19,30 @@ pub async fn create_user(user: LoginUser, conn_pool: ConnPool) -> Result<impl Re
     let db = get_db_conn(&conn_pool)
         .await
         .map_err(|_| reject::custom(CustomError::InternalError))?;
+    let role = user.role.unwrap();
     let q = db
         .query_one(
             "SELECT username FROM users WHERE username = $1 AND role=$2;",
-            &[&user.username, &user.role],
+            &[&user.username, &role],
         )
-        .await
-        .map_err(|_| reject::custom(CustomError::InternalError))?;
-    let username: String = q.get(0);
-    if username == user.username {
-        error!("Bu kullanıcı zaten kayıtlı");
-        return Err(reject::custom(CustomError::UserExists(user.username)));
+        .await;
+    if q.is_ok() {
+        let username: String = q.unwrap().get(0);
+        if username == user.username {
+            error!("Bu kullanıcı zaten kayıtlı");
+            return Err(reject::custom(CustomError::UserExists(user.username)));
+        }
     }
 
     let pwd = create_hashed_pwd(&user.password);
     let insert_query = "INSERT INTO users (username,password,role) VALUES($1,$2,$3);";
-    db.execute(insert_query, &[&user.username, &pwd, &user.role])
+    db.execute(insert_query, &[&user.username, &pwd, &role])
         .await
         .map_err(|_| reject::custom(CustomError::InternalError))?;
 
     let registered_user = RegisteredUser {
         username: user.username,
-        role: user.role.unwrap(),
+        role,
     };
     info!("Kullanıcı veritabanına eklendi {:?}", &registered_user);
 
@@ -104,21 +106,23 @@ pub async fn get_salary_stats(username: String) -> Result<impl Reply> {
 }
 
 // Bu da sadece user rolündekilerin erişebileceği bir endpoint temsili olsun.
-pub async fn get_categories(_username: String) -> Result<impl Reply> {
-    let categories = vec![
-        Category {
-            id: 1,
-            title: "Books".to_string(),
-        },
-        Category {
-            id: 2,
-            title: "Magazines".to_string(),
-        },
-        Category {
-            id: 3,
-            title: "Computers".to_string(),
-        },
-    ];
+pub async fn get_categories(_username: String, conn_pool: ConnPool) -> Result<impl Reply> {
+    let db = get_db_conn(&conn_pool)
+        .await
+        .map_err(|_| reject::custom(CustomError::InternalError))?;
+
+    let rows = db
+        .query("SELECT id,title FROM categories;", &[])
+        .await
+        .map_err(|_| reject::custom(CustomError::InternalError))?;
+    let mut categories = Vec::new();
+    for row in rows {
+        let c = Category {
+            id: row.get(0),
+            title: row.get(1),
+        };
+        categories.push(c);
+    }
 
     Ok(Response::builder()
         .status(StatusCode::OK)

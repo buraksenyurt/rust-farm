@@ -74,6 +74,7 @@ async fn main() {
     let categories_route = warp::path("categories")
         .and(warp::get())
         .and(with_auth(Role::User))
+        .and(add_with_db(conn_pool.clone()))
         .and_then(get_categories);
 
     // route tanımlamaları çalışma zamanına eklenir.

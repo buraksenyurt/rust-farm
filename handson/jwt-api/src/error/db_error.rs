@@ -8,8 +8,6 @@ pub enum DbError {
     ConnPoolError(mobc::Error<tokio_postgres::Error>),
     #[error("Veritabanı başlatma hatası")]
     DbInitError(tokio_postgres::Error),
-    #[error("Sorgu işletme hatası")]
-    DbQueryError(tokio_postgres::Error),
 }
 
 impl Reject for DbError {}

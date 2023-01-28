@@ -1,23 +1,13 @@
 use crate::error::db_error::DbError;
 use crate::error::db_error::DbError::DbInitError;
 use crate::error::handler::DbResult;
-use crate::model::user::User;
 use mobc::{Connection, Error, Pool};
 use mobc_postgres::PgConnectionManager;
-use std::collections::HashMap;
 use std::convert::Infallible;
 use std::str::FromStr;
-use std::sync::Arc;
 use std::time::Duration;
-use tokio::sync::Mutex;
 use tokio_postgres::{Config, NoTls};
 use warp::Filter;
-
-// // Örnekte veritabanı taklidi yapan tipimiz bir HashMap.
-// // Kullanıcı bilgisini taşıyan User veri modelini kullanmakta.
-// // key olarak username değerleri kullanılacak.
-// // thread-safe erişim sağlayacak şekilde tanımlanmıştır.
-// pub type UsersDb = Arc<Mutex<HashMap<String, User>>>;
 
 pub type Conn = Connection<PgConnectionManager<NoTls>>;
 pub type ConnPool = Pool<PgConnectionManager<NoTls>>;
@@ -37,9 +27,7 @@ pub fn create_conn_pool() -> Result<ConnPool, Error<DbError>> {
         .build(manager))
 }
 
-pub async fn get_db_conn(
-    conn_pool: &ConnPool,
-) -> Result<Connection<PgConnectionManager<NoTls>>, DbError> {
+pub async fn get_db_conn(conn_pool: &ConnPool) -> Result<Conn, DbError> {
     conn_pool.get().await.map_err(DbError::ConnPoolError)
 }
 

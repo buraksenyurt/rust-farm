@@ -11,9 +11,6 @@ use crate::network::handler::{create_user, get_categories, get_salary_stats, log
 use crate::security::auditer::with_auth;
 use crate::security::role::Role;
 use log::info;
-use std::collections::HashMap;
-use std::sync::Arc;
-use tokio::sync::Mutex;
 use warp::Filter;
 
 #[tokio::main]

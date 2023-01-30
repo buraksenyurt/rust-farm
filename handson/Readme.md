@@ -20,5 +20,5 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **mongo-rocket**: Rocket ile hazırlanan bu web api uygulamasında mongodb veritabanı da kullanılıyor.
 - [x] **curlc**: [Şu adresteki örneği](https://www.bekk.christmas/post/2022/1/introduction-to-rust) yapıp terminalden çalışan curl benzeri bir uygulamanın nasıl oluşturulabileceğini öğreniyorum. Araç, bir dosyadaki basit HTTP Get, Post taleplerini alıp topluca işleme yeteneğine sahip.
 - [ ] **procs-sign**:Practical System Programming for Rust Developers kitabındaki Working with Process and Signals bölümüne ait konuların ele alındığı örnek.
-- [ ] **jwt-api**: Bu örnekte rust ile yazılmış bir REST servis için JWT tabanlı güvenlik ilkelerinin nasıl uygulanabileceğini öğrenmeye çalışıyorum.
+- [x] **jwt-api**: Bu örnekte rust ile yazılmış bir REST servis için JWT tabanlı güvenlik ilkelerinin nasıl uygulanabileceğini öğrenmeye çalışıyorum.
 - [x] **manhattan**: [CodinGame](https://www.codingame.com) sistesindeki basit seviyeden sayılan Ascii Art I probleminin çözümüne ait örnek kod parçası.

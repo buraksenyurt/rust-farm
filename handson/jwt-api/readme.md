@@ -1,8 +1,10 @@
 # JWT Token Kullanımı
 
-Bu örnekte tokio küfesinden de yararlanarak JWT token tabanlı bir REST servisi nasıl inşa edilir öğrenmeye çalışıyorum. Temel olarak kullanıcı kaydetme ve login işlemleri sonrası elde edilen token bilgisi ile yetkiye bazlı dummy endpoint'ler çalıştırılmakta.
+Bu örnekte tokio küfesinden de yararlanarak JWT token tabanlı bir REST servisi nasıl inşa edilir öğrenmeye çalışıyorum. Temel olarak kullanıcı kaydetme ve login işlemleri sonrası elde edilen token bilgisi ile yetkiye bazlı dummy endpoint'ler çalıştırılmakta. İlk başta kullanıcı bilgilerini bellekte tuttum ancak sonrasında bunun için Postgresql veritabanını kullandım.
 
 ## Örnek Talepler
+
+Diğer yandan talepleri daha kolay işletmek adına [postman](Rust%20Jwt%20Tutorial.postman_collection.json) dosyasını da kullanabilirsiniz.
 
 ```shell
 #Yeni kullanıcı kayıt etme.

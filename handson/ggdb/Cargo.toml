@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "crates/*",
+]
+
+[workspace.dependencies]
+miette = "5.5.0"
+serde = { version="1.0.152", features = ["derive"] }
+thiserror = "1.0.38"

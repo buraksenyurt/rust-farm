@@ -22,3 +22,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [ ] **procs-sign**:Practical System Programming for Rust Developers kitabındaki Working with Process and Signals bölümüne ait konuların ele alındığı örnek.
 - [x] **jwt-api**: Bu örnekte rust ile yazılmış bir REST servis için JWT tabanlı güvenlik ilkelerinin nasıl uygulanabileceğini öğrenmeye çalışıyorum.
 - [x] **manhattan**: [CodinGame](https://www.codingame.com) sistesindeki basit seviyeden sayılan Ascii Art I probleminin çözümüne ait örnek kod parçası.
+- [ ] **ggdb**: Takip ettiğim sağlam geliştiricilerden birisi olan [John Murray'in Building a Simple DB in Rust](https://johns.codes/blog/build-a-db/part01) isimli örneğini tatbik etmeye çalışıyorum.

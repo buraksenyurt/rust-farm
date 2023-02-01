@@ -1,5 +1,5 @@
 use nom::branch::alt;
-use nom::bytes::complete::{tag_no_case, take_while1};
+use nom::bytes::complete::{tag, tag_no_case, take_while1};
 use nom::character::complete::{char, multispace0, multispace1};
 use nom::combinator::map;
 use nom::error::context;
@@ -57,6 +57,18 @@ pub struct CreateStatement {
     pub columns: Vec<Column>,
 }
 
+#[derive(Debug, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub struct ColumnValue {
+    pub name: String,
+    pub value: String,
+}
+
+#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub struct InsertStatement {
+    pub table: String,
+    pub columns: Vec<ColumnValue>,
+}
+
 // string ve int veri türlerinin parse işlemi için
 impl<'a> Parse<'a> for DbType {
     fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
@@ -88,11 +100,38 @@ impl<'a> Parse<'a> for Column {
     }
 }
 
+// insert ifadesindeki [kolon adı]:[value], kısımlarını parse etmek için
+impl<'a> Parse<'a> for ColumnValue {
+    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
+        context(
+            "Column Value",
+            map(
+                separated_pair(
+                    identifier.context("Column Name"),
+                    tag(":"),
+                    identifier.context("Value"),
+                ),
+                |(name, value)| Self { name, value },
+            ),
+        )(input)
+    }
+}
+
 fn column_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<Column>> {
     context(
         "Column Definitions",
         map(
             tuple((char('('), comma_sep(Column::parse), char(')'))),
+            |(_, cols, _)| cols,
+        ),
+    )(input)
+}
+
+fn column_value_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<ColumnValue>> {
+    context(
+        "Column Value Definitions",
+        map(
+            tuple((char('('), comma_sep(ColumnValue::parse), char(')'))),
             |(_, cols, _)| cols,
         ),
     )(input)
@@ -117,6 +156,23 @@ impl<'a> Parse<'a> for CreateStatement {
             )
             .context("Create Table"),
             |(table, columns)| Self { table, columns },
+        )(input)
+    }
+}
+
+// insert into [tablo adı] ([kolon adı]:[değeri],[kolon adı]:[değeri]) parse işlemi için
+impl<'a> Parse<'a> for InsertStatement {
+    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
+        map(
+            tuple((
+                tag_no_case("insert"),
+                preceded(multispace1, tag_no_case("into")),
+                preceded(multispace1, identifier.context("Table Name")),
+                preceded(multispace1, tag_no_case("values")),
+                preceded(multispace1, column_value_definitions),
+            ))
+            .context("Insert Into Statement"),
+            |(_, _, table, _, columns)| Self { table, columns },
         )(input)
     }
 }
@@ -146,6 +202,43 @@ mod tests {
                 Column {
                     name: "price".into(),
                     db_type: DbType::Decimal,
+                },
+            ],
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn column_value_separator_test() {
+        let actual = ColumnValue::parse_from_raw("price:25").unwrap().1;
+        let expected = ColumnValue {
+            name: "price".into(),
+            value: "25".into(),
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn insert_into_test() {
+        let actual = InsertStatement::parse_from_raw(
+            "insert into Product values (id:1,title:CdBox,price:25)",
+        )
+        .unwrap()
+        .1;
+        let expected = InsertStatement {
+            table: "Product".into(),
+            columns: vec![
+                ColumnValue {
+                    name: "id".into(),
+                    value: "1".into(),
+                },
+                ColumnValue {
+                    name: "title".into(),
+                    value: "CdBox".into(),
+                },
+                ColumnValue {
+                    name: "price".into(),
+                    value: "25".into(),
                 },
             ],
         };

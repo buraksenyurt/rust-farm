@@ -69,6 +69,19 @@ pub struct InsertStatement {
     pub columns: Vec<ColumnValue>,
 }
 
+#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub struct WhereColumn {
+    pub name: String,
+    pub value: String,
+}
+
+#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub struct SelectWithWhereStatement {
+    pub table: String,
+    pub fields: Vec<String>,
+    pub where_columns: Vec<WhereColumn>,
+}
+
 // string ve int veri türlerinin parse işlemi için
 impl<'a> Parse<'a> for DbType {
     fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
@@ -117,6 +130,22 @@ impl<'a> Parse<'a> for ColumnValue {
     }
 }
 
+impl<'a> Parse<'a> for WhereColumn {
+    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
+        context(
+            "Where Column",
+            map(
+                separated_pair(
+                    identifier.context("Column Name"),
+                    tag("="),
+                    identifier.context("Value"),
+                ),
+                |(name, value)| Self { name, value },
+            ),
+        )(input)
+    }
+}
+
 fn column_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<Column>> {
     context(
         "Column Definitions",
@@ -137,6 +166,12 @@ fn column_value_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<ColumnVal
     )(input)
 }
 
+fn where_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<WhereColumn>> {
+    context(
+        "Where Definitions",
+        map(comma_sep(WhereColumn::parse), |cols| cols),
+    )(input)
+}
 // Create table [tablo adı] [kolon tanımlamaları] parse işlemi için
 impl<'a> Parse<'a> for CreateStatement {
     fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
@@ -173,6 +208,33 @@ impl<'a> Parse<'a> for InsertStatement {
             ))
             .context("Insert Into Statement"),
             |(_, _, table, _, columns)| Self { table, columns },
+        )(input)
+    }
+}
+
+// Select [kolon adları] from [tablo adı] where [alan adi]=[alan değeri] için
+impl<'a> Parse<'a> for SelectWithWhereStatement {
+    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
+        map(
+            tuple((
+                tag_no_case("select"),
+                multispace1,
+                comma_sep(identifier).context("Select Columns"),
+                multispace1,
+                tag_no_case("from"),
+                multispace1,
+                identifier.context("From Table"),
+                multispace1,
+                tag_no_case("where"),
+                multispace1,
+                where_definitions,
+            ))
+            .context("Select With Where Statement"),
+            |(_, _, fields, _, _, _, table, _, _, _, where_columns)| Self {
+                table,
+                fields,
+                where_columns,
+            },
         )(input)
     }
 }
@@ -239,6 +301,40 @@ mod tests {
                 ColumnValue {
                     name: "price".into(),
                     value: "25".into(),
+                },
+            ],
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn single_where_column_test() {
+        let actual = WhereColumn::parse_from_raw("id=1234").unwrap().1;
+        let expected = WhereColumn {
+            name: "id".into(),
+            value: "1234".into(),
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn select_with_where_test() {
+        let actual = SelectWithWhereStatement::parse_from_raw(
+            "SELECT id,title,price FROM Product WHERE id=1001,category=3",
+        )
+        .unwrap()
+        .1;
+        let expected = SelectWithWhereStatement {
+            table: "Product".into(),
+            fields: vec!["id".into(), "title".into(), "price".into()],
+            where_columns: vec![
+                WhereColumn {
+                    name: "id".into(),
+                    value: "1001".into(),
+                },
+                WhereColumn {
+                    name: "category".into(),
+                    value: "3".into(),
                 },
             ],
         };

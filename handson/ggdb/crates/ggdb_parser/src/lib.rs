@@ -1,10 +1,16 @@
+pub mod create_command;
+pub mod delete_command;
+pub mod insert_command;
+pub mod select_command;
+pub mod query;
+
 use nom::branch::alt;
 use nom::bytes::complete::{tag, tag_no_case, take_while1};
 use nom::character::complete::{char, multispace0, multispace1};
 use nom::combinator::map;
 use nom::error::context;
 use nom::multi::separated_list1;
-use nom::sequence::{preceded, separated_pair, tuple};
+use nom::sequence::{separated_pair, tuple};
 use nom::IResult;
 use nom_locate::LocatedSpan;
 use nom_supreme::ParserExt;
@@ -51,12 +57,6 @@ pub struct Column {
     pub db_type: DbType,
 }
 
-#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
-pub struct CreateStatement {
-    pub table: String,
-    pub columns: Vec<Column>,
-}
-
 #[derive(Debug, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub struct ColumnValue {
     pub name: String,
@@ -64,28 +64,9 @@ pub struct ColumnValue {
 }
 
 #[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
-pub struct InsertStatement {
-    pub table: String,
-    pub columns: Vec<ColumnValue>,
-}
-
-#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
 pub struct WhereColumn {
     pub name: String,
     pub value: String,
-}
-
-#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
-pub struct SelectWithWhereStatement {
-    pub table: String,
-    pub fields: Vec<String>,
-    pub where_columns: Vec<WhereColumn>,
-}
-
-#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
-pub struct DeleteWithWhereStatement {
-    pub table: String,
-    pub where_columns: Vec<WhereColumn>,
 }
 
 // string ve int veri türlerinin parse işlemi için
@@ -178,100 +159,14 @@ fn where_definitions(input: RawSpan<'_>) -> ParseResult<'_, Vec<WhereColumn>> {
         map(comma_sep(WhereColumn::parse), |cols| cols),
     )(input)
 }
-// Create table [tablo adı] [kolon tanımlamaları] parse işlemi için
-impl<'a> Parse<'a> for CreateStatement {
-    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
-        map(
-            separated_pair(
-                preceded(
-                    tuple((
-                        tag_no_case("create"),
-                        multispace1,
-                        tag_no_case("table"),
-                        multispace1,
-                    )),
-                    identifier.context("Table Name"),
-                ),
-                multispace1,
-                column_definitions,
-            )
-            .context("Create Table"),
-            |(table, columns)| Self { table, columns },
-        )(input)
-    }
-}
-
-// insert into [tablo adı] ([kolon adı]:[değeri],[kolon adı]:[değeri]) parse işlemi için
-impl<'a> Parse<'a> for InsertStatement {
-    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
-        map(
-            tuple((
-                tag_no_case("insert"),
-                preceded(multispace1, tag_no_case("into")),
-                preceded(multispace1, identifier.context("Table Name")),
-                preceded(multispace1, tag_no_case("values")),
-                preceded(multispace1, column_value_definitions),
-            ))
-            .context("Insert Into Statement"),
-            |(_, _, table, _, columns)| Self { table, columns },
-        )(input)
-    }
-}
-
-// Select [kolon adları] from [tablo adı] where [alan adi]=[alan değeri] için
-impl<'a> Parse<'a> for SelectWithWhereStatement {
-    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
-        map(
-            tuple((
-                tag_no_case("select"),
-                multispace1,
-                comma_sep(identifier).context("Select Columns"),
-                multispace1,
-                tag_no_case("from"),
-                multispace1,
-                identifier.context("From Table"),
-                multispace1,
-                tag_no_case("where"),
-                multispace1,
-                where_definitions,
-            ))
-            .context("Select With Where Statement"),
-            |(_, _, fields, _, _, _, table, _, _, _, where_columns)| Self {
-                table,
-                fields,
-                where_columns,
-            },
-        )(input)
-    }
-}
-
-// delete from [table_name] where id=1 örneği
-impl<'a> Parse<'a> for DeleteWithWhereStatement {
-    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
-        map(
-            tuple((
-                tag_no_case("delete"),
-                multispace1,
-                tag_no_case("from"),
-                multispace1,
-                identifier.context("From Table"),
-                multispace1,
-                tag_no_case("where"),
-                multispace1,
-                where_definitions,
-            ))
-            .context("Delete With Where Statement"),
-            |(_, _, _, _, table, _, _, _, where_columns)| Self {
-                table,
-                where_columns,
-            },
-        )(input)
-    }
-}
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::create_command::CreateStatement;
+    use crate::delete_command::DeleteWithWhereStatement;
+    use crate::insert_command::InsertStatement;
+    use crate::select_command::SelectWithWhereStatement;
 
     #[test]
     fn create_table_test() {

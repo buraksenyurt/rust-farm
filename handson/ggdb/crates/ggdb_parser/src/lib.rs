@@ -82,6 +82,12 @@ pub struct SelectWithWhereStatement {
     pub where_columns: Vec<WhereColumn>,
 }
 
+#[derive(Debug, Default, Clone, Eq, Hash, PartialEq, Serialize, Deserialize)]
+pub struct DeleteWithWhereStatement {
+    pub table: String,
+    pub where_columns: Vec<WhereColumn>,
+}
+
 // string ve int veri türlerinin parse işlemi için
 impl<'a> Parse<'a> for DbType {
     fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
@@ -239,6 +245,30 @@ impl<'a> Parse<'a> for SelectWithWhereStatement {
     }
 }
 
+// delete from [table_name] where id=1 örneği
+impl<'a> Parse<'a> for DeleteWithWhereStatement {
+    fn parse(input: RawSpan<'a>) -> ParseResult<'a, Self> {
+        map(
+            tuple((
+                tag_no_case("delete"),
+                multispace1,
+                tag_no_case("from"),
+                multispace1,
+                identifier.context("From Table"),
+                multispace1,
+                tag_no_case("where"),
+                multispace1,
+                where_definitions,
+            ))
+            .context("Delete With Where Statement"),
+            |(_, _, _, _, table, _, _, _, where_columns)| Self {
+                table,
+                where_columns,
+            },
+        )(input)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -327,6 +357,29 @@ mod tests {
         let expected = SelectWithWhereStatement {
             table: "Product".into(),
             fields: vec!["id".into(), "title".into(), "price".into()],
+            where_columns: vec![
+                WhereColumn {
+                    name: "id".into(),
+                    value: "1001".into(),
+                },
+                WhereColumn {
+                    name: "category".into(),
+                    value: "3".into(),
+                },
+            ],
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn delete_with_where_test() {
+        let actual = DeleteWithWhereStatement::parse_from_raw(
+            "DELETE FROM Product WHERE id=1001,category=3",
+        )
+        .unwrap()
+        .1;
+        let expected = DeleteWithWhereStatement {
+            table: "Product".into(),
             where_columns: vec![
                 WhereColumn {
                     name: "id".into(),

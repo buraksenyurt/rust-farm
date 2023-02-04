@@ -1,7 +1,8 @@
-use crate::create_command::CreateStatement;
-use crate::delete_command::DeleteWithWhereStatement;
-use crate::insert_command::InsertStatement;
-use crate::select_command::SelectWithWhereStatement;
+use crate::create::CreateStatement;
+use crate::delete::DeleteWithWhereStatement;
+use crate::insert::InsertStatement;
+use crate::select::SelectStatement;
+use crate::select_where::SelectWithWhereStatement;
 use crate::{Parse, ParseResult, RawSpan};
 use nom::branch::alt;
 use nom::character::complete::{char, multispace0};
@@ -15,7 +16,8 @@ pub enum Query {
     Create(CreateStatement),
     Insert(InsertStatement),
     Delete(DeleteWithWhereStatement),
-    Select(SelectWithWhereStatement),
+    SelectWhere(SelectWithWhereStatement),
+    Select(SelectStatement),
 }
 
 impl<'a> Parse<'a> for Query {
@@ -29,7 +31,8 @@ impl<'a> Parse<'a> for Query {
                         map(CreateStatement::parse, Query::Create),
                         map(InsertStatement::parse, Query::Insert),
                         map(DeleteWithWhereStatement::parse, Query::Delete),
-                        map(SelectWithWhereStatement::parse, Query::Select),
+                        map(SelectWithWhereStatement::parse, Query::SelectWhere),
+                        map(SelectStatement::parse, Query::Select),
                     )),
                     multispace0,
                     char(';'),

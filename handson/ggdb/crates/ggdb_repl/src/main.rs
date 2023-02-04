@@ -1,3 +1,5 @@
+use ggdb_parser::query::Query;
+use ggdb_parser::Parse;
 use rustyline::error::ReadlineError;
 use rustyline::{Editor, Result};
 
@@ -14,7 +16,10 @@ fn main() -> Result<()> {
         match readline {
             Ok(line) => {
                 reader.add_history_entry(line.as_str());
-                println!("Line: {}", line);
+                match Query::parse_from_raw(line.as_ref()) {
+                    Ok(q) => println!("{q:?}"),
+                    Err(e) => eprintln!("{e:?}"),
+                }
             }
             Err(ReadlineError::Interrupted) => {}
             Err(ReadlineError::Eof) => break,

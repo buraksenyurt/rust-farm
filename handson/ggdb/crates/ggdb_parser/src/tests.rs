@@ -1,10 +1,11 @@
 #[cfg(test)]
 mod tests {
-    use crate::create_command::CreateStatement;
-    use crate::delete_command::DeleteWithWhereStatement;
-    use crate::insert_command::InsertStatement;
+    use crate::create::CreateStatement;
+    use crate::delete::DeleteWithWhereStatement;
+    use crate::insert::InsertStatement;
     use crate::query::Query;
-    use crate::select_command::SelectWithWhereStatement;
+    use crate::select::SelectStatement;
+    use crate::select_where::SelectWithWhereStatement;
     use crate::{Column, ColumnValue, DbType, Parse, WhereColumn};
 
     #[test]
@@ -106,6 +107,18 @@ mod tests {
     }
 
     #[test]
+    fn select_test() {
+        let actual = SelectStatement::parse_from_raw("SELECT id,title,stocklevel FROM Category")
+            .unwrap()
+            .1;
+        let expected = SelectStatement {
+            table: "Category".into(),
+            fields: vec!["id".into(), "title".into(), "stocklevel".into()],
+        };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
     fn delete_with_where_test() {
         let actual = DeleteWithWhereStatement::parse_from_raw(
             "DELETE FROM Product WHERE id=1001,category=3",
@@ -141,7 +154,7 @@ mod tests {
         let actual = Query::parse_from_raw("SELECT title,email from Customer Where id=1234;")
             .unwrap()
             .1;
-        assert_eq!(actual, Query::Select(expected));
+        assert_eq!(actual, Query::SelectWhere(expected));
     }
 
     #[test]
@@ -163,9 +176,10 @@ mod tests {
                 },
             ],
         };
-        let actual = Query::parse_from_raw("INSERT INTO Product VALUES (id:1,title:CdBox,price:25);")
-            .unwrap()
-            .1;
+        let actual =
+            Query::parse_from_raw("INSERT INTO Product VALUES (id:1,title:CdBox,price:25);")
+                .unwrap()
+                .1;
         assert_eq!(actual, Query::Insert(expected));
     }
 }

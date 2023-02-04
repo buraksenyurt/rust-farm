@@ -1,7 +1,4 @@
-use crate::{
-    column_definitions, identifier, Column, Parse,
-    ParseResult, RawSpan,
-};
+use crate::{column_definitions, identifier, Column, Parse, ParseResult, RawSpan};
 use nom::bytes::complete::tag_no_case;
 use nom::character::complete::multispace1;
 use nom::combinator::map;

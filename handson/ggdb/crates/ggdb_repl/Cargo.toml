@@ -5,4 +5,5 @@ edition = "2021"
 
 [dependencies]
 rustyline = "10.1.1"
+miette = {workspace = true, features = ["fancy"]}
 ggdb_parser = { path = "../ggdb_parser"}

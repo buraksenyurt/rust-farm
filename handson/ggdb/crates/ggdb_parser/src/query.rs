@@ -1,5 +1,6 @@
 use crate::create::CreateStatement;
 use crate::delete::DeleteWithWhereStatement;
+use crate::error::FormatError;
 use crate::insert::InsertStatement;
 use crate::select::SelectStatement;
 use crate::select_where::SelectWithWhereStatement;
@@ -42,4 +43,19 @@ impl<'a> Parse<'a> for Query {
         )(input)?;
         Ok((rest, query))
     }
+}
+
+impl<'a> TryFrom<&'a str> for Query {
+    type Error = FormatError<'a>;
+
+    fn try_from(value: &'a str) -> Result<Self, Self::Error> {
+        match Query::parse_format_error(value) {
+            Ok(query) => Ok(query),
+            Err(e) => Err(e),
+        }
+    }
+}
+
+pub fn parse_query(input: &str) -> Result<Query, FormatError<'_>> {
+    input.try_into()
 }

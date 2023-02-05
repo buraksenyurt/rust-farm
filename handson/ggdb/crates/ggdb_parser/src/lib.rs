@@ -1,25 +1,27 @@
 pub mod create;
 pub mod delete;
+pub mod error;
 pub mod insert;
 pub mod query;
 pub mod select;
 pub mod select_where;
 pub mod tests;
 
+use crate::error::{format_parse_error, FormatError, QueryParseError};
 use nom::branch::alt;
 use nom::bytes::complete::{tag, tag_no_case, take_while1};
 use nom::character::complete::{char, multispace0, multispace1};
-use nom::combinator::map;
+use nom::combinator::{all_consuming, map};
 use nom::error::context;
 use nom::multi::separated_list1;
 use nom::sequence::{separated_pair, tuple};
-use nom::IResult;
+use nom::{Finish, IResult};
 use nom_locate::LocatedSpan;
 use nom_supreme::ParserExt;
 use serde::{Deserialize, Serialize};
 
 pub type RawSpan<'a> = LocatedSpan<&'a str>;
-pub type ParseResult<'a, T> = IResult<RawSpan<'a>, T>;
+pub type ParseResult<'a, T> = IResult<RawSpan<'a>, T, QueryParseError<'a>>;
 
 pub(crate) fn identifier(i: RawSpan) -> ParseResult<String> {
     map(take_while1(|c: char| c.is_alphanumeric()), |s: RawSpan| {
@@ -43,6 +45,14 @@ pub trait Parse<'a>: Sized {
     fn parse_from_raw(input: &'a str) -> ParseResult<'a, Self> {
         let i = LocatedSpan::new(input);
         Self::parse(i)
+    }
+
+    fn parse_format_error(i: &'a str) -> Result<Self, FormatError<'a>> {
+        let input = LocatedSpan::new(i);
+        match all_consuming(Self::parse)(input).finish() {
+            Ok((_, query)) => Ok(query),
+            Err(e) => Err(format_parse_error(i, e)),
+        }
     }
 }
 

@@ -1,5 +1,5 @@
-use ggdb_parser::query::Query;
-use ggdb_parser::Parse;
+use ggdb_parser::query::{parse_query};
+use miette::GraphicalReportHandler;
 use rustyline::error::ReadlineError;
 use rustyline::{Editor, Result};
 
@@ -16,9 +16,15 @@ fn main() -> Result<()> {
         match readline {
             Ok(line) => {
                 reader.add_history_entry(line.as_str());
-                match Query::parse_from_raw(line.as_ref()) {
+                match parse_query(line.as_ref()) {
                     Ok(q) => println!("{q:?}"),
-                    Err(e) => eprintln!("{e:?}"),
+                    Err(e) => {
+                        let mut s = String::new();
+                        GraphicalReportHandler::new()
+                            .render_report(&mut s, &e)
+                            .unwrap();
+                        println!("{s}");
+                    }
                 }
             }
             Err(ReadlineError::Interrupted) => {}

@@ -1,5 +1,6 @@
+#[derive(Debug, PartialEq)]
 pub struct Todo {
-    id: i32,
+    pub id: i32,
     title: String,
     completed: bool,
 }
@@ -11,5 +12,8 @@ impl Todo {
             title,
             completed: false,
         }
+    }
+    pub fn is_completed(&self) -> bool {
+        self.completed
     }
 }

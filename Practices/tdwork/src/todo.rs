@@ -1,8 +1,10 @@
+use std::fmt::{Display, Formatter};
+
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub struct Todo<'a> {
     pub id: i32,
     title: &'a str,
-    completed: bool,
+    pub completed: bool,
 }
 
 impl<'a> Todo<'a> {
@@ -13,10 +15,10 @@ impl<'a> Todo<'a> {
             completed: false,
         }
     }
-    pub fn is_completed(&self) -> bool {
-        self.completed
-    }
-    pub fn complete(&mut self) {
-        self.completed = true
+}
+
+impl<'a> Display for Todo<'a> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}-{}-{}", self.id, self.title, self.completed)
     }
 }

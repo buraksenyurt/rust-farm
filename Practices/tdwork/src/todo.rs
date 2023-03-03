@@ -19,6 +19,19 @@ impl Todo {
 
 impl Display for Todo {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}-{}-{}", self.id, self.title, self.completed)
+        write!(
+            f,
+            "{} - {} ({})",
+            self.id,
+            self.title,
+            match self.completed {
+                true => {
+                    "completed"
+                }
+                false => {
+                    "not completed"
+                }
+            }
+        )
     }
 }

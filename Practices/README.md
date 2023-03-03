@@ -38,3 +38,4 @@
 - [ ] **advanved_types:** Type Alias özelliği kullanım alanları ile Newtype deseninin uyarlaması.
 - [x] **the_grid**: WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
 - [ ] **booksworm**: Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.
+- [ ] **tdwork**: Terminalden çalışan bir todo uygulaması.

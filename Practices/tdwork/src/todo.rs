@@ -1,12 +1,12 @@
-#[derive(Debug, PartialEq)]
-pub struct Todo {
+#[derive(Debug, PartialEq, Copy, Clone)]
+pub struct Todo<'a> {
     pub id: i32,
-    title: String,
+    title: &'a str,
     completed: bool,
 }
 
-impl Todo {
-    pub fn new(id: i32, title: String) -> Self {
+impl<'a> Todo<'a> {
+    pub fn new(id: i32, title: &'a str) -> Self {
         Self {
             id,
             title,
@@ -15,5 +15,8 @@ impl Todo {
     }
     pub fn is_completed(&self) -> bool {
         self.completed
+    }
+    pub fn complete(&mut self) {
+        self.completed = true
     }
 }

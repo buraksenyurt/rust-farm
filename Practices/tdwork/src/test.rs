@@ -5,15 +5,15 @@ mod test {
 
     #[test]
     pub fn should_new_task_not_completed_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et");
+        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
         assert_eq!(trigo.completed, false);
     }
 
     #[test]
     pub fn should_controller_add_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et");
-        let walk = Todo::new(2, "Gün içinde 100 adım at");
-        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz");
+        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
+        let walk = Todo::new(2, "Gün içinde 100 adım at".to_string());
+        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
         let mut controller = Controller::default();
         controller.add(trigo);
         controller.add(walk);
@@ -24,8 +24,8 @@ mod test {
 
     #[test]
     pub fn should_get_task_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et");
-        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz");
+        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
+        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
         let mut controller = Controller::default();
         controller.add(trigo);
         controller.add(puzzle);
@@ -35,7 +35,7 @@ mod test {
 
     #[test]
     pub fn should_complete_task_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et");
+        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
         let mut controller = Controller::default();
         controller.add(trigo);
         controller.complete(1);

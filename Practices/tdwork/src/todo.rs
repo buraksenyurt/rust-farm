@@ -1,14 +1,14 @@
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug, PartialEq, Copy, Clone)]
-pub struct Todo<'a> {
-    pub id: i32,
-    title: &'a str,
+#[derive(Debug, PartialEq)]
+pub struct Todo {
+    pub id: u32,
+    title: String,
     pub completed: bool,
 }
 
-impl<'a> Todo<'a> {
-    pub fn new(id: i32, title: &'a str) -> Self {
+impl Todo {
+    pub fn new(id: u32, title: String) -> Self {
         Self {
             id,
             title,
@@ -17,7 +17,7 @@ impl<'a> Todo<'a> {
     }
 }
 
-impl<'a> Display for Todo<'a> {
+impl Display for Todo {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}-{}-{}", self.id, self.title, self.completed)
     }

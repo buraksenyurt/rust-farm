@@ -1,5 +1,5 @@
 use crate::todo::Todo;
-use std::fs::File;
+use std::fs::{File, OpenOptions};
 use std::io;
 use std::io::{BufRead, Write};
 use std::path::Path;
@@ -16,8 +16,13 @@ pub fn read_db() -> Vec<Todo> {
     let mut todos: Vec<Todo> = Vec::new();
     if let Ok(lines) = read_lines("todos.dat") {
         for line in lines {
-            if let Ok(_t) = line {
-                let todo = Todo::new(1, "Test".to_string());
+            if let Ok(t) = line {
+                let parts = t.split('|').collect::<Vec<&str>>();
+                let mut todo = Todo::new(parts[0].parse::<u32>().unwrap(), parts[1].to_string());
+                match parts[2].parse::<bool>().unwrap() {
+                    true => todo.completed = true,
+                    false => todo.completed = false,
+                }
                 todos.push(todo);
             }
         }
@@ -27,13 +32,13 @@ pub fn read_db() -> Vec<Todo> {
 
 pub fn write_db(todo_list: &Vec<Todo>) -> bool {
     let file_name = "todos.dat";
-    match File::create(file_name) {
-        Ok(mut f) => {
-            for t in todo_list.iter() {
-                writeln!(f, "{}", t.to_string()).expect("Write error");
-            }
-            true
-        }
-        Err(_) => false,
+    let mut file = OpenOptions::new()
+        .append(true)
+        .open(file_name)
+        .expect("Unable to open file");
+
+    for t in todo_list.iter() {
+        writeln!(file, "{}", t.format()).expect("Write error");
     }
+    true
 }

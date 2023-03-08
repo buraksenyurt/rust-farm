@@ -1,3 +1,4 @@
+use crate::repository::read_db;
 use crate::todo::Todo;
 
 pub struct Controller {
@@ -6,7 +7,7 @@ pub struct Controller {
 
 impl Default for Controller {
     fn default() -> Self {
-        Self { todos: Vec::new() }
+        Self { todos: read_db() }
     }
 }
 

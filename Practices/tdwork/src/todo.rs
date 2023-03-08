@@ -15,6 +15,9 @@ impl Todo {
             completed: false,
         }
     }
+    pub fn format(&self) -> String {
+        format!("{}|{}|{}", self.id, self.title, self.completed)
+    }
 }
 
 impl Display for Todo {

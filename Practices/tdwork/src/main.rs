@@ -1,4 +1,5 @@
 use crate::controller::Controller;
+use crate::repository::write_db;
 use crate::todo::Todo;
 use std::io;
 
@@ -58,6 +59,9 @@ fn main() {
             }
             4 => {
                 println!("See yea!");
+                if !write_db(controller.list()) {
+                    println!("Uncompleted save progress");
+                }
                 return;
             }
             _ => {

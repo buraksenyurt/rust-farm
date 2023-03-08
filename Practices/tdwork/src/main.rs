@@ -3,6 +3,7 @@ use crate::todo::Todo;
 use std::io;
 
 mod controller;
+mod repository;
 mod test;
 mod todo;
 
@@ -16,6 +17,10 @@ fn main() {
         println!("\t2. Complete");
         println!("\t3. Help");
         println!("\t4. Quit");
+        //todo: Metinleri text dosyadan okuyalım
+        //todo: error durumlarında programdan çıkmasın devam etsin
+        //todo: todo'ları json formatta kaydedelim
+        //todo: Todo veri yapısına tarih bilgisi ekleyelim
 
         let mut user_choice = String::new();
         io::stdin()

@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod test {
     use crate::controller::Controller;
+    use crate::repository::{read_db, write_db};
     use crate::todo::Todo;
 
     #[test]
@@ -40,5 +41,23 @@ mod test {
         controller.add(trigo);
         controller.complete(1);
         assert_eq!(controller.is_completed(1), true);
+    }
+
+    #[test]
+    pub fn should_write_tasks_to_file_works_test() {
+        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
+        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
+        let mut controller = Controller::default();
+        controller.add(trigo);
+        controller.add(puzzle);
+
+        let result = write_db(controller.list());
+        assert_eq!(result, true);
+    }
+
+    #[test]
+    pub fn should_read_file_works_test() {
+        let result = read_db();
+        assert!(result.len() > 0);
     }
 }

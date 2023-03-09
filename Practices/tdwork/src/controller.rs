@@ -35,4 +35,9 @@ impl Controller {
             todo.completed = true
         }
     }
+    pub fn delete(&mut self, id: u32) {
+        if let Some(idx) = self.todos.iter().position(|t| t.id == id) {
+            self.todos.remove(idx);
+        }
+    }
 }

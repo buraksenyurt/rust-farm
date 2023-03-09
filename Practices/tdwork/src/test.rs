@@ -78,4 +78,15 @@ mod test {
             String::from("99|Trigonometri 101 dersini tekrar et|true")
         );
     }
+
+    #[test]
+    pub fn should_delete_todo_works() {
+        let read = Todo::new(17, "Bu hafta 3 saat İspaynolca çalış".to_string());
+        let cycle = Todo::new(19, "10 Km bisiklet sür".to_string());
+        let mut controller = Controller::default();
+        controller.add(read);
+        controller.add(cycle);
+        controller.delete(19);
+        assert_eq!(controller.get(19), None);
+    }
 }

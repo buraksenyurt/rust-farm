@@ -16,12 +16,9 @@ fn main() {
         println!("\t0. List");
         println!("\t1. Add");
         println!("\t2. Complete");
-        println!("\t3. Help");
-        println!("\t4. Quit");
-        //todo: Metinleri text dosyadan okuyalım
-        //todo: error durumlarında programdan çıkmasın devam etsin
-        //todo: todo'ları json formatta kaydedelim
-        //todo: Todo veri yapısına tarih bilgisi ekleyelim
+        println!("\t3. Delete");
+        println!("\t4. Help");
+        println!("\t5. Quit");
 
         let mut user_choice = String::new();
         io::stdin()
@@ -36,6 +33,10 @@ fn main() {
                 }
             }
             1 => {
+                if controller.list().len() >= 5 {
+                    println!("Maximum task capacity reached. You can think to delete someone of them.");
+                    continue;
+                }
                 let mut input = String::new();
                 println!("What do you want to-do?");
                 io::stdin()
@@ -53,11 +54,18 @@ fn main() {
                 controller.complete(id);
             }
             3 => {
+                println!("Give me an ID of the to-do item you want to delete:");
+                let mut id = String::new();
+                io::stdin().read_line(&mut id).expect("Failed to read line");
+                let id = id.trim().parse::<u32>().expect("Invalid input");
+                controller.delete(id);
+            }
+            4 => {
                 println!("For example you can enter a todo something like this...");
                 println!("Run 3 Km today...");
                 println!("Go to supermarket and buy spagetti.");
             }
-            4 => {
+            5 => {
                 println!("See yea!");
                 if !write_db(controller.list()) {
                     println!("Uncompleted save progress");
@@ -65,7 +73,7 @@ fn main() {
                 return;
             }
             _ => {
-                println!("I don't understand you. Try again");
+                println!("I can't understand you. Please try again...");
             }
         }
     }

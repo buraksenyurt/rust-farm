@@ -33,7 +33,9 @@ pub fn read_db() -> Vec<Todo> {
 pub fn write_db(todo_list: &Vec<Todo>) -> bool {
     let file_name = "todos.dat";
     let mut file = OpenOptions::new()
-        .append(true)
+        //.append(true)
+        .write(true)
+        .create(true)
         .open(file_name)
         .expect("Unable to open file");
 

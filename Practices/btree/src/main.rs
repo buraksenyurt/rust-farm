@@ -17,6 +17,10 @@ fn main() {
     let mut loran = CellNode::new("Loran".to_string(), 66.62);
     let mut mam = CellNode::new("Mam".to_string(), 18.35);
 
+    /*
+       Boğumlar bağlanırken alttan yukarıya doğru yürüyoruz.
+       Rastgele sırada eklemek Value Moved Here hatalarının fırlamasına neden olabilir.
+    */
     mam.right = Some(Rc::new(RefCell::new(mikaela)));
     loran.right = Some(Rc::new(RefCell::new(mam)));
     bill.right = Some(Rc::new(RefCell::new(loran)));
@@ -76,7 +80,7 @@ pub fn calculate_average_experience(node: CellNode) -> f32 {
     while !stack.is_empty() {
         // O anki Node değerini alıyoruz.
         let current: Rc<RefCell<CellNode>> = stack.pop().unwrap();
-        // mesafeleri topluyoruz
+        // deneyimleri topluyoruz
         sum += current.borrow().person.experience;
         // Eğer sağ tarafta bir node varsa yığına o Node'u ekliyoruz.
         if let Some(right) = &current.borrow().right {
@@ -86,6 +90,12 @@ pub fn calculate_average_experience(node: CellNode) -> f32 {
         if let Some(left) = &current.borrow().left {
             stack.push(left.to_owned());
         };
+        /*
+           Ana root'tan başladığımızı düşünelim. Ona bağlı iki node olsun.
+           stack türünden bir yapı kullandığımız için buradaki kurguya göre önce sağ node
+           sonra sol node stack'e eklenir. LIFO sebebiyle pop son eklenen node olarak soldakini alır.
+           Yani node'ların okunma işlemi soldan başlar diyebiliriz.
+        */
         counter += 1;
     }
     sum as f32 / counter as f32

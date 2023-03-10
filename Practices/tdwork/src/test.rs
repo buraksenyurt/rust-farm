@@ -12,44 +12,35 @@ mod test {
 
     #[test]
     pub fn should_controller_add_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
-        let walk = Todo::new(2, "Gün içinde 100 adım at".to_string());
-        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
         let mut controller = Controller::default();
-        controller.add(trigo);
-        controller.add(walk);
-        controller.add(puzzle);
-        //assert_eq!(controller.list().iter().filter(|t| t.completed).count(), 0);
+        controller.add("Trigonometri 101 dersini tekrar et".to_string());
+        controller.add("Gün içinde 100 adım at".to_string());
+        controller.add("Bugün bir tane çengel bulmaca çöz".to_string());
         assert!(controller.list().len() > 0);
     }
 
     #[test]
     pub fn should_get_task_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
-        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
         let mut controller = Controller::default();
-        controller.add(trigo);
-        controller.add(puzzle);
-        assert!(controller.get(3).is_some());
+        let task_id = controller.add("İlkokul öğretmeninin bir halini hatırını sor.".to_string());
+        controller.add("Sarp'a matematik çalıştır.".to_string());
+        assert!(controller.get(task_id).is_some());
         assert_eq!(controller.get(99), None);
     }
 
     #[test]
     pub fn should_complete_task_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
         let mut controller = Controller::default();
-        controller.add(trigo);
-        controller.complete(1);
-        assert_eq!(controller.is_completed(1), true);
+        let task_id = controller.add("Proje kodlarını refaktör et".to_string());
+        controller.complete(task_id);
+        assert_eq!(controller.is_completed(task_id), true);
     }
 
     #[test]
     pub fn should_write_tasks_to_file_works_test() {
-        let trigo = Todo::new(1, "Trigonometri 101 dersini tekrar et".to_string());
-        let puzzle = Todo::new(3, "Bugün bir tane çengel bulmaca çöz".to_string());
         let mut controller = Controller::default();
-        controller.add(trigo);
-        controller.add(puzzle);
+        controller.add("Trigonometri 101 dersini tekrar et".to_string());
+        controller.add("Bugün bir tane çengel bulmaca çöz".to_string());
 
         let result = write_db(controller.list());
         assert_eq!(result, true);
@@ -63,30 +54,43 @@ mod test {
 
     #[test]
     pub fn should_todo_format_works_test() {
-        let trigo = Todo::new(99, "Trigonometri 101 dersini tekrar et".to_string());
+        let trigo = Todo::new(
+            99,
+            "Oyun programlama giriş konularını gözden geçir".to_string(),
+        );
         let formatted = trigo.format();
         assert_eq!(
             formatted,
-            String::from("99|Trigonometri 101 dersini tekrar et|false")
+            String::from("99|Oyun programlama giriş konularını gözden geçir|false")
         );
         let mut controller = Controller::default();
-        controller.add(trigo);
-        controller.complete(99);
-        let formatted = controller.get(99);
+        let task_id = controller.add("Oyun programlama giriş konularını gözden geçir".to_string());
+        controller.complete(task_id);
+        let formatted = controller.get(task_id);
         assert_eq!(
             formatted.unwrap().format(),
-            String::from("99|Trigonometri 101 dersini tekrar et|true")
+            String::from(format!(
+                "{}|Oyun programlama giriş konularını gözden geçir|true",
+                task_id
+            ))
         );
     }
 
     #[test]
-    pub fn should_delete_todo_works() {
-        let read = Todo::new(17, "Bu hafta 3 saat İspaynolca çalış".to_string());
-        let cycle = Todo::new(19, "10 Km bisiklet sür".to_string());
+    pub fn should_delete_todo_works_test() {
         let mut controller = Controller::default();
-        controller.add(read);
-        controller.add(cycle);
-        controller.delete(19);
-        assert_eq!(controller.get(19), None);
+        controller.add("Bu hafta 3 saat İspaynolca çalış".to_string());
+        let task_id = controller.add("10 Km bisiklet sür".to_string());
+        controller.delete(task_id);
+        assert_eq!(controller.get(task_id), None);
+    }
+
+    #[test]
+    pub fn should_create_id_works_test() {
+        let mut controller = Controller::default();
+        controller.add("This week in Rust bülteninden bir konu çalış".to_string());
+        let last_task_id = controller.add("Bir Codingame problemi çöz".to_string());
+        let new_id = controller.create_id() - 1;
+        assert_eq!(new_id, last_task_id);
     }
 }

@@ -1,6 +1,5 @@
 use crate::controller::Controller;
 use crate::repository::write_db;
-use crate::todo::Todo;
 use std::io;
 
 mod controller;
@@ -34,7 +33,9 @@ fn main() {
             }
             1 => {
                 if controller.list().len() >= 5 {
-                    println!("Maximum task capacity reached. You can think to delete someone of them.");
+                    println!(
+                        "Maximum task capacity reached. You can think to delete someone of them."
+                    );
                     continue;
                 }
                 let mut input = String::new();
@@ -42,9 +43,8 @@ fn main() {
                 io::stdin()
                     .read_line(&mut input)
                     .expect("Failed to read line");
-                let id = controller.list().len() as u32 + 1;
-                let todo = Todo::new(id, input.trim().to_string());
-                controller.add(todo);
+                let task_id = controller.add(input.trim().to_string());
+                println!("Task number {} has been added to the list", task_id);
             }
             2 => {
                 println!("Give me an ID of the to-do item you want to complete:");

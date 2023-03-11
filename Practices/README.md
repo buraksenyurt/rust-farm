@@ -39,4 +39,4 @@
 - [x] **the_grid**: WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
 - [ ] **booksworm**: Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.
 - [x] **tdwork**: Terminalden çalışan bir todo uygulaması.
-- [ ] **btree**: Binary Tree algoritmasının Rust tarafında uygulanışı.
+- [x] **btree**: Binary Tree algoritmasının Rust tarafında uygulanışı.

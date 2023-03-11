@@ -23,4 +23,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **jwt-api**: Bu örnekte rust ile yazılmış bir REST servis için JWT tabanlı güvenlik ilkelerinin nasıl uygulanabileceğini öğrenmeye çalışıyorum.
 - [x] **manhattan**: [CodinGame](https://www.codingame.com) sistesindeki basit seviyeden sayılan Ascii Art I probleminin çözümüne ait örnek kod parçası.
 - [ ] **ggdb**: Takip ettiğim sağlam geliştiricilerden birisi olan [John Murray'in Building a Simple DB in Rust](https://johns.codes/blog/build-a-db/part01) isimli örneğini tatbik etmeye çalışıyorum.
-- [ ] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.
+- [x] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.

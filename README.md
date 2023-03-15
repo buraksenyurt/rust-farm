@@ -28,6 +28,6 @@ cargo doc
 ## Bölümler
 
 - [x] __101 :__ Rust programlama dilini başlangıç seviyesinde öğrenmek amacıyla kullanılır. ***in_progress!()***
-- [ ] __WebDev :__ Örnek bir Web uygulamasının geliştirilmesi planlanıyor. ***in_progress!();***
+- ~~[ ] __WebDev :__ Örnek bir Web uygulamasının geliştirilmesi planlanıyor. ***in_progress!();***~~
 - [ ] __Practices :__ Ortaya karışık pratiklerin yer alması planlanıyor. ***in_progress!();***
 - [ ] __Hands-On :__ Rust ile ilgili çalıştığım kitaplardaki öğretileri uyguladığım alandır. ***in_progress!();***

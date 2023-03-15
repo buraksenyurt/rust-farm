@@ -40,3 +40,4 @@
 - [ ] **booksworm**: Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.
 - [x] **tdwork**: Terminalden çalışan bir todo uygulaması.
 - [x] **btree**: Binary Tree algoritmasının Rust tarafında uygulanışı.
+- [x] **trait_and_ref**: Bir trait tanımladığımızda Blanket Implementation prensibine göre onun referansları, mutable referansları ve Box içine alınmış versiyonları için de generic olarak uygulamalıyız. Bu konuyu öğrenmeye çalıştığım örnek.

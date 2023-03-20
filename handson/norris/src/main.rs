@@ -1,3 +1,4 @@
+use axum::extract::State;
 use axum::routing::get;
 use axum::{Json, Router};
 use rand::Rng;
@@ -9,7 +10,11 @@ use std::path::Path;
 
 #[tokio::main]
 async fn main() {
-    let route = Router::new().route("/", get(default_handler));
+    let app_state = AppState::new();
+
+    let route = Router::new().route("/norris", get(default_handler));
+    let app = Router::new().nest("/api", route).with_state(app_state);
+
     let address = SocketAddr::from(([127, 0, 0, 1], 6001));
     println!(
         "Sunucu başlatılıyor: {}.\nÇek bir Chuck Norris sözü.",
@@ -17,16 +22,15 @@ async fn main() {
     );
 
     axum::Server::bind(&address)
-        .serve(route.into_make_service())
+        .serve(app.into_make_service())
         .await
         .expect("Failed to start server");
 }
 
-async fn default_handler() -> Json<Fact> {
-    let facts = load_facts().unwrap();
+async fn default_handler(State(app_state): State<AppState>) -> Json<Fact> {
     let mut rng = rand::thread_rng();
-    let index: usize = rng.gen_range(0..facts.len()) as usize;
-    if let Some(f) = facts.get(index) {
+    let index: usize = rng.gen_range(0..app_state.get().len()) as usize;
+    if let Some(f) = app_state.get().get(index) {
         return Json(f.clone());
     }
     Json(Fact::new(0, "May be another time".to_string()))
@@ -63,6 +67,21 @@ struct Fact {
 impl Fact {
     pub fn new(id: u32, content: String) -> Self {
         Self { id, content }
+    }
+}
+
+#[derive(Clone)]
+struct AppState {
+    facts: Vec<Fact>,
+}
+
+impl AppState {
+    pub fn new() -> Self {
+        let facts = load_facts().unwrap();
+        Self { facts }
+    }
+    pub fn get(&self) -> &Vec<Fact> {
+        &self.facts
     }
 }
 

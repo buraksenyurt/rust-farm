@@ -24,4 +24,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **manhattan**: [CodinGame](https://www.codingame.com) sistesindeki basit seviyeden sayılan Ascii Art I probleminin çözümüne ait örnek kod parçası.
 - [ ] **ggdb**: Takip ettiğim sağlam geliştiricilerden birisi olan [John Murray'in Building a Simple DB in Rust](https://johns.codes/blog/build-a-db/part01) isimli örneğini tatbik etmeye çalışıyorum.
 - [x] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.
-- [ ] **norris**: Axum kullanımını özetleyen ve Chuck Norris gerçekleri konulu basit bir Rest servis örneği.
+- [x] **norris**: Axum kullanımını özetleyen ve Chuck Norris gerçekleri konulu basit bir Rest servis örneği.

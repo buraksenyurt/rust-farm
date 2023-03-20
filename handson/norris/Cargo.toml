@@ -1,0 +1,12 @@
+[package]
+name = "norris"
+description = "Get random Chuck Norris Fact"
+version = "0.1.0"
+edition = "2021"
+
+# To add crate with features
+# cargo add tokio -F full
+[dependencies]
+axum = "0.6.11"
+serde = { version = "1.0.158" }
+tokio = { version = "1.26.0", features = ["full"] }

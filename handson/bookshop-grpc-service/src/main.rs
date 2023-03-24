@@ -4,6 +4,7 @@ use crate::bookshop_service::BookShopService;
 use tonic::transport::Server;
 
 mod bookshop_service;
+mod store;
 
 mod bookshop {
     include!("bookshop.rs");

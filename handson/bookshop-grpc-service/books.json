@@ -1,0 +1,142 @@
+[
+  {
+    "book_id": 0,
+    "title": "Sistem Hatası",
+    "authors": "James Ball",
+    "category": "Araştırma",
+    "unit_price": 35.45
+  },
+  {
+    "book_id": 0,
+    "title": "Sistem Hatası",
+    "authors": "James Ball",
+    "category": "Araştırma",
+    "unit_price": 35.45
+  },
+  {
+    "book_id": 1,
+    "title": "Dağınık Zihin (Yüksek Teknoloji Dünyasında Kadim Beyinler)",
+    "authors": "Adam Gazzaley, Larry D. Rosen",
+    "category": "Araştırma",
+    "unit_price": 35.45
+  },
+  {
+    "book_id": 2,
+    "title": "Dijital Minimalizim",
+    "authors": "Cal Newport",
+    "category": "Araştırma",
+    "unit_price": 22.45
+  },
+  {
+    "book_id": 3,
+    "title": "İnsanlığın Geleceği",
+    "authors": "Michio Kaku",
+    "category": "Bilim Kurgu",
+    "unit_price": 19.50
+  },
+  {
+    "book_id": 4,
+    "title": "Uygulamalı Lineer Cebir",
+    "authors": "Bernard Kolman",
+    "category": "Matematik",
+    "unit_price": 100.99
+  },
+  {
+    "book_id": 5,
+    "title": "Sabahattin Ali",
+    "authors": "Bernard Kolman",
+    "category": "Türk Edebiyatı",
+    "unit_price": 34.99
+  },
+  {
+    "book_id": 6,
+    "title": "Günden Kalanlar",
+    "authors": "Kazuo Ishiguro",
+    "category": "Japon Edebiyatı",
+    "unit_price": 20.2
+  },
+  {
+    "book_id": 7,
+    "title": "Karanlıkta Bir Nehir",
+    "authors": "Masaji Ishikawa",
+    "category": "Japon Edebiyatı",
+    "unit_price": 19.2
+  },
+  {
+    "book_id": 8,
+    "title": "Sistem Hatası",
+    "authors": "Edward Snowden",
+    "category": "Araştırma",
+    "unit_price": 40.50
+  },
+  {
+    "book_id": 9,
+    "title": "Incognito Beynin Gizli Hayatı",
+    "authors": "David Eagleman",
+    "category": "Araştırma",
+    "unit_price": 45.50
+  },
+  {
+    "book_id": 10,
+    "title": "Doppler",
+    "authors": "Erlend Loe",
+    "category": "Roman",
+    "unit_price": 25.10
+  },
+  {
+    "book_id": 11,
+    "title": "Bildiğimiz Dünyanın Sonu",
+    "authors": "Erlend Loe",
+    "category": "Roman",
+    "unit_price": 25.10
+  },
+  {
+    "book_id": 12,
+    "title": "21.Yüzyıl için 21 Ders",
+    "authors": "Yuval Noah Harari",
+    "category": "Araştırma",
+    "unit_price": 35.55
+  },
+  {
+    "book_id": 13,
+    "title": "Çocukluğun Sonu",
+    "authors": "Arthur C. Clarke",
+    "category": "Bilim Kurgu",
+    "unit_price": 40.40
+  },
+  {
+    "book_id": 14,
+    "title": "Cesur Yeni Dünya",
+    "authors": "Aldous Huxley",
+    "category": "Bilim Kurgu",
+    "unit_price": 66.60
+  },
+  {
+    "book_id": 15,
+    "title": "Televizyon: Öldüren Eğlence",
+    "authors": "Neil Postman",
+    "category": "Araştırma",
+    "unit_price": 39.90
+  },
+  {
+    "book_id": 16,
+    "title": "Canım Aliye, Ruhum Filiz",
+    "authors": "Sabahattin Ali",
+    "category": "Türk Edebiyatı",
+    "unit_price": 40.05
+  },
+  {
+    "book_id": 17,
+    "title": "Yapay Zeka",
+    "authors": "Cem Say",
+    "category": "Bilim Teknik",
+    "unit_price": 52.50
+  },
+  {
+    "book_id": 18,
+    "title": "Veronika Ölmek İstiyor",
+    "authors": "Paulo Coelho",
+    "category": "Roman",
+    "unit_price": 28.50
+  }
+]

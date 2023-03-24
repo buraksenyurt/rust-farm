@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package bookshop;
+
+service Bookshop {
+  rpc GetSuggestion(GetSuggestionRequest) returns (GetSuggestionResponse) {}
+}
+
+message GetSuggestionRequest {
+  string category = 1;
+}
+
+message GetSuggestionResponse {
+  string bookId = 1;
+  string title = 2;
+  string author = 3;
+  string category = 4;
+  double unitPrice = 5;
+}

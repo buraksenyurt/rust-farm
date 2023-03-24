@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSuggestionRequest {
     #[prost(string, tag = "1")]
-    pub category: String,
+    pub category: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10,11 +10,11 @@ pub struct GetSuggestionResponse {
     #[prost(int32, tag = "1")]
     pub book_id: i32,
     #[prost(string, tag = "2")]
-    pub title: String,
+    pub title: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
-    pub author: String,
+    pub author: ::prost::alloc::string::String,
     #[prost(string, tag = "4")]
-    pub category: String,
+    pub category: ::prost::alloc::string::String,
     #[prost(double, tag = "5")]
     pub unit_price: f64,
 }
@@ -31,7 +31,7 @@ pub mod bookshop_client {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
-            D: TryInto<tonic::transport::Endpoint>,
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
             D::Error: Into<StdError>,
         {
             let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
@@ -60,13 +60,13 @@ pub mod bookshop_client {
         where
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
-            T: Service<
+            T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as Service<
+            <T as tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
             >>::Error: Into<StdError> + Send + Sync,
         {
@@ -161,7 +161,7 @@ pub mod bookshop_server {
             self
         }
     }
-    impl<T, B> Service<http::Request<B>> for BookshopServer<T>
+    impl<T, B> tonic::codegen::Service<http::Request<B>> for BookshopServer<T>
     where
         T: Bookshop,
         B: Body + Send + 'static,

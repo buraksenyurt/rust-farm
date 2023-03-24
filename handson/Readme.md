@@ -25,4 +25,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [ ] **ggdb**: Takip ettiğim sağlam geliştiricilerden birisi olan [John Murray'in Building a Simple DB in Rust](https://johns.codes/blog/build-a-db/part01) isimli örneğini tatbik etmeye çalışıyorum.
 - [x] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.
 - [x] **norris**: Axum kullanımını özetleyen ve Chuck Norris gerçekleri konulu basit bir Rest servis örneği.
-- [ ] **bookshop-service-grpc**: Rust ile bir gRPC servisi nasıl yazılır öğrenmeye çalışıyorum. Servis tarafı için [tonic](https://docs.rs/tonic/latest/tonic/) isimli crate'ten faydalanıyorum.
+- [x] **bookshop-service-grpc**: Rust ile bir gRPC servisi nasıl yazılır öğrenmeye çalışıyorum. Servis tarafı için [tonic](https://docs.rs/tonic/latest/tonic/) isimli crate'ten faydalanıyorum.

@@ -16,7 +16,7 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [ ] **snake_game**: Çalışmakta olduğum *[Rust & WebAssembly with JS(TS)](https://www.udemy.com/share/105FWE3@Hpnvamh4ENZu5y5aObIjO8bkcROyUFeKgIHqryuwCh57TADfqevU_-N3mQBQeGbgkA==/)* isimli Udemy kursundaki oyun.
 - [x] **boaring-todos**: Bu örnekte tauri ile Ubuntu üstünde çalışan bir desktop uygulaması geliştirilmekte. [Tauri](https://tauri.app/) ile cross-platform çalışan masaüstü uygulamalar geliştirmek oldukça kolay.  
 - [x] **song-api**: Bu örnek için [şu adresteki yazıyı](https://imajindevon.hashnode.dev/rust-rocket-song-request-api) takip ediyorum. Uygulamada kuyruk tabanlı bir şarkı istek listesi için Restful API desteği verilmekte. Çalışma içerisinde Mutex kullanımı da yer aldığından hands-on sepetime ekledim. Servis alt yapısı için rocket küfesinden yararlanılmakta.
-- [x] **simple-web-app**: Bu yeni çalışmada axum, tokio, serde ve minijinja paketleri ile basit bir web uygulaması yazılıyor. Kaynak olarak [şu adresteki](https://woile.dev/posts/web-app-with-template-in-rust/) yazıyı kullanıyorum. Bu basit çalışma ile minijinja ile HTML template kullanımını da öğreniyorum.
+- [x] **simple-web-app**: Bu yeni çalışmada axum, tokio, serde ve minijinja paketleri ile basit bir web uygulaması yazılıyor. Kaynak olarak [şu adresteki](https://woile.dev/posts/web-app-with-template-in-rust/) yazıyı kullanıyorum. Bu basit çalışmada **minijinja** ile HTML template kullanımını da öğreniyorum.
 - [x] **mongo-rocket**: Rocket ile hazırlanan bu web api uygulamasında mongodb veritabanı da kullanılıyor.
 - [x] **curlc**: [Şu adresteki örneği](https://www.bekk.christmas/post/2022/1/introduction-to-rust) yapıp terminalden çalışan curl benzeri bir uygulamanın nasıl oluşturulabileceğini öğreniyorum. Araç, bir dosyadaki basit HTTP Get, Post taleplerini alıp topluca işleme yeteneğine sahip.
 - [ ] **procs-sign**:Practical System Programming for Rust Developers kitabındaki Working with Process and Signals bölümüne ait konuların ele alındığı örnek.
@@ -25,3 +25,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [ ] **ggdb**: Takip ettiğim sağlam geliştiricilerden birisi olan [John Murray'in Building a Simple DB in Rust](https://johns.codes/blog/build-a-db/part01) isimli örneğini tatbik etmeye çalışıyorum.
 - [x] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.
 - [x] **norris**: Axum kullanımını özetleyen ve Chuck Norris gerçekleri konulu basit bir Rest servis örneği.
+- [ ] **bookshop-service-grpc**: Rust ile bir gRPC servisi nasıl yazılır öğrenmeye çalışıyorum. Servis tarafı için [tonic](https://docs.rs/tonic/latest/tonic/) isimli crate'ten faydalanıyorum.

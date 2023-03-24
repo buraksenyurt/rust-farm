@@ -7,8 +7,8 @@ pub struct GetSuggestionRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSuggestionResponse {
-    #[prost(string, tag = "1")]
-    pub book_id: String,
+    #[prost(int32, tag = "1")]
+    pub book_id: i32,
     #[prost(string, tag = "2")]
     pub title: String,
     #[prost(string, tag = "3")]

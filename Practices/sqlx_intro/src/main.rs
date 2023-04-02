@@ -3,7 +3,7 @@ mod model;
 mod query;
 
 use crate::command::{apply_discount, delete_all_products, insert_category, insert_product};
-use crate::model::{Category, Product};
+use crate::model::{CategoryDto, ProductDto};
 use crate::query::{get_categories, get_product_by_id, get_products_by_category};
 use sqlx::postgres::PgPoolOptions;
 
@@ -19,8 +19,9 @@ async fn main() {
         .await
         .expect("Veri tabanına bağlanılamadı");
 
-    let category = Category {
-        id: 0,
+    // let mut transaction = pool.begin().await.expect("transaction başlatılamadı");
+    // Transaction kullanmak istersek fetch fonksiyonlarına aktarmalıyız
+    let category = CategoryDto {
         title: "Telefon".to_string(),
     };
     let inserted = insert_category(&pool, category).await;
@@ -31,8 +32,7 @@ async fn main() {
         println!("{}", c);
     }
 
-    let p = Product {
-        id: 0,
+    let p = ProductDto {
         title: "MCTS 70-528 .Net Training Kit".to_string(),
         category_id: 1,
         unit_price: 25.44,
@@ -40,8 +40,7 @@ async fn main() {
     let inserted = insert_product(&pool, p).await;
     println!("'{}' , veri tabanına eklendi.", inserted);
 
-    let p = Product {
-        id: 0,
+    let p = ProductDto {
         title: "Programming Rust".to_string(),
         category_id: 1,
         unit_price: 35.99,
@@ -49,8 +48,7 @@ async fn main() {
     let inserted = insert_product(&pool, p).await;
     println!("'{}' , veri tabanına eklendi.", inserted);
 
-    let p = Product {
-        id: 0,
+    let p = ProductDto {
         title: "Apps and Services with .Net 7".to_string(),
         category_id: 1,
         unit_price: 49.59,
@@ -75,4 +73,9 @@ async fn main() {
     if deleted {
         println!("Tüm test ürünleri silindi");
     }
+
+    // transaction
+    //     .commit()
+    //     .await
+    //     .expect("transaction commit işleminde hata");
 }

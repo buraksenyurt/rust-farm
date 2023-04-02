@@ -1,7 +1,7 @@
-use crate::model::{Category, Product};
+use crate::model::{Category, CategoryDto, Product, ProductDto};
 use sqlx::{Pool, Postgres};
 
-pub async fn insert_product(pool: &Pool<Postgres>, p: Product) -> Product {
+pub async fn insert_product(pool: &Pool<Postgres>, p: ProductDto) -> Product {
     sqlx::query_as!(
         Product,
         r#"insert into products (title,category_id,unit_price) values ($1,$2,$3) returning id,title,category_id,unit_price as "unit_price!""#,
@@ -12,7 +12,7 @@ pub async fn insert_product(pool: &Pool<Postgres>, p: Product) -> Product {
     .expect("insert product sorgusu başarısız")
 }
 
-pub async fn insert_category(pool: &Pool<Postgres>, c: Category) -> Category {
+pub async fn insert_category(pool: &Pool<Postgres>, c: CategoryDto) -> Category {
     let result = sqlx::query_as!(
         Category,
         "insert into categories (title) values ($1) returning *",
@@ -23,7 +23,10 @@ pub async fn insert_category(pool: &Pool<Postgres>, c: Category) -> Category {
 
     match result {
         Ok(inserted) => inserted,
-        Err(_) => c,
+        Err(_) => Category {
+            id: 0,
+            title: c.title,
+        },
     }
 }
 

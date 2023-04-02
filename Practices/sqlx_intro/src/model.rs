@@ -1,5 +1,9 @@
 use std::fmt::{Display, Formatter};
 
+pub struct CategoryDto {
+    pub title: String,
+}
+
 pub struct Category {
     pub id: i64,
     pub title: String,
@@ -9,6 +13,12 @@ impl Display for Category {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} - {}", self.id, self.title)
     }
+}
+
+pub struct ProductDto {
+    pub title: String,
+    pub category_id: i64,
+    pub unit_price: f32,
 }
 
 pub struct Product {

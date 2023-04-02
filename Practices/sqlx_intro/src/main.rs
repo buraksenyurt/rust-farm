@@ -2,7 +2,7 @@ mod command;
 mod model;
 mod query;
 
-use crate::command::{apply_discount, insert_category, insert_product};
+use crate::command::{apply_discount, delete_all_products, insert_category, insert_product};
 use crate::model::{Category, Product};
 use crate::query::{get_categories, get_product_by_id, get_products_by_category};
 use sqlx::postgres::PgPoolOptions;
@@ -40,6 +40,23 @@ async fn main() {
     let inserted = insert_product(&pool, p).await;
     println!("'{}' , veri tabanına eklendi.", inserted);
 
+    let p = Product {
+        id: 0,
+        title: "Programming Rust".to_string(),
+        category_id: 1,
+        unit_price: 35.99,
+    };
+    let inserted = insert_product(&pool, p).await;
+    println!("'{}' , veri tabanına eklendi.", inserted);
+
+    let p = Product {
+        id: 0,
+        title: "Apps and Services with .Net 7".to_string(),
+        category_id: 1,
+        unit_price: 49.59,
+    };
+    let inserted = insert_product(&pool, p).await;
+
     let inserted = get_product_by_id(&pool, inserted.id).await;
     println!("{}", inserted);
 
@@ -48,6 +65,14 @@ async fn main() {
     for p in products {
         println!("{}", p);
         let discounted = apply_discount(&pool, p.id, 2.5).await;
-        println!("%2.5 indirimli yeni fiyat -> {} lira", discounted.unit_price)
+        println!(
+            "%2.5 indirimli yeni fiyat -> {} lira",
+            discounted.unit_price
+        )
+    }
+
+    let deleted = delete_all_products(&pool).await;
+    if deleted {
+        println!("Tüm test ürünleri silindi");
     }
 }

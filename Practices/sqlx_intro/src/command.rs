@@ -39,3 +39,16 @@ pub async fn apply_discount(pool: &Pool<Postgres>, id: i64, rate: f32) -> Produc
         .await
         .expect("update product sorgusu başarısız")
 }
+
+pub async fn delete_all_products(pool: &Pool<Postgres>) -> bool {
+    let result = sqlx::query_as!(
+        Product,
+        r#"delete from products returning id,title,category_id,unit_price as "unit_price!""#
+    )
+    .fetch_all(pool)
+    .await;
+    match result {
+        Ok(_) => true,
+        Err(_) => false,
+    }
+}

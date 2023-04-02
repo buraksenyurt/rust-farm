@@ -278,3 +278,20 @@ path="src/imager.rs"
 ```shell
 cargo add axum tokio -F tokio/full serde -F serde/derive minijinja -F minijinja/builtins
 ```
+
+- Kendi yazdığımız makroların neye dönüştüğünü görmek için cargo-expand aracından yararlanabiliriz. Bu araç nightly modda çalışır ve dolayısıyla çalışma zamanını nightly moda çevirmek gerekir. Gerekli adımlar aşağıdaki gibidir.
+
+```bash
+# Aracın install edilmesi için.
+cargo install cargo-expand
+
+# Nightly moda geçmek için (Öncesinde install etmek gerekebilir)
+rustup install nightly
+rustup default nightly
+
+# Örneği çalıştırırken
+cargo expand
+
+# Çalışma zamanını stable moduna çevirmek için
+rustup default stable
+```

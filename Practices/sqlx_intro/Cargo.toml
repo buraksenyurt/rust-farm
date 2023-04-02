@@ -1,0 +1,10 @@
+[package]
+name = "sqlx_intro"
+description = "Postgresql works with sqlx crate"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15.0"
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "postgres", "macros"] }
+tokio = { version = "1.27.0", features = ["full"] }

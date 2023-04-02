@@ -8,6 +8,7 @@ pub async fn get_categories(pool: &Pool<Postgres>) -> Vec<Category> {
         .expect("sorgu başarısız")
 }
 
+// Alınan f32, Option hatası nedeniyle unit_price as "unit_price!" şeklinde bir kullanım söz konusu.
 pub async fn get_product_by_id(pool: &Pool<Postgres>, id: i64) -> Product {
     sqlx::query_as!(
         Product,

@@ -7,13 +7,6 @@
     "unit_price": 35.45
   },
   {
-    "book_id": 0,
-    "title": "Sistem Hatası",
-    "authors": "James Ball",
-    "category": "Araştırma",
-    "unit_price": 35.45
-  },
-  {
     "book_id": 1,
     "title": "Dağınık Zihin (Yüksek Teknoloji Dünyasında Kadim Beyinler)",
     "authors": "Adam Gazzaley, Larry D. Rosen",

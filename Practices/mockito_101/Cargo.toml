@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 hyper = {version="0.14.25", features=["full"]}
+lazy_static = "1.4.0"
 serde = { version = "1.0.159", features = ["derive"] }
 serde_json = "1.0.95"
 surf = "2.3.2"

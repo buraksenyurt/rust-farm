@@ -11,16 +11,12 @@ ve wiremock'ta karar kıldım. Kütür kütür çalıştı :D
 
 Örnekte olmayan servise çağrı yapmak için hyper paketinden yararlanıyoruz. Bu olmayan servise
 gelen çağrıları mocklamak içinse wiremock'tan faydalanıyorum.
-
-Şimdilik tek sıkıntı do_accounting'e wiremock server adresini de göndermek zorunda kalmam.
-Nitekim her seferinde farklı bir porttan bağlanıyor.
 */
 
 mod business {
     use hyper::{Body, Client, Method, Request, StatusCode};
     use serde::{Deserialize, Serialize};
 
-    // Url'i taşımadan mock'lamanın bir yolunu bulmam lazım.
     pub async fn do_accounting(
         customer: &Customer,
         url: String,
@@ -102,24 +98,56 @@ mod business {
 #[cfg(test)]
 mod tests {
     use crate::business::{do_accounting, Customer, DoAccountingResponse, ReturnCode};
+    use lazy_static::lazy_static;
     use serde_json::json;
+    use std::sync::RwLock;
     use surf::StatusCode;
     use wiremock::matchers::{method, path};
     use wiremock::{Mock, MockServer, ResponseTemplate};
 
+    lazy_static! {
+        pub static ref MOCK_SERVER: RwLock<MockServerWrapper> =
+            RwLock::new(MockServerWrapper::new());
+    }
+
+    async fn init_server() {
+        MOCK_SERVER.write().unwrap().init().await;
+    }
+
+    pub struct MockServerWrapper {
+        pub server: Option<MockServer>,
+    }
+
+    impl MockServerWrapper {
+        pub fn new() -> Self {
+            Self { server: None }
+        }
+        pub async fn init(&mut self) {
+            let mock_server = MockServer::start().await;
+            Mock::given(method("POST"))
+                .and(path("/bank/api/checkLimit"))
+                .respond_with(
+                    ResponseTemplate::new(200)
+                        .set_body_json(json!({ "code": 1, "message": "Limit uygun." })),
+                )
+                .mount(&mock_server)
+                .await;
+            self.server = Some(mock_server);
+        }
+
+        pub fn get_url(&self) -> String {
+            return match MOCK_SERVER.read().unwrap().server {
+                Some(ref s) => s.uri(),
+                None => "http://localhost:8080".to_string(),
+            };
+        }
+    }
+
     #[tokio::test]
     async fn should_wiremock_works() {
-        let server = MockServer::start().await;
-        Mock::given(method("POST"))
-            .and(path("/bank/api/checkLimit"))
-            .respond_with(
-                ResponseTemplate::new(200)
-                    .set_body_json(json!({ "code": 1, "message": "Limit uygun." })),
-            )
-            .mount(&server)
-            .await;
-
-        let mut response = surf::post(format!("{}/bank/api/checkLimit", &server.uri()))
+        init_server().await;
+        let url = MOCK_SERVER.read().unwrap().get_url();
+        let mut response = surf::post(format!("{}/bank/api/checkLimit", url))
             .await
             .unwrap();
         assert_eq!(response.status(), StatusCode::Ok);
@@ -131,44 +159,24 @@ mod tests {
     #[tokio::test] // asenkron fonksiyonları test etmek için kullanılır
                    //#[should_panic]
     async fn should_customer_limit_sufficent() {
-        let server = MockServer::start().await;
-        let url = format!(
-            "http://{}/bank/api/checkLimit",
-            server.address().to_string()
-        );
-        Mock::given(method("POST"))
-            .and(path("/bank/api/checkLimit"))
-            .respond_with(
-                ResponseTemplate::new(200)
-                    .set_body_json(json!({ "code": 1, "message": "Limit uygun." })),
-            )
-            .mount(&server)
-            .await;
-
+        init_server().await;
+        let url = MOCK_SERVER.read().unwrap().get_url();
         let cust = Customer::new(1230, "Sir Connery".to_string(), 1000.00);
-        let accounting_result = do_accounting(&cust, url).await.unwrap();
+        let accounting_result = do_accounting(&cust, format!("{}/bank/api/checkLimit", url))
+            .await
+            .unwrap();
         assert_eq!(accounting_result.return_code, ReturnCode::Success);
     }
 
     #[tokio::test] // asenkron fonksiyonları test etmek için kullanılır
                    //#[should_panic]
     async fn should_customer_limit_unsufficent() {
-        let server = MockServer::start().await;
-        let url = format!(
-            "http://{}/bank/api/checkLimit",
-            server.address().to_string()
-        );
-        Mock::given(method("POST"))
-            .and(path("/bank/api/checkLimit"))
-            .respond_with(
-                ResponseTemplate::new(200)
-                    .set_body_json(json!({ "code": 0, "message": "Limit yetersiz!" })),
-            )
-            .mount(&server)
-            .await;
-
+        init_server().await;
+        let url = MOCK_SERVER.read().unwrap().get_url();
         let cust = Customer::new(1230, "Sir Connery".to_string(), 150.00);
-        let accounting_result = do_accounting(&cust, url).await.unwrap();
+        let accounting_result = do_accounting(&cust, format!("{}/bank/api/checkLimit", url))
+            .await
+            .unwrap();
         assert_eq!(accounting_result.return_code, ReturnCode::Unsufficient);
     }
 }

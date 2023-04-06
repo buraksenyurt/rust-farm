@@ -1,0 +1,8 @@
+[package]
+name = "mockito_101"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hyper = "0.14.25"
+tokio = "1.27.0"

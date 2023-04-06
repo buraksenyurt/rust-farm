@@ -43,3 +43,4 @@
 - [x] **trait_and_ref**: Bir trait tanımladığımızda Blanket Implementation prensibine göre onun referansları, mutable referansları ve Box içine alınmış versiyonları için de generic olarak uygulamalıyız. Bu konuyu öğrenmeye çalıştığım örnek.
 - [x] **remembering_macros**: Dekleratif makroların nasıl yazıldığını bir iki örnek ile hatırlamaya çalışıyorum.
 - [x] **sqlx_intro**: Postgresql veritabanı ile çalışılmasını kolaylaştıran sqlx küfesinin incelenmesi.
+- [ ] **mockito_101**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyorum.

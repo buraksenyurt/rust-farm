@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-hyper = "0.14.25"
-tokio = "1.27.0"
+hyper = {version="0.14.25", features=["full"]}
+serde = { version = "1.0.159", features = ["derive"] }
+serde_json = "1.0.95"
+tokio = {version="1.27.0",features=["full"]}

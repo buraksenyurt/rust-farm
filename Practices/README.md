@@ -43,4 +43,4 @@
 - [x] **trait_and_ref**: Bir trait tanımladığımızda Blanket Implementation prensibine göre onun referansları, mutable referansları ve Box içine alınmış versiyonları için de generic olarak uygulamalıyız. Bu konuyu öğrenmeye çalıştığım örnek.
 - [x] **remembering_macros**: Dekleratif makroların nasıl yazıldığını bir iki örnek ile hatırlamaya çalışıyorum.
 - [x] **sqlx_intro**: Postgresql veritabanı ile çalışılmasını kolaylaştıran sqlx küfesinin incelenmesi.
-- [ ] **mockito_101**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyorum.
+- [x] **mockito_101(Sonradan wiremock'a evrildi)**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyordum. Lakin mockito server'a ait context'i bir şekilde do_accounting fonksiyonuna taşıyamadım. Bu yüzden sürekli HTTP 501 hatası alıp durdum. Bunun üzerine wiremock isimli crate'i kullanmaya karar verdim.

@@ -132,6 +132,14 @@ mod tests {
                 )
                 .mount(&mock_server)
                 .await;
+            Mock::given(method("POST"))
+                .and(path("/bank/api/checkLimit2"))
+                .respond_with(
+                    ResponseTemplate::new(200)
+                        .set_body_json(json!({ "code": 0, "message": "Limit yetersiz!" })),
+                )
+                .mount(&mock_server)
+                .await;
             self.server = Some(mock_server);
         }
 
@@ -174,7 +182,7 @@ mod tests {
         init_server().await;
         let url = MOCK_SERVER.read().unwrap().get_url();
         let cust = Customer::new(1230, "Sir Connery".to_string(), 150.00);
-        let accounting_result = do_accounting(&cust, format!("{}/bank/api/checkLimit", url))
+        let accounting_result = do_accounting(&cust, format!("{}/bank/api/checkLimit2", url))
             .await
             .unwrap();
         assert_eq!(accounting_result.return_code, ReturnCode::Unsufficient);

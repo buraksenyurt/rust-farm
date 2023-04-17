@@ -1,16 +1,19 @@
 use crate::photo::Photo;
 use reqwest;
 use reqwest::StatusCode;
+use std::fs::File;
+use std::io::Write;
 
 #[derive(Debug)]
-pub enum FetchError {
+pub enum ProcessError {
     Unsuccessful,
+    SaveError,
 }
 
-pub async fn get_photos() -> Result<Vec<Photo>, FetchError> {
+pub async fn get_photos() -> Result<Vec<Photo>, ProcessError> {
     let response = reqwest::Client::new()
         .get("https://picsum.photos/v2/list?page=1&limit=10")
-        .header("User-Agent", "Reqwest Rust Test")
+        .header("User-Agent", "Reqwest Client")
         .send()
         .await;
 
@@ -20,17 +23,39 @@ pub async fn get_photos() -> Result<Vec<Photo>, FetchError> {
                 Ok(parsed) => Ok(parsed),
                 Err(e) => {
                     println!("{}", e);
-                    Err(FetchError::Unsuccessful)
+                    Err(ProcessError::Unsuccessful)
                 }
             },
             _ => {
                 println!("Status Code uygun değil");
-                Err(FetchError::Unsuccessful)
+                Err(ProcessError::Unsuccessful)
             }
         },
         Err(e) => {
             println!("{}", e);
-            Err(FetchError::Unsuccessful)
+            Err(ProcessError::Unsuccessful)
         }
+    }
+}
+
+pub async fn write_to_file(source: String, file_name: String) {
+    let mut file = File::create(format!("./Photos/{}", file_name)).expect("Dosya oluşturma hatası");
+
+    let content = reqwest::Client::new()
+        .get(source)
+        .header("User-Agent", "Reqwest Client")
+        .send()
+        .await
+        .expect("Veri gönderim hatası")
+        .bytes()
+        .await
+        .expect("byte içeriği okuma hatası");
+
+    let mut pos = 0;
+    while pos < content.len() {
+        let bytes_written = file
+            .write(&content[pos..])
+            .expect("byte içeriği yazma hatası");
+        pos += bytes_written;
     }
 }

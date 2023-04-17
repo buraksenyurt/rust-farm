@@ -1,0 +1,164 @@
+[
+  {
+    "title": "Title",
+    "authors": "Authors",
+    "publisher": "Publisher",
+    "location": "Location"
+  },
+  {
+    "title": "Sistem",
+    "authors": "James Ball",
+    "publisher": "Timaş",
+    "location": "1:1:1"
+  },
+  {
+    "title": "Dağınık Zihin (Yüksek Teknoloji Dünyasında Kadim Beyinler)",
+    "authors": "Adam Gazzaley,Larry D. Rosen",
+    "publisher": "Metis Bilim",
+    "location": "1:1:2"
+  },
+  {
+    "title": "Dijital Minimalizim",
+    "authors": "Cal Newport",
+    "publisher": "Metropolis",
+    "location": "1:1:3"
+  },
+  {
+    "title": "İnsanlığın Geleceği",
+    "authors": "Michio Kaku",
+    "publisher": "ODTÜ Yayıncılık",
+    "location": "1:1:4"
+  },
+  {
+    "title": "Uygulamalı Lineer Cebir",
+    "authors": "Bernard Kolman",
+    "publisher": "Palme Yayıncılık",
+    "location": "1:2:1"
+  },
+  {
+    "title": "Kuyucaklı Yusuf",
+    "authors": "Sabahattin Ali",
+    "publisher": "YKY",
+    "location": "1:2:2"
+  },
+  {
+    "title": "Günden Kalanlar",
+    "authors": "Kazuo Ishiguro",
+    "publisher": "YKY",
+    "location": "1:2:3"
+  },
+  {
+    "title": "Karanlıkta Bir Nehir",
+    "authors": "Masaji Ishikawa",
+    "publisher": "Salt Okur",
+    "location": "2:1:8"
+  },
+  {
+    "title": "Sistem Hatası",
+    "authors": "Edward Snowden",
+    "publisher": "epsilon",
+    "location": "2:2:9"
+  },
+  {
+    "title": "Incognito Beynin Gizli Hayatı",
+    "authors": "David Eagleman",
+    "publisher": "domingo",
+    "location": "2:3:10"
+  },
+  {
+    "title": "Doppler",
+    "authors": "Erlend Loe",
+    "publisher": "YKY",
+    "location": "3:2:5"
+  },
+  {
+    "title": "Bildiğimiz Dünyanın Sonu",
+    "authors": "Erlend Loe",
+    "publisher": "YKY",
+    "location": "3:2:1"
+  },
+  {
+    "title": "21.Yüzyıl için 21 Ders",
+    "authors": "Yuval Noah Harari",
+    "publisher": "Kolekfit Kitap",
+    "location": "3:2:3"
+  },
+  {
+    "title": "Dünyayı Değiştiren Konuşmalar",
+    "authors": "Simon Sebag Montefiore",
+    "publisher": "Indigo",
+    "location": "3:3:4"
+  },
+  {
+    "title": "Hayvanlardan Tanrılara Sapiens",
+    "authors": "Yuval Noah Harari",
+    "publisher": "Kolekfit Kitap",
+    "location": "3:5:5"
+  },
+  {
+    "title": "Çocukluğun Sonu",
+    "authors": "Arthur C. Clarke",
+    "publisher": "İthaki",
+    "location": "1:1:16"
+  },
+  {
+    "title": "Cesur Yeni Dünya",
+    "authors": "Aldous Huxley",
+    "publisher": "İthaki",
+    "location": "1:2:16"
+  },
+  {
+    "title": "Televizyon: Öldüren Eğlence",
+    "authors": "Neil Postman",
+    "publisher": "Ayrıntı",
+    "location": "2:2:18"
+  },
+  {
+    "title": "\"Canım Aliye",
+    "authors": " Ruhum Filiz\"",
+    "publisher": "Sabahattin Ali",
+    "location": "YKY"
+  },
+  {
+    "title": "Yapay Zeka",
+    "authors": "Cem Say",
+    "publisher": "Bilim ve Gelecek Kitaplığı",
+    "location": "4:1:2"
+  },
+  {
+    "title": "Aşka Susamış",
+    "authors": "Yukio Mişima",
+    "publisher": "Can Yayınları",
+    "location": "4:1:3"
+  },
+  {
+    "title": "Mezopotamya Turu",
+    "authors": "M.Zeki Kutlu",
+    "publisher": "Kırmızı ve Siyah",
+    "location": "4:1:4"
+  },
+  {
+    "title": "Veronika Ölmek İstiyor",
+    "authors": "Paulo Coelho",
+    "publisher": "Can Yayınları",
+    "location": "4:1:5"
+  },
+  {
+    "title": "Bir Kuşağı Anlamak",
+    "authors": "Evrim Kuran",
+    "publisher": "Mundi",
+    "location": "4:2:6"
+  },
+  {
+    "title": "Genç Matematikçiye Mektuplar",
+    "authors": "Ian Stewart",
+    "publisher": "Profil",
+    "location": "4:2:7"
+  },
+  {
+    "title": "Service Oriented Architecture For Dummies",
+    "authors": "Judith Hurwitz,Robin Bloor,Carol Baroudi,Marcia Kaufman",
+    "publisher": "Wiley",
+    "location": "5:5:5"
+  }
+]

@@ -44,3 +44,4 @@
 - [x] **remembering_macros**: Dekleratif makroların nasıl yazıldığını bir iki örnek ile hatırlamaya çalışıyorum.
 - [x] **sqlx_intro**: Postgresql veritabanı ile çalışılmasını kolaylaştıran sqlx küfesinin incelenmesi.
 - [x] **mockito_101(Sonradan wiremock'a evrildi)**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyordum. Lakin mockito server'a ait context'i bir şekilde do_accounting fonksiyonuna taşıyamadım. Bu yüzden sürekli HTTP 501 hatası alıp durdum. Bunun üzerine wiremock isimli crate'i kullanmaya karar verdim.
+- [ ] **csv_to_json**: Kütüphanemdeki kitapların listesini tuttuğum CSV içeriğinin bir projem için JSON versiyonu lazım. Birkaç kitabı örnek olarak alıp JSON formatına çevirmeye çalışıyorum.

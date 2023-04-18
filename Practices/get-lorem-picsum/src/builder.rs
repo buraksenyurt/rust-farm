@@ -6,8 +6,11 @@ use std::io::Write;
 
 #[derive(Debug)]
 pub enum ProcessError {
+    FileCreate,
+    SendError,
+    UnreadBytes,
     Unsuccessful,
-    SaveError,
+    WriteError,
 }
 
 pub async fn get_photos() -> Result<Vec<Photo>, ProcessError> {
@@ -38,25 +41,33 @@ pub async fn get_photos() -> Result<Vec<Photo>, ProcessError> {
     }
 }
 
-pub async fn write_to_file(photo: &Photo) {
+pub async fn write_to_file(photo: &Photo) -> Result<bool, ProcessError> {
     let file_name = photo.create_file_name();
-    let mut file = File::create(format!("./Photos/{}", file_name)).expect("Dosya oluşturma hatası");
-
-    let content = reqwest::Client::new()
+    let file_create = File::create(format!("./Photos/{}", file_name));
+    if file_create.is_err() {
+        return Err(ProcessError::FileCreate);
+    }
+    let send_result = reqwest::Client::new()
         .get(&photo.download_url)
         .header("User-Agent", "Reqwest Client")
         .send()
-        .await
-        .expect("Veri gönderim hatası")
-        .bytes()
-        .await
-        .expect("byte içeriği okuma hatası");
-
+        .await;
+    if send_result.is_err() {
+        return Err(ProcessError::SendError);
+    }
+    let content_result = send_result.unwrap().bytes().await;
+    if content_result.is_err() {
+        return Err(ProcessError::UnreadBytes);
+    }
+    let content = content_result.unwrap();
+    let mut file = file_create.unwrap();
     let mut pos = 0;
     while pos < content.len() {
-        let bytes_written = file
-            .write(&content[pos..])
-            .expect("byte içeriği yazma hatası");
-        pos += bytes_written;
+        let bytes_written = file.write(&content[pos..]);
+        if bytes_written.is_err() {
+            return Err(ProcessError::WriteError);
+        }
+        pos += bytes_written.unwrap();
     }
+    Ok(true)
 }

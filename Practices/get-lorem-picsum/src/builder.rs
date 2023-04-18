@@ -38,11 +38,12 @@ pub async fn get_photos() -> Result<Vec<Photo>, ProcessError> {
     }
 }
 
-pub async fn write_to_file(source: String, file_name: String) {
+pub async fn write_to_file(photo: &Photo) {
+    let file_name = photo.create_file_name();
     let mut file = File::create(format!("./Photos/{}", file_name)).expect("Dosya oluşturma hatası");
 
     let content = reqwest::Client::new()
-        .get(source)
+        .get(&photo.download_url)
         .header("User-Agent", "Reqwest Client")
         .send()
         .await

@@ -14,7 +14,7 @@ impl Photo {
     pub fn create_file_name(&self) -> String {
         format!(
             "{}_{}_{}_{}.jpg",
-            self.author.replace(" ", "_"),
+            self.author.replace(' ', "_"),
             self.width,
             self.height,
             self.id

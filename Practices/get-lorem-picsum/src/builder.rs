@@ -1,21 +1,27 @@
 use crate::photo::Photo;
-use reqwest;
 use reqwest::StatusCode;
 use std::fs::File;
 use std::io::Write;
 
-#[derive(Debug)]
+#[derive(Debug,PartialEq)]
 pub enum ProcessError {
     FileCreate,
+    OverLimit,
     SendError,
     UnreadBytes,
     Unsuccessful,
     WriteError,
 }
 
-pub async fn get_photos() -> Result<Vec<Photo>, ProcessError> {
+pub async fn get_photos(page: u32, limit: u32) -> Result<Vec<Photo>, ProcessError> {
+    if page <= 0 || limit > 25 {
+        return Err(ProcessError::OverLimit);
+    }
     let response = reqwest::Client::new()
-        .get("https://picsum.photos/v2/list?page=1&limit=10")
+        .get(format!(
+            "https://picsum.photos/v2/list?page={}&limit={}",
+            page, limit
+        ))
         .header("User-Agent", "Reqwest Client")
         .send()
         .await;

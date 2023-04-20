@@ -35,19 +35,45 @@ pub async fn download_many(list: List) {
 }
 
 pub async fn download_single(photo_id: u32) {
-    let photo = Photo {
-        id: photo_id.to_string(),
-        author: "Unknown".to_string(),
-        width: 640,
-        height: 480,
-        url: format!("https://picsum.photos/id/{}/200/300", photo_id),
-        download_url: format!("https://picsum.photos/id/{}/200/300", photo_id),
-    };
-
-    let write_result = write_to_file(&photo).await;
-    match write_result {
-        Ok(_) => println!("\t{} başarılı bir şekilde oluşturuldu", &photo.url),
+    let photo_info_result = get_photo_info(photo_id).await;
+    match photo_info_result {
+        Ok(photo) => {
+            println!("download url -> {}", &photo.download_url);
+            let write_result = write_to_file(&photo).await;
+            match write_result {
+                Ok(_) => println!("\t{} başarılı bir şekilde oluşturuldu", &photo.url),
+                Err(e) => println!("{:?}", e),
+            }
+        }
         Err(e) => println!("{:?}", e),
+    }
+}
+
+async fn get_photo_info(photo_id: u32) -> Result<Photo, ProcessError> {
+    let response = reqwest::Client::new()
+        .get(format!("https://picsum.photos/id/{}/info", photo_id))
+        .header("User-Agent", "Reqwest Client")
+        .send()
+        .await;
+
+    match response {
+        Ok(r) => match r.status() {
+            StatusCode::OK => match r.json::<Photo>().await {
+                Ok(parsed) => Ok(parsed),
+                Err(e) => {
+                    println!("{}", e);
+                    Err(ProcessError::Unsuccessful)
+                }
+            },
+            _ => {
+                println!("Status Code uygun değil");
+                Err(ProcessError::Unsuccessful)
+            }
+        },
+        Err(e) => {
+            println!("{}", e);
+            Err(ProcessError::Unsuccessful)
+        }
     }
 }
 async fn get_photos(page: u8, limit: u8) -> Result<Vec<Photo>, ProcessError> {

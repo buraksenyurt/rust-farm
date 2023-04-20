@@ -1,5 +1,7 @@
 use crate::argument::{Command, List};
-use crate::builder::{check_and_create_folder, download_many, download_single, show_help};
+use crate::builder::{
+    check_and_create_folder, download_many, download_random, download_single, show_help,
+};
 use std::env;
 use std::process::exit;
 use std::str::FromStr;
@@ -17,6 +19,12 @@ async fn main() {
     }
     let args: Vec<String> = env::args().collect();
     match args.len() {
+        2 => match Command::from_str(args[1].as_str()) {
+            Ok(Command::Random) => {
+                download_random().await;
+            }
+            _ => show_help(),
+        },
         3 => match Command::from_str(args[1].as_str()) {
             Ok(Command::Single(_)) => {
                 let photo_id = u32::from_str(args[2].as_str());
@@ -27,9 +35,7 @@ async fn main() {
                     show_help();
                 }
             }
-            _ => {
-                show_help();
-            }
+            _ => show_help(),
         },
         4 => match Command::from_str(args[1].as_str()) {
             Ok(Command::Many(_)) => {
@@ -42,12 +48,8 @@ async fn main() {
                     show_help();
                 }
             }
-            _ => {
-                show_help();
-            }
+            _ => show_help(),
         },
-        _ => {
-            show_help();
-        }
+        _ => show_help(),
     }
 }

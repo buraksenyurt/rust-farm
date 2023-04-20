@@ -35,7 +35,7 @@ pub async fn download_many(list: List) {
 }
 
 pub async fn download_single(photo_id: u32) {
-    let photo_info_result = get_photo_info(photo_id).await;
+    let photo_info_result = get_photo_info(PhotoKind::Single(photo_id)).await;
     match photo_info_result {
         Ok(photo) => {
             println!("download url -> {}", &photo.download_url);
@@ -49,9 +49,51 @@ pub async fn download_single(photo_id: u32) {
     }
 }
 
-async fn get_photo_info(photo_id: u32) -> Result<Photo, ProcessError> {
+pub async fn download_random() {
+    let photo_info_result = get_photo_info(PhotoKind::Random).await;
+    match photo_info_result {
+        Ok(photo) => {
+            println!("download url -> {}", &photo.download_url);
+            let write_result = write_to_file(&photo).await;
+            match write_result {
+                Ok(_) => println!("\t{} başarılı bir şekilde oluşturuldu", &photo.url),
+                Err(e) => println!("{:?}", e),
+            }
+        }
+        Err(e) => println!("{:?}", e),
+    }
+}
+
+enum PhotoKind {
+    Random,
+    Single(u32),
+}
+async fn get_photo_info(kind: PhotoKind) -> Result<Photo, ProcessError> {
+    let url;
+    match kind {
+        PhotoKind::Single(photo_id) => url = format!("https://picsum.photos/id/{}/info", photo_id),
+        PhotoKind::Random => {
+            let response = reqwest::Client::new()
+                .get("https://picsum.photos/200/300".to_string())
+                .header("User-Agent", "Reqwest Client")
+                .send()
+                .await;
+            match response {
+                Ok(r) => {
+                    url = format!(
+                        "https://picsum.photos/id/{}/info",
+                        r.headers().get("Picsum-Id").unwrap().to_str().unwrap()
+                    )
+                }
+                _ => {
+                    println!("Rastgele foto çağrısında hata");
+                    return Err(ProcessError::Unsuccessful);
+                }
+            }
+        }
+    }
     let response = reqwest::Client::new()
-        .get(format!("https://picsum.photos/id/{}/info", photo_id))
+        .get(url)
         .header("User-Agent", "Reqwest Client")
         .send()
         .await;
@@ -76,6 +118,7 @@ async fn get_photo_info(photo_id: u32) -> Result<Photo, ProcessError> {
         }
     }
 }
+
 async fn get_photos(page: u8, limit: u8) -> Result<Vec<Photo>, ProcessError> {
     if page <= 0 || limit > 25 {
         return Err(ProcessError::OverLimit);

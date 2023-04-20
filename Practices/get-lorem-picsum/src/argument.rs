@@ -4,6 +4,7 @@ use std::str::FromStr;
 pub enum Command {
     Many(List),
     Single(u32),
+    Random,
 }
 
 #[derive(Debug, PartialEq)]
@@ -29,6 +30,7 @@ impl FromStr for Command {
         match s.to_lowercase().as_str() {
             "many" => Ok(Command::Many(List::new(1, 10))),
             "single" => Ok(Command::Single(1)),
+            "random" => Ok(Command::Random),
             _ => Err(CommandError::Invalid),
         }
     }

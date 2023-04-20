@@ -34,6 +34,22 @@ pub async fn download_many(list: List) {
     }
 }
 
+pub async fn download_single(photo_id: u32) {
+    let photo = Photo {
+        id: photo_id.to_string(),
+        author: "Unknown".to_string(),
+        width: 640,
+        height: 480,
+        url: format!("https://picsum.photos/id/{}/200/300", photo_id),
+        download_url: format!("https://picsum.photos/id/{}/200/300", photo_id),
+    };
+
+    let write_result = write_to_file(&photo).await;
+    match write_result {
+        Ok(_) => println!("\t{} başarılı bir şekilde oluşturuldu", &photo.url),
+        Err(e) => println!("{:?}", e),
+    }
+}
 async fn get_photos(page: u8, limit: u8) -> Result<Vec<Photo>, ProcessError> {
     if page <= 0 || limit > 25 {
         return Err(ProcessError::OverLimit);

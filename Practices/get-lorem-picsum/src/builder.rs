@@ -1,8 +1,11 @@
 use crate::argument::List;
 use crate::photo::Photo;
 use reqwest::StatusCode;
+use std::fs;
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
+use std::process::exit;
 
 #[derive(Debug, PartialEq)]
 pub enum ProcessError {
@@ -94,4 +97,29 @@ async fn write_to_file(photo: &Photo) -> Result<bool, ProcessError> {
         pos += bytes_written.unwrap();
     }
     Ok(true)
+}
+
+pub fn check_and_create_folder() -> bool {
+    if !Path::new("Photos").exists() {
+        if !fs::create_dir("Photos").is_ok() {
+            return false;
+        }
+    }
+    true
+}
+
+pub fn show_help() {
+    let help_text = "
+            Parametre sayısı hatalı!
+
+            Örnek Kullanımlar;
+
+            -- Belli bir ID için
+            get-lorem-picsum single 123
+
+            -- 3ncü sayfadan itibaren 10 kayıt için
+            get-lorem-picsum many 3 10
+            ";
+    println!("{}", help_text);
+    exit(1);
 }

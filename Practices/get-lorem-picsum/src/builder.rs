@@ -1,9 +1,10 @@
+use crate::argument::List;
 use crate::photo::Photo;
 use reqwest::StatusCode;
 use std::fs::File;
 use std::io::Write;
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum ProcessError {
     FileCreate,
     OverLimit,
@@ -13,7 +14,24 @@ pub enum ProcessError {
     WriteError,
 }
 
-pub async fn get_photos(page: u32, limit: u32) -> Result<Vec<Photo>, ProcessError> {
+pub async fn download_many(list: List) {
+    let get_photos_result = get_photos(list.page_number, list.count).await;
+    match get_photos_result {
+        Ok(photos) => {
+            for photo in photos.into_iter() {
+                println!("download url -> {}", &photo.download_url);
+                let write_result = write_to_file(&photo).await;
+                match write_result {
+                    Ok(_) => println!("\t{} başarılı bir şekilde oluşturuldu", &photo.url),
+                    Err(e) => println!("{:?}", e),
+                }
+            }
+        }
+        Err(e) => println!("{:?}", e),
+    }
+}
+
+async fn get_photos(page: u8, limit: u8) -> Result<Vec<Photo>, ProcessError> {
     if page <= 0 || limit > 25 {
         return Err(ProcessError::OverLimit);
     }
@@ -47,7 +65,7 @@ pub async fn get_photos(page: u32, limit: u32) -> Result<Vec<Photo>, ProcessErro
     }
 }
 
-pub async fn write_to_file(photo: &Photo) -> Result<bool, ProcessError> {
+async fn write_to_file(photo: &Photo) -> Result<bool, ProcessError> {
     let file_name = photo.create_file_name();
     let file_create = File::create(format!("./Photos/{}", file_name));
     if file_create.is_err() {

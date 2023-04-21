@@ -14,11 +14,12 @@ pub struct NewCategory<'a> {
 }
 
 #[derive(Debug, Queryable)]
+#[diesel(belongs_to(Category))]
 pub struct Game {
     pub id: i32,
+    pub category_id: i32,
     pub title: String,
     pub stars: i32,
-    pub category_id: i32,
 }
 
 #[derive(Insertable)]

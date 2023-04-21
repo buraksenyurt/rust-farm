@@ -57,4 +57,6 @@ select * from categories;
 
 Migration başarılı şekilde işledikten sonra tablolar ile ilgili Entity bilgileri de schema.rs içerisinde otomatik olarak oluşur.
 
-__Not: Migration planının çalıştırdığımda primary key alanları için schema dosyasına Nullable<integer> tipi atandı. Bu çok basit bir rust sorgusunun bile _ the trait `load_dsl::private::CompatibleType<Category, Sqlite>` is not implemented for `(diesel::sql_types::Nullable<diesel::sql_types::Integer>, diesel::sql_types::Text) şeklinde hata vermesine neden oluyordu. Schema dosyalarını elle düzelterek, yani Nullable<integer> tiplerini integer'a çekere şimdilik sorunu çözdüm ancak migration plan tekrar çalıştırıldığında bu tipler ezilecektir. Daha kalıcı bir çözüm bulmam lazım.__
+### Not: 
+- Migration planının çalıştırdığımda primary key alanları için schema dosyasına Nullable<integer> tipi atandı. Bu çok basit bir rust sorgusunun bile _ the trait `load_dsl::private::CompatibleType<Category, Sqlite>` is not implemented for `(diesel::sql_types::Nullable<diesel::sql_types::Integer>, diesel::sql_types::Text) şeklinde hata vermesine neden oluyordu. Schema dosyalarını elle düzelterek, yani Nullable<integer> tiplerini integer'a çekere şimdilik sorunu çözdüm ancak migration plan tekrar çalıştırıldığında bu tipler ezilecektir. Daha kalıcı bir çözüm bulmam lazım.
+- Bir diğer ilginç durumda şuydu. Model nesneleri ile otomatik üretilen şema nesnelerindeki alanların sıraları hatalı olduğunda program derlenmiyordu.

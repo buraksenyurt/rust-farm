@@ -12,7 +12,7 @@ diesel::table! {
         id -> Nullable<Integer>,
         category_id -> Integer,
         title -> Text,
-        start -> Integer,
+        stars -> Integer,
     }
 }
 

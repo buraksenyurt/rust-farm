@@ -16,6 +16,6 @@ create table if not exists games(
     id integer primary key autoincrement,
     category_id integer not null,
     title text not null,
-    start integer not null,
+    stars integer not null,
     foreign key (category_id) references categories (id)
 );

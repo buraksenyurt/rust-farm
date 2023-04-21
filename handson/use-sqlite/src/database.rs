@@ -12,18 +12,7 @@ pub fn open_connection() -> SqliteConnection {
         .unwrap_or_else(|_| panic!("{} veritabanına bağlanılamadı", database_url))
 }
 
-pub fn create_game(
-    conn: &mut SqliteConnection,
-    title: &str,
-    category_id: i32,
-    stars: i32,
-) -> usize {
-    let new_game = NewGame {
-        title,
-        category_id,
-        stars,
-    };
-
+pub fn create_game(conn: &mut SqliteConnection, new_game: NewGame) -> usize {
     diesel::insert_into(games::table)
         .values(&new_game)
         .execute(conn)

@@ -18,7 +18,4 @@ diesel::table! {
 
 diesel::joinable!(games -> categories (category_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    categories,
-    games,
-);
+diesel::allow_tables_to_appear_in_same_query!(categories, games,);

@@ -9,20 +9,19 @@ sudo apt install sqlite3
 # sonrasında kontrol için
 sqlite3 --version
 
-# Uygulamada kullanılan crate'ler aşağıdaki gibi yükleyebiliriz
-# Web API çalışma zamanı ve ortamı için actix-web, actix-rt
-# Connection Pool desteği için R2d2
-# SQLite tarafı, persistance, ORM ve migration işleri için Diesel
-# çevre değişkenlerinin yönetimi için (.env dosyası) dotenv
-# serileşme operasyonları için de serde
-# idiomatic hata yönetimi desteği için anyhow
-# zaman verileri için chrono
-cargo add actix-web actix-rt dotenv serde serde_derive serde_json anyhow chrono
-cargo add diesel -F "sqlite","r2d2"
-
 # diesel ile migration işlemlerini komut satırından yönetmek için
 # cli arabirimine ihtiyacımız var
 cargo install diesel_cli --no-default-features --features sqlite
+```
+
+Örnekte kullanılan crate'ler ise şöyle.
+
+```text
+[dependencies]
+diesel = { version = "2.0.4", features = ["sqlite", "r2d2"] }
+dotenv = "0.15.0"
+serde = { version = "1.0.160", features = ["derive"] }
+serde_json = "1.0.96"
 ```
 
 ## Veritabanı oluşturma ve Migration İşleri

@@ -1,3 +1,4 @@
+mod database;
 mod model;
 mod schema;
 

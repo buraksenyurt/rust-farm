@@ -2,14 +2,14 @@
 
 diesel::table! {
     categories (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         title -> Text,
     }
 }
 
 diesel::table! {
     games (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         category_id -> Integer,
         title -> Text,
         stars -> Integer,

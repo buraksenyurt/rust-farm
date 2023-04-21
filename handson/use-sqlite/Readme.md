@@ -15,13 +15,12 @@ cargo install diesel_cli --no-default-features --features sqlite
 ```
 
 Örnekte kullanılan crate'ler ise şöyle.
+diesel ORM aracı, migration planlayıcı olarak kullanılıyor. dotenvy'yi ise .env dosyasından bilgi okumak için kullanıyoruz diyebilirim.
 
 ```text
 [dependencies]
-diesel = { version = "2.0.4", features = ["sqlite", "r2d2"] }
-dotenv = "0.15.0"
-serde = { version = "1.0.160", features = ["derive"] }
-serde_json = "1.0.96"
+diesel = { version = "2.0.4", features = ["sqlite"] }
+dotenvy = "0.15.7"
 ```
 
 ## Veritabanı oluşturma ve Migration İşleri
@@ -57,3 +56,5 @@ select * from categories;
 ![../images/use_sqlite_01.png](../images/use_sqlite_01.png)
 
 Migration başarılı şekilde işledikten sonra tablolar ile ilgili Entity bilgileri de schema.rs içerisinde otomatik olarak oluşur.
+
+__Not: Migration planının çalıştırdığımda primary key alanları için schema dosyasına Nullable<integer> tipi atandı. Bu çok basit bir rust sorgusunun bile _ the trait `load_dsl::private::CompatibleType<Category, Sqlite>` is not implemented for `(diesel::sql_types::Nullable<diesel::sql_types::Integer>, diesel::sql_types::Text) şeklinde hata vermesine neden oluyordu. Schema dosyalarını elle düzelterek, yani Nullable<integer> tiplerini integer'a çekere şimdilik sorunu çözdüm ancak migration plan tekrar çalıştırıldığında bu tipler ezilecektir. Daha kalıcı bir çözüm bulmam lazım.__

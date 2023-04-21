@@ -24,3 +24,37 @@ cargo add diesel -F "sqlite","r2d2"
 # cli arabirimine ihtiyacımız var
 cargo install diesel_cli --no-default-features --features sqlite
 ```
+
+## Veritabanı oluşturma ve Migration İşleri
+
+Diesel_cli aracını başarılı şekilde kurduysak aşağıdaki adımlarla devam edip ilk migration planını çalıştırabiliriz. Ancak öncesinde root klasörde .env uzantılı bir dosya açıp içerisine veritabanı bağlantı bilgisini yazmalıyız. Ben veritabanı dosyasını tutmak için Data isimli bir klasör oluşturdum ve .env dosyası içerisinde aşağıdaki içeriği kullandım.
+
+```text
+DATABASE_URL=./Data/Steamlopedi.db
+```
+
+Migration hazırlıkları için,
+
+```bash
+diesel setup
+diesel migration generate initial_db
+```
+
+Bu komutlar migrations klasöründe tarih bilgisinin kullanıldığı bir klasör oluşturup içerisine up ve down isimli sql dosyalarını bırakır. Buraya yazılan SQL komutları migration upgrate ve downgrade operasyonlarında kullanılır. up.sql ve down.sql dosyalarını tamamladıktan sonra aşağıdaki komut ile migration planı işletilir.
+
+```bash
+diesel migration run
+```
+
+Terminalden tabloların oluşup oluşmadığını kontrol etmek için aşağıdaki işlemleri yapabiliriz.
+
+```bash
+sqlite3 ./Data/Steamlopedi.db
+.tables
+select * from categories;
+.exit
+```
+
+![../images/use_sqlite_01.png](../images/use_sqlite_01.png)
+
+Migration başarılı şekilde işledikten sonra tablolar ile ilgili Entity bilgileri de schema.rs içerisinde otomatik olarak oluşur.

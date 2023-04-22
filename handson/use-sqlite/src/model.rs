@@ -21,7 +21,7 @@ pub struct NewCategory<'a> {
     pub title: &'a str,
 }
 
-#[derive(Debug, Queryable, Serialize)]
+#[derive(Debug, Queryable, Serialize, Clone)]
 #[diesel(belongs_to(Category))]
 pub struct Game {
     pub id: i32,
@@ -60,6 +60,14 @@ impl<'a> UpsertGame<'a> {
 
 #[derive(Deserialize)]
 pub struct NewGamePayload {
+    pub category_id: i32,
+    pub title: String,
+    pub stars: i32,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateGamePayload {
+    pub id: i32,
     pub category_id: i32,
     pub title: String,
     pub stars: i32,

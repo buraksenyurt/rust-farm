@@ -1,5 +1,5 @@
-use crate::router::get_categories;
-use actix_web::web::get;
+use crate::router::{del_game, get_categories, get_games, post_game, put_game};
+use actix_web::web::{delete, get, post, put};
 use actix_web::{App, HttpServer};
 
 mod database;
@@ -10,10 +10,17 @@ mod schema;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     println!("Sunucu 127.0.0.1:5232 adresine açılıyor");
-    HttpServer::new(|| App::new().route("/categories", get().to(get_categories)))
-        .bind(("127.0.0.1", 5232))?
-        .run()
-        .await
+    HttpServer::new(|| {
+        App::new()
+            .route("/categories", get().to(get_categories))
+            .route("/games", post().to(post_game))
+            .route("/games", get().to(get_games))
+            .route("/games/{name}", delete().to(del_game))
+            .route("/games", put().to(put_game))
+    })
+    .bind(("127.0.0.1", 5232))?
+    .run()
+    .await
 }
 
 // fn main() {

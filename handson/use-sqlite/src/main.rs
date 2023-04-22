@@ -37,7 +37,7 @@ fn main() {
                     .expect("Kategoriler yüklenemedi");
 
                 for c in category_list {
-                    println!("{} - {}", c.id, c.title);
+                    println!("{}", c.to_string().yellow());
                 }
             }
             "1" => {
@@ -51,14 +51,14 @@ fn main() {
                     .expect("Kategoriler yüklenemedi");
 
                 for c in category_list {
-                    println!("{} - {}", c.id, c.title);
+                    println!("{}", c.to_string().yellow().bold());
                     let game_list = games
                         .filter(category_id.eq(c.id))
                         .load::<Game>(conn)
                         .expect("Oyunlar listelenemiyor");
 
                     for g in game_list {
-                        println!("\t{} - {} ({}*)", g.id, g.title, g.stars);
+                        println!("\t{}", g.to_string().blue());
                     }
                 }
             }
@@ -70,7 +70,7 @@ fn main() {
                 let game_name = game_name.trim_end();
                 let pattern = format!("%{}%", game_name);
                 let deleted = delete_game(conn, pattern);
-                println!("Adından '{}' geçen {} oyun silindi.", game_name, deleted);
+                println!("Adında '{}' geçen {} oyun silindi.", game_name, deleted);
             }
             "4" => {
                 let mut game_id = String::new();
@@ -80,11 +80,11 @@ fn main() {
                 let id = i32::from_str(game_id).expect("ID değeri sayısal olmalı");
                 let updated_game = prepare_upsert_game();
                 let updated_count = update_game(conn, id, updated_game);
-                println!("{} kayıt güncellendi", updated_count);
-            },
-            "5"=>{
+                println!("{} kayıt güncellendi", updated_count.to_string().green());
+            }
+            "5" => {
                 println!("{}", menu.blue());
-            },
+            }
             "6" => exit(0),
             _ => {
                 println!("Seçimini anlayamadım");

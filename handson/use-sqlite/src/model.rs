@@ -1,5 +1,6 @@
 use crate::schema::{categories, games};
 use diesel::prelude::*;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Queryable)]
 pub struct Category {
@@ -7,10 +8,16 @@ pub struct Category {
     pub title: String,
 }
 
+impl Display for Category {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} - {}", self.id, self.title)
+    }
+}
+
 #[derive(Insertable)]
 #[diesel(table_name = categories)]
-pub struct NewCategory<'a> {
-    pub title: &'a str,
+pub struct NewCategory {
+    pub title: String,
 }
 
 #[derive(Debug, Queryable)]
@@ -20,6 +27,16 @@ pub struct Game {
     pub category_id: i32,
     pub title: String,
     pub stars: i32,
+}
+
+impl Display for Game {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{} - {} ({}*) Categroy {}",
+            self.id, self.title, self.stars, self.category_id
+        )
+    }
 }
 
 #[derive(Insertable)]

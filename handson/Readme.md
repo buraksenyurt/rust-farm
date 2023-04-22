@@ -26,4 +26,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **the_kafka**: Kafka'yı rust tarafından producer ve consumer olarak nasıl kullanabileceğimize dair bir örnek.
 - [x] **norris**: Axum kullanımını özetleyen ve Chuck Norris gerçekleri konulu basit bir Rest servis örneği.
 - [x] **bookshop-service-grpc**: Rust ile bir gRPC servisi nasıl yazılır öğrenmeye çalışıyorum. Servis tarafı için [tonic](https://docs.rs/tonic/latest/tonic/) isimli crate'ten faydalanıyorum.
-- [ ] **use-sqlite**: Hafifsiklet uygulamalarım için SQLite kullanmayı tercih ediyorum. Bu örnekte [Diogo Souza'nın şu yazısından](https://www.developer.com/languages/creating-an-api-with-rust-and-sqlite/) yararlanıyorum. Yazı 2020 yılına ait olduğu için paketlerde ve kullanımda farklılıklar olabileceğini düşünüyorum.
+- [x] **use-sqlite**: Hafifsiklet uygulamalarım için SQLite kullanmayı tercih ediyorum. Bu örnekte [Diogo Souza'nın şu yazısından](https://www.developer.com/languages/creating-an-api-with-rust-and-sqlite/) yararlanıyorum. Yazı 2020 yılına ait olduğu için paketlerde ve kullanımda farklılıklar olabileceğini düşünüyorum.

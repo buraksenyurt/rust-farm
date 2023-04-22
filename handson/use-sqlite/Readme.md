@@ -1,6 +1,8 @@
 # Rust Uygulamalarında SQLite Kullanımı
 
-Bu örnekteki amacım bir Rust uygulamasında SQLite kullanımını deneyimlemek. SQLite hafifsiklet bir veri tabanı olarak küçük boyutta veri kullanan terminal uygulamalarım için ideal görünüyor. SQLite ile Rust tarafındaki iletişim dışında Entity nesneleri ile ilgili işlemler veya migration operasyonları için de Diesel isimli crate'ten yararlanacağım. Örneği Ubuntu 22.04 sisteminde geliştirmekteyim.
+Bu örnekteki amacım bir Rust uygulamasında SQLite kullanımını deneyimlemek. SQLite hafifsiklet bir veri tabanı olarak küçük boyutta veri kullanan terminal uygulamalarım için ideal görünüyor. SQLite ile Rust tarafındaki iletişim dışında Entity nesneleri ile ilgili işlemler veya migration operasyonları için de Diesel isimli crate'ten yararlanacağım. Örneği Ubuntu 22.04 sisteminde geliştirmekteyim. 
+
+SQlite tarafını diesel ile yönetmeyi anladıktan sonra programı actix-web küfesini de kullanarak basit REST çağrılarına cevap veren bir servis haline getirdim.
 
 ```bash
 # Sistemde SQLite yüklü olmalı elbette
@@ -21,7 +23,6 @@ actix-web'i REST Api fonksiyonellikleri için kullanmaktayız. Serileştirme iş
 ```text
 [dependencies]
 actix-web = "4.3.1"
-#colored = "2.0.0"
 diesel = { version = "2.0.4", features = ["sqlite"] }
 dotenvy = "0.15.7"
 serde = { version = "1.0.160", features = ["derive"] }
@@ -62,7 +63,7 @@ select * from categories;
 Migration başarılı şekilde işledikten sonra tablolar ile ilgili Entity bilgileri de schema.rs içerisinde otomatik olarak oluşur.
 
 ### Not: 
-- Migration planının çalıştırdığımda primary key alanları için schema dosyasına Nullable<integer> tipi atandı. Bu çok basit bir rust sorgusunun bile _ the trait `load_dsl::private::CompatibleType<Category, Sqlite>` is not implemented for `(diesel::sql_types::Nullable<diesel::sql_types::Integer>, diesel::sql_types::Text) şeklinde hata vermesine neden oluyordu. Schema dosyalarını elle düzelterek, yani Nullable<integer> tiplerini integer'a çekere şimdilik sorunu çözdüm ancak migration plan tekrar çalıştırıldığında bu tipler ezilecektir. Daha kalıcı bir çözüm bulmam lazım.
+- Migration planını çalıştırdığımda primary key alanları için schema dosyasına Nullable<integer> tipi atandı. Bu çok basit bir rust sorgusunun bile the trait `load_dsl::private::CompatibleType<Category, Sqlite>` is not implemented for `(diesel::sql_types::Nullable<diesel::sql_types::Integer>, diesel::sql_types::Text) şeklinde hata vermesine neden oluyordu. Schema dosyalarını elle düzelterek, yani Nullable<integer> tiplerini integer'a çekere şimdilik sorunu çözdüm ancak migration plan tekrar çalıştırıldığında bu tipler ezilecektir. Daha kalıcı bir çözüm bulmam lazım.
 - Bir diğer ilginç durumda şuydu. Model nesneleri ile otomatik üretilen şema nesnelerindeki alanların sıraları hatalı olduğunda program derlenmiyordu.
 
 ## Testler
@@ -105,3 +106,20 @@ Body
 ```
 
 Postman dosyasına [buradan](Actix-Web%20use-sqlite%20%5BRust%5D.postman_collection.json) erişebilirsiniz.
+
+Çalışma zamanına ait bazı görüntüler ise şöyle...
+
+_Tüm Kategoriler_
+![../images/use_sqlite_02.png](../images/use_sqlite_02.png)
+
+_Tüm Oyunlar_
+![../images/use_sqlite_03.png](../images/use_sqlite_03.png)
+
+_Yeni Bir Oyun Ekleme_
+![../images/use_sqlite_06.png](../images/use_sqlite_06.png)
+
+_Bir Oyunun Bilgilerini Güncelleme_
+![../images/use_sqlite_04.png](../images/use_sqlite_04.png)
+
+_İsme Göre Oyunları Silme_
+![../images/use_sqlite_05.png](../images/use_sqlite_05.png)

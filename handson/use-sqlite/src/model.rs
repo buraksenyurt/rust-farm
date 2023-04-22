@@ -24,8 +24,8 @@ pub struct Game {
 
 #[derive(Insertable)]
 #[diesel(table_name = games)]
-pub struct NewGame<'a> {
-    pub title: &'a str,
+pub struct UpsertGame {
+    pub title: String,
     pub stars: i32,
     pub category_id: i32,
 }

@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "57968629-ba7c-4ca6-bf07-baf250769303",
+		"name": "Actix-Web use-sqlite [Rust]",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1401662"
+	},
+	"item": [
+		{
+			"name": "use-sqlite app - Get All Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:5232/categories"
+			},
+			"response": []
+		},
+		{
+			"name": "use-sqlite app - Get All Games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:5232/games"
+			},
+			"response": []
+		},
+		{
+			"name": "use-sqlite app - Post A Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"category_id\": 6,\n    \"title\": \"Civilization\",\n    \"stars\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5232/games"
+			},
+			"response": []
+		},
+		{
+			"name": "use-sqlite app - Update Game",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":20,\n    \"category_id\": 6,\n    \"title\": \"Civilization II\",\n    \"stars\": 8\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5232/games"
+			},
+			"response": []
+		},
+		{
+			"name": "use-sqlite app - Delete game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"category_id\": 6,\n    \"title\": \"Civilization\",\n    \"stars\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5232/games"
+			},
+			"response": []
+		}
+	]
+}

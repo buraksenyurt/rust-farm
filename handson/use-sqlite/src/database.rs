@@ -16,8 +16,12 @@ pub fn open_connection() -> SqliteConnection {
 }
 
 pub fn create_game(conn: &mut SqliteConnection, new_game: UpsertGame) -> usize {
+    println!(
+        "{},{},{} eklenecek.",
+        new_game.title, new_game.stars, new_game.category_id
+    );
     diesel::insert_into(games::table)
-        .values(new_game)
+        .values(&new_game)
         .execute(conn)
         .expect("Yeni oyun kaydedilirken hata")
 }

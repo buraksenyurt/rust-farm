@@ -41,9 +41,30 @@ fn main() {
                 }
             }
             "1" => {
-                let new_game = prepare_upsert_game();
-                create_game(conn, new_game);
-                println!("Oyun yüklendi");
+                let mut title = String::new();
+                let mut stars = String::new();
+                let mut cat_id = String::new();
+
+                println!("Oyunun adı ?");
+                stdin().read_line(&mut title).unwrap();
+                let title = title.trim_end();
+
+                println!("Kategori numarası ?");
+                stdin().read_line(&mut cat_id).unwrap();
+                let cat_id = cat_id.trim_end();
+
+                println!("Puanı ?");
+                stdin().read_line(&mut stars).unwrap();
+                let stars = stars.trim_end();
+
+                let new_game = UpsertGame::new(
+                    i32::from_str(cat_id).expect("Geçersiz sayısal değer"),
+                    title,
+                    i32::from_str(stars).expect("Geçersiz sayısal değer"),
+                );
+
+                let inserted = create_game(conn, new_game);
+                println!("{} Oyun yüklendi", inserted.to_string().green());
             }
             "2" => {
                 let category_list = categories
@@ -78,7 +99,29 @@ fn main() {
                 stdin().read_line(&mut game_id).unwrap();
                 let game_id = game_id.trim_end();
                 let id = i32::from_str(game_id).expect("ID değeri sayısal olmalı");
-                let updated_game = prepare_upsert_game();
+
+                let mut title = String::new();
+                let mut stars = String::new();
+                let mut cat_id = String::new();
+
+                println!("Oyunun adı ?");
+                stdin().read_line(&mut title).unwrap();
+                let title = title.trim_end();
+
+                println!("Kategori numarası ?");
+                stdin().read_line(&mut cat_id).unwrap();
+                let cat_id = cat_id.trim_end();
+
+                println!("Puanı ?");
+                stdin().read_line(&mut stars).unwrap();
+                let stars = stars.trim_end();
+
+                let updated_game = UpsertGame::new(
+                    i32::from_str(cat_id).expect("Geçersiz sayısal değer"),
+                    title,
+                    i32::from_str(stars).expect("Geçersiz sayısal değer"),
+                );
+
                 let updated_count = update_game(conn, id, updated_game);
                 println!("{} kayıt güncellendi", updated_count.to_string().green());
             }
@@ -90,29 +133,5 @@ fn main() {
                 println!("Seçimini anlayamadım");
             }
         }
-    }
-}
-
-fn prepare_upsert_game() -> UpsertGame {
-    let mut title = String::new();
-    let mut stars = String::new();
-    let mut cat_id = String::new();
-
-    println!("Oyunun adı ?");
-    stdin().read_line(&mut title).unwrap();
-    let title = title.trim_end().to_string();
-
-    println!("Kategori numarası ?");
-    stdin().read_line(&mut cat_id).unwrap();
-    let cat_id = cat_id.trim_end();
-
-    println!("Puanı ?");
-    stdin().read_line(&mut stars).unwrap();
-    let stars = stars.trim_end();
-
-    UpsertGame {
-        title,
-        category_id: i32::from_str(cat_id).expect("Geçersiz sayısal değer"),
-        stars: i32::from_str(stars).expect("Geçersiz sayısal değer"),
     }
 }

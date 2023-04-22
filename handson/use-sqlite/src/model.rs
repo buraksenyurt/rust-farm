@@ -16,8 +16,8 @@ impl Display for Category {
 
 #[derive(Insertable)]
 #[diesel(table_name = categories)]
-pub struct NewCategory {
-    pub title: String,
+pub struct NewCategory<'a> {
+    pub title: &'a str,
 }
 
 #[derive(Debug, Queryable)]
@@ -41,8 +41,18 @@ impl Display for Game {
 
 #[derive(Insertable)]
 #[diesel(table_name = games)]
-pub struct UpsertGame {
-    pub title: String,
-    pub stars: i32,
+pub struct UpsertGame<'a> {
     pub category_id: i32,
+    pub title: &'a str,
+    pub stars: i32,
+}
+
+impl<'a> UpsertGame<'a> {
+    pub fn new(cat_id: i32, title: &'a str, stars: i32) -> Self {
+        Self {
+            category_id: cat_id,
+            title,
+            stars,
+        }
+    }
 }

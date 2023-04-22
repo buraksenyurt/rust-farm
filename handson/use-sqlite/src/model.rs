@@ -1,8 +1,9 @@
 use crate::schema::{categories, games};
 use diesel::prelude::*;
+use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Queryable, Serialize, Clone)]
 pub struct Category {
     pub id: i32,
     pub title: String,
@@ -20,7 +21,7 @@ pub struct NewCategory<'a> {
     pub title: &'a str,
 }
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Queryable, Serialize)]
 #[diesel(belongs_to(Category))]
 pub struct Game {
     pub id: i32,
@@ -55,4 +56,11 @@ impl<'a> UpsertGame<'a> {
             stars,
         }
     }
+}
+
+#[derive(Deserialize)]
+pub struct NewGamePayload {
+    pub category_id: i32,
+    pub title: String,
+    pub stars: i32,
 }

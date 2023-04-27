@@ -1,4 +1,5 @@
 use bytes::BytesMut;
+use hashdis::utility::Utility;
 use log::{error, info, warn};
 use std::io::Error;
 use tokio::io::AsyncReadExt;
@@ -19,7 +20,8 @@ pub async fn main() -> Result<(), Error> {
                         info!("{:?} {}", socket, addr);
                         let mut buffer = BytesMut::with_capacity(512);
                         socket.read_buf(&mut buffer).await?;
-                        warn!("İstemciden gelen mesaj {:?}", buffer);
+                        let keywords = Utility::convert_to_vec(&mut buffer);
+                        warn!("İstemciden gelen mesaj {:#?}", keywords);
                         continue;
                     }
                     Err(e) => {

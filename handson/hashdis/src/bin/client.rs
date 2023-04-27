@@ -1,7 +1,7 @@
 use log::{error, info};
 use std::io;
 use std::io::Error;
-use tokio::io::{stdin, AsyncReadExt, AsyncWriteExt};
+use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
 #[tokio::main]

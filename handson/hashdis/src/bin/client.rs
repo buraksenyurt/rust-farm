@@ -21,6 +21,20 @@ pub async fn main() -> Result<(), Error> {
                         return Err(e);
                     }
                 },
+                Command::Set { key, value } => {
+                    s.write_all(b"set").await?;
+                    s.write_all(b" ").await?;
+                    s.write_all(&key.as_bytes()).await?;
+                    s.write_all(b" ").await?;
+                    s.write_all(&value.as_bytes()).await?;
+                    Ok(())
+                }
+                Command::Get { key } => {
+                    s.write_all(b"get").await?;
+                    s.write_all(b" ").await?;
+                    s.write_all(&key.as_bytes()).await?;
+                    Ok(())
+                }
                 _ => {
                     warn!("Komut anlaşılamadı");
                     Ok(())

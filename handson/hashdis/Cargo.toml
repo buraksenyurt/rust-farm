@@ -1,0 +1,8 @@
+[package]
+name = "hashdis"
+version = "0.1.0"
+edition = "2021"
+description = "Redis clone"
+
+[dependencies]
+tokio = { version = "1.28.0", features = ["full"] }

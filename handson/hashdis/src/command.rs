@@ -1,5 +1,5 @@
-//use std::str::FromStr;
 use clap::{Parser, Subcommand};
+use std::str::FromStr;
 
 #[derive(Parser, Debug)]
 pub struct Keyword {
@@ -15,15 +15,20 @@ pub enum Command {
     Unknown,
 }
 
-// impl FromStr for Command {
-//     type Err = ();
-//
-//     fn from_str(s: &str) -> Result<Self, Self::Err> {
-//         match str {
-//             "ping" => Ok(Command::Ping),
-//             "get" => Ok(Command::Get),
-//             "set" => Ok(Command::Set),
-//             _ => Ok(Command::Unknown),
-//         }
-//     }
-// }
+impl FromStr for Command {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ping" => Ok(Command::Ping),
+            "get" => Ok(Command::Get {
+                key: "".to_string(),
+            }),
+            "set" => Ok(Command::Set {
+                key: "".to_string(),
+                value: "".to_string(),
+            }),
+            _ => Ok(Command::Unknown),
+        }
+    }
+}

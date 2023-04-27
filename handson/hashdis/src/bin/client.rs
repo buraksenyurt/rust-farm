@@ -1,8 +1,10 @@
+use bytes::BytesMut;
 use clap::Parser;
 use hashdis::command::{Command, Keyword};
 use log::{error, info, warn};
 use std::io::Error;
-use tokio::io::AsyncWriteExt;
+use std::str::from_utf8;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
 #[tokio::main]
@@ -15,7 +17,17 @@ pub async fn main() -> Result<(), Error> {
             let arguments = Keyword::parse();
             match arguments.command {
                 Command::Ping => match s.write_all(b"ping").await {
-                    Ok(_) => Ok(()),
+                    Ok(_) => {
+                        let mut buffer = BytesMut::with_capacity(512);
+                        s.read_buf(&mut buffer).await?;
+                        match from_utf8(&mut buffer) {
+                            Ok(r) => {
+                                println!("{}", r);
+                            }
+                            Err(_) => {}
+                        }
+                        Ok(())
+                    }
                     Err(e) => {
                         error!("Veri gönderilemedi. {}", e);
                         return Err(e);

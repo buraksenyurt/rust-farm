@@ -1,8 +1,10 @@
 use bytes::BytesMut;
+use hashdis::command::Command;
 use hashdis::utility::Utility;
 use log::{error, info, warn};
 use std::io::Error;
-use tokio::io::AsyncReadExt;
+use std::str::FromStr;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 
 #[tokio::main]
@@ -21,7 +23,22 @@ pub async fn main() -> Result<(), Error> {
                         let mut buffer = BytesMut::with_capacity(512);
                         socket.read_buf(&mut buffer).await?;
                         let keywords = Utility::convert_to_vec(&mut buffer);
-                        warn!("İstemciden gelen mesaj {:#?}", keywords);
+                        let command = Command::from_str(keywords[0].as_str());
+                        match command {
+                            Ok(c) => {
+                                warn!("İstemciden gelen mesaj {:#?}", keywords);
+                                match c {
+                                    Command::Ping => {
+                                        println!("{:?}", keywords);
+                                        socket.write_all(b"pong").await?;
+                                    }
+                                    Command::Get { .. } => {}
+                                    Command::Set { .. } => {}
+                                    Command::Unknown => {}
+                                }
+                            }
+                            Err(_) => {}
+                        }
                         continue;
                     }
                     Err(e) => {

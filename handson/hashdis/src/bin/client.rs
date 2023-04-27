@@ -10,6 +10,7 @@ use tokio::net::TcpStream;
 #[tokio::main]
 pub async fn main() -> Result<(), Error> {
     env_logger::init();
+
     let tcp_stream = TcpStream::connect("127.0.0.1:6380").await;
     match tcp_stream {
         Ok(mut s) => {
@@ -20,31 +21,28 @@ pub async fn main() -> Result<(), Error> {
                     Ok(_) => {
                         let mut buffer = BytesMut::with_capacity(512);
                         s.read_buf(&mut buffer).await?;
-                        match from_utf8(&mut buffer) {
-                            Ok(r) => {
-                                println!("{}", r);
-                            }
-                            Err(_) => {}
+                        if let Ok(r) = from_utf8(&buffer) {
+                            println!("{}", r);
                         }
                         Ok(())
                     }
                     Err(e) => {
                         error!("Veri gönderilemedi. {}", e);
-                        return Err(e);
+                        Err(e)
                     }
                 },
                 Command::Set { key, value } => {
                     s.write_all(b"set").await?;
                     s.write_all(b" ").await?;
-                    s.write_all(&key.as_bytes()).await?;
+                    s.write_all(key.as_bytes()).await?;
                     s.write_all(b" ").await?;
-                    s.write_all(&value.as_bytes()).await?;
+                    s.write_all(value.as_bytes()).await?;
                     Ok(())
                 }
                 Command::Get { key } => {
                     s.write_all(b"get").await?;
                     s.write_all(b" ").await?;
-                    s.write_all(&key.as_bytes()).await?;
+                    s.write_all(key.as_bytes()).await?;
                     Ok(())
                 }
                 _ => {
@@ -55,7 +53,7 @@ pub async fn main() -> Result<(), Error> {
         }
         Err(e) => {
             error!("Sunucu ile bağlantı hatası. {}", e);
-            return Err(e);
+            Err(e)
         }
     }
 }

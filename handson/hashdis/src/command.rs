@@ -15,20 +15,22 @@ pub enum Command {
     Unknown,
 }
 
-impl FromStr for Command {
+pub enum ServerCommand {
+    Ping,
+    Get,
+    Set,
+    Unknown,
+}
+
+impl FromStr for ServerCommand {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "ping" => Ok(Command::Ping),
-            "get" => Ok(Command::Get {
-                key: "".to_string(),
-            }),
-            "set" => Ok(Command::Set {
-                key: "".to_string(),
-                value: "".to_string(),
-            }),
-            _ => Ok(Command::Unknown),
+            "ping" => Ok(ServerCommand::Ping),
+            "get" => Ok(ServerCommand::Get),
+            "set" => Ok(ServerCommand::Set),
+            _ => Ok(ServerCommand::Unknown),
         }
     }
 }

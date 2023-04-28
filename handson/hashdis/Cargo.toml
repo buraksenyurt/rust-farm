@@ -5,6 +5,7 @@ edition = "2021"
 description = "Redis clone"
 
 [dependencies]
+async-trait = "0.1.68"
 bytes = "1.4.0"
 clap = { version = "4.2.4", features = ["derive"] }
 env_logger = "0.10.0"

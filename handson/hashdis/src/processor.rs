@@ -1,4 +1,5 @@
 use crate::command::{Command, Keyword, ServerCommand};
+use crate::db::Db;
 use crate::utility::Utility;
 use async_trait::async_trait;
 use bytes::BytesMut;
@@ -13,14 +14,15 @@ pub struct ServerProcessor;
 
 #[async_trait]
 pub trait Processor {
-    async fn run(&self, stream: &mut TcpStream) -> Result<(), Error>;
+    async fn run(&self, stream: &mut TcpStream, db: Option<&mut Db>) -> Result<(), Error>;
 }
 
 #[async_trait]
 impl Processor for ServerProcessor {
-    async fn run(&self, stream: &mut TcpStream) -> Result<(), Error> {
-        let mut buffer = BytesMut::with_capacity(512);
+    async fn run(&self, stream: &mut TcpStream, db: Option<&mut Db>) -> Result<(), Error> {
+        let mut buffer = BytesMut::with_capacity(1024);
         stream.read_buf(&mut buffer).await?;
+        info!("Buffer büyüklüğü {}", buffer.len());
         let incoming_commands = Utility::convert_to_vec(&mut buffer);
         let first_command = ServerCommand::from_str(incoming_commands[0].as_str());
 
@@ -31,9 +33,36 @@ impl Processor for ServerProcessor {
                     println!("İstemci ping attı...");
                     stream.write_all(b"pong").await?;
                 }
-                ServerCommand::Get => {}
-                ServerCommand::Set => {}
-                ServerCommand::Unknown => {}
+                ServerCommand::Get => {
+                    let key = incoming_commands[1].clone();
+                    let read_result = db.unwrap().read(key);
+                    match read_result {
+                        Ok(r) => {
+                            stream.write_all(r).await?;
+                        }
+                        Err(e) => {
+                            error!("{}", e);
+                            stream.write_all(b"key not found").await?;
+                        }
+                    }
+                }
+                ServerCommand::Set => {
+                    let key = incoming_commands[1].clone();
+                    let value = incoming_commands[2].clone();
+                    let write_result = db.unwrap().write(key, value);
+                    match write_result {
+                        Ok(r) => {
+                            info!("insert işlemi sonucu {}", r);
+                            stream.write_all(r.as_bytes()).await?;
+                        }
+                        Err(e) => {
+                            error!("{}", e)
+                        }
+                    }
+                }
+                ServerCommand::Unknown => {
+                    error!("İstemciden gelen komutlar anlaşılamadı");
+                }
             }
         }
 
@@ -45,16 +74,12 @@ pub struct ClientProcessor;
 
 #[async_trait]
 impl Processor for ClientProcessor {
-    async fn run(&self, stream: &mut TcpStream) -> Result<(), Error> {
+    async fn run(&self, stream: &mut TcpStream, _db: Option<&mut Db>) -> Result<(), Error> {
         let arguments = Keyword::parse();
         match arguments.command {
             Command::Ping => match stream.write_all(b"ping").await {
                 Ok(_) => {
-                    let mut buffer = BytesMut::with_capacity(512);
-                    stream.read_buf(&mut buffer).await?;
-                    if let Ok(r) = from_utf8(&buffer) {
-                        println!("{}", r);
-                    }
+                    Self::read_server_response(stream).await?;
                     Ok(())
                 }
                 Err(e) => {
@@ -68,12 +93,18 @@ impl Processor for ClientProcessor {
                 stream.write_all(key.as_bytes()).await?;
                 stream.write_all(b" ").await?;
                 stream.write_all(value.as_bytes()).await?;
+
+                Self::read_server_response(stream).await?;
+
                 Ok(())
             }
             Command::Get { key } => {
                 stream.write_all(b"get").await?;
                 stream.write_all(b" ").await?;
                 stream.write_all(key.as_bytes()).await?;
+
+                Self::read_server_response(stream).await?;
+
                 Ok(())
             }
             _ => {
@@ -81,5 +112,16 @@ impl Processor for ClientProcessor {
                 Ok(())
             }
         }
+    }
+}
+
+impl ClientProcessor {
+    async fn read_server_response(stream: &mut TcpStream) -> Result<(), Error> {
+        let mut buffer = BytesMut::with_capacity(1024);
+        stream.read_buf(&mut buffer).await?;
+        if let Ok(r) = from_utf8(&buffer) {
+            println!("{}", r);
+        }
+        Ok(())
     }
 }

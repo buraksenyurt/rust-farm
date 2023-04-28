@@ -1,4 +1,4 @@
-use hashdis::processor::{Processor, ClientProcessor};
+use hashdis::processor::{ClientProcessor, Processor};
 use log::{error, info};
 use std::io::Error;
 use tokio::net::TcpStream;
@@ -12,7 +12,8 @@ pub async fn main() -> Result<(), Error> {
     match tcp_stream {
         Ok(mut s) => {
             info!("Hashdis bağlantısı sağlandı.");
-            processor.run(&mut s).await
+            processor.run(&mut s, None).await?;
+            Ok(())
         }
         Err(e) => {
             error!("Sunucu ile bağlantı hatası. {}", e);

@@ -1,4 +1,5 @@
 use bytes::BytesMut;
+use log::info;
 
 pub struct Utility;
 
@@ -7,6 +8,7 @@ impl Utility {
         let incoming = buffer.to_vec();
         let mut keywords: Vec<String> = vec![];
         let mut keyword = "".to_string();
+        info!("Veri büyüklüğü {} byte", buffer.len());
 
         for i in 0..incoming.len() {
             match incoming[i] {

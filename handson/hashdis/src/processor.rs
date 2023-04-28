@@ -93,7 +93,7 @@ impl Processor for ClientProcessor {
                 stream.write_all(key.as_bytes()).await?;
                 stream.write_all(b" ").await?;
                 stream.write_all(value.as_bytes()).await?;
-
+                stream.flush().await?;
                 Self::read_server_response(stream).await?;
 
                 Ok(())
@@ -102,7 +102,7 @@ impl Processor for ClientProcessor {
                 stream.write_all(b"get").await?;
                 stream.write_all(b" ").await?;
                 stream.write_all(key.as_bytes()).await?;
-
+                stream.flush().await?;
                 Self::read_server_response(stream).await?;
 
                 Ok(())

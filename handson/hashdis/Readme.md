@@ -26,19 +26,18 @@ Sunucu sürekli dinlemede olup istemciler mesaj gönderip alabilirler. Bu nedenl
 
 ```bash
 # Sunucu tarafını çalıştırmak için
-# Log bilgileri ile
-RUST_LOG=trace cargo run --bin server
+cargo run --bin server
 
 # istemci de benzer şekilde çalıştırılabilir
 
 # ping göndermek için
-RUST_LOG=trace cargo run --bin client ping
+cargo run --bin client ping
 
 # set key value için
-RUST_LOG=trace cargo run --bin client set port localhost:4141/api
+cargo run --bin client set port localhost:4141/api
 
 # get key için
-RUST_LOG=trace cargo run --bin client get port
+cargo run --bin client get port
 ```
 
 Uygulamanın çalışma zamanına ait örnek bir çıktısı aşağıdaki gibidir.

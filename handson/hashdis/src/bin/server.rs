@@ -1,3 +1,4 @@
+use env_logger::Env;
 use hashdis::db::Db;
 use hashdis::processor::{Processor, ServerProcessor};
 use log::{error, info, warn};
@@ -7,8 +8,8 @@ use tokio::signal;
 
 #[tokio::main]
 pub async fn main() -> Result<(), Error> {
-    env_logger::init();
-    let mut listener = TcpListener::bind("127.0.0.1:6380")
+    env_logger::Builder::from_env(Env::default().default_filter_or("trace")).init();
+    let mut listener = TcpListener::bind("127.0.0.1:6381")
         .await
         .expect("listener oluşturulamadı");
     let shutdown = signal::ctrl_c();

@@ -2,9 +2,15 @@ use std::io::{stdin, stdout, Write};
 use std::process::Command;
 
 /*
-        Terminalden gelen komutu kullanarak yeni bir child process başlatır.
-        sonsuz döngüde olduğundan kullanıcı sonlandırana kadar komut almaya devam eder.
- */
+       Terminalden gelen komutu kullanarak yeni bir child process başlatır.
+       sonsuz döngüde olduğundan kullanıcı sonlandırana kadar komut almaya devam eder.
+
+       ls
+       ps
+       pwd
+
+       gibi argümansı komutları çalıştırabilir.
+*/
 fn main() {
     loop {
         print!("-> ");

@@ -6,13 +6,13 @@ edition = "2021"
 [dependencies]
 
 [[bin]]
-name = "main_proc"
-path = "src/main_proc.rs"
+name = "single"
+path = "src/single.rs"
 
 [[bin]]
-name = "child_proc1"
-path = "src/child_proc1.rs"
+name = "multi"
+path = "src/multi.rs"
 
 [[bin]]
-name = "child_proc2"
-path = "src/child_proc2.rs"
+name = "readable"
+path = "src/readable.rs"

@@ -46,3 +46,4 @@
 - [x] **mockito_101(Sonradan wiremock'a evrildi)**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyordum. Lakin mockito server'a ait context'i bir şekilde do_accounting fonksiyonuna taşıyamadım. Bu yüzden sürekli HTTP 501 hatası alıp durdum. Bunun üzerine wiremock isimli crate'i kullanmaya karar verdim.
 - [x] **csv-to-json**: Kütüphanemdeki kitapların listesini tuttuğum CSV içeriğinin bir projem için JSON versiyonu lazım. Birkaç kitabı örnek olarak alıp JSON formatına çevirmeye çalışıyorum.
 - [x] **get-lorem-picsum**: [Lorem Picsum](https://picsum.photos/)'dan fotoğraf indiren bir uygulama örneği.
+- [ ] **simple-shell**: Bu örnekte linux komutlarını terminalden sub process olarak işleten 3 farklı program yer almakta.

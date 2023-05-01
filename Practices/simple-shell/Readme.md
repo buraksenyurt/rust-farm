@@ -13,6 +13,9 @@ Uygulamada main fonksiyonuna sahip üç program bulunmaktadır. main_proc, child
 
 ```bash
 cargo run --bin single
+-> pwd
+-> ls
+-> ps
 ```
 
 ![../images/simple_shell_01.png](../images/simple_shell_01.png)
@@ -21,6 +24,8 @@ cargo run --bin single
 
 ```bash
 cargo run --bin multi
+-> touch notes.txt
+-> ls -lah
 ```
 
 ![../images/simple_shell_02.png](../images/simple_shell_02.png)
@@ -28,5 +33,8 @@ cargo run --bin multi
 3ncü örnek için;
 
 ```bash
-
+cargo run --bin readable
+-> list files
 ```
+
+![../images/simple_shell_03.png](../images/simple_shell_03.png)

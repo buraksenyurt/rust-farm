@@ -1,0 +1,18 @@
+[package]
+name = "simple-shell"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "main_proc"
+path = "src/main_proc.rs"
+
+[[bin]]
+name = "child_proc1"
+path = "src/child_proc1.rs"
+
+[[bin]]
+name = "child_proc2"
+path = "src/child_proc2.rs"

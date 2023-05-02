@@ -1,0 +1,11 @@
+[package]
+name = "threads-again"
+version = "0.1.0"
+edition = "2021"
+description = "Concurrency ve multi-thread konularının tekrarı"
+
+[[bin]]
+name = "stage_1"
+path = "src/stage_1.rs"
+
+[dependencies]

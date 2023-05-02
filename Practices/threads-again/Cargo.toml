@@ -12,4 +12,8 @@ path = "src/stage_1.rs"
 name = "stage_2"
 path = "src/stage_2.rs"
 
+[[bin]]
+name = "stage_3"
+path = "src/stage_3.rs"
+
 [dependencies]

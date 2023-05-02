@@ -6,13 +6,20 @@ Başlamada önce hatırlatıcı not. Concurrency ve Parallelism farklarını aş
 
 ![../images/threading_again_01.png](../images/threading_again_01.png)
 
-- stage_1: İlk örnekte rust'ın standart kütüphanesinin kullandığı 1:1 thread modeli ele alınır. 
+- stage_1: İlk örnekte rust'ın standart kütüphanesinin kullandığı 1:1 thread modeli ele alınır.
+- 
 
-## Çalışma Zamanı
+## Çalışma Zamanları
 
 ```bash
 cargo run --bin stage_1
 ```
 
 ![../images/threading_again_02.png](../images/threading_again_02.png)
+
+```bash
+cargo run --bin stage_2
+```
+
+![../images/threading_again_03.png](../images/threading_again_03.png)
 

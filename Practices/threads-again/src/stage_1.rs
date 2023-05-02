@@ -2,10 +2,10 @@ use std::thread;
 
 fn main() {
     /*
-        Bu örnekte standart library'teki spawn fonksiyonu kullanılarak 3 thread açılmakta.
-        Main thread'in bu thread'ler sonlanmadan kapanmaması için de açılan thread'i bir vector
-        dizisi ile kontrol etmekteyiz.
-     */
+       Bu örnekte standart library'teki spawn fonksiyonu kullanılarak 3 thread açılmakta.
+       Main thread'in bu thread'ler sonlanmadan kapanmaması için de açılan thread'i bir vector
+       dizisi ile kontrol etmekteyiz.
+    */
     let mut threads = Vec::new();
 
     for _ in 0..7 {

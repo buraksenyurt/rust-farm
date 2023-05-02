@@ -8,4 +8,8 @@ description = "Concurrency ve multi-thread konularının tekrarı"
 name = "stage_1"
 path = "src/stage_1.rs"
 
+[[bin]]
+name = "stage_2"
+path = "src/stage_2.rs"
+
 [dependencies]

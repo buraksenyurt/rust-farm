@@ -1,6 +1,6 @@
 # Concurrency Dünyası
 
-Örnek antrenmandaki amacım rust tarafında thread yönetimi ile ilgili konuları hatırlamak. 
+Örnek antrenmandaki amacım rust tarafında thread yönetimi ile ilgili konuları hatırlamak. _**Kaynak: Practical System Programming for Rust Developers, Prabhu Eshwarla, Packt**_
 
 Başlamada önce hatırlatıcı not. Concurrency ve Parallelism farklarını aşağıdaki şekille özetleyebiliriz.
 
@@ -36,3 +36,12 @@ cargo run --bin stage_4
 ```
 
 ![../images/threading_again_05.png](../images/threading_again_05.png)
+
+```bash
+cargo build -r
+#sonrasında target/release altında iken
+#folder permission gerekirse sudo ile çalıştırılabilir.
+sudo ./stage_5
+```
+
+![../images/threading_again_06.png](../images/threading_again_06.png)

@@ -47,4 +47,4 @@
 - [x] **csv-to-json**: Kütüphanemdeki kitapların listesini tuttuğum CSV içeriğinin bir projem için JSON versiyonu lazım. Birkaç kitabı örnek olarak alıp JSON formatına çevirmeye çalışıyorum.
 - [x] **get-lorem-picsum**: [Lorem Picsum](https://picsum.photos/)'dan fotoğraf indiren bir uygulama örneği.
 - [x] **simple-shell**: Bu örnekte linux komutlarını terminalden sub process olarak işleten 3 farklı program yer almakta.
-- [ ] **threads-again**: Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.
+- [x] **threads-again**: Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.

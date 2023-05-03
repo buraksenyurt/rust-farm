@@ -73,18 +73,18 @@ fn main() {
 
 fn calc_files(stats: Arc<Mutex<CodeStats>>, files: &Vec<DirEntry>) {
     for file in files {
-        let content = fs::read_to_string(&file.path()).unwrap();
-        let mut statsp = stats.lock().unwrap();
+        let content = fs::read_to_string(file.path()).unwrap();
+        let mut stats_pointer = stats.lock().unwrap();
         for line in content.lines() {
-            if line.len() == 0 {
-                statsp.blank_lines += 1;
+            if line.is_empty() {
+                stats_pointer.blank_lines += 1;
             } else if line.starts_with("//") {
-                statsp.comments_count += 1;
+                stats_pointer.comments_count += 1;
             } else {
-                statsp.lines_of_code += 1;
+                stats_pointer.lines_of_code += 1;
             }
         }
-        statsp.number_of_files += 1;
+        stats_pointer.number_of_files += 1;
     }
 }
 
@@ -92,16 +92,13 @@ fn map_files(source: &str) -> Vec<DirEntry> {
     let mut dirs = vec![PathBuf::from(source)];
     let mut files = vec![];
     while let Some(dir) = dirs.pop() {
-        for d in fs::read_dir(&dir).unwrap() {
-            if let Ok(f) = d {
-                if f.path().is_dir() {
-                    dirs.push(f.path());
-                } else {
-                    if f.path().extension() == Some(OsStr::new("rs")) {
-                        println!("{:?}", f);
-                        files.push(f);
-                    }
-                }
+        for dir_entry in fs::read_dir(dir).unwrap() {
+            let entry = dir_entry.unwrap();
+            if entry.path().is_dir() {
+                dirs.push(entry.path());
+            } else if entry.path().extension() == Some(OsStr::new("rs")) {
+                println!("{:?}", entry);
+                files.push(entry);
             }
         }
     }

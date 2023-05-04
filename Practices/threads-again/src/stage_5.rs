@@ -45,6 +45,8 @@ fn main() {
         number_of_files: 0,
         comments_count: 0,
         blank_lines: 0,
+        struct_count: 0,
+        enum_count: 0,
     };
 
     // Atomically Reference Counter Mutex koruyucusu ile tanımlanır
@@ -82,6 +84,11 @@ fn calc_files(stats: Arc<Mutex<CodeStats>>, files: &Vec<DirEntry>) {
                 stats_pointer.comments_count += 1;
             } else {
                 stats_pointer.lines_of_code += 1;
+                if line.contains("struct") {
+                    stats_pointer.struct_count += 1;
+                } else if line.contains("enum") {
+                    stats_pointer.enum_count += 1;
+                }
             }
         }
         stats_pointer.number_of_files += 1;

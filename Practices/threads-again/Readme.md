@@ -37,6 +37,8 @@ cargo run --bin stage_4
 
 ![../images/threading_again_05.png](../images/threading_again_05.png)
 
+Son çalışmada belli klasörler içerisindeki rust dosyaları analiz ediliyor. Herbir klasör için ayrı bir thread başlatılıyor.
+
 ```bash
 cargo build -r
 #sonrasında target/release altında iken

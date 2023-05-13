@@ -9,3 +9,7 @@ description = "Temel Read/Write operasyonları"
 [[bin]]
 name = "from_file"
 path = "src/from_file.rs"
+
+[[bin]]
+name = "to_file"
+path = "src/to_file.rs"

@@ -36,7 +36,7 @@ fn main() {
     // Bu sefer okuyucu BufReader'ın lines fonksiyonu ile dosya içeriği
     // satır bazlı yakalanır.
     let buf_reader = BufReader::new(f).lines();
-    for line in buf_reader{
-        println!("{}",line.unwrap());
+    for line in buf_reader {
+        println!("{}", line.unwrap());
     }
 }

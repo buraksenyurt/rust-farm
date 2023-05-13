@@ -13,3 +13,7 @@ path = "src/from_file.rs"
 [[bin]]
 name = "to_file"
 path = "src/to_file.rs"
+
+[[bin]]
+name = "in_and_out"
+path = "src/in_and_out.rs"

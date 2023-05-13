@@ -1,4 +1,4 @@
-use std::fmt::{write, Display, Formatter};
+use std::fmt::{Display, Formatter};
 
 pub struct Usb<'a> {
     manufacturer: &'a str,
@@ -10,15 +10,15 @@ pub struct Usb<'a> {
     serial_num: &'a str,
 }
 
-impl Usb {
+impl<'a> Usb<'a> {
     pub fn new(
-        manufacturer: &str,
-        product: &str,
+        manufacturer: &'a str,
+        product: &'a str,
         address: u8,
         vendor_id: u8,
         product_id: u8,
         bus_number: u8,
-        serial_num: &str,
+        serial_num: &'a str,
     ) -> Self {
         Self {
             manufacturer,
@@ -32,7 +32,7 @@ impl Usb {
     }
 }
 
-impl Display for Usb {
+impl<'a> Display for Usb<'a> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f,"Manufacturer: {}\nProduct: {}\nAddress: {}\nVendor Id: {}\nProduct Id: {}\nBus Number: {}\nSerial Number: {}",
         self.manufacturer,

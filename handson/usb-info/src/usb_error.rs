@@ -1,5 +1,6 @@
 use libusb::Error;
 
+#[derive(Debug)]
 pub struct UsbError {
     pub err: String,
 }

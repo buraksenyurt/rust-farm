@@ -5,8 +5,24 @@ mod test {
 
     #[test]
     fn should_write_to_file_works() {
-        let usb_1 = Usb::new("kingston", "16 Gb", 15, 81, 120, 3, "USB-KNG-1023");
-        let usb_2 = Usb::new("western digital", "128 Gb", 16, 181, 98, 5, "USB-WD-5654");
+        let usb_1 = Usb::new(
+            "kingston".to_string(),
+            "16 Gb".to_string(),
+            15,
+            81,
+            120,
+            3,
+            "USB-KNG-1023".to_string(),
+        );
+        let usb_2 = Usb::new(
+            "western digital".to_string(),
+            "128 Gb".to_string(),
+            16,
+            181,
+            98,
+            5,
+            "USB-WD-5654".to_string(),
+        );
         let mut list = UsbList::new();
         list.add(usb_1);
         list.add(usb_2);

@@ -3,15 +3,15 @@ use crate::usb_error::UsbError;
 use std::fs::File;
 use std::io::Write;
 
-pub struct UsbList<'a> {
-    data: Vec<Usb<'a>>,
+pub struct UsbList {
+    data: Vec<Usb>,
 }
 
-impl<'a> UsbList<'a> {
+impl UsbList {
     pub fn new() -> Self {
         Self { data: vec![] }
     }
-    pub fn add(&mut self, usb: Usb<'a>) {
+    pub fn add(&mut self, usb: Usb) {
         self.data.push(usb);
     }
     pub fn list(&self) {

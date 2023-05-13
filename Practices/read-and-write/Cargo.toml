@@ -1,0 +1,11 @@
+[package]
+name = "read-and-write"
+version = "0.1.0"
+edition = "2021"
+description = "Temel Read/Write operasyonları"
+
+[dependencies]
+
+[[bin]]
+name = "from_file"
+path = "src/from_file.rs"

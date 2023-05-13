@@ -17,3 +17,11 @@ path = "src/to_file.rs"
 [[bin]]
 name = "in_and_out"
 path = "src/in_and_out.rs"
+
+[[bin]]
+name = "iterator"
+path = "src/iterator.rs"
+
+[[bin]]
+name = "chaining"
+path = "src/chaining.rs"

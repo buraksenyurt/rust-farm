@@ -1,14 +1,14 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod model;
+mod repository;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::repository::Database;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    #[tokio::test]
+    async fn should_connecting_db_works_test() {
+        let db = Database::connect().await;
+        assert!(db.is_ok())
     }
 }

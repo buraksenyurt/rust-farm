@@ -31,7 +31,7 @@ mod tests {
 
     #[tokio::test]
     async fn should_get_all_records_works_test() {
-        let records = Controller::get_books().await;
+        let records = Controller::get_records().await;
         assert!(records.is_ok());
         match records {
             Ok(list) => assert!(list.len() > 0),
@@ -53,7 +53,27 @@ mod tests {
         //     category: "Programming",
         // };
         // let created = Controller::insert_book(book).await;
-        let record = Controller::get_book_by_id("k31lx6i4u3ld1ujiokd9").await;
+        let record = Controller::get_record_by_id("k31lx6i4u3ld1ujiokd9").await;
         assert!(record.is_ok());
+    }
+
+    #[tokio::test]
+    async fn should_get_all_books_works_test() {
+        let books = Controller::get_books().await;
+        assert!(books.is_ok());
+        match books {
+            Ok(list) => assert!(list.len() > 0),
+            _ => {}
+        }
+    }
+
+    #[tokio::test]
+    async fn should_get_book_by_id_works_test() {
+        let book = Controller::get_book_by_id("k31lx6i4u3ld1ujiokd9").await;
+        assert!(book.is_ok());
+        assert_eq!(
+            book.unwrap().title,
+            "Practical System Programming for Rust Developers"
+        );
     }
 }

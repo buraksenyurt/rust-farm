@@ -1,4 +1,4 @@
-use crate::model::{Book, Record};
+use crate::model::{Book, BookRecord, Record};
 use crate::repository::Database;
 use std::any::TypeId;
 use surrealdb::engine::any::Any;
@@ -11,14 +11,24 @@ impl Controller {
         let created = db.create("book").content(book).await?;
         Ok(created)
     }
-    pub async fn get_books() -> surrealdb::Result<Vec<Record>> {
+    pub async fn get_records() -> surrealdb::Result<Vec<Record>> {
         let db = Database::connect().await?;
-        let books: Vec<Record> = db.select("book").await?;
+        let records: Vec<Record> = db.select("book").await?;
+        Ok(records)
+    }
+    pub async fn get_record_by_id(id: &str) -> surrealdb::Result<Record> {
+        let db = Database::connect().await?;
+        let record: Record = db.select(("book", id)).await?;
+        Ok(record)
+    }
+    pub async fn get_books() -> surrealdb::Result<Vec<BookRecord>> {
+        let db = Database::connect().await?;
+        let books: Vec<BookRecord> = db.select("book").await?;
         Ok(books)
     }
-    pub async fn get_book_by_id(id: &str) -> surrealdb::Result<Record> {
+    pub async fn get_book_by_id(id: &str) -> surrealdb::Result<BookRecord> {
         let db = Database::connect().await?;
-        let book: Record = db.select(("book", id)).await?;
+        let book: BookRecord = db.select(("book", id)).await?;
         Ok(book)
     }
 }

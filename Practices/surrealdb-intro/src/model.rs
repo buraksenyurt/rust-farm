@@ -21,3 +21,19 @@ pub struct Book<'a> {
 pub struct Record {
     id: Thing,
 }
+
+#[derive(Debug, Deserialize)]
+pub struct AuthorRecord {
+    pub first_name: String,
+    pub mid_name: String,
+    pub last_name: String,
+    pub age: u8,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct BookRecord {
+    pub title: String,
+    pub author: AuthorRecord,
+    pub page_size: u16,
+    pub category: String,
+}

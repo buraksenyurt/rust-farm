@@ -41,19 +41,19 @@ mod tests {
 
     #[tokio::test]
     async fn should_get_record_by_id_works_test() {
-        // let book = Book {
-        //     title: "Practical System Programming for Rust Developers",
-        //     author: Author {
-        //         first_name: "Prabhu",
-        //         mid_name: "",
-        //         last_name: "Eshwarla",
-        //         age: 46,
-        //     },
-        //     page_size: 365,
-        //     category: "Programming",
-        // };
-        // let created = Controller::insert_book(book).await;
-        let record = Controller::get_record_by_id("k31lx6i4u3ld1ujiokd9").await;
+        let book = Book {
+            title: "Practical System Programming for Rust Developers",
+            author: Author {
+                first_name: "Prabhu",
+                mid_name: "",
+                last_name: "Eshwarla",
+                age: 46,
+            },
+            page_size: 365,
+            category: "Programming",
+        };
+        let created = Controller::insert_book(book).await;
+        let record = Controller::get_record_by_id(created.unwrap().id.to_string().as_str()).await;
         assert!(record.is_ok());
     }
 
@@ -69,11 +69,23 @@ mod tests {
 
     #[tokio::test]
     async fn should_get_book_by_id_works_test() {
-        let book = Controller::get_book_by_id("k31lx6i4u3ld1ujiokd9").await;
+        let book = Book {
+            title: "Implementing Event-Driven Microservices Architecture in .Net 7",
+            author: Author {
+                first_name: "Joshua",
+                mid_name: "",
+                last_name: "Garverick",
+                age: 40,
+            },
+            page_size: 320,
+            category: "Programming",
+        };
+        let created = Controller::insert_book(book).await;
+        let book = Controller::get_book_by_id(created.unwrap().id.to_string().as_str()).await;
         assert!(book.is_ok());
         assert_eq!(
             book.unwrap().title,
-            "Practical System Programming for Rust Developers"
+            "Implementing Event-Driven Microservices Architecture in .Net 7"
         );
     }
 }

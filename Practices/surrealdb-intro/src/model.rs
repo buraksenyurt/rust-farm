@@ -19,7 +19,7 @@ pub struct Book<'a> {
 
 #[derive(Debug, Deserialize)]
 pub struct Record {
-    id: Thing,
+    pub id: Thing,
 }
 
 #[derive(Debug, Deserialize)]

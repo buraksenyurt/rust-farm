@@ -1,0 +1,8 @@
+[package]
+name = "surrealdb-intro"
+version = "0.1.0"
+edition = "2021"
+description = "SurrealDb ile çalışmak"
+
+[dependencies]
+surrealdb = { git = "https://github.com/surrealdb/surrealdb.git", tag = "v1.0.0-beta.9" }

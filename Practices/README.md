@@ -49,3 +49,4 @@
 - [x] **simple-shell**: Bu örnekte linux komutlarını terminalden sub process olarak işleten 3 farklı program yer almakta.
 - [x] **threads-again**: Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.
 - [x] **read-and-write**: I/O operasyonları deninde Rust'ın en önemli iki enstrümanı Read, Write trait'leridir. Sadece dosya değil, tcp stream, usb cihazı vb gibi ne kadar çevre birimi varsa konuşma kısmında bu iki implementasyona ihtiyaç duyulur. Bu örneke Read/Write operasyonlarını yeniden hatırlamaya çalışıyorum.
+- [ ] **surrealdb-intro**: Rust ile yazılmış surrealdb'nin kullanımını incelediğim örnek.

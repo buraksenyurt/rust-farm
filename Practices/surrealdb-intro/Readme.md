@@ -54,7 +54,7 @@ CREATE book SET
     created_at = time::now()
 ```
 
-Burada book isimli bir kayıt _(record)_ oluşturulmakta. İşlem sonucu oldukça etkileyici :)
+Burada book isimli bir kayıt _(record)_ oluşturulmakta. Dikkat edilmesi gereken nokta şemasız(schemaless, bir NoSQL klasiği) kullanım şekli elbette. Nitekim veritabanına gidip böyle bir şema tanımı yapmamazı gerek kalmadan Surreal ilgili kaydı doküman olarak oluşturup gerekli graph bağlantılarını yapabilir. İşlem sonucu oldukça etkileyici :)
 
 ![../images/surrealdb_intro_05.png](../images/surrealdb_intro_05.png)
 
@@ -78,12 +78,18 @@ Serüvenin devamı kodlarda... Onu Rust tarafında bir crate ile nasıl kullanac
 
 ```bash
 cargo add surrealdb
+cargo add serde -F derive
+cargo add tokio -F macros,rt-multi-thread
 ```
 
 _**Not:** Henüz beta sürümünde test ettiğim için yukarıdaki komutla eklenen versiyon zaman zaman "failed to verify checksum of surrealdb-....." gibi bir hata verebiliyor. Bu durumda toml dosyasındaki gibi kullanarak ilerlenebilir._
 
+## Rust Tarafı için Kullanılan Küfeler (Crates)
+
 ```toml
 [dependencies]
+serde = { version = "1.0.163", features = ["derive"] }
 surrealdb = { git = "https://github.com/surrealdb/surrealdb.git", tag = "v1.0.0-beta.9" }
+tokio = { version = "1.28.1", features = ["macros", "rt-multi-thread"] }
 ```
 

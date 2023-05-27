@@ -50,4 +50,5 @@
 - [x] **threads-again**: Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.
 - [x] **read-and-write**: I/O operasyonları deninde Rust'ın en önemli iki enstrümanı Read, Write trait'leridir. Sadece dosya değil, tcp stream, usb cihazı vb gibi ne kadar çevre birimi varsa konuşma kısmında bu iki implementasyona ihtiyaç duyulur. Bu örneke Read/Write operasyonlarını yeniden hatırlamaya çalışıyorum.
 - [x] **surrealdb-intro**: Rust ile yazılmış surrealdb'nin kullanımını incelediğim örnek.
-- [ ] **simple-udp-server**: Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
+- [x] **simple-udp-server**: Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
+- [x] **simple-udp-client**: Bu uygulama ise simple-udp-server isimli UDP sunucusunun istemcisi rolündedir.

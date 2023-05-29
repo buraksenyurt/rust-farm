@@ -4,10 +4,8 @@ version = "0.1.0"
 edition = "2021"
 description = "UDP Server"
 
-[dev-dependencies]
-common-lib = {version="0.1.0",path="../common-lib"}
-
 [dependencies]
+common-lib = {version="0.1.0",path="../common-lib"}
 tokio = {version="1.28.2", features=["full"]}
 serde = {version="1.0.163",features=["derive"]}
 bincode="1.3.3"

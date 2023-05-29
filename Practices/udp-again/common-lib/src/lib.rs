@@ -1,6 +1,16 @@
 use std::fmt::{Display, Formatter};
 
-#[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug)]
+pub struct GameState {
+    pub players: Vec<PlayerState>,
+}
+
+impl Default for GameState {
+    fn default() -> Self {
+        Self { players: vec![] }
+    }
+}
+
+#[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug, Copy, Clone)]
 pub struct PlayerState {
     pub pos: Position,
     pub player_id: i32,
@@ -21,7 +31,7 @@ impl Display for PlayerState {
     }
 }
 
-#[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug)]
+#[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug, Copy, Clone)]
 pub struct Position {
     pub x: f32,
     pub y: f32,

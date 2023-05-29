@@ -52,3 +52,4 @@
 - [x] **surrealdb-intro**: Rust ile yazılmış surrealdb'nin kullanımını incelediğim örnek.
 - [x] **simple-udp-server**: Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
 - [x] **simple-udp-client**: Bu uygulama ise simple-udp-server isimli UDP sunucusunun istemcisi rolündedir.
+- [ ] **udp-again**: Bu örnekte UDP tabanlı bir oyun sunucusunun temellerini atmaya çalışıyorum. Giriş olarak istemcilerden oyuncu pozisyonlarını toplayan ve bunları bağlı olan istemcilere yollayan bir düzenek planlıyorum.

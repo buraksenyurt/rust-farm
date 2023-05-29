@@ -7,3 +7,7 @@ Ağ programlamada bilinmesi gereken iki temel protokol var. TCP _(Transmission C
 Dolayısıyla önce sunucu ardından istemci çalıştırılarak örnek test edilebilir.
 
 ![../images/simple_udp_server_01.png](../images/simple_udp_server_01.png)
+
+Örneğin ikinci düzenlenmesinde kendi tanımladığımız bir veri yapısının bincode serileştirme ile istemciden sunucu tarafına gönderilmesini sağlıyoruz. Nitekim bazı hallerde bir şemaya göre tasarlanmış veri modellerinin _(data structures)_ istemci ve sunucu arasında hareket etmesi istenebilir. Bu kullanıma ait çalışma zamanı ise aşağıdaki gibidir.
+
+![../images/simple_udp_server_02.png](../images/simple_udp_server_02.png)

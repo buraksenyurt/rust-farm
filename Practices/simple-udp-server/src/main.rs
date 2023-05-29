@@ -1,3 +1,6 @@
+mod message;
+
+use crate::message::Message;
 use std::net::UdpSocket;
 use std::thread;
 
@@ -24,18 +27,24 @@ fn main() {
                 let thread = thread::spawn(move || {
                     // Gelen datagram uzunluğuna göre bir buffer daha ayarlanır
                     let input = &mut buffer[..len];
+
+                    let decoded_input: Message =
+                        bincode::deserialize(input).expect("Gelen mesaj çözümlenemiyor");
+
                     // Bilgi test amaçlı sunucu ekranına yazdırılır
                     println!(
-                        "İstemciden gelen bilgi:\n\t{}",
-                        std::str::from_utf8(input).unwrap()
+                        "İstemciden gelen bilgi:\n\tID:{}\n\tMessage:{}",
+                        decoded_input.id, decoded_input.content
                     );
-                    // İstemci tarafa döndürülmek üzere bir çıktı mesajı hazırlanır
-                    // from_utf8_lossy byte array'i String'e dönüştürürken geçersiz karakterleri
-                    // de işin içerisine katar.
-                    let output = format!(
-                        "Mesajın alındı. Bana şu mesajı göndermiştin, '{}'",
-                        String::from_utf8_lossy(input)
-                    );
+                    // // İstemci tarafa döndürülmek üzere bir çıktı mesajı hazırlanır
+                    // // from_utf8_lossy byte array'i String'e dönüştürürken geçersiz karakterleri
+                    // // de işin içerisine katar.
+                    // let output = format!(
+                    //     "Mesajın alındı. Bana şu mesajı göndermiştin, '{}'",
+                    //     String::from_utf8_lossy(input)
+                    // );
+                    let output = format!("{} numaralı mesajın alındı", decoded_input.id);
+
                     // Soket nesnesinin send_to fonksiyonundan yararlanılarak
                     // istemci adresine datagram bilgisi dönülür
                     socket_c

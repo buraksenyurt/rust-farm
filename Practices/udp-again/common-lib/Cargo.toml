@@ -1,0 +1,9 @@
+[package]
+name = "common-lib"
+version = "0.1.0"
+edition = "2021"
+description = "Common Library"
+
+[dependencies]
+serde = {version="1.0.163",features=["derive"]}
+bincode="1.3.3"

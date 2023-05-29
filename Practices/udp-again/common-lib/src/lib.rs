@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter};
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize)]
 pub struct GameState {
     pub players: Vec<PlayerState>,
 }

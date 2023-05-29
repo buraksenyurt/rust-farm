@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 #[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug)]
 pub struct PlayerState {
     pub pos: Position,
@@ -13,11 +15,23 @@ impl PlayerState {
     }
 }
 
+impl Display for PlayerState {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Player {}, Position {}", self.player_id, self.pos)
+    }
+}
+
 #[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug)]
 pub struct Position {
     pub x: f32,
     pub y: f32,
     pub z: f32,
+}
+
+impl Display for Position {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}:{}:{})", self.x, self.y, self.z)
+    }
 }
 
 impl Position {

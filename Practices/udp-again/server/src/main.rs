@@ -2,8 +2,9 @@ use bincode::{deserialize, serialize};
 use common_lib::{GameState, PlayerState};
 use std::error::Error;
 use std::net::SocketAddr;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use tokio::net::UdpSocket;
+use tokio::sync::Mutex;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -22,15 +23,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
             .await
             .expect("Gelen veri okunamıyor");
 
-        clients.lock().expect("Mutex sorunu").push(client);
-        let ps: PlayerState = deserialize(&buffer).expect("Gelen veri çözümlenemiyor");
-        println!(
-            "[Client {}:{}] : \n{}",
-            client.ip(),
-            client.port(),
-            ps.clone()
-        );
-        let mut guarded_game_state = game_state.lock().expect("Mutex tarafında sorun var");
+        clients.lock().await.push(client);
+
+        let ps: PlayerState;
+        match deserialize(&buffer) {
+            Ok(dsr) => {
+                ps = dsr;
+                println!("[Client {}:{}] : \n{}", client.ip(), client.port(), dsr);
+            }
+            Err(e) => {
+                println!("Veri çözümlenemiyor...{}", e);
+                continue;
+            }
+        }
+
+        let mut guarded_game_state = game_state.lock().await;
         let is_exist = guarded_game_state
             .players
             .iter()
@@ -39,16 +46,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
             guarded_game_state.players.push(ps);
         }
 
-        match serialize(&guarded_game_state.players) {
-            Ok(states) => {
-                for c in clients.lock().unwrap().iter() {
-                    socket
-                        .send_to(&states, c)
-                        .await
-                        .expect("Oyun durumu gönderilemedi");
-                }
-            }
-            Err(e) => println!("Serileştirilemiyor...{}", e),
+        let player_states = serialize(&guarded_game_state.players).expect("Veri serileştirilemedi");
+        for c in clients.lock().await.iter() {
+            socket
+                .send_to(&player_states, c)
+                .await
+                .expect("Oyun durumu gönderilemedi");
         }
     }
 }

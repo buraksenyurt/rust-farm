@@ -1,14 +1,8 @@
 use std::fmt::{Display, Formatter};
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize, Default)]
 pub struct GameState {
     pub players: Vec<PlayerState>,
-}
-
-impl Default for GameState {
-    fn default() -> Self {
-        Self { players: vec![] }
-    }
 }
 
 #[derive(serde::Serialize, serde::Deserialize, PartialEq, Debug, Copy, Clone)]

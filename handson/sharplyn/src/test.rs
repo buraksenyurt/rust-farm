@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod test {
-    use crate::ast_model::{Class, Namespace};
-    use crate::ast_parser::Parse;
+    use crate::ast_parser::parse_code;
 
     #[test]
     fn should_class_names_can_get_test() {
@@ -10,20 +9,22 @@ mod test {
         using System.Collections.Generic;
 
         public namespace GameBusiness {
-            public class State {
+            public class State{
             }
 
-            public class Actor {
+            public class Actor
+            {
             }
 
-            public class Event {
+            public class Event
+            {
             }
         }";
-        let namespace = Namespace::parse(sharp_code).unwrap();
-        let classes = namespace.classes;
+        let unit = parse_code(sharp_code).unwrap();
+        assert_eq!(unit.namespace.name, "GameBusiness");
 
-        assert_eq!(classes[0].name, "State");
-        assert_eq!(classes[1].name, "Actor");
-        assert_eq!(classes[2].name, "Event");
+        assert_eq!(unit.classes[0].name, "State");
+        assert_eq!(unit.classes[1].name, "Actor");
+        assert_eq!(unit.classes[2].name, "Event");
     }
 }

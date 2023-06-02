@@ -1,35 +1,15 @@
-use crate::ast_model::{Class, Namespace};
+use crate::ast_model::{Class, Unit};
+use crate::ast_token::{ClassToken, NamespaceToken, Tokenizer};
 
-pub trait Parse<T> {
-    fn parse(code: &str) -> Result<T, ()>;
-}
+pub fn parse_code(code: &str) -> Result<Unit, ()> {
+    let namespace_tokens = NamespaceToken::tokenize(code);
+    let namespace = NamespaceToken::parse(&namespace_tokens).expect("Can't find/read namespace");
 
-impl Parse<Namespace> for Namespace {
-    fn parse(code: &str) -> Result<Self, ()> {
-        let mut name = String::new();
-        let mut classes = Vec::new();
-        let mut lines = code.lines();
-        for line in lines {
-            let line = line.trim();
+    let class_tokens = ClassToken::tokenize(code);
+    let classes: Vec<Class> = class_tokens
+        .iter()
+        .filter_map(|token| ClassToken::parse(&[token.clone()]).ok())
+        .collect();
 
-            if line.starts_with("using") {
-                continue;
-            }
-
-            if line.contains("public namespace") {
-                let parts: Vec<&str> = line.split_whitespace().collect();
-                name = parts[2].to_owned();
-            } else if line.starts_with("public class") {
-                let parts: Vec<&str> = line.split_whitespace().collect();
-                let class_name = parts[2].to_owned();
-                classes.push(Class {
-                    name: class_name,
-                    properties: vec![],
-                    fields: vec![],
-                    methods: vec![],
-                });
-            }
-        }
-        Ok(Self { name, classes })
-    }
+    Ok(Unit { namespace, classes })
 }

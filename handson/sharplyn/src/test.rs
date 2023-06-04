@@ -11,7 +11,7 @@ mod test {
         using System.Collections.Generic;
 
         public namespace GameBusiness {
-            public class State{
+            public class State {
             }
 
             public class Actor            {

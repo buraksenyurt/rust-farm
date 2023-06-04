@@ -15,10 +15,12 @@ pub fn parse_code(code: &str) -> Result<Unit, ()> {
         .collect();
 
     let class_tokens = ClassToken::tokenize(code);
+    println!("Class Tokens Count {}", class_tokens.len());
     let classes: Vec<Class> = class_tokens
         .iter()
-        .filter_map(|token| ClassToken::parse(&[token.clone()]).ok())
+        .filter_map(|token| ClassToken::parse(token).ok())
         .collect();
+    println!("Classes Count {}", classes.len());
 
     Ok(Unit {
         namespaces,

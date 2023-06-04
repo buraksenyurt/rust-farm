@@ -15,15 +15,13 @@ impl Tokenizer for NamespaceToken {
         }
         tokens
     }
+}
 
-    fn parse(tokens: &[String]) -> Result<Namespace, ()> {
+impl SingleParser for NamespaceToken {
+    fn parse(token: &String) -> Result<Namespace, ()> {
         let mut name = String::new();
-        for token in tokens {
-            if let Some(namespace_token) = token.strip_prefix("public namespace ") {
-                name = namespace_token
-                    .trim_end_matches(|c| c == ' ' || c == '{')
-                    .to_owned();
-            }
+        if let Some(t) = token.strip_prefix("public namespace ") {
+            name = t.trim_end_matches(|c| c == ' ' || c == '{').to_owned();
         }
         Ok(Namespace {
             name,

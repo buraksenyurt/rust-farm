@@ -15,7 +15,9 @@ impl Tokenizer for UsingToken {
         }
         tokens
     }
+}
 
+impl MultiParser for UsingToken {
     fn parse(tokens: &[String]) -> Result<Using, ()>
     where
         Self: Sized,

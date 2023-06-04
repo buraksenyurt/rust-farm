@@ -15,7 +15,9 @@ impl Tokenizer for ClassToken {
         }
         tokens
     }
+}
 
+impl MultiParser for ClassToken {
     fn parse(tokens: &[String]) -> Result<Class, ()>
     where
         Self: Sized,

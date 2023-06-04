@@ -9,7 +9,10 @@ pub fn parse_code(code: &str) -> Result<Unit, ()> {
         .collect();
 
     let namespace_tokens = NamespaceToken::tokenize(code);
-    let namespace = NamespaceToken::parse(&namespace_tokens).expect("Can't find/read namespace");
+    let namespaces: Vec<Namespace> = namespace_tokens
+        .iter()
+        .filter_map(|token| NamespaceToken::parse(&token.clone()).ok())
+        .collect();
 
     let class_tokens = ClassToken::tokenize(code);
     let classes: Vec<Class> = class_tokens
@@ -18,7 +21,7 @@ pub fn parse_code(code: &str) -> Result<Unit, ()> {
         .collect();
 
     Ok(Unit {
-        namespace,
+        namespaces,
         classes,
         usings,
     })

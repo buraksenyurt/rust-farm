@@ -1,7 +1,7 @@
-mod ast_model;
-mod ast_parser;
-mod ast_token;
+mod ast;
+mod model;
 mod test;
+mod token;
 
 fn main() {
     println!("Hello, world!");

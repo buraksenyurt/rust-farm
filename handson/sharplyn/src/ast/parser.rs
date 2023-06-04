@@ -1,5 +1,5 @@
-use crate::ast_model::{Class, Unit};
-use crate::ast_token::{ClassToken, NamespaceToken, Tokenizer};
+use crate::model::prelude::*;
+use crate::token::prelude::*;
 
 pub fn parse_code(code: &str) -> Result<Unit, ()> {
     let namespace_tokens = NamespaceToken::tokenize(code);

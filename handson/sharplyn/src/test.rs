@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod test {
-    use crate::ast_parser::parse_code;
+    use crate::ast::parser::parse_code;
 
     #[test]
     fn should_class_names_can_get_test() {
@@ -12,13 +12,10 @@ mod test {
             public class State{
             }
 
-            public class Actor
-            {
+            public class Actor            {
             }
 
-            public class Event
-            {
-            }
+            public class Event {}
         }";
         let unit = parse_code(sharp_code).unwrap();
         assert_eq!(unit.namespace.name, "GameBusiness");

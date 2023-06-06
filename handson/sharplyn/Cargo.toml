@@ -6,4 +6,5 @@ description = "A simple C# code analyser experience"
 authors = ["Burak Selim Senyurt"]
 
 [dependencies]
+regex = "1.8.4"
 

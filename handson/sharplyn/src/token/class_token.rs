@@ -1,5 +1,6 @@
 use crate::model::prelude::*;
 use crate::token::prelude::*;
+use regex::Regex;
 
 pub struct ClassToken {
     pub body: String,
@@ -46,7 +47,11 @@ impl BodyTokenizer for ClassToken {
     {
         let mut name = String::new();
         let mut properties = Vec::new();
-        if let Some(class_name) = token.body.lines().find(|l| l.contains("class")) {
+        if let Some(class_name) = token
+            .body
+            .lines()
+            .find(|l| Regex::new(r"class").unwrap().is_match(l))
+        {
             let class_name = class_name.trim();
             if let Some(open_brace_index) = class_name.find('{') {
                 if let Some(class_keyword_index) = class_name.find("class") {
@@ -61,7 +66,7 @@ impl BodyTokenizer for ClassToken {
         let lines = token
             .body
             .lines()
-            .filter(|l| l.contains("get") || l.contains("set"));
+            .filter(|l| Regex::new(r"get|set").unwrap().is_match(l));
         for b_line in lines {
             //println!("Line : {}", b_line);
             let property = PropertyToken::parse(b_line).unwrap();

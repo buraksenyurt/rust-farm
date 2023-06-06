@@ -1,5 +1,6 @@
 use crate::model::prelude::*;
 use crate::token::prelude::*;
+use regex::Regex;
 
 pub struct UsingToken;
 
@@ -9,7 +10,7 @@ impl Tokenizer for UsingToken {
         let lines = code.lines();
         for line in lines {
             let line = line.trim();
-            if line.strip_prefix("using").is_some() {
+            if Regex::new(r"using").unwrap().is_match(line) {
                 tokens.push(line.to_owned());
             }
         }
@@ -24,8 +25,8 @@ impl MultiParser for UsingToken {
     {
         let mut name = String::new();
         for token in tokens {
-            if let Some(using_token) = token.strip_prefix("using ") {
-                name = using_token.trim_end_matches(|c| c == ';').to_owned();
+            if let Some(t) = Regex::new(r"using\s+([^;]+)").unwrap().captures(token) {
+                name = t.get(1).unwrap().as_str().to_owned();
             }
         }
         Ok(Using { name })

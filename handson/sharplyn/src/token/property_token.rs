@@ -1,6 +1,7 @@
 use crate::model::prelude::*;
 use crate::token::prelude::*;
 use crate::token::tokenizer::SingleParser;
+use regex::Regex;
 
 pub struct PropertyToken;
 
@@ -11,8 +12,7 @@ impl Tokenizer for PropertyToken {
         let lines = code.lines();
         for line in lines {
             let line = line.trim();
-            let parts: Vec<&str> = line.split_whitespace().collect();
-            if parts.iter().any(|v| v.contains("get")) || parts.iter().any(|v| v.contains("set")) {
+            if Regex::new(r"(get|set)").unwrap().is_match(line) {
                 tokens.push(line.to_owned());
             }
         }

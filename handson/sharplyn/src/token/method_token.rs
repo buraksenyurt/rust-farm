@@ -14,10 +14,12 @@ impl BodyTokenizer for MethodToken {
     type Output = Method;
 
     fn tokenize(code: &str) -> Vec<Self::Token> {
+        //println!("Gelen bilgi {}", code);
         let mut tokens = Vec::new();
-        let method_regex =
-            Regex::new(r"\b(public|internal|protected|private)?\s*fn\s+(\w+)\s*\((.*?)\)").unwrap();
+        let method_regex = Regex::new(r"(?m)^\s*(public|internal|protected|private)?\s*(?:static)?\s*(?:async)?\s*(?:unsafe)?\s*(?:extern)?\s*([\w<>]+)\s+(\w+)\s*\((.*?)\)\s*[{;]").unwrap();
+
         for captures in method_regex.captures_iter(code) {
+            //println!("Bir metot deseni yakalandı");
             let visibility = captures
                 .get(1)
                 .map(|m| {
@@ -30,8 +32,12 @@ impl BodyTokenizer for MethodToken {
                 })
                 .unwrap()
                 .to_owned();
-            let name = captures.get(2).map(|m| m.as_str().trim().to_owned());
-            let parameters_line = captures.get(3).map(|m| m.as_str().trim().to_owned());
+            let return_type = captures
+                .get(2)
+                .map(|m| m.as_str().trim().to_owned())
+                .unwrap();
+            let name = captures.get(3).map(|m| m.as_str().trim().to_owned());
+            let parameters_line = captures.get(4).map(|m| m.as_str().trim().to_owned());
 
             let mut parameters = Vec::new();
             let param_regex =
@@ -47,7 +53,7 @@ impl BodyTokenizer for MethodToken {
             if let (Some(name), parameters) = (name, parameters) {
                 tokens.push(MethodToken {
                     name,
-                    return_type: String::new(),
+                    return_type,
                     parameters,
                     visibility,
                 });
@@ -75,7 +81,7 @@ impl BodyTokenizer for MethodToken {
         let mut parsed_params = Vec::new();
 
         for param in parameters {
-            let token = ParameterToken::tokenize(&param);
+            let token = ParameterToken::tokenize(param);
             if let Ok(parameter) = ParameterToken::parse(&token) {
                 parsed_params.push(parameter);
             }

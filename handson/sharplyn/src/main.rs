@@ -22,4 +22,18 @@ fn main() {
     //     }"#;
     // let unit = parse_code(sharp_code).unwrap();
     // assert_eq!(unit.classes[0].properties.len(), 3);
+
+    // let code = r#"
+    //         public int Sum(int x,int y) {
+    //
+    //         }
+    //     "#;
+    //
+    // let tokens = MethodToken::tokenize(code);
+    // assert_eq!(tokens.len(), 1);
+    //
+    // let sum_method = MethodToken::parse(&tokens[0]).unwrap();
+    // assert_eq!(sum_method.name, "Sum");
+    // assert_eq!(sum_method.return_type, SharpType::Int);
+    // assert_eq!(sum_method.parameters.len(), 2);
 }

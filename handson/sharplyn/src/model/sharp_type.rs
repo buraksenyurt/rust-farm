@@ -7,4 +7,5 @@ pub enum SharpType {
     Decimal,
     String,
     Object,
+    Void,
 }

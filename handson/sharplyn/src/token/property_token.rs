@@ -12,8 +12,7 @@ impl Tokenizer for PropertyToken {
         for line in lines {
             let line = line.trim();
             let parts: Vec<&str> = line.split_whitespace().collect();
-            if parts.iter().any(|v| v.contains(&"get")) || parts.iter().any(|v| v.contains(&"set"))
-            {
+            if parts.iter().any(|v| v.contains("get")) || parts.iter().any(|v| v.contains("set")) {
                 tokens.push(line.to_owned());
             }
         }
@@ -22,7 +21,7 @@ impl Tokenizer for PropertyToken {
 }
 
 impl SingleParser for PropertyToken {
-    fn parse(token: &String) -> Result<Property, ()> {
+    fn parse(token: &str) -> Result<Property, ()> {
         let parts: Vec<&str> = token.split_whitespace().collect();
         let p_type = match parts[1] {
             "byte" => SharpType::Byte,

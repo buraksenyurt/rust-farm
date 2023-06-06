@@ -64,7 +64,7 @@ impl BodyTokenizer for ClassToken {
             .filter(|l| l.contains("get") || l.contains("set"));
         for b_line in lines {
             //println!("Line : {}", b_line);
-            let property = PropertyToken::parse(&b_line.to_owned()).unwrap();
+            let property = PropertyToken::parse(b_line).unwrap();
             //println!("Property Info : {:?}", property);
             properties.push(property);
         }

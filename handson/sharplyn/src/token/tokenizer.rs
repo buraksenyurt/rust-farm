@@ -10,7 +10,7 @@ pub trait MultiParser {
 }
 
 pub trait SingleParser {
-    fn parse(tokens: &String) -> Result<Self::Output, ()>
+    fn parse(tokens: &str) -> Result<Self::Output, ()>
     where
         Self: Sized;
     type Output;

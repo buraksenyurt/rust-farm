@@ -18,7 +18,7 @@ impl Tokenizer for NamespaceToken {
 }
 
 impl SingleParser for NamespaceToken {
-    fn parse(token: &String) -> Result<Namespace, ()> {
+    fn parse(token: &str) -> Result<Namespace, ()> {
         let mut name = String::new();
         if let Some(t) = token.strip_prefix("public namespace ") {
             name = t.trim_end_matches(|c| c == ' ' || c == '{').to_owned();

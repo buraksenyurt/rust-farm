@@ -1,0 +1,15 @@
+[package]
+name = "simple-proxy"
+version = "0.1.0"
+edition = "2021"
+description = "A simple reverse proxy server sample"
+
+[dependencies]
+
+[[bin]]
+name="backend"
+path="src/backend.rs"
+
+[[bin]]
+name="proxy"
+path="src/reverse_proxy.rs"

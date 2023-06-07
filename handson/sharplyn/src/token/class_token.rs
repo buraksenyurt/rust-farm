@@ -63,21 +63,16 @@ impl BodyTokenizer for ClassToken {
             }
         }
 
-        let lines = token
-            .body
-            .lines()
-            .filter(|l| Regex::new(r"get|set").unwrap().is_match(l));
-        for b_line in lines {
-            //println!("Line : {}", b_line);
-            let property = PropertyToken::parse(b_line).unwrap();
-            //println!("Property Info : {:?}", property);
-            properties.push(property);
+        let p_token=PropertyToken::tokenize(&token.body);
+        for pt in p_token.iter(){
+            let p=PropertyToken::parse(pt);
+            properties.push(p.unwrap());
         }
 
         let mut methods = Vec::new();
         let m_token = MethodToken::tokenize(&token.body);
         for mt in m_token.iter() {
-            println!("{}", mt.name);
+            //println!("{}", mt.name);
             let m = MethodToken::parse(mt);
             methods.push(m.unwrap());
         }

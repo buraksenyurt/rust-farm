@@ -1,0 +1,15 @@
+[package]
+name = "using_tcp"
+version = "0.1.0"
+edition = "2021"
+description = "TCP Server and Client sample"
+
+[dependencies]
+
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
+[[bin]]
+name = "client"
+path = "src/client.rs"

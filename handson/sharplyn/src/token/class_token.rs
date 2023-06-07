@@ -74,11 +74,19 @@ impl BodyTokenizer for ClassToken {
             properties.push(property);
         }
 
+        let mut methods = Vec::new();
+        let m_token = MethodToken::tokenize(&token.body);
+        for mt in m_token.iter() {
+            println!("{}", mt.name);
+            let m = MethodToken::parse(mt);
+            methods.push(m.unwrap());
+        }
+
         Ok(Class {
             name,
             properties,
             fields: vec![],
-            methods: vec![],
+            methods,
         })
     }
 }

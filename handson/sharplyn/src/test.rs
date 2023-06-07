@@ -120,4 +120,41 @@ mod test {
         assert_eq!(sum_method.return_type, SharpType::Int);
         assert_eq!(sum_method.parameters.len(), 2);
     }
+
+    #[test]
+    fn should_methods_can_parse_from_full_code_test() {
+        let sharp_code = r#"
+        using System;
+        using System.Collections.Generic;
+
+        public namespace GameBusiness {
+            public class State{
+                public int Id { get; set; }
+                private decimal Value { get; }
+                protected String LastOwner { get; set; }
+
+                public int Sum(int x,int y)
+                {
+
+                }
+
+                public string ConvertTo(double value)
+                {
+
+                }
+            }
+
+            public class Actor            {
+            }
+
+            public class Event {}
+        }"#;
+        let unit = parse_code(sharp_code).unwrap();
+        assert_eq!(unit.classes[0].methods.len(), 2);
+        assert_eq!(unit.classes[0].methods[0].name, "Sum");
+        assert_eq!(unit.classes[0].methods[1].name, "ConvertTo");
+        assert_eq!(unit.classes[0].methods[0].parameters[0].name,"x");
+        assert_eq!(unit.classes[0].methods[0].parameters[1].name,"y");
+        assert_eq!(unit.classes[0].methods[1].parameters[0].name,"value");
+    }
 }

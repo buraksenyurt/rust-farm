@@ -53,3 +53,4 @@
 - [x] **simple-udp-server**: Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
 - [x] **simple-udp-client**: Bu uygulama ise simple-udp-server isimli UDP sunucusunun istemcisi rolündedir.
 - [x] **udp-again**: Bu örnekte UDP tabanlı bir oyun sunucusunun temellerini atmaya çalışıyorum. Giriş olarak istemcilerden oyuncu pozisyonlarını toplayan ve bunları bağlı olan istemcilere yollayan bir düzenek planlıyorum.
+- [x] **using_tcp**: Bu örnekte çok basit bir TCP dinleyici ve istemci geliştiriyoruz. Sunucu tarafı birden fazla istemcinin mesajını dinleyecek şekilde thread kullanacak şekilde geliştiriliyor.

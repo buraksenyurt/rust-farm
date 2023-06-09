@@ -25,3 +25,21 @@ curl http://localhost:3002/salary/categories/3
 ```
 
 ![../images/simple_proxy_02.png](../images/simple_proxy_02.png)
+
+Proxy sunucusunun kodlarını tamamladıktan sonra ise aşağıdaki şekilde testler yapılabilir.
+
+```bash
+# Önce backend server ayağa kaldırılır
+cargo run --bin backend
+
+# Ardından proxy server
+cargo run --bin proxy localhost:5555 localhost:3002
+
+# sonrasında yine curl veya bir tarayıcı ile aşağıdaki örnek talepler yapılır
+curl http://localhost:5555/salary/categories/5
+curl http://localhost:5555/salary/categories/8
+```
+
+Dikkat edileceği üzere talepler localhost:5555 adresine yapılmaktadır. Burası proxy sunucusudur. Proxy sunucusu gelen talepleri backend tarafta yer alan localhost:3002 adresine yönlendirir. Gelen cevapları da istemci tarafına taşır. Aşağıdaki şekilde görüldüğü gibi.
+
+![../images/simple_proxy_03.png](../images/simple_proxy_03.png)

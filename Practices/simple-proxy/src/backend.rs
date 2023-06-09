@@ -10,7 +10,10 @@ fn main() {
     let port = 3002;
     let socket_address = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), port);
     let listener = TcpListener::bind(socket_address).unwrap();
-    println!("Sunucu localhost:{} üstünden dinlemede", port);
+    println!(
+        "Origin/Backend Sunucu localhost:{} adresinden dinlemede...",
+        port
+    );
 
     for stream in listener.incoming() {
         let mut stream = stream.unwrap();
@@ -34,22 +37,14 @@ fn main() {
         {
             let message = "Invalid route";
             response = format!(
-                r#"HTTP/1.1 400 Bad Request
-                Content Type:text/html
-                Content-Length:{}
-
-                {}"#,
+                "HTTP/1.1 400 Bad Request\nContent Type:text/html\nContent-Length:{}\n\n{}",
                 message.len(),
                 message
             );
         } else {
             let message = format!("Total Salary of category is 1000 Unit");
             response = format!(
-                r#"HTTP/1.1 200 Ok
-                Content-Type:text/html
-                Content-Length:{}
-
-                {}"#,
+                "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length:{}\n\n{}",
                 message.len(),
                 message
             );

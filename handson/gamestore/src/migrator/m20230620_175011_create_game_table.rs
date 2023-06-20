@@ -1,6 +1,6 @@
-use sea_orm_migration::prelude::*;
 use crate::migrator::m20220101_000001_create_user_table::User;
 use crate::migrator::m20230620_173959_create_developer_table::Developer;
+use sea_orm_migration::prelude::*;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -68,5 +68,5 @@ pub enum Game {
     Year,
     Summary,
     CreatedAt,
-    ModifiedAt
+    ModifiedAt,
 }

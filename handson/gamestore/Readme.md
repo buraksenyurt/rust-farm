@@ -26,3 +26,23 @@ sea migrate generate -d ./src/migrator create_developer_table
 sea migrate generate -d ./src/migrator create_game_table
 ```
 
+## Veritabanı Tarafı
+
+Bu örnekte mysql veritabanı kullanmakta. İşi kolaylaştırmak için docker-compose şablonu kullanıyorum. Ayağa kaldırmak için aşağıdaki komutu çalıştırmak yeterli.
+
+```bash
+sudo docker-compose.yml up
+```
+
+yml içeriğinde Adminer isimli bir veritabanı yönetim aracı da bulunuyor. http://localhost:8085/ adresinden MYSQL veritabanına bağlanarak işlerimizi kolaylaştırabiliriz. Söz gelimi bu örnek için gamestore isimli bir veritabanı gerekli. Bunu oluşturmak için ilgili arabirimi pekala kullanabiliriz.
+
+![../images/game_store_01.png](../images/game_store_01.png)
+
+![../images/game_store_02.png](../images/game_store_02.png)
+
+![../images/game_store_03.png](../images/game_store_03.png)
+
+Program ilk çalıştırıldığında migration planı başarılı bir şekilde yürütülürse Adminer arabiriminde aşağıdakine benzer bir görüntü ile karşılaşmamız gerekir.
+
+![../images/game_store_04.png](../images/game_store_04.png)
+

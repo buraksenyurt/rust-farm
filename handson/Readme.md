@@ -31,3 +31,4 @@ Rust programlama dili ile ilgili olarak aldığım ve başlığında Hands-On ge
 - [x] **hashdis**: tokio runtime, tcp dinleyiciler ile basit bir Redis çakması nasıl yazılır öğrenmeye çalışıyorum.
 - [x] **usb-info**: Çalışmakta olduğum Practical System Programming for Rust Developers kitabındaki bir bölümde USB sürücü bilgilerini okuyan bir program yazdırılıyor. Bu örneği deniyorum.
 - [ ] **sharplyn**: Bu uygulamada amacım C# kodlarını tarayıp Abstract Syntax Tree modellerini Rust tarafında ele alabilmek. Buradan çıkışla C# ile yazılmış proje kodlarını analiz etme ve belki de değiştirme işlerini nasıl yapabileceğimi bulmaya çalışacağım. Roslyn yerine Rust ile fiziki dosya taraması, AST ile kodun semantik analizinin yapılması ve bazı sonuçlar çıkartılıp, düzenlemeler yapılması hedeflerim arasında.
+- [ ] **gamestore**: Rocket ve SeaORM kullanılarak basit bir web api hizmeti yazmaya çalıştığım örnek.

@@ -20,12 +20,14 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key(),
                     )
+                    .col(ColumnDef::new(Game::UserId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-game-user-id")
                             .from(Game::Table, Game::UserId)
                             .to(User::Table, User::Id),
                     )
+                    .col(ColumnDef::new(Game::DeveloperId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .name("fk-game-developer-id")
@@ -57,7 +59,6 @@ impl MigrationTrait for Migration {
     }
 }
 
-/// Learn more at https://docs.rs/sea-query#iden
 #[derive(Iden)]
 pub enum Game {
     Table,

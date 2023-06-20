@@ -10,6 +10,7 @@ pub(super) async fn connect(settings: &AppSettings) -> Result<DatabaseConnection
         settings.db_port,
         settings.db_database
     ));
-    options.sqlx_logging(false);
+
+    options.sqlx_logging(true);
     Database::connect(options).await
 }

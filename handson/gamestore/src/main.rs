@@ -1,3 +1,5 @@
+mod migrator;
+
 #[macro_use]
 extern crate rocket;
 

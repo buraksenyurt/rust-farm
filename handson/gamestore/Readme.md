@@ -46,3 +46,13 @@ Program ilk çalıştırıldığında migration planı başarılı bir şekilde 
 
 ![../images/game_store_04.png](../images/game_store_04.png)
 
+## Entity Nesnelerinin Üretilmesi
+
+Migration planlarının çalıştırılması sadece MySQL tarafındaki tabloların oluşturulmasını sağlar. Kod tarafında tablolara karşılık gelecek entity nesneleri için de seq-orm CLI aracından yararlanılabilir. Bu örnek için aşağıdaki şekilde ilerlenilmiştir.
+
+```bash
+sea generate entity -o src/entity -u mysql://root:tiger@localhost:3306/gamestore
+```
+
+![../images/game_store_05.png](../images/game_store_05.png)
+

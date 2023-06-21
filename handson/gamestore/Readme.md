@@ -56,3 +56,24 @@ sea generate entity -o src/entity -u mysql://root:tiger@localhost:3306/gamestore
 
 ![../images/game_store_05.png](../images/game_store_05.png)
 
+## API Operasyonları
+
+Uygulamadaki API hizmetlerine ait şablonları şöyle belirleyebiliriz.
+
+- **User Tarafı**
+  - Sign In, (/auth/sign-in), HTTP Post
+  - Sing Up, (/auth/sign-up), HTTP Post
+- **Developer Tarafı**
+  - List, (/developers), HTTP Get
+  - Detail, (/developers/{id}), HTTP Get
+  - Create, (/developers), HTTP Post
+  - Update, (/developers/{id}), HTTP Put
+  - Delete, (/developers/{id}), HTTP Delete
+- **Game Tarafı**
+  - List, (/games), HTTP Get
+  - Detail, (/games/{id}), HTTP Get
+  - Create, (/games), HTTP Post
+  - Update, (/games/{id}), HTTP Put
+  - Delete, (/delete/{id}), HTTP Delete
+  
+

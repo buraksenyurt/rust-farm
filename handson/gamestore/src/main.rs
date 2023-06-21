@@ -1,5 +1,6 @@
 mod app_settings;
 mod data;
+mod entity;
 mod migrator;
 
 #[macro_use]

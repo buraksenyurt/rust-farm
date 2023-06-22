@@ -17,6 +17,8 @@ cargo add sea-orm-migrator
 cargo add jsonwebtoken
 # Kullanıcı şifrelerini encrypt etmek için
 cargo add bcrypt
+# Environment değerlerini okumak için
+cargo add dotenvy
 
 # migrator işleri için sea-orm-cli kullanılmakta
 cargo install sea-orm-cli
@@ -103,3 +105,16 @@ Yeni bir kullanıcı oluşturulması. Bunun için postman tarafından aşağıda
 Zaten kayıtlı olan olan bir email adresi ile kayıt olmaya çalışıldığında ise...
 
 ![../images/game_store_07.png](../images/game_store_07.png)
+
+Kayıtlı bir kullanıcı başarılı şekilde login olduğunda bir JWT token elde etmesi gerekir.
+
+**Adres : localhost:8000/auth/sign-up**
+
+```json
+{
+    "email": "noone@nowhere.com",
+    "password": "doe@1234!"
+}
+```
+
+![../images/game_store_08.png](../images/game_store_08.png)

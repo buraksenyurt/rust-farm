@@ -1,4 +1,5 @@
 mod app_settings;
+mod controller;
 mod data;
 mod entity;
 mod migrator;
@@ -7,12 +8,17 @@ mod migrator;
 extern crate rocket;
 
 use crate::app_settings::AppSettings;
+use crate::controller::*;
 use crate::migrator::Migrator;
+use rocket::http::Status;
 use sea_orm_migration::MigratorTrait;
 
 #[get("/")]
-fn index() -> &'static str {
-    "shall we begin!?"
+fn index() -> Response<String> {
+    Ok(SuccessResponse((
+        Status::Ok,
+        "shall we begin!?".to_string(),
+    )))
 }
 
 #[launch]
@@ -28,5 +34,30 @@ async fn rocket() -> _ {
         Err(e) => panic!("{}", e),
     }
 
-    rocket::build().mount("/", routes![index])
+    rocket::build()
+        .mount("/", routes![index])
+        .mount(
+            "/auth",
+            routes![controller::auth::sign_in, controller::auth::sign_up,],
+        )
+        .mount(
+            "/games",
+            routes![
+                controller::games::index,
+                controller::games::create,
+                controller::games::get_detail,
+                controller::games::update,
+                controller::games::delete,
+            ],
+        )
+        .mount(
+            "/developers",
+            routes![
+                controller::developers::index,
+                controller::developers::create,
+                controller::developers::get_detail,
+                controller::developers::update,
+                controller::developers::delete,
+            ],
+        )
 }

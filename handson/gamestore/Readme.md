@@ -85,6 +85,21 @@ Uygulamadaki API hizmetlerine ait şablonları şöyle belirleyebiliriz.
   
 ## Testler
 
-Yeni bir kullanıcı oluşturulması.
+Yeni bir kullanıcı oluşturulması. Bunun için postman tarafından aşağıdaki talebin çalıştırılması yeterlidir.
+
+**Adres : localhost:8000/auth/sign-up**
+
+```json
+{
+    "email": "noone@nowhere.com",
+    "password": "doe@1234!",
+    "firstname": "John",
+    "surname": "Doe"
+}
+```
 
 ![../images/game_store_06.png](../images/game_store_06.png)
+
+Zaten kayıtlı olan olan bir email adresi ile kayıt olmaya çalışıldığında ise...
+
+![../images/game_store_07.png](../images/game_store_07.png)

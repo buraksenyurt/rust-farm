@@ -24,7 +24,12 @@
 							}
 						},
 						"url": {
-							"raw": "/auth/sign-in",
+							"raw": "http://localhost:8000/auth/sign-in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"auth",
 								"sign-in"
@@ -40,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"noone@nowhere.com\",\n    \"password\": \"doe@1234!\",\n    \"firstName\": \"John\",\n    \"surName\": \"Doe\"\n}",
+							"raw": "{\n    \"email\": \"noone@nowhere.com\",\n    \"password\": \"doe@1234!\",\n    \"firstname\": \"John\",\n    \"surname\": \"Doe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -48,7 +53,12 @@
 							}
 						},
 						"url": {
-							"raw": "/auth/sign-up",
+							"raw": "http://localhost:8000/auth/sign-up",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"auth",
 								"sign-up"
@@ -68,7 +78,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/developers",
+							"raw": "http://localhost:8000/developers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"developers"
 							]
@@ -91,7 +106,12 @@
 							}
 						},
 						"url": {
-							"raw": "/developers",
+							"raw": "http://localhost:8000/developers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"developers"
 							]
@@ -103,7 +123,19 @@
 					"name": "Detail of Developer",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/developers/{{{developer_id}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"developers",
+								"{{{developer_id}}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -122,7 +154,12 @@
 							}
 						},
 						"url": {
-							"raw": "/developers/{{developer_id}}",
+							"raw": "http://localhost:8000/developers/{{developer_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"developers",
 								"{{developer_id}}"
@@ -137,7 +174,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "/developers/{{developer_id}}",
+							"raw": "http://localhost:8000/developers/{{developer_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"developers",
 								"{{developer_id}}"
@@ -157,7 +199,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/games",
+							"raw": "http://localhost:8000/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"games"
 							]
@@ -180,7 +227,12 @@
 							}
 						},
 						"url": {
-							"raw": "/games",
+							"raw": "http://localhost:8000/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"games"
 							]
@@ -194,10 +246,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "/games/{game_id}",
+							"raw": "http://localhost:8000/games/{{{game_id}}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"games",
-								"{game_id}"
+								"{{{game_id}}}"
 							]
 						}
 					},
@@ -218,7 +275,12 @@
 							}
 						},
 						"url": {
-							"raw": "/games/{{game_id}}",
+							"raw": "http://localhost:8000/games/{{game_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"games",
 								"{{game_id}}"
@@ -233,7 +295,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "/games/{{game_id}}",
+							"raw": "http://localhost:8000/games/{{game_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
 							"path": [
 								"games",
 								"{{game_id}}"

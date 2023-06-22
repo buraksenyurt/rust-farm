@@ -2,6 +2,7 @@ mod app_settings;
 mod controller;
 mod data;
 mod entity;
+mod fairings;
 mod migrator;
 
 #[macro_use]
@@ -12,6 +13,7 @@ use crate::controller::*;
 use crate::migrator::Migrator;
 use rocket::http::Status;
 use sea_orm_migration::MigratorTrait;
+use crate::fairings::*;
 
 #[get("/")]
 fn index() -> Response<String> {
@@ -35,6 +37,8 @@ async fn rocket() -> _ {
     }
 
     rocket::build()
+        .attach(CORS)
+        .mount("/",routes![options])
         .mount("/", routes![index])
         .mount(
             "/auth",

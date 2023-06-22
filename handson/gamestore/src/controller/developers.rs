@@ -21,6 +21,6 @@ pub async fn update(id: u32) -> Response<String> {
 }
 
 #[delete("/<id>")]
-pub async fn delete(id:u32) -> Response<String> {
+pub async fn delete(id: u32) -> Response<String> {
     todo!()
 }

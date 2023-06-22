@@ -7,9 +7,16 @@ Bu örnekte Rocket ve SeaORM küfeleri kullanılarak REST tabanlı bir web api h
 Rust tarafında kullanılan küfelerin yüklenmesi. _(Doğrudan Cargo.toml dosyası içerisine de yazılabilirler)_
 
 ```bash
+# rest routing sistemi için
 cargo add rocket -F json
+# orm tarafı için
 cargo add sea-orm -F sqlx-mysql,runtime-async-std-native-tls,macros
+# orm migration işlemleri için
 cargo add sea-orm-migrator
+# JWT Token için
+cargo add jsonwebtoken
+# Kullanıcı şifrelerini encrypt etmek için
+cargo add bcrypt
 
 # migrator işleri için sea-orm-cli kullanılmakta
 cargo install sea-orm-cli
@@ -76,4 +83,8 @@ Uygulamadaki API hizmetlerine ait şablonları şöyle belirleyebiliriz.
   - Update, (/games/{id}), HTTP Put
   - Delete, (/delete/{id}), HTTP Delete
   
+## Testler
 
+Yeni bir kullanıcı oluşturulması.
+
+![../images/game_store_06.png](../images/game_store_06.png)

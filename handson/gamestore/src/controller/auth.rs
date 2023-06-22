@@ -1,20 +1,63 @@
+use crate::app_settings::AppSettings;
 use crate::controller::{ErrorResponse, Response, SuccessResponse};
 use crate::entity::prelude::User;
 use crate::entity::user;
+use crate::jwt::claims::Claims;
 use crate::messages::{SignInRequest, SignInResponse, SignUpRequest};
-use bcrypt::{hash, DEFAULT_COST};
+use bcrypt::{hash, verify, DEFAULT_COST};
+use jsonwebtoken::{encode, EncodingKey, Header};
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::*;
+use std::time::SystemTime;
 
 #[post("/sign-in", data = "<sign_in_request>")]
 pub async fn sign_in(
     db: &State<DatabaseConnection>,
+    settings: &State<AppSettings>,
     sign_in_request: Json<SignInRequest>,
 ) -> Response<SignInResponse> {
     let db = db as &DatabaseConnection;
-    todo!()
+    let settings = settings as &AppSettings;
+    let usr = match User::find()
+        .filter(user::Column::Email.eq(&sign_in_request.email))
+        .one(db)
+        .await?
+    {
+        Some(usr) => usr,
+        None => {
+            return Err(ErrorResponse((
+                Status::Unauthorized,
+                "Geçersiz ehliyet".to_string(),
+            )))
+        }
+    };
+    if !verify(&sign_in_request.password, &usr.password).unwrap() {
+        return Err(ErrorResponse((
+            Status::Unauthorized,
+            "Geçersiz ehliyet".to_string(),
+        )));
+    }
+
+    let claims = Claims {
+        sub: usr.id,
+        role: "user".to_string(),
+        exp: SystemTime::now()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap()
+            .as_secs()
+            + 10 * 60 * 60,
+    };
+
+    let token = encode(
+        &Header::default(),
+        &claims,
+        &EncodingKey::from_secret(settings.jwt_secret.as_bytes()),
+    )
+    .unwrap();
+
+    Ok(SuccessResponse((Status::Ok, SignInResponse { token })))
 }
 
 #[post("/sign-up", data = "<sign_up_request>")]

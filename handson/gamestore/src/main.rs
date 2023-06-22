@@ -3,6 +3,7 @@ mod controller;
 mod data;
 mod entity;
 mod fairings;
+mod jwt;
 mod messages;
 mod migrator;
 
@@ -26,6 +27,8 @@ fn index() -> Response<String> {
 
 #[launch]
 async fn rocket() -> _ {
+    dotenvy::dotenv().ok();
+
     let app_sets = AppSettings::default();
     let db = match data::connect(&app_sets).await {
         Ok(db) => db,
@@ -40,6 +43,7 @@ async fn rocket() -> _ {
     rocket::build()
         .attach(CORS)
         .manage(db)
+        .manage(app_sets)
         .mount("/", routes![options])
         .mount("/", routes![index])
         .mount(

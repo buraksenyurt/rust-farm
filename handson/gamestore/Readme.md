@@ -118,3 +118,15 @@ Kayıtlı bir kullanıcı başarılı şekilde login olduğunda bir JWT token el
 ```
 
 ![../images/game_store_08.png](../images/game_store_08.png)
+
+Servisin developers ve games isimli endpoint'lerini kullanabilmek için geçerli bir JWT token'a sahip olmak ve yine bu token'la ilintili geçerli bir Identity bilgisine sahip olmak gerekiyor. Öncelikle geçerli bir Identity alma hizmetine bakalım. Bunun için aşağıdaki request örneği kullanılabilir.
+
+**Adres: localhost:8000/auth/identity**
+
+Sign-in sonrası ele edilen token bilgisini Header'da ekleyerek göndermek gerekir. Token geçerli ise güncel kullanıcıya ait id bilgisinin alınması beklenir.
+
+![../images/game_store_09.png](../images/game_store_09.png)
+
+Geçersiz bir token kullanılır veya token yollanmazsa da HTTP 401 Unauthorized hatası alınır.
+
+![../images/game_store_10.png](../images/game_store_10.png)

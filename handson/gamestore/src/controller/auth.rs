@@ -103,7 +103,7 @@ pub async fn sign_up(
 
     User::insert(user::ActiveModel {
         email: Set(sign_up_request.email.to_owned()),
-        password: Set(hash(sign_up_request.password.to_owned(), DEFAULT_COST).unwrap()),
+        password: Set(hash(&sign_up_request.password, DEFAULT_COST).unwrap()),
         first_name: Set(sign_up_request.firstname.to_owned()),
         sur_name: Set(sign_up_request.surname.to_owned()),
         ..Default::default()

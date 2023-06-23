@@ -42,7 +42,7 @@ async fn rocket() -> _ {
     }
 
     rocket::build()
-        .attach(CORS)
+        .attach(Cors)
         .manage(db)
         .manage(app_sets)
         .mount("/", routes![options])

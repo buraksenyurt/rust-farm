@@ -4,7 +4,6 @@ use jsonwebtoken::{decode, DecodingKey, Validation};
 use rocket::{
     http::Status,
     request::{self, FromRequest, Outcome, Request},
-    serde::{Deserialize, Serialize},
 };
 
 pub struct AuthenticatedUser {

@@ -6,6 +6,7 @@ mod fairings;
 mod jwt;
 mod messages;
 mod migrator;
+mod security;
 
 #[macro_use]
 extern crate rocket;
@@ -48,7 +49,11 @@ async fn rocket() -> _ {
         .mount("/", routes![index])
         .mount(
             "/auth",
-            routes![controller::auth::sign_in, controller::auth::sign_up,],
+            routes![
+                controller::auth::sign_in,
+                controller::auth::sign_up,
+                controller::auth::identity
+            ],
         )
         .mount(
             "/games",

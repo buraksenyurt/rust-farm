@@ -2,7 +2,7 @@ pub mod auth;
 pub mod developers;
 pub mod games;
 
-pub use auth::sign_in;
+pub use auth::*;
 pub use developers::*;
 pub use games::*;
 

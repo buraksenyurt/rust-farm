@@ -4,6 +4,7 @@ use crate::entity::prelude::User;
 use crate::entity::user;
 use crate::jwt::claims::Claims;
 use crate::messages::{SignInRequest, SignInResponse, SignUpRequest};
+use crate::security::AuthenticatedUser;
 use bcrypt::{hash, verify, DEFAULT_COST};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use rocket::http::Status;
@@ -11,6 +12,14 @@ use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::*;
 use std::time::SystemTime;
+
+#[get("/identity")]
+pub async fn identity(db: &State<DatabaseConnection>, user: AuthenticatedUser) -> Response<String> {
+    Ok(SuccessResponse((
+        Status::Ok,
+        format!("Identity Id : {}", user.user_id),
+    )))
+}
 
 #[post("/sign-in", data = "<sign_in_request>")]
 pub async fn sign_in(
@@ -41,7 +50,7 @@ pub async fn sign_in(
     }
 
     let claims = Claims {
-        sub: usr.id,
+        sub: usr.id as u32,
         role: "user".to_string(),
         exp: SystemTime::now()
             .duration_since(SystemTime::UNIX_EPOCH)

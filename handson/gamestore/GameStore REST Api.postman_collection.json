@@ -12,6 +12,9 @@
 				{
 					"name": "Sign-In",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -24,12 +27,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/auth/sign-in",
-							"protocol": "http",
+							"raw": "{{baseurl}}/auth/sign-in",
 							"host": [
-								"localhost"
+								"{{baseurl}}"
 							],
-							"port": "8000",
 							"path": [
 								"auth",
 								"sign-in"
@@ -41,6 +42,9 @@
 				{
 					"name": "Sign-Up",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -53,15 +57,38 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/auth/sign-up",
-							"protocol": "http",
+							"raw": "{{baseurl}}/auth/sign-up",
 							"host": [
-								"localhost"
+								"{{baseurl}}"
 							],
-							"port": "8000",
 							"path": [
 								"auth",
 								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Identity",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNjg3NTU2MTQ3fQ.n-Rw0e8W5eg5HsCmicfMAl5921VQpzJ3j5cGVnuoklo",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/auth/identity",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"auth",
+								"identity"
 							]
 						}
 					},
@@ -312,6 +339,41 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "developer_id",
@@ -320,6 +382,14 @@
 		{
 			"key": "game_id",
 			"value": "game_id"
+		},
+		{
+			"key": "baseurl",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "token",
+			"value": "test"
 		}
 	]
 }

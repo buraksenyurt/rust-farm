@@ -108,7 +108,7 @@ Zaten kayıtlı olan olan bir email adresi ile kayıt olmaya çalışıldığın
 
 Kayıtlı bir kullanıcı başarılı şekilde login olduğunda bir JWT token elde etmesi gerekir.
 
-**Adres : localhost:8000/auth/sign-up**
+**Adres : localhost:8000/auth/sign-in**
 
 ```json
 {
@@ -123,7 +123,7 @@ Servisin developers ve games isimli endpoint'lerini kullanabilmek için geçerli
 
 **Adres: localhost:8000/auth/identity**
 
-Sign-in sonrası ele edilen token bilgisini Header'da ekleyerek göndermek gerekir. Token geçerli ise güncel kullanıcıya ait id bilgisinin alınması beklenir.
+Sign-in sonrası ele edilen token bilgisini Header'da ekleyerek göndermek gerekir. Token geçerli ise güncel kullanıcıya ait id bilgisinin alınması beklenir. Örnekte token, baseurl gibi bilgiler Postman collection'a ait variable'lardan gelmektedir.
 
 ![../images/game_store_09.png](../images/game_store_09.png)
 

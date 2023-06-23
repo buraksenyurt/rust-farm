@@ -8,7 +8,7 @@ use rocket::{
 };
 
 pub struct AuthenticatedUser {
-    pub user_id: u32,
+    pub user_id: i32,
 }
 
 #[rocket::async_trait]

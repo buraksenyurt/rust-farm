@@ -3,7 +3,7 @@ use crate::controller::{ErrorResponse, Response, SuccessResponse};
 use crate::entity::prelude::User;
 use crate::entity::user;
 use crate::jwt::claims::Claims;
-use crate::messages::{SignInRequest, SignInResponse, SignUpRequest};
+use crate::messages::{IdentityResponse, SignInRequest, SignInResponse, SignUpRequest};
 use crate::security::AuthenticatedUser;
 use bcrypt::{hash, verify, DEFAULT_COST};
 use jsonwebtoken::{encode, EncodingKey, Header};
@@ -14,10 +14,21 @@ use sea_orm::*;
 use std::time::SystemTime;
 
 #[get("/identity")]
-pub async fn identity(db: &State<DatabaseConnection>, user: AuthenticatedUser) -> Response<String> {
+pub async fn identity(
+    db: &State<DatabaseConnection>,
+    user: AuthenticatedUser,
+) -> Response<Json<IdentityResponse>> {
+    let db = db as &DatabaseConnection;
+    let usr = User::find_by_id(user.user_id).one(db).await?.unwrap();
+
     Ok(SuccessResponse((
         Status::Ok,
-        format!("Identity Id : {}", user.user_id),
+        Json(IdentityResponse {
+            id: usr.id,
+            email: usr.email,
+            firstname: usr.first_name,
+            surname: usr.sur_name,
+        }),
     )))
 }
 
@@ -26,7 +37,7 @@ pub async fn sign_in(
     db: &State<DatabaseConnection>,
     settings: &State<AppSettings>,
     sign_in_request: Json<SignInRequest>,
-) -> Response<SignInResponse> {
+) -> Response<Json<SignInResponse>> {
     let db = db as &DatabaseConnection;
     let settings = settings as &AppSettings;
     let usr = match User::find()
@@ -50,7 +61,7 @@ pub async fn sign_in(
     }
 
     let claims = Claims {
-        sub: usr.id as u32,
+        sub: usr.id,
         role: "user".to_string(),
         exp: SystemTime::now()
             .duration_since(SystemTime::UNIX_EPOCH)
@@ -66,7 +77,10 @@ pub async fn sign_in(
     )
     .unwrap();
 
-    Ok(SuccessResponse((Status::Ok, SignInResponse { token })))
+    Ok(SuccessResponse((
+        Status::Ok,
+        Json(SignInResponse { token }),
+    )))
 }
 
 #[post("/sign-up", data = "<sign_up_request>")]

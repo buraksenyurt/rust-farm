@@ -1,4 +1,4 @@
-use crate::controller::{Response, SuccessResponse};
+use crate::controller::{ErrorResponse, Response, SuccessResponse};
 use crate::entity::game;
 use crate::entity::prelude::Game;
 use crate::messages::{CreateGameRequest, GameListResponse, GameResponse};
@@ -67,8 +67,31 @@ pub async fn create(
 }
 
 #[get("/<id>")]
-pub async fn get_detail(id: u32) -> Response<String> {
-    todo!()
+pub async fn get_detail(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+) -> Response<Json<GameResponse>> {
+    let db = db as &DatabaseConnection;
+    let result = Game::find_by_id(id).one(db).await?;
+    match result {
+        Some(g) => Ok(SuccessResponse((
+            Status::Ok,
+            Json(GameResponse {
+                id: g.id,
+                developer_id: g.developer_id,
+                title: g.title,
+                summary: g.summary,
+                year: g.year,
+            }),
+        ))),
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Oyun bulunamadı. ID bilgisini kontrol edin".to_string(),
+            )))
+        }
+    }
 }
 
 #[put("/<id>")]

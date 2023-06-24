@@ -1,4 +1,4 @@
-use crate::controller::{Response, SuccessResponse};
+use crate::controller::{ErrorResponse, Response, SuccessResponse};
 use crate::entity::developer;
 use crate::entity::prelude::Developer;
 use crate::messages::{CreateDeveloperRequest, DeveloperListResponse, DeveloperResponse};
@@ -64,8 +64,30 @@ pub async fn create(
 }
 
 #[get("/<id>")]
-pub async fn get_detail(id: u32) -> Response<String> {
-    todo!()
+pub async fn get_detail(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+) -> Response<Json<DeveloperResponse>> {
+    let db = db as &DatabaseConnection;
+    let result = Developer::find_by_id(id).one(db).await?;
+    match result {
+        Some(d) => Ok(SuccessResponse((
+            Status::Ok,
+            Json(DeveloperResponse {
+                id: d.id,
+                fullname: d.fullname,
+                about: d.about,
+                level: d.level,
+            }),
+        ))),
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Programcı bilgisi bulunamadı. ID bilgisini kontrol edin".to_string(),
+            )))
+        }
+    }
 }
 
 #[put("/<id>")]

@@ -161,3 +161,17 @@ method : HTTP Post
 ```
 
 ![../images/game_store_12.png](../images/game_store_12.png)
+
+Belli bir id değerine sahip oyun bilgisini çekmek için aşağıdaki gibi ilerlenebilir.
+
+**Adres: localhost:8000/games/1**
+
+![../images/game_store_14.png](../images/game_store_14.png)
+
+Benzer şekilde belli bir id değerine sahip programcı bilgisini çekmek içinse aşağıdaki gibi ilerlenebilir.
+
+**Adres: localhost:8000/developers/1**
+
+![../images/game_store_13.png](../images/game_store_13.png)
+
+Görüldüğü üzere MySQL tarafı için çalıştırılan SQL sorguları log olarak terminal ekranına da düşmektedir.

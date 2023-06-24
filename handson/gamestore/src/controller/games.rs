@@ -1,12 +1,13 @@
 use crate::controller::{Response, SuccessResponse};
 use crate::entity::game;
 use crate::entity::prelude::Game;
-use crate::messages::{GameListResponse, GameResponse};
+use crate::messages::{CreateGameRequest, GameListResponse, GameResponse};
 use crate::security::AuthenticatedUser;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
-use sea_orm::{DatabaseConnection, EntityTrait, QueryOrder};
+use sea_orm::ActiveValue::Set;
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder};
 
 #[get("/")]
 pub async fn index(
@@ -36,9 +37,33 @@ pub async fn index(
     )))
 }
 
-#[post("/")]
-pub async fn create() -> Response<String> {
-    todo!()
+#[post("/", data = "<payload>")]
+pub async fn create(
+    db: &State<DatabaseConnection>,
+    user: AuthenticatedUser,
+    payload: Json<CreateGameRequest>,
+) -> Response<Json<GameResponse>> {
+    let game = game::ActiveModel {
+        user_id: Set(user.user_id),
+        developer_id: Set(payload.developer_id),
+        title: Set(payload.title.to_owned()),
+        summary: Set(payload.summary.to_owned()),
+        year: Set(payload.year.to_owned()),
+        ..Default::default()
+    };
+    let db = db as &DatabaseConnection;
+    let created = game.insert(db).await?;
+
+    Ok(SuccessResponse((
+        Status::Created,
+        Json(GameResponse {
+            id: created.id,
+            developer_id: created.developer_id,
+            title: created.title,
+            summary: created.summary,
+            year: created.year,
+        }),
+    )))
 }
 
 #[get("/<id>")]

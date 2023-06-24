@@ -1,12 +1,13 @@
 use crate::controller::{Response, SuccessResponse};
 use crate::entity::developer;
 use crate::entity::prelude::Developer;
-use crate::messages::{DeveloperListResponse, DeveloperResponse};
+use crate::messages::{CreateDeveloperRequest, DeveloperListResponse, DeveloperResponse};
 use crate::security::AuthenticatedUser;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
-use sea_orm::{DatabaseConnection, EntityTrait, QueryOrder};
+use sea_orm::ActiveValue::Set;
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder};
 
 #[get("/")]
 pub async fn index(
@@ -35,9 +36,31 @@ pub async fn index(
     )))
 }
 
-#[post("/")]
-pub async fn create() -> Response<String> {
-    todo!()
+#[post("/", data = "<payload>")]
+pub async fn create(
+    db: &State<DatabaseConnection>,
+    user: AuthenticatedUser,
+    payload: Json<CreateDeveloperRequest>,
+) -> Response<Json<DeveloperResponse>> {
+    let developer = developer::ActiveModel {
+        user_id: Set(user.user_id),
+        fullname: Set(payload.fullname.to_owned()),
+        level: Set(payload.level),
+        about: Set(payload.about.to_owned()),
+        ..Default::default()
+    };
+    let db = db as &DatabaseConnection;
+    let created = developer.insert(db).await?;
+
+    Ok(SuccessResponse((
+        Status::Created,
+        Json(DeveloperResponse {
+            id: created.id,
+            fullname: created.fullname,
+            level: created.level,
+            about: created.about,
+        }),
+    )))
 }
 
 #[get("/<id>")]

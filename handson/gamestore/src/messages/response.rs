@@ -1,4 +1,3 @@
-use crate::entity::prelude::Developer;
 use rocket::serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Responder)]

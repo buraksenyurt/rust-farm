@@ -130,3 +130,34 @@ Sign-in sonrası ele edilen token bilgisini Header'da ekleyerek göndermek gerek
 Geçersiz bir token kullanılır veya token yollanmazsa da HTTP 401 Unauthorized hatası alınır.
 
 ![../images/game_store_10.png](../images/game_store_10.png)
+
+Yeni bir geliştirici aşağıdaki gibi eklenebilir.
+
+**Adres: localhost:8000/developers**
+
+method : HTTP Post
+```json
+{
+    "fullname": "Monkey Boy",
+    "about": "A famous indie game developer",
+    "level": 50
+}
+```
+
+![../images/game_store_11.png](../images/game_store_11.png)
+
+Yeni bir oyun içeriği de aşağıdaki gibi eklenebilir.
+
+**Adres: localhost:8000/games**
+
+method : HTTP Post
+```json
+{
+  "developer_id": 1,
+  "title": "Flying Dutch Man",
+  "year": "1998",
+  "summary": "a funny sailing game"
+}
+```
+
+![../images/game_store_12.png](../images/game_store_12.png)

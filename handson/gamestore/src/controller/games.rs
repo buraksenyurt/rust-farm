@@ -8,7 +8,7 @@ use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::prelude::DateTimeUtc;
 use sea_orm::ActiveValue::Set;
-use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder};
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, ModelTrait, QueryOrder};
 use std::time::SystemTime;
 
 #[get("/")]
@@ -105,7 +105,7 @@ pub async fn update(
 ) -> Response<Json<GameResponse>> {
     let db = db as &DatabaseConnection;
     match Game::find_by_id(id).one(db).await? {
-        Some(mut g) => {
+        Some(g) => {
             let mut g: game::ActiveModel = g.into();
             g.developer_id = Set(payload.developer_id);
             g.title = Set(payload.title.to_owned());
@@ -134,6 +134,25 @@ pub async fn update(
 }
 
 #[delete("/<id>")]
-pub async fn delete(id: u32) -> Response<String> {
-    todo!()
+pub async fn delete(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+) -> Response<String> {
+    let db = db as &DatabaseConnection;
+    match Game::find_by_id(id).one(db).await? {
+        Some(g) => {
+            g.delete(db).await?;
+            Ok(SuccessResponse((
+                Status::Ok,
+                "Oyun bilgileri silindi".to_string(),
+            )))
+        }
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Oyun bilgisi bulunamadı".to_string(),
+            )))
+        }
+    }
 }

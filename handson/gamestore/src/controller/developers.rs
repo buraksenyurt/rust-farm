@@ -1,14 +1,17 @@
 use crate::controller::{ErrorResponse, Response, SuccessResponse};
-use crate::entity::developer;
-use crate::entity::prelude::Developer;
-use crate::messages::{CreateDeveloperRequest, DeveloperListResponse, DeveloperResponse};
+use crate::entity::prelude::{Developer, Game};
+use crate::entity::{developer, game};
+use crate::messages::{
+    CreateDeveloperRequest, DeveloperListResponse, DeveloperResponse, GameListResponse,
+    GameResponse,
+};
 use crate::security::AuthenticatedUser;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
 use sea_orm::prelude::DateTimeUtc;
 use sea_orm::ActiveValue::Set;
-use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder};
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, ModelTrait, QueryOrder};
 use std::time::SystemTime;
 
 #[get("/")]
@@ -101,7 +104,7 @@ pub async fn update(
 ) -> Response<Json<DeveloperResponse>> {
     let db = db as &DatabaseConnection;
     match Developer::find_by_id(id).one(db).await? {
-        Some(mut d) => {
+        Some(d) => {
             let mut dvlpr: developer::ActiveModel = d.into();
             dvlpr.level = Set(payload.level);
             dvlpr.fullname = Set(payload.fullname.to_owned());
@@ -128,6 +131,59 @@ pub async fn update(
 }
 
 #[delete("/<id>")]
-pub async fn delete(id: u32) -> Response<String> {
-    todo!()
+pub async fn delete(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+) -> Response<String> {
+    let db = db as &DatabaseConnection;
+    match Developer::find_by_id(id).one(db).await? {
+        Some(d) => {
+            d.delete(db).await?;
+            Ok(SuccessResponse((
+                Status::Ok,
+                "Programcı bilgileri silindi".to_string(),
+            )))
+        }
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Programcı bulunamadı".to_string(),
+            )))
+        }
+    }
+}
+
+#[get("/<id>/games")]
+pub async fn get_developer_games(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+) -> Response<Json<GameListResponse>> {
+    let db = db as &DatabaseConnection;
+    match Developer::find_by_id(id).one(db).await? {
+        Some(d) => {
+            let games: Vec<game::Model> = d.find_related(Game).all(db).await?;
+            Ok(SuccessResponse((
+                Status::Ok,
+                Json(GameListResponse {
+                    total_count: games.len(),
+                    games: games
+                        .iter()
+                        .map(|g| GameResponse {
+                            id: g.id,
+                            developer_id: g.developer_id,
+                            title: g.title.to_owned(),
+                            summary: g.summary.to_owned(),
+                            year: g.year.to_owned(),
+                        })
+                        .collect(),
+                }),
+            )))
+        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Programcı bulunamadı".to_string(),
+        ))),
+    }
 }

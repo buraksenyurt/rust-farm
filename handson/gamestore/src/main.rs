@@ -73,6 +73,7 @@ async fn rocket() -> _ {
                 controller::developers::get_detail,
                 controller::developers::update,
                 controller::developers::delete,
+                controller::developers::get_developer_games
             ],
         )
 }

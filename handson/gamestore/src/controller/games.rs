@@ -6,8 +6,10 @@ use crate::security::AuthenticatedUser;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::State;
+use sea_orm::prelude::DateTimeUtc;
 use sea_orm::ActiveValue::Set;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, QueryOrder};
+use std::time::SystemTime;
 
 #[get("/")]
 pub async fn index(
@@ -94,9 +96,41 @@ pub async fn get_detail(
     }
 }
 
-#[put("/<id>")]
-pub async fn update(id: u32) -> Response<String> {
-    todo!()
+#[put("/<id>", data = "<payload>")]
+pub async fn update(
+    db: &State<DatabaseConnection>,
+    _user: AuthenticatedUser,
+    id: i32,
+    payload: Json<CreateGameRequest>,
+) -> Response<Json<GameResponse>> {
+    let db = db as &DatabaseConnection;
+    match Game::find_by_id(id).one(db).await? {
+        Some(mut g) => {
+            let mut g: game::ActiveModel = g.into();
+            g.developer_id = Set(payload.developer_id);
+            g.title = Set(payload.title.to_owned());
+            g.summary = Set(payload.summary.to_owned());
+            g.year = Set(payload.year.to_owned());
+            g.modified_at = Set(Option::from(DateTimeUtc::from(SystemTime::now())));
+            let updated = g.update(db).await?;
+            Ok(SuccessResponse((
+                Status::Ok,
+                Json(GameResponse {
+                    id: updated.id,
+                    developer_id: updated.developer_id,
+                    title: updated.title,
+                    summary: updated.summary,
+                    year: updated.year,
+                }),
+            )))
+        }
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Programcı bilgisi bulunamadı.".to_string(),
+            )))
+        }
+    }
 }
 
 #[delete("/<id>")]

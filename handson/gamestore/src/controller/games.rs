@@ -58,13 +58,7 @@ pub async fn create(
 
     Ok(SuccessResponse((
         Status::Created,
-        Json(GameResponse {
-            id: created.id,
-            developer_id: created.developer_id,
-            title: created.title,
-            summary: created.summary,
-            year: created.year,
-        }),
+        Json(GameResponse::from(&created)),
     )))
 }
 
@@ -79,20 +73,12 @@ pub async fn get_detail(
     match result {
         Some(g) => Ok(SuccessResponse((
             Status::Ok,
-            Json(GameResponse {
-                id: g.id,
-                developer_id: g.developer_id,
-                title: g.title,
-                summary: g.summary,
-                year: g.year,
-            }),
+            Json(GameResponse::from(&g)),
         ))),
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Oyun bulunamadı. ID bilgisini kontrol edin".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Oyun bulunamadı. ID bilgisini kontrol edin".to_string(),
+        ))),
     }
 }
 
@@ -115,21 +101,13 @@ pub async fn update(
             let updated = g.update(db).await?;
             Ok(SuccessResponse((
                 Status::Ok,
-                Json(GameResponse {
-                    id: updated.id,
-                    developer_id: updated.developer_id,
-                    title: updated.title,
-                    summary: updated.summary,
-                    year: updated.year,
-                }),
+                Json(GameResponse::from(&updated)),
             )))
         }
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Programcı bilgisi bulunamadı.".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Programcı bilgisi bulunamadı.".to_string(),
+        ))),
     }
 }
 
@@ -148,11 +126,9 @@ pub async fn delete(
                 "Oyun bilgileri silindi".to_string(),
             )))
         }
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Oyun bilgisi bulunamadı".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Oyun bilgisi bulunamadı".to_string(),
+        ))),
     }
 }

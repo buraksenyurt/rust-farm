@@ -59,12 +59,7 @@ pub async fn create(
 
     Ok(SuccessResponse((
         Status::Created,
-        Json(DeveloperResponse {
-            id: created.id,
-            fullname: created.fullname,
-            level: created.level,
-            about: created.about,
-        }),
+        Json(DeveloperResponse::from(&created)),
     )))
 }
 
@@ -79,19 +74,12 @@ pub async fn get_detail(
     match result {
         Some(d) => Ok(SuccessResponse((
             Status::Ok,
-            Json(DeveloperResponse {
-                id: d.id,
-                fullname: d.fullname,
-                about: d.about,
-                level: d.level,
-            }),
+            Json(DeveloperResponse::from(&d)),
         ))),
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Programcı bilgisi bulunamadı. ID bilgisini kontrol edin".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Programcı bilgisi bulunamadı. ID bilgisini kontrol edin".to_string(),
+        ))),
     }
 }
 
@@ -113,20 +101,13 @@ pub async fn update(
             let updated = dvlpr.update(db).await?;
             Ok(SuccessResponse((
                 Status::Ok,
-                Json(DeveloperResponse {
-                    id: updated.id,
-                    fullname: updated.fullname,
-                    about: updated.about,
-                    level: updated.level,
-                }),
+                Json(DeveloperResponse::from(&updated)),
             )))
         }
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Programcı bilgisi bulunamadı.".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Programcı bilgisi bulunamadı.".to_string(),
+        ))),
     }
 }
 
@@ -145,12 +126,10 @@ pub async fn delete(
                 "Programcı bilgileri silindi".to_string(),
             )))
         }
-        None => {
-            return Err(ErrorResponse((
-                Status::NotFound,
-                "Programcı bulunamadı".to_string(),
-            )))
-        }
+        None => Err(ErrorResponse((
+            Status::NotFound,
+            "Programcı bulunamadı".to_string(),
+        ))),
     }
 }
 

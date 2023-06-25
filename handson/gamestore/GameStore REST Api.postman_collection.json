@@ -117,13 +117,32 @@
 					"response": []
 				},
 				{
+					"name": "Developer's games",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/developers/{{developer_id}}/games",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"developers",
+								"{{developer_id}}",
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Developer",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"fullname\": \"Monkey Boy\",\n    \"about\": \"A famous indie game developer\",\n    \"level\": 50\n}",
+							"raw": "{\n    \"fullname\": \"Sofi Blue\",\n    \"about\": \"Game artist\",\n    \"level\": 87\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -278,7 +297,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"developer_id\": {{developer_id}},\n    \"title\": \"A Flying Dutch Man\",\n    \"year\": \"1997\",\n    \"summary\": \"A funny sailing game from oceans!\"\n}",
+							"raw": "{\n    \"developer_id\": {{developer_id}},\n    \"title\": \"A Flying Dutch Man English Version\",\n    \"year\": \"1987\",\n    \"summary\": \"A funny sailing game from the pacific ocean!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

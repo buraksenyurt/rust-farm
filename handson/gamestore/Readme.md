@@ -193,3 +193,9 @@ Programcı veya oyun bilgilerini güncellemek istediğimizde standart olarak HTT
 Bir oyun bilgisinin güncellenmesi de aşağıdaki görselde olduğu gibidir.
 
 ![../images/game_store_16.png](../images/game_store_16.png)
+
+Belli bir programcı tarafından geliştirilmiş oyunların listesini elde etmek için aşağıdaki gibi ilerlenebilir.
+
+**Adres: localhost:8000/developers/1/games**
+
+![../images/game_store_17.png](../images/game_store_17.png)

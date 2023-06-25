@@ -199,3 +199,9 @@ Belli bir programcı tarafından geliştirilmiş oyunların listesini elde etmek
 **Adres: localhost:8000/developers/1/games**
 
 ![../images/game_store_17.png](../images/game_store_17.png)
+
+Çalışma zamanına ait diğer görüntüler ise şöyle.
+
+![../images/game_store_18.png](../images/game_store_18.png)
+
+![../images/game_store_19.png](../images/game_store_19.png)

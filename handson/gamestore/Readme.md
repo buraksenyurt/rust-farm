@@ -175,3 +175,21 @@ Benzer şekilde belli bir id değerine sahip programcı bilgisini çekmek içins
 ![../images/game_store_13.png](../images/game_store_13.png)
 
 Görüldüğü üzere MySQL tarafı için çalıştırılan SQL sorguları log olarak terminal ekranına da düşmektedir.
+
+Programcı veya oyun bilgilerini güncellemek istediğimizde standart olarak HTTP Update operasyonunu kullanırız. Örnek çalışmadaki 1 numaralı Developer bilgisini güncellemek istediğimizde aşağıdaki gibi ilerleyebiliriz.
+
+**Adres: localhost:8000/developers/1**
+
+```json
+{
+    "fullname": "Monkey The Ram",
+    "about": "A famous indie game developer from Çeska",
+    "level": 55
+}
+```
+
+![../images/game_store_15.png](../images/game_store_15.png)
+
+Bir oyun bilgisinin güncellenmesi de aşağıdaki görselde olduğu gibidir.
+
+![../images/game_store_16.png](../images/game_store_16.png)

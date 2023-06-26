@@ -205,3 +205,13 @@ Belli bir programcı tarafından geliştirilmiş oyunların listesini elde etmek
 ![../images/game_store_18.png](../images/game_store_18.png)
 
 ![../images/game_store_19.png](../images/game_store_19.png)
+
+## Dockerize
+
+Örneği docker imajı halinde paketleyip kullanabiliriz. Dockerfile hazırlandıktan sonra aşağıdaki şekilde build işlemi gerçekleştirilir.
+
+```shell
+# docker imajını build etmek için
+sudo docker build -t gamestore .
+```
+

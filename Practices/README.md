@@ -55,3 +55,4 @@
 - [x] **udp-again**: Bu örnekte UDP tabanlı bir oyun sunucusunun temellerini atmaya çalışıyorum. Giriş olarak istemcilerden oyuncu pozisyonlarını toplayan ve bunları bağlı olan istemcilere yollayan bir düzenek planlıyorum.
 - [x] **using_tcp**: Bu örnekte çok basit bir TCP dinleyici ve istemci geliştiriyoruz. Sunucu tarafı birden fazla istemcinin mesajını dinleyecek şekilde thread kullanacak şekilde geliştiriliyor.
 - [x] **simple-proxy**: Sıradaki örnekte bir reverse proxy'nin Rust ile nasıl yazılacağını inceliyoruz. Çözümde bir backend server ki origin server olarak da adlandırılıyor, bir de reverse proxy var. Reverse proxy'ye gelen istemci talepleri origin server'a iniyorlar.
+- [ ] **command-pattern**: Örnekteki amaç belli başlı operasyonların sıralı işletilmesi gerektiği durumlarda sıklıkla kullanılan davranışsal tasarım kalıbı Command Pattern'in rust tarafında uygulanışını öğrenmek.

@@ -1,58 +1,58 @@
 # Ortaya Karışık Pratik Rust Örnekleri
 
-- [x] __doc_sample    :__ Kod için yardım dokümanı oluşturmak.
-- [x] __json_works    :__ Serde paketini kullanarak JSON içerikle çalışmak.
-- [x] __gettip        :__ Bir JSON dosyasında farklı konularda rastgele ipucu veren komut satırı aracı.
-- [x] __toffee_1      :__ Kod idmanı. Closure ve iterator fonksiyonları ile ilgili birkaç pratik.
-- [x] __toffee_2      :__ Kod idmanı. Bu idmanda çok sık kullanılan Derivable trait örnekleri yer alıyor.
-- [x] __uniqueue      :__ Aynı elemandan iki tane olmasına izin vermeyen generic bir queue yapısı.
-- [x] __toffee_3      :__ Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır?
-- [x] __benchy        :__ Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.
-- [x] __nucleot       :__ Nucleotide Count isimli alıştırmaya ait örnek.
-- [x] __logging       :__ Sistem programcıları için logları takip etmek oldukça önemli. Rust için loglama nasıl yapılır konusuna bakıyoruz.
-- [ ] __toffee_4      :__ Kod idmanı. Basit seviyede birkaç zihin açıcı problemi çözmeye çalışıyoruz.
-- [x] __fellowship    :__ Rust'a yeni başlayanlara multi-threading konusunu basitçe anlatan bir örnek.
-- [x] __vorcraft      :__ Thread'ler arası mesajlaşmada kanal _(channel)_ kullanımı için crossbeam'den yararlandığımız örnek.
-- [x] __debugging     :__ GDB _(GNU Debugger)_ aracını kullanarak bir Rust kodunu nasıl debug edebileceğimizi ama daha da önemlisi bellekteki yerleşimleri nasıl görebileceğimizi öğreniyoruz.
-- [x] __fun_calc      :__ Acaba Venus'te olsak kaç kilo geliriz ya da Uranus'te :) Kullanıcıdan veri alma ve işleme konusuna bir bakıyoruz.
-- [x] __crayz_server  :__ Çılgın olmasa da sıfırdan bir HTTP Server yazmaya çalışmak gerçekten de çılgınca ama çok şey öğreteceği kesin ;)
-- [x] __viva_las_vegas:__ Rust'ın en zor konularından birisi olan Lifetimes kavramını basit bir şekilde nasıl anlatabilirim? Bu soruya cevap aradığımız örnek uygulama.
-- [x] __by_val_by_ref :__ Bu pratikte bir arkadaşımıza ___Value Moved Here___ hatasının ne olduğun anlatmaya çalışıyoruz.
-- [x] __only_you      :__ Bir t anında sadece tek bir değiştirilebilir referans ___Mutable Reference___ olabilir teorisini inceliyoruz.
-- ~~[ ] __fermat      :__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
-- [x] __pipeline      :__ Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
-- [x] __dublerver     :__ Bir uygulamada iki TcpListener kullanmak.
-- [x] __wordle        :__ Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
-- [x] __clappy        :__ Terminal satırından argüman okumak için kullanılan [**clap**](https://crates.io/crates/clap) isimli popüler bir küfeye *(crate)* bakıyorum.
-- [x] **fizz_buzz:** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
-- [x] **fizz_bench:** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.
-- [x] **oop:** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek.
-- [x] **doc_builder:** Kendi **trait** nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
-- [ ] **lovelace:** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
-- [x] **state_pattern:** Bu örnekte **State Tasarım Kalıbının** nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
-- [x] **state_pattern2:** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
-- [ ] **packman:** **Bracket-Lib** oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
-- [ ] **win_forms:** Amacım **winit** paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
-- [x] **hello-wasm:** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
-- [ ] **sokoban:** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.
-- [ ] **advanved_types:** Type Alias özelliği kullanım alanları ile Newtype deseninin uyarlaması.
-- [x] **the_grid**: WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
-- [ ] **booksworm**: Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.
-- [x] **tdwork**: Terminalden çalışan bir todo uygulaması.
-- [x] **btree**: Binary Tree algoritmasının Rust tarafında uygulanışı.
-- [x] **trait_and_ref**: Bir trait tanımladığımızda Blanket Implementation prensibine göre onun referansları, mutable referansları ve Box içine alınmış versiyonları için de generic olarak uygulamalıyız. Bu konuyu öğrenmeye çalıştığım örnek.
-- [x] **remembering_macros**: Dekleratif makroların nasıl yazıldığını bir iki örnek ile hatırlamaya çalışıyorum.
-- [x] **sqlx_intro**: Postgresql veritabanı ile çalışılmasını kolaylaştıran sqlx küfesinin incelenmesi.
-- [x] **mockito_101(Sonradan wiremock'a evrildi)**: Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyordum. Lakin mockito server'a ait context'i bir şekilde do_accounting fonksiyonuna taşıyamadım. Bu yüzden sürekli HTTP 501 hatası alıp durdum. Bunun üzerine wiremock isimli crate'i kullanmaya karar verdim.
-- [x] **csv-to-json**: Kütüphanemdeki kitapların listesini tuttuğum CSV içeriğinin bir projem için JSON versiyonu lazım. Birkaç kitabı örnek olarak alıp JSON formatına çevirmeye çalışıyorum.
-- [x] **get-lorem-picsum**: [Lorem Picsum](https://picsum.photos/)'dan fotoğraf indiren bir uygulama örneği.
-- [x] **simple-shell**: Bu örnekte linux komutlarını terminalden sub process olarak işleten 3 farklı program yer almakta.
-- [x] **threads-again**: Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.
-- [x] **read-and-write**: I/O operasyonları deninde Rust'ın en önemli iki enstrümanı Read, Write trait'leridir. Sadece dosya değil, tcp stream, usb cihazı vb gibi ne kadar çevre birimi varsa konuşma kısmında bu iki implementasyona ihtiyaç duyulur. Bu örneke Read/Write operasyonlarını yeniden hatırlamaya çalışıyorum.
-- [x] **surrealdb-intro**: Rust ile yazılmış surrealdb'nin kullanımını incelediğim örnek.
-- [x] **simple-udp-server**: Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
-- [x] **simple-udp-client**: Bu uygulama ise simple-udp-server isimli UDP sunucusunun istemcisi rolündedir.
-- [x] **udp-again**: Bu örnekte UDP tabanlı bir oyun sunucusunun temellerini atmaya çalışıyorum. Giriş olarak istemcilerden oyuncu pozisyonlarını toplayan ve bunları bağlı olan istemcilere yollayan bir düzenek planlıyorum.
-- [x] **using_tcp**: Bu örnekte çok basit bir TCP dinleyici ve istemci geliştiriyoruz. Sunucu tarafı birden fazla istemcinin mesajını dinleyecek şekilde thread kullanacak şekilde geliştiriliyor.
-- [x] **simple-proxy**: Sıradaki örnekte bir reverse proxy'nin Rust ile nasıl yazılacağını inceliyoruz. Çözümde bir backend server ki origin server olarak da adlandırılıyor, bir de reverse proxy var. Reverse proxy'ye gelen istemci talepleri origin server'a iniyorlar.
-- [ ] **command-pattern**: Örnekteki amaç belli başlı operasyonların sıralı işletilmesi gerektiği durumlarda sıklıkla kullanılan davranışsal tasarım kalıbı Command Pattern'in rust tarafında uygulanışını öğrenmek.
+- [x] **[doc_sample    :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/doc_sample)** Kod için yardım dokümanı oluşturmak.
+- [x] **[json_works    :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/json_works)** Serde paketini kullanarak JSON içerikle çalışmak.
+- [x] **[gettip        :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/gettip)** Bir JSON dosyasında farklı konularda rastgele ipucu veren komut satırı aracı.
+- [x] **[toffee_1      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/toffee_1)** Kod idmanı. Closure ve iterator fonksiyonları ile ilgili birkaç pratik.
+- [x] **[toffee_2      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/toffee_2)** Kod idmanı. Bu idmanda çok sık kullanılan Derivable trait örnekleri yer alıyor.
+- [x] **[uniqueue      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/uniqueue)** Aynı elemandan iki tane olmasına izin vermeyen generic bir queue yapısı.
+- [x] **[toffee_3      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/toffee_3)** Kullanıcı tanımlı Error nesnesi nasıl yazılır? Hatta işi kolaylaştıran thiserror crate'i nasıl kullanılır?
+- [x] **[benchy        :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/benchy)** Criterion paketi kullanılarak basit benchmark testlerinin nasıl koşulduğuna baktığımız örnek.
+- [x] **[nucleot       :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/nucleot)** Nucleotide Count isimli alıştırmaya ait örnek.
+- [x] **[logging       :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/logging)** Sistem programcıları için logları takip etmek oldukça önemli. Rust için loglama nasıl yapılır konusuna bakıyoruz.
+- [x] **[toffee_4      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/toffee_4)** Kod idmanı. Basit seviyede birkaç zihin açıcı problemi çözmeye çalışıyoruz.
+- [x] **[fellowship    :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fellowship)** Rust'a yeni başlayanlara multi-threading konusunu basitçe anlatan bir örnek.
+- [x] **[vorcraft      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/vorcraft)** Thread'ler arası mesajlaşmada kanal _(channel)_ kullanımı için crossbeam'den yararlandığımız örnek.
+- [x] **[debugging     :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/debugging)** GDB _(GNU Debugger)_ aracını kullanarak bir Rust kodunu nasıl debug edebileceğimizi ama daha da önemlisi bellekteki yerleşimleri nasıl görebileceğimizi öğreniyoruz.
+- [x] **[fun_calc      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fun_calc)** Acaba Venus'te olsak kaç kilo geliriz ya da Uranus'te :) Kullanıcıdan veri alma ve işleme konusuna bir bakıyoruz.
+- [x] **[crayz_server  :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/crayz_server)** Çılgın olmasa da sıfırdan bir HTTP Server yazmaya çalışmak gerçekten de çılgınca ama çok şey öğreteceği kesin ;)
+- [x] **[viva_las_vegas:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/viva_las_vegas)** Rust'ın en zor konularından birisi olan Lifetimes kavramını basit bir şekilde nasıl anlatabilirim? Bu soruya cevap aradığımız örnek uygulama.
+- [x] **[by_val_by_ref :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/by_val_by_ref)** Bu pratikte bir arkadaşımıza ___Value Moved Here___ hatasının ne olduğun anlatmaya çalışıyoruz.
+- [x] **[only_you      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/only_you)** Bir t anında sadece tek bir değiştirilebilir referans ___Mutable Reference___ olabilir teorisini inceliyoruz.
+- ~~[ ] [__fermat      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fermat)__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
+- [x] **[pipeline      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/pipeline)** Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
+- [x] **[dublerver     :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/dublerver)** Bir uygulamada iki TcpListener kullanmak.
+- [x] **[wordle        :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/wordle)** Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
+- [x] **[clappy        :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/clappy)** Terminal satırından argüman okumak için kullanılan [**clap**](https://crates.io/crates/clap) isimli popüler bir küfeye *(crate)* bakıyorum.
+- [x] **[fizz_buzz:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fizz_buzz)** Pek çok programlama dilinin güzide pratiklerinden olan Fizz Buzz'ın yazılması ve yazılırken String ile &str türlerinin anlaşılması.
+- [x] **[fizz_bench:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fizz_bench)** Fizz Buzz örneğinde String veri türü ve enum sabiti kullanılması durumundaki performans farklılıklarını görmek için yazılan bir benchmark uygulaması.
+- [x] **[oop:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/oop)** Bu klasörde iki örnek yer alıyor. Bir tanesi dotnet diğeri de rust tabanlı console uygulamaları. Amaç OOP temel ilkelerinin rust tarafındaki karşılıklarını(varsa) incelemek.
+- [x] **[doc_builder:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/doc_builder)** Kendi **trait** nesnelerimizi kullandığımız bu örnekte bir dokümanın parçalarını oluşturmak için dynamic dispatch yaklaşımından nasıl yararlanabileceğimizi inceliyoruz.
+- [ ] **[lovelace:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/lovelace)** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
+- [x] **[state_pattern:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/state_pattern)** Bu örnekte **State Tasarım Kalıbının** nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
+- [x] **[re_state_pattern:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/re_state_pattern)** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
+- [ ] **[packman:** **Bracket-Lib](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/packman)** oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
+- [ ] **[win_forms:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/win_forms)** Amacım **winit** paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
+- [x] **[hello-wasm:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/hello-wasm)** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
+- [ ] **[sokoban:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/sokoban)** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.
+- [ ] **[advanced_types:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/advanced_types)** Type Alias özelliği kullanım alanları ile Newtype deseninin uyarlaması.
+- [x] **[the_grid:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/the_grid)** WebAssembly, Rust ve HTML ilişkisini anlamaya çalıştığım örnek. Ekrana rastgele bir grid ve bazı hücreleri renklendirilmiş bloklar basıyor.
+- [ ] **[booksworm:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/booksworm)** Bir HTML giriş formunda Rust ve WebAssembly nasıl kullanılır öğrenmeye çalıştığım örnek.
+- [x] **[tdwork:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/tdwork)** Terminalden çalışan bir todo uygulaması.
+- [x] **[btree:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/btree)** Binary Tree algoritmasının Rust tarafında uygulanışı.
+- [x] **[trait_and_ref:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/trait_and_ref)** Bir trait tanımladığımızda Blanket Implementation prensibine göre onun referansları, mutable referansları ve Box içine alınmış versiyonları için de generic olarak uygulamalıyız. Bu konuyu öğrenmeye çalıştığım örnek.
+- [x] **[remembering_macros:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/remembering_macros)** Dekleratif makroların nasıl yazıldığını bir iki örnek ile hatırlamaya çalışıyorum.
+- [x] **[sqlx_intro:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/sqlx_intro)** Postgresql veritabanı ile çalışılmasını kolaylaştıran sqlx küfesinin incelenmesi.
+- [x] **[mockito_101(Sonradan wiremock'a evrildi):](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/mockito_101)** Bu örnekte Mockito paketini kullanarak servis mock'laması nasıl yapılır öğrenmeye çalışıyordum. Lakin mockito server'a ait context'i bir şekilde do_accounting fonksiyonuna taşıyamadım. Bu yüzden sürekli HTTP 501 hatası alıp durdum. Bunun üzerine wiremock isimli crate'i kullanmaya karar verdim.
+- [x] **[csv-to-json:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/csv_to_json)** Kütüphanemdeki kitapların listesini tuttuğum CSV içeriğinin bir projem için JSON versiyonu lazım. Birkaç kitabı örnek olarak alıp JSON formatına çevirmeye çalışıyorum.
+- [x] **[get-lorem-picsum:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/get-lorem-picsum)** [Lorem Picsum](https://picsum.photos/)'dan fotoğraf indiren bir uygulama örneği.
+- [x] **[simple-shell:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/simple-shell)** Bu örnekte linux komutlarını terminalden sub process olarak işleten 3 farklı program yer almakta.
+- [x] **[threads-again:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/threads-again)** Concurrency konusunu tekrardan hatırlamak için kullandığım örnek. Thread'lerin oluşturulması, hata yönetimi, thread'ler arası mesaj transferi, state paylaşımı gibi konulara tekrardan bakmak istiyorum.
+- [x] **[read-and-write:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/read-and-write)** I/O operasyonları deninde Rust'ın en önemli iki enstrümanı Read, Write trait'leridir. Sadece dosya değil, tcp stream, usb cihazı vb gibi ne kadar çevre birimi varsa konuşma kısmında bu iki implementasyona ihtiyaç duyulur. Bu örneke Read/Write operasyonlarını yeniden hatırlamaya çalışıyorum.
+- [x] **[surrealdb-intro:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/surrealdb-intro)** Rust ile yazılmış surrealdb'nin kullanımını incelediğim örnek.
+- [x] **[simple-udp-server:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/simple-udp-server)** Bu örnekte Rust ile UDP tabanlı basit bir server ve istemci uygulamanın nasıl yazılacağını incelemeye çalışıyorum.
+- [x] **[simple-udp-client:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/simple-udp-client)** Bu uygulama ise simple-udp-server isimli UDP sunucusunun istemcisi rolündedir.
+- [x] **[udp-again:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/udp-again)** Bu örnekte UDP tabanlı bir oyun sunucusunun temellerini atmaya çalışıyorum. Giriş olarak istemcilerden oyuncu pozisyonlarını toplayan ve bunları bağlı olan istemcilere yollayan bir düzenek planlıyorum.
+- [x] **[using_tcp:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/using_tcp)** Bu örnekte çok basit bir TCP dinleyici ve istemci geliştiriyoruz. Sunucu tarafı birden fazla istemcinin mesajını dinleyecek şekilde thread kullanacak şekilde geliştiriliyor.
+- [x] **[simple-proxy:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/simple-proxy)** Sıradaki örnekte bir reverse proxy'nin Rust ile nasıl yazılacağını inceliyoruz. Çözümde bir backend server ki origin server olarak da adlandırılıyor, bir de reverse proxy var. Reverse proxy'ye gelen istemci talepleri origin server'a iniyorlar.
+- [x] **[command-pattern:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/command-pattern)** Örnekteki amaç belli başlı operasyonların sıralı işletilmesi gerektiği durumlarda sıklıkla kullanılan davranışsal tasarım kalıbı Command Pattern'in rust tarafında uygulanışını öğrenmek.

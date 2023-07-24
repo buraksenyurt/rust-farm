@@ -19,7 +19,7 @@
 - [x] **[viva_las_vegas:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/viva_las_vegas)** Rust'ın en zor konularından birisi olan Lifetimes kavramını basit bir şekilde nasıl anlatabilirim? Bu soruya cevap aradığımız örnek uygulama.
 - [x] **[by_val_by_ref :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/by_val_by_ref)** Bu pratikte bir arkadaşımıza ___Value Moved Here___ hatasının ne olduğun anlatmaya çalışıyoruz.
 - [x] **[only_you      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/only_you)** Bir t anında sadece tek bir değiştirilebilir referans ___Mutable Reference___ olabilir teorisini inceliyoruz.
-- ~~[ ] [__fermat      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fermat)__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
+- [ ] ~~__[fermat      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/fermat)__ Basit bir yorumlayıcı nasıl yazılır, öğrenmeye çalıştığım örnek. İPTAL~~
 - [x] **[pipeline      :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/pipeline)** Program girdilerini stdin ve stdout ile nasıl okuyup yazabileceğimizi incelemeye çalıştığımız bir örnek.
 - [x] **[dublerver     :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/dublerver)** Bir uygulamada iki TcpListener kullanmak.
 - [x] **[wordle        :](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/wordle)** Oldukça popüler olan Worlde oyununun Rust ile nasıl yazıldığını anlatan bir blog yazısına denk geldim ve bende denemek istedim.
@@ -31,7 +31,7 @@
 - [ ] **[lovelace:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/lovelace)** Ara ara [Project Lovelace](https://projectlovelace.net/problems/) sitesinden çeşitli problemleri alıp bu kütüphanede kodlamaya çalışayım diyorum.
 - [x] **[state_pattern:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/state_pattern)** Bu örnekte **State Tasarım Kalıbının** nasıl uygulandığını iki örnekle incelemeye çalışıyoruz.
 - [x] **[re_state_pattern:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/re_state_pattern)** Bu sefer bir oyun nesnesinin durumları ve durumları arası geçişleri belli kurallar çerçevesinde ele aldığımız bir state pattern uygulaması yapmaya çalışıyoruz.
-- [ ] **[packman:** **Bracket-Lib](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/packman)** oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
+- [ ] **[packman:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/packman)** **[Bracket-Lib](https://github.com/amethyst/bracket-lib)** oyun geliştirme kütüphanesinden yararlanılarak yazılmaya çalışılan packman türevi deneysel bir çalışma.
 - [ ] **[win_forms:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/win_forms)** Amacım **winit** paketini biraz tanımaya çalışmak. Yani ekrana bir window nasıl çizilir keşfetmek istiyorum. Bu amaçla cross-platform çalışan winit'ten yararlanacağım.
 - [x] **[hello-wasm:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/hello-wasm)** **wasm-bindgen** küfesinden yararlanarak Web Assembly uygulamaları nasıl oluşturulabilir anlamaya çalışıyorum.
 - [ ] **[sokoban:](https://github.com/buraksenyurt/rust-farm/tree/main/Practices/sokoban)** Oyun programlada önemli bir yere sahip olan **Entity Component System** 'i tanımaya çalıştığım öğreti.

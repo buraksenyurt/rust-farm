@@ -1,0 +1,17 @@
+version: "3.1"
+
+services:
+  db:
+    container_name: one-solution-db
+    image: postgres
+    environment:
+      POSTGRES_USER: scoth
+      POSTGRES_PASSWORD: tiger
+      POSTGRES_DB: almanac
+    ports:
+      - "5473:5432"
+    volumes:
+      - postgres_dev:/var/lib/postgresql/data
+
+volumes:
+  postgres_dev:

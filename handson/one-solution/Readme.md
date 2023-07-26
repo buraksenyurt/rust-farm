@@ -1,6 +1,6 @@
 # Rust ile Bir Proje İskeletinin Oluşturulması
 
-Microsoft .Net platformunda çalışanlar genellikle bir Solution ve altında toplanmış projelere aşinadır. Rust her ne kadar sistem programlama dili odaklı olsa da zaman zaman birden fazla rust uygulamasının bir arada yer aldığı siloların geliştirilmesi de söz konusudur. Özellikle servis odaklı yaklaşımlarda bunu sıklıkla görebiliriz. İşte bu çalışmadaki amaç bir Rust projeler topluluğunun tek çatı altında nasıl toplanabileceğini incelemektir.
+Microsoft .Net platformunda çalışanlar genellikle bir Solution ve altında toplanmış projelere aşinadır. Rust her ne kadar sistem programlama dili odaklı olsa da zaman zaman birden fazla rust uygulamasının bir arada yer aldığı siloların geliştirilmesi de söz konusudur. Özellikle servis odaklı yaklaşımlarda bunu sıklıkla görebiliriz. İşte bu çalışmadaki amaç bir Rust projeler topluluğunun tek çatı altında nasıl toplanabileceğini incelemektir. Konu ile ilgili olarak [şu medium yazı serisini](https://medium.com/@omprakashsridharan/rust-multi-module-microservices-part-3-database-808bfddae8a8) tatpik etmeye çalışıyorum. Her Hands-On'da olduğu gibi bunda da yol boyunca karşılaşacağım zorluklar olacağını biliyorum. Nitekim doğrudan yazıyı takip etmek yeterli değil, eksik kısımları github tarafından bakıp bulmak gerekiyor. Yine de öğrenecek, çözülecek bir sürü şey var. Süper :)
 
 ## Seyrüsefer
 
@@ -42,6 +42,34 @@ thiserror = "1.0.44"
 axum = "0.6.19"
 tracing = "0.1.38"
 tracing-subscriber = { version = "0.3.17", features = ["json","time","env-filter"]}
+
 ```
 
 Şimdilik ihtiyaç duyulabilecek bazı küfeler eklendi. Asenkron operasyonlar için tokio, rest api tarafı için axum, hata yönetimini kolaylaştırmak için thiserror,yapılsal olay günlükleri için tracing, burayla etkileşim için tracing-subscriber, json serileştirme tarafları için serde ve serde_json gibi. İhtiyaç duydukça başka crate'ler de buraya eklenebilir ama genel itibariyle workspace'in oluşturulmasının esasları buradaki gibidir.
+
+Serüven veritabanı operasyonlarını içeren almanac_data projesi ile devam ediyor. Burada daha önceden de kullanma fırsatı bulduğum sea-orm küfesi kullanılmakta. 
+
+Bu projenin test fonksiyonu oldukça dikkat çekici. Solution esas itibariyle postgresql, apache kafka gibi unsurlar için docker-compose enstrümanını kullanmakta. Test fonksiyonundaki testcontainers enstrümanları Docker CLI ile konuşmak ve gerekli container'ları ayağa kaldırmak için kullanılmakta. 
+
+Bu açıdan bakıldığında entegrasyon testlerinde de kullanıldığını ifade edebiliriz. Örnekte bir kuple postgresql'e bağlanıp basitçe SELECT 3.14 cevabını kontrol ediyoruz.
+
+```shell
+# root klasörde test çalıştırılması 
+# workspace'e konu alan tüm testlerin çalıştırılmasını anlamına gelir
+cargo test
+```
+
+_**Not:**_ Kendi Ubuntu sistemimde(22.04 versiyonu) testi yürütmek istediğimde **'failed to start container'** şeklinde bir hata aldım. Bunun sebebi docker CLI komutlarını sudo ile çalıştırabiliyor olmamdır. Dolayısıyla root user'ımı docker grubuna eklemem gerekti.
+
+```shell
+# eğer yoksa öncesinde bir docker grubu açmak lazım
+# ki benim sistemde vardı
+sudo groupadd docker
+
+# sonrasında kullanıcımızı bu gruba eklemek gerekiyor
+sudo usermod -aG docker $USER
+
+# makineyi restart ettikten sonra testin çalıştığını gördüm
+```
+
+

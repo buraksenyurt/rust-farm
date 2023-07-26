@@ -1,0 +1,11 @@
+[workspace]
+members = ["almanac_analytic","almanac_api","almanac_common","almanac_data","almanac_queue"]
+
+[workspace.dependencies]
+tokio = {version = "1.29.1", features = ["full"]}
+serde = {version = "1.0.174", features = ["derive"]}
+serde_json = "1.0.103"
+thiserror = "1.0.44"
+axum = "0.6.19"
+tracing = "0.1.38"
+tracing-subscriber = { version = "0.3.17", features = ["json","time","env-filter"]}

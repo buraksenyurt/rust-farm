@@ -72,4 +72,29 @@ sudo usermod -aG docker $USER
 # makineyi restart ettikten sonra testin çalıştığını gördüm
 ```
 
+Sonraki bölümde Apache Kafka ile ilgili kodlamalar söz konusu ama oraya geçmeden önce temel gereksinimleri tamamlamayı düşünüyorum. Öncesinde Common ve WebApi taraflarını halledip sonrasında oyun ekleme, puan değiştirme gibi aksiyonların ele alınacağı asenkron kuyruk mekanizmasını entegre etmek niyetindeyim.
+
+Common projesinde sadece birkaç event tanımı yer alıyor. Bir oyun eklendiğinde veya puanı değiştiğinde mesaj servisine gidecek verinin içeriğini tanımlıyorlar. 
+
+WebApi projesinde ise işlemler biraz daha uzun. Öncelikle sea-orm ile migration hazırlıklarını yapmak gerekiyor.
+
+```shell
+# Daha önceden sistemimde sea-orm-cli yüklüydü 
+# Deneyenler içinse aşağıdaki komutla yüklenebilir
+cargo install sea-orm-cli
+# ardından ilk migration planı aşağıdaki komutla oluşturulur
+cd almanac_api
+sea-orm-cli migration init
+
+# migration klasöründeki ilgili create_table dosyasını düzenlendikten sonra
+# öncesinde docker container'ı ayağa kaldırıp
+docker-compose up
+
+# Ardından aşağıdaki komutlar ile migration planının çalıştırılması sağlanabilir
+cd migration
+cargo run
+```
+
+![../images/one_solution_01.png](../images/one_solution_01.png)
+
 

@@ -3,9 +3,11 @@ members = ["almanac_analytic","almanac_api","almanac_common","almanac_data","alm
 
 [workspace.dependencies]
 tokio = {version = "1.29.1", features = ["full"]}
-serde = {version = "1.0.174", features = ["derive"]}
+serde = {version = "1.0.1", features = ["derive"]}
 serde_json = "1.0.103"
 thiserror = "1.0.44"
 axum = "0.6.19"
-tracing = "0.1.38"
+tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.17", features = ["json","time","env-filter"]}
+sea-orm = { version = "0.11.3", features = ["macros", "runtime-tokio-rustls", "sqlx-postgres"] }
+testcontainers = "0.14.0"

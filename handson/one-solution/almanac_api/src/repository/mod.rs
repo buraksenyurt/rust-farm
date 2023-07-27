@@ -103,4 +103,25 @@ mod tests {
         assert_eq!(updated_game.title, title.clone());
         assert_eq!(updated_game.point, new_point);
     }
+
+    #[tokio::test]
+    async fn should_not_same_game_title_add_test() {
+        let docker = clients::Cli::default();
+        let database = images::postgres::Postgres::default();
+        let node = docker.run(database);
+        let con_str = &format!(
+            "postgres://postgres:postgres@127.0.0.1:{}/postgres",
+            node.get_host_port_ipv4(5432)
+        );
+        let connection = get_conn(con_str).await.unwrap();
+        let repository = GameRepository::new(connection.clone()).await.unwrap();
+        let title = "Ultra Super Bomberman II".to_string();
+        let point = 78;
+        let game = repository.add_game(title.clone(), point).await.unwrap();
+        assert_eq!(game.title, title.clone());
+        assert_eq!(game.point, point);
+
+        let game2 = repository.add_game(title.clone(), point.clone()).await;
+        assert!(game2.is_err());
+    }
 }

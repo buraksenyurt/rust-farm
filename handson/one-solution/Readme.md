@@ -84,7 +84,7 @@ WebApi projesinde ise işlemler biraz daha uzun. Öncelikle sea-orm ile migratio
 cargo install sea-orm-cli
 # ardından ilk migration planı aşağıdaki komutla oluşturulur
 cd almanac_api
-sea-orm-cli migration init
+sea-orm-cli migrate init
 
 # migration klasöründeki ilgili create_table dosyasını düzenlendikten sonra
 # öncesinde docker container'ı ayağa kaldırıp
@@ -105,5 +105,15 @@ sea-orm-cli generate entity --with-serde both -o src/entity
 ```
 
 ![../images/one_solution_02.png](../images/one_solution_02.png)
+
+Tam bu noktada atladığım bir şey olduğunu fark ettim. Oyunların title alanı unique olmalı. Bu ve benzeri farklılıklar için yeni migration planları oluşturup çalıştırmak mantıklı. Örnekte küçük bir değişiklik olsa da yeni migration planı nasıl hazırlanır göstermek açısından kıymetli.
+
+```shell
+# Web_api klasöründeyken 
+sea-orm-cli migrate generate unique_title
+# ardından
+cd migration
+cargo run
+```
 
 

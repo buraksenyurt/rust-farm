@@ -18,7 +18,7 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Game::Title).string().not_null())
+                    .col(ColumnDef::new(Game::Title).string().unique_key().not_null())
                     .col(ColumnDef::new(Game::Point).integer().not_null())
                     .to_owned(),
             )

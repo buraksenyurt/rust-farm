@@ -7,9 +7,12 @@ edition = "2021"
 migration = { path = "migration" }
 tokio = {workspace = true}
 serde = { workspace = true }
+serde_json = {workspace = true }
 sea-orm = { workspace = true }
 thiserror = { workspace = true }
 testcontainers = { workspace = true }
+axum = {workspace = true}
+dotenv = "0.15.0"
 almanac_data = { path = "../almanac_data" }
 almanac_common = {path = "../almanac_common"}
 

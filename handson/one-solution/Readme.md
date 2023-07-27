@@ -97,4 +97,13 @@ cargo run
 
 ![../images/one_solution_01.png](../images/one_solution_01.png)
 
+Koddaki data structure kullanılarak postgresql tarafındaki tablo oluşturuldu. ORM tarafındaki entity veri yapısının üretimi içinse aşağıdaki komutla ilerlenebilir.
+
+```shell
+# Bu komutu almanac_api klasöründe çalıştırmak gerekiyor
+sea-orm-cli generate entity --with-serde both -o src/entity
+```
+
+![../images/one_solution_02.png](../images/one_solution_02.png)
+
 

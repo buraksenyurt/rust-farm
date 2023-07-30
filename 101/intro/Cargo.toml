@@ -1,0 +1,8 @@
+[package]
+name = "qa"
+version = "0.1.0"
+edition = "2021"
+description = "Rust sunumu için çok basit bir örnek"
+authors = ["BSŞ<burakselimsenyurt@gmail.com>"]
+
+[dependencies]

@@ -6,20 +6,22 @@ use crate::common::*;
    Esnek bir kullanıma sahiptir ancak gereksiz allocation'lar da yapar.
 */
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct WebRequest {
-    pub url: String,
-    pub method: String,
-    pub body: Option<String>,
-    pub headers: Vec<(String, String)>,
+    url: String,
+    method: String,
+    body: Option<String>,
+    headers: Vec<(String, String)>,
 }
 
+#[allow(dead_code)]
 #[derive(Default)]
 pub struct WebRequestBuilder {
-    pub url: Option<String>,
-    pub method: Option<String>,
-    pub body: Option<String>,
-    pub headers: Vec<(String, String)>,
+    url: Option<String>,
+    method: Option<String>,
+    body: Option<String>,
+    headers: Vec<(String, String)>,
 }
 
 impl WebRequestBuilder {

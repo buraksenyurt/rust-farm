@@ -1,5 +1,11 @@
 use crate::common::*;
 
+/*
+   Aşağıdaki kullanımda Non-Consuming Builder Pattern
+   uyarlaması söz konusudur.
+   Esnek bir kullanıma sahiptir ancak gereksiz allocation'lar da yapar.
+*/
+
 #[derive(Debug)]
 pub struct WebRequest {
     pub url: String,
@@ -37,6 +43,7 @@ impl WebRequestBuilder {
         self
     }
 
+    // Dikkat: &mut self kullanılmamalı.
     pub fn build(&self) -> Result<WebRequest> {
         let Some(url)=self.url.as_ref() else {return Err(Error::Generic("There is No Url"));};
         let method = self

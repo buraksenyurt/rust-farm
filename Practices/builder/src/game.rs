@@ -14,3 +14,13 @@ impl Game {
         }
     }
 }
+
+impl Default for Game {
+    fn default() -> Self {
+        Self {
+            title: "Unknown".into(),
+            released: false,
+            summary: None,
+        }
+    }
+}

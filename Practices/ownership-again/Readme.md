@@ -101,3 +101,53 @@ help: consider cloning the value if the performance cost is acceptable
 For more information about this error, try `rustc --explain E0382`.
 error: could not compile `ownership-again` (bin "ownership-again") due to previous error
 ```
+
+## 02 Sahipliğin Fonksiyonlara Taşınması İhlali
+
+String gibi bir değişkeni bir fonksiyonda parametre olarak kullandığımızda sahiplik bu fonksiyona geçer ve scope dışına çıkıldığında da yok edilir. Dolayısıyla function caller'ın kullanabileceği bir değişken kalmaz. Aşağıdaki kod parçasını inceleyelim.
+
+```rust
+fn main() {
+    // #3 Fonksiyonlarda move operasyonu
+    let employee = String::from("Margırit");
+    get_detail(employee); //employee isimli değişkenin sahip olduğu değerin sahipliği get_detail fonksiyonuna geçer
+                          // Bu nedenle aşağıdaki kullanım da 'borrow of moved value' hatasına neden olur.
+    println!("{employee} details");
+}
+
+fn get_detail(nick_name: String) {
+    println!("{nick_name} details is here");
+}
+
+```
+
+employee get_detail fonksiyonuna gönderildiğinde sahip olduğu değerin sahipliği bu fonksiyondaki nick_name'e geçer ve fonksiyon tamamlandığında nick_name değeri düşürülür. Buna göre employee isimli değişken artık olmayan bir veriyi refere eder halde kalabilir. Bu durumun oluşması rust sahiplik kuralları gereği derleme zamanında tespit edilir ve kod derlenmez. 
+
+```text
+error[E0382]: borrow of moved value: `employee`
+  --> src/main.rs:32:15
+   |
+29 |     let employee = String::from("Margırit");
+   |         -------- move occurs because `employee` has type `String`, which does not implement the `Copy` trait
+30 |     get_detail(employee); //employee isimli değişkenin sahip olduğu değerin sahipliği get_detail fonksiyonuna geçer
+   |                -------- value moved here
+31 |                           // Bu nedenle aşağıdaki kullanım da 'borrow of moved value' hatasına neden olur.
+32 |     println!("{employee} details");
+   |               ^^^^^^^^^^ value borrowed here after move
+   |
+note: consider changing this parameter type in function `get_detail` to borrow instead if owning the value isn't necessary
+  --> src/main.rs:35:26
+   |
+35 | fn get_detail(nick_name: String) {
+   |    ----------            ^^^^^^ this parameter takes ownership of the value
+   |    |
+   |    in this function
+   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider cloning the value if the performance cost is acceptable
+   |
+30 |     get_detail(employee.clone()); //employee isimli değişkenin sahip olduğu değerin sahipliği get_detail fonksiyonuna geçer
+   |                        ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `ownership-again` (bin "ownership-again") due to previous error
+```

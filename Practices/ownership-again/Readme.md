@@ -55,10 +55,49 @@ For more information about this error, try `rustc --explain E0425`.
 error: could not compile `ownership-again` (bin "ownership-again") due to 2 previous errors
 ```
 
-## 01 move Oluşması
+## 01 Borrow of Moved Value oluşması
 
 Boyutu bilinen ve stack'de duran değerlerin sahipliği ile heap'te duranlar atama işlemlerinde farklı davranışlar gösterirler. Aşağıdaki kod parçasını ele alalım.
 
 ```rust
+fn main() {
+    // 2nci Örnek (Value moved occurs here)
+    let point_1 = 10;
+    let mut point_2 = point_1; // i32'nin boyutu bellidir, Deep Copy olur. point_2 değeri point_1'e kopyalanır.
+    println!("P1={point_1} , P2={point_2}");
+    point_2 = 15; // point_2 de yapılan değişiklik point_1'i etkilemez. 10 ve 15 değerlerinin sahipleri farklıdır.
+    println!("P1={point_1} , P2={point_2}");
 
+    // Ama aşağıdaki duruma bakarsak
+    let my_name = String::from("Clot Van Damme");
+    let your_name = my_name.clone(); // Clot Van Damme'ın sahipliği el değiştirir ve your_name'e geçer. my_name artık kullanılamaz.
+                                     // Buna göre aşağıdaki kullanım borrow of moved value hatasının doğmasına neden olur
+    println!("My name is {my_name} and your name is {your_name}");
+    // elbette your_name.clone() ile bu hatanın önüne geçebiliriz.
+    // Bu durumda Deep Copy yapılıp her iki değişken de kullanılabilir.
+    // Lakin bilindiği üzere deep copy operasyonu pahalıdır.
+}
+```
+
+Bu durumda aşağıdaki derleme zamanı hatası oluşur.
+
+```text
+error[E0382]: borrow of moved value: `my_name`
+  --> src/main.rs:22:26
+   |
+20 |     let my_name = String::from("Clot Van Damme");
+   |         ------- move occurs because `my_name` has type `String`, which does not implement the `Copy` trait
+21 |     let your_name = my_name; // Clot Van Damme'ın sahipliği el değiştirir ve your_name'e geçer. my_name artık kullanılamaz.
+   |                     ------- value moved here
+22 |     println!("My name is {my_name} and your name is {your_name}");
+   |                          ^^^^^^^^^ value borrowed here after move
+   |
+   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider cloning the value if the performance cost is acceptable
+   |
+21 |     let your_name = my_name.clone(); // Clot Van Damme'ın sahipliği el değiştirir ve your_name'e geçer. my_name artık kullanılamaz.
+   |                            ++++++++
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `ownership-again` (bin "ownership-again") due to previous error
 ```

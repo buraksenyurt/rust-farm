@@ -1,0 +1,8 @@
+[package]
+name = "ownership-again"
+version = "0.1.0"
+edition = "2021"
+description = "ownership kurallarını hatırlamak için açılmış program"
+authors =["BSŞ"]
+
+[dependencies]

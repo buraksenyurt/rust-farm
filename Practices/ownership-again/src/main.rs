@@ -25,13 +25,23 @@ fn main() {
     // // Bu durumda Deep Copy yapılıp her iki değişken de kullanılabilir.
     // // Lakin bilindiği üzere deep copy operasyonu pahalıdır.
 
-    // #3 Fonksiyonlarda move operasyonu
-    let employee = String::from("Margırit");
-    get_detail(employee); //employee isimli değişkenin sahip olduğu değerin sahipliği get_detail fonksiyonuna geçer
-                          // Bu nedenle aşağıdaki kullanım da 'borrow of moved value' hatasına neden olur.
-    println!("{employee} details");
+    // // #3 Fonksiyonlarda move operasyonu
+    // let employee = String::from("Margırit");
+    // get_detail(employee); //employee isimli değişkenin sahip olduğu değerin sahipliği get_detail fonksiyonuna geçer
+    //                       // Bu nedenle aşağıdaki kullanım da 'borrow of moved value' hatasına neden olur.
+    // println!("{employee} details");
+
+    // #3 için çözüm önerisi
+    let employee = String::from("Lara Kruft");
+    let loaded = get_detail(employee);
+    println!("{loaded}");
 }
 
-fn get_detail(nick_name: String) {
-    println!("{nick_name} details is here");
+fn get_detail(nick_name: String) -> String {
+    println!("{nick_name} details are here");
+    nick_name
 }
+
+// fn get_detail(nick_name: String) {
+//     println!("{nick_name} details are here");
+// }

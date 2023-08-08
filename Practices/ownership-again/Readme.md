@@ -151,3 +151,19 @@ help: consider cloning the value if the performance cost is acceptable
 For more information about this error, try `rustc --explain E0382`.
 error: could not compile `ownership-again` (bin "ownership-again") due to previous error
 ```
+
+Buradaki durumun çözümü için aşağıdaki gibi bir yol uygulanabilir. Sahiplik fonksiyon içerisinden geri döndürülür ve yeni bir değişkene alınır.
+
+```rust
+fn main() {
+    // #3 için çözüm önerisi
+    let employee = String::from("Lara Kruft");
+    let loaded = get_detail(employee);
+    println!("{loaded}");
+}
+
+fn get_detail(nick_name: String) -> String {
+    println!("{nick_name} details are here");
+    nick_name
+}
+```

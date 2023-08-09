@@ -118,3 +118,13 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
 Tabii Rust içinde derleme zamanında yakalanan bir hata durumu söz konusu değildir ancak kodun hiçbir bölümü çalıştırılmayıp geliştirici için daha anlamlı bir hata mesajı verilmektedir.
+
+## Notlar
+
+- **Buffer Overflow** hatası ile ilgili olarak kaynaklarda geçen bir solucan var. Morris solucanı olarak bilinen saldırı sonrası solucan 1988'de Internetteki 60bin makineye bulaşmış. Internetin büyük bölümü birkaç günlüğüne kapanmış. Morris, bazı Unix sistemlerindeki buffer overflow açığını kullanmış. Ama nasıl kullanmış henüz aklım almadı :D
+- **Double Free** ile ilgili bazı saldırılar.
+  - **2011** yılında **Apache** sunucularında **Range** başlığını içeren isteklerdeki Double Free hatası tetiklenerek saldırılar gerçekleştirilmiş. Saldırı apache kullanan sunucuların devre dışı kalmasına neden oluyordu. Hizmet kesintisi yaşayan sunucular oldu. **Apache Killer**.
+  - **2008** yılında **Windows** işletim sisteminin **RPC** işlevindeki Double Free hatası istismar edilerek saldırılar gerçekleştirilmiş. **MS08-067**.
+- **Use After Free** ile ilgili bazı saldırılar.
+  - **2014** yılında **OpenSSL** kütüphanesindeki Use After Free açığı istismar edilerek saldırılar gerçekleşmiş. SSL/TLS kullanan birçok web sitesi bundan etkilendi ve kullanıcıların özel bilgilerine ulaşılabildiği ortaya çıktı. **Heartbleed**.
+  - **2010** yılında ise Windows işletim sistemini hedef alan ve Use After Frees hatasını kullanan **Stuxnet** isimli bir solucan peydahlandı. Bu solucan İran'ın nükleer santral santrifüjünün zarar görmesine neden olmuş. Böylece endüstriyel kontrol sistemlerinin siber saldırılardan nasıl etkilenebileceği de görülmüş oldu.

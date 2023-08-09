@@ -36,7 +36,7 @@ Rust ile yazdığımız ve Scope dışını çıkıldığında nesne deallocate 
 error[E0382]: borrow of moved value: `player`
   --> src/main.rs:24:24
    |
-21 |     let player = Player::new("Champion".to_string(), 1000);
+21 |     let player = Player::new("Lorna".to_string(), 55);
    |         ------ move occurs because `player` has type `Player`, which does not implement the `Copy` trait
 22 |     delete(player);
    |            ------ value moved here
@@ -54,4 +54,41 @@ note: consider changing this parameter type in function `delete` to borrow inste
 
 For more information about this error, try `rustc --explain E0382`.
 error: could not compile `case_01` (bin "case_01") due to previous error
+```
+
+## Case 02 : Double Frees
+
+Serbest bırakılmış bir bellek bölgesini tekrardan serbest bırakmaya çalışmak. Bununla ilgili double_frees.cpp programını göz önüne alabiliriz.
+
+```shell
+gcc double_frees.cpp -lstdc++ -o double_frees
+./double_frees
+```
+
+Kod başarılı şekilde derlenir ancak çalışma zamanında Segmentation Fault hatası alınır. **Double Free**, aynı bellek alanını iki kez serbest bırakmaya çalıştığında oluşur. Koddaki ilk delete işlemi başarılı bir şekilde belleği serbest bırakır ve daha sonra aynı bellek alanı tekrar serbest bırakmaya çalışır. Bu çalışma zamanında **Segmentation Fault** hatasına neden olur.
+
+Benzer bir kodu Rust ile yazdığımızda ise derleme zamanında hata alırız.
+
+```text
+error[E0382]: use of moved value: `player`
+  --> src/main.rs:16:18
+   |
+13 |     let player = Player::new("Dolares".to_string(), 67);
+   |         ------ move occurs because `player` has type `Player`, which does not implement the `Copy` trait
+14 |     do_something(player);
+   |                  ------ value moved here
+15 |
+16 |     do_something(player);
+   |                  ^^^^^^ value used here after move
+   |
+note: consider changing this parameter type in function `do_something` to borrow instead if owning the value isn't necessary
+  --> src/main.rs:19:25
+   |
+19 | fn do_something(player: Player) {
+   |    ------------         ^^^^^^ this parameter takes ownership of the value
+   |    |
+   |    in this function
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `case_02` (bin "case_02") due to previous error
 ```

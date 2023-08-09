@@ -4,8 +4,8 @@ struct Player {
 }
 
 impl Player {
-    fn new(title: String, point: i32) -> Player {
-        Player { title, point }
+    fn new(title: String, point: i32) -> Self {
+        Self { title, point }
     }
 
     pub fn get_title(&self) -> &String {
@@ -18,7 +18,7 @@ impl Player {
 }
 
 fn main() {
-    let player = Player::new("Champion".to_string(), 1000);
+    let player = Player::new("Lorna".to_string(), 55);
     delete(player);
     // Ownership kuralları gereği derleme zamanında hata alınır
     let player_title = player.get_title(); // borrow of moved value: `player`

@@ -92,3 +92,29 @@ note: consider changing this parameter type in function `do_something` to borrow
 For more information about this error, try `rustc --explain E0382`.
 error: could not compile `case_02` (bin "case_02") due to previous error
 ```
+
+## Case_03 Buffer Overflow
+
+Genellikle belli boyuttaki bir dizinin index dışındaki bir alanına erişip değer atamaya çalıştığımızda karşılaştığımız türden bir hata olduğunu söyleyebiliriz. buffer_overflow.cpp isimli C++ kodunda bu durum ele alınır. 
+
+```shell
+gcc buffer_overflow.cpp -lstdc++ -o buffer_overflow
+./buffer_overflow
+```
+
+Burada 10 elemanlı bir tam sayı dizisinin 11nci elemanına ulaşılmaya çalışılır. C++ çalışma zamanı aşağıdaki hatayı döndürür.
+
+```text
+someData = 1
+*** stack smashing detected ***: terminated
+Aborted (core dumped)
+```
+
+Dikkat edileceği üzere someData değeri ekrana yazdırılmıştır. Yani kodun belli bir kısmı çalışmıştır ancak dizi sınırlarını taştığımız durum için **stack smashing detected** şeklinde bir hata dönmüştür. Rust'ın bu duruma yaklaşımı ise şöyledir. 
+
+```text
+thread 'main' panicked at 'index out of bounds: the len is 10 but the index is 10', src/main.rs:6:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+
+Tabii Rust içinde derleme zamanında yakalanan bir hata durumu söz konusu değildir ancak kodun hiçbir bölümü çalıştırılmayıp geliştirici için daha anlamlı bir hata mesajı verilmektedir.

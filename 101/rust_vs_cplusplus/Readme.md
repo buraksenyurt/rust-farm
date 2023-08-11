@@ -119,6 +119,46 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
 Tabii Rust içinde derleme zamanında yakalanan bir hata durumu söz konusu değildir ancak kodun hiçbir bölümü çalıştırılmayıp geliştirici için daha anlamlı bir hata mesajı verilmektedir.
 
+## Case_04 Dangling Pointer
+
+Bir işaretçinin(pointer) referans ettiği bellek adresi ve içeriği artık kullanılmıyordur ancak işaretçi, program içinde aktif kalmaya devam etmektedir. Bu durumda işaretçi rastgele bir veri içeriğini tutabilir. Bununla ilgili örnek C++ dosyası aşağıdaki gibi çalıştırılabilir.
+
+```shell
+gcc dangling_pointer.cpp -lstdc++ -o buffer_overflow
+./dangling_pointer
+```
+
+Örnekte player işaretçisinin değeri, danglingPointer isimli işaretçiye atanmış sonrasında calcBonus fonksiyonunda bu player işaretçisinin gösterdiği değer bellekten atılmıştır. Ancak main fonksiyonundaki akışta player işaretçisinin atandığı danglingPointer üstünden getName ile oyuncu adına ulaşışmaya çalışılmaktadır. Bu koda ait çalışma zamanı çıktısı aşağıdaki gibidir.
+
+```text
+Oyuncu Doktor Sitrenç
+Bonus hesaplamaları
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc
+Aborted (core dumped)
+```
+
+Benzer senaryoyu Rust ile uyguladığımızda ise (ki case_04 isimli örnek) derleme zamanında hata alırız.
+
+```text
+error[E0505]: cannot move out of `player` because it is borrowed
+  --> src/main.rs:19:16
+   |
+17 |     let player = Player::new("Doktor Acayip".to_string(), 400);
+   |         ------ binding `player` declared here
+18 |     let dangling_player = &player;
+   |                           ------- borrow of `player` occurs here
+19 |     calc_bonus(player);
+   |                ^^^^^^ move out of `player` occurs here
+20 |     println!("İşlemleri yapılan oyuncu {}", dangling_player.get_name());
+   |                                             -------------------------- borrow later used here
+
+For more information about this error, try `rustc --explain E0505`.
+error: could not compile `case_04` (bin "case_04") due to previous error
+```
+
+Bu son derece doğaldır çünkü Rust'ın sahiplenme (ownership) kuralları gereği bir nesne scope dışına çıktığı anda verisi ile birlikte bellekten atılır. Elbette & operatörü ile referans taşıması ile sahipliği geçici süreliğini calc_bonus fonksiyonuna verebiliriz.
+
 ## Notlar
 
 - **Buffer Overflow** hatası ile ilgili olarak kaynaklarda geçen bir solucan var. Morris solucanı olarak bilinen saldırı sonrası solucan 1988'de Internetteki 60bin makineye bulaşmış. Internetin büyük bölümü birkaç günlüğüne kapanmış. Morris, bazı Unix sistemlerindeki buffer overflow açığını kullanmış. Ama nasıl kullanmış henüz aklım almadı :D
@@ -128,3 +168,6 @@ Tabii Rust içinde derleme zamanında yakalanan bir hata durumu söz konusu değ
 - **Use After Free** ile ilgili bazı saldırılar.
   - **2014** yılında **OpenSSL** kütüphanesindeki Use After Free açığı istismar edilerek saldırılar gerçekleşmiş. SSL/TLS kullanan birçok web sitesi bundan etkilendi ve kullanıcıların özel bilgilerine ulaşılabildiği ortaya çıktı. **Heartbleed**.
   - **2010** yılında ise Windows işletim sistemini hedef alan ve Use After Frees hatasını kullanan **Stuxnet** isimli bir solucan peydahlandı. Bu solucan İran'ın nükleer santral santrifüjünün zarar görmesine neden olmuş. Böylece endüstriyel kontrol sistemlerinin siber saldırılardan nasıl etkilenebileceği de görülmüş oldu.
+- **Dangling Pointer** ile ilgili saldırılar.
+  - **2020** Apple'ın safari ve bazı uygulamalarında kullanılan WebKit paketinde bu açık görülmüş. Kötü niyetli kod yürütülmesine sebebiyet verebilirdi.
+  - **2015** Internet Explorer'daki bu açıktan faydalanan bir web sitesi uzaktan kod yürütmeye yönelik girişimlerde bulundu.

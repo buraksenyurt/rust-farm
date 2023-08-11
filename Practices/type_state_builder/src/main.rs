@@ -5,13 +5,27 @@ pub enum Error {
 }
 pub type Result<T> = core::result::Result<T, Error>;
 
-fn main() {
+fn main() -> Result<()> {
+    /*
+       State 00 : Başlangıç
+
+       World oluşutmak için WorldBuilder veri modelini aşağıdaki
+       gibi kullandığımızı düşünelim. Burada name alanına değer atanmamakta.
+       Bu build fonksiyonundaki kontrol sebebiyle çalışma zamanında,
+       hata üretilmesine neden olacaktır.
+
+       Error: World("empty name")
+
+       Amacımız name ve background alanlarının mutlaka girilmesi gerektiğini,
+       derleme zamanında görebilmek. Type State Builder desenin burada devreye giriyor.
+    */
     let mordor = WorldBuilder::new()
-        .name("Mordor")
         .background("middle_earth_big.jpg")
         .window(1024., 768.)
-        .build();
+        .build()?;
     println!("{mordor:#?}");
+
+    Ok(())
 }
 
 #[derive(Debug, Clone)]

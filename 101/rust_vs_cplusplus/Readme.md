@@ -4,17 +4,17 @@ Rust'ın ownership ve borrow checker mekanizmaları C veya C++'ta sıklıkla yap
 
 ## Case 01 : Use After Frees
 
-Bellekten silinmiş bir değerin referansına silme işleminden sonra tekrardan erişmeye çalışmak. Bunun için use_after_frees.cpp isimli dosyayı derleyip çalıştıralım.
+**Bellekten silinmiş bir değerin referansına silme işleminden sonra tekrardan erişmeye çalışmak.** Bunun için use_after_frees.cpp isimli dosyayı derleyip çalıştıralım.
 
 ```shell
 # derlemek için
-gcc use_after_frees.cpp -lstdc++ -o use_after_frees
+gcc use_after_frees_01.cpp -lstdc++ -o use_after_frees
 
 # derlenen kodu çalıştırmak için
 ./use_after_frees
 ```
 
-C++ ile yazılan kodda Use After Free durumunu simüle etmek için delete işleminden yararlanılmıştır. delete ile nesnenin bellekten silinmesi işlemi açıkça gerçekleştirilmiş olur. Ancak C++ kodu başarılı bir şekilde derlenir. Çalışma zamanında ise hata verir.
+C++ ile yazılan kodda Use After Free durumunu simüle etmek için delete işleminden yararlanılmıştır. delete ile nesnenin bellekten silinmesi işlemi açıkça gerçekleştirilmiş olur. Ancak **C++ kodu başarılı bir şekilde derlenir. Çalışma zamanında ise hata verir.**
 
 ```text
 terminate called after throwing an instance of 'std::length_error'
@@ -58,10 +58,10 @@ error: could not compile `case_01` (bin "case_01") due to previous error
 
 ## Case 02 : Double Frees
 
-Serbest bırakılmış bir bellek bölgesini tekrardan serbest bırakmaya çalışmak. Bununla ilgili double_frees.cpp programını göz önüne alabiliriz.
+**Serbest bırakılmış bir bellek bölgesini tekrardan serbest bırakmaya çalışmak.** Bununla ilgili double_frees.cpp programını göz önüne alabiliriz.
 
 ```shell
-gcc double_frees.cpp -lstdc++ -o double_frees
+gcc double_frees_02.cpp -lstdc++ -o double_frees
 ./double_frees
 ```
 
@@ -95,10 +95,10 @@ error: could not compile `case_02` (bin "case_02") due to previous error
 
 ## Case_03 Buffer Overflow
 
-Genellikle belli boyuttaki bir dizinin index dışındaki bir alanına erişip değer atamaya çalıştığımızda karşılaştığımız türden bir hata olduğunu söyleyebiliriz. buffer_overflow.cpp isimli C++ kodunda bu durum ele alınır. 
+Genellikle **belli boyuttaki bir dizinin index dışındaki bir alanına erişip değer atamaya çalıştığımızda** karşılaştığımız türden bir hata olduğunu söyleyebiliriz. buffer_overflow.cpp isimli C++ kodunda bu durum ele alınır.
 
 ```shell
-gcc buffer_overflow.cpp -lstdc++ -o buffer_overflow
+gcc buffer_overflow_03.cpp -lstdc++ -o buffer_overflow
 ./buffer_overflow
 ```
 
@@ -110,7 +110,7 @@ someData = 1
 Aborted (core dumped)
 ```
 
-Dikkat edileceği üzere someData değeri ekrana yazdırılmıştır. Yani kodun belli bir kısmı çalışmıştır ancak dizi sınırlarını taştığımız durum için **stack smashing detected** şeklinde bir hata dönmüştür. Rust'ın bu duruma yaklaşımı ise şöyledir. 
+Dikkat edileceği üzere someData değeri ekrana yazdırılmıştır. Yani kodun belli bir kısmı çalışmıştır ancak dizi sınırlarını taştığımız durum için **stack smashing detected** şeklinde bir hata dönmüştür. Rust'ın bu duruma yaklaşımı ise şöyledir.
 
 ```text
 thread 'main' panicked at 'index out of bounds: the len is 10 but the index is 10', src/main.rs:6:9
@@ -121,10 +121,10 @@ Tabii Rust içinde derleme zamanında yakalanan bir hata durumu söz konusu değ
 
 ## Case_04 Dangling Pointer
 
-Bir işaretçinin(pointer) referans ettiği bellek adresi ve içeriği artık kullanılmıyordur ancak işaretçi, program içinde aktif kalmaya devam etmektedir. Bu durumda işaretçi rastgele bir veri içeriğini tutabilir. Bununla ilgili örnek C++ dosyası aşağıdaki gibi çalıştırılabilir.
+**Bir işaretçinin(pointer) referans ettiği bellek adresi ve içeriği artık kullanılmıyordur ancak işaretçi, program içinde aktif kalmaya devam etmiştir.** Bu durumda işaretçi rastgele bir veri içeriğini tutabilir. Bununla ilgili örnek C++ dosyası aşağıdaki gibi çalıştırılabilir.
 
 ```shell
-gcc dangling_pointer.cpp -lstdc++ -o buffer_overflow
+gcc dangling_pointer_04.cpp -lstdc++ -o dangling_pointer
 ./dangling_pointer
 ```
 
@@ -138,7 +138,7 @@ terminate called after throwing an instance of 'std::bad_alloc'
 Aborted (core dumped)
 ```
 
-Benzer senaryoyu Rust ile uyguladığımızda ise (ki case_04 isimli örnek) derleme zamanında hata alırız.
+Benzer senaryoyu Rust ile uyguladığımızda ise _(ki case_04 isimli örnek)_ derleme zamanında hata alırız.
 
 ```text
 error[E0505]: cannot move out of `player` because it is borrowed

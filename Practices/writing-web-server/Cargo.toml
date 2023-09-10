@@ -7,5 +7,7 @@ edition = "2021"
 
 [workspace]
 members=[
-    "a-simple-web-server"
+    "a-simple-web-server",
+    "multi-thread-web-server",
+    "a-non-blocking-server"
 ]

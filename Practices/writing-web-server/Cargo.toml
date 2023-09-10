@@ -10,5 +10,6 @@ members=[
     "a-simple-web-server",
     "multi-thread-web-server",
     "a-non-blocking-server",
-    "epoll-web-server"
+    "epoll-web-server",
+    "tokio-web-server"
 ]

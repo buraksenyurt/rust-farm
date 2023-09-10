@@ -9,5 +9,6 @@ edition = "2021"
 members=[
     "a-simple-web-server",
     "multi-thread-web-server",
-    "a-non-blocking-server"
+    "a-non-blocking-server",
+    "epoll-web-server"
 ]

@@ -1,5 +1,6 @@
 use std::f32::consts::{E, PI};
 use std::sync::mpsc;
+use std::sync::mpsc::{channel, Receiver, Sender};
 use std::thread::{sleep, spawn};
 use std::time::Duration;
 
@@ -9,8 +10,37 @@ fn main() {
     //do_with_handles();
     // take_ownership_err();
     // take_ownership();
-    use_mpsc();
+    // use_mpsc();
+    use_sender_on_function();
 }
+
+fn use_sender_on_function() {
+    /*
+        006
+        Bu senaryoda transmitter ve receiver nesneleri fonksiyonlara
+        parametre olarak geçilerek kullanılmaktadır.
+     */
+    let (transmitter, receiver) = channel();
+    let handle = spawn(move || {
+        write_log(transmitter, "Servis istek sayısı limit üstüne çıktı.".to_string());
+    });
+    handle.join().unwrap();
+
+    let handle = spawn(move || {
+        read_log(receiver);
+    });
+    handle.join().unwrap();
+}
+
+fn write_log(sender: Sender<String>, message: String) {
+    sender.send(message);
+}
+fn read_log(receiver: Receiver<String>) {
+    let message = receiver.recv().unwrap();
+    println!("Gelen log mesajı: '{message}'");
+}
+
+
 
 fn use_mpsc() {
     /*

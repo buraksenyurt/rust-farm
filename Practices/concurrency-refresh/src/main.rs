@@ -1,4 +1,5 @@
-use std::f32::consts::PI;
+use std::f32::consts::{E, PI};
+use std::sync::mpsc;
 use std::thread::{sleep, spawn};
 use std::time::Duration;
 
@@ -7,7 +8,25 @@ fn main() {
     //do_with_threads();
     //do_with_handles();
     // take_ownership_err();
-    take_ownership();
+    // take_ownership();
+    use_mpsc();
+}
+
+fn use_mpsc() {
+    /*
+       005
+       thread'lar arası mesaj taşımanın br yolu kanalları(channels) kullanmaktır.
+       varsayılan olarak Multiple Producer Single Consumer ilkesine göre çalışır.
+       transmitter mesaj gönderir, receiver mesaj yakalar.
+    */
+    let (transmitter, receiver) = mpsc::channel();
+    let _ = spawn(move || {
+        let calculated = PI * E * 5.;
+        transmitter.send(calculated).unwrap();
+    });
+
+    let catched = receiver.recv().unwrap();
+    println!("Catched value {catched}");
 }
 
 fn take_ownership() {
@@ -20,7 +39,7 @@ fn take_ownership() {
             sleep(Duration::from_millis(500));
         }
     });
-    handle.join();
+    handle.join().unwrap();
 }
 
 // fn take_ownership_err() {

@@ -27,7 +27,7 @@ fn handle_data_races() {
     */
     let shared_value = Arc::new(Mutex::new(PI));
     let mut handles = vec![];
-    for i in 0..5 {
+    for _ in 0..5 {
         let safe_value = Arc::clone(&shared_value);
         let handle = spawn(move || {
             let mut value = safe_value.lock().unwrap();

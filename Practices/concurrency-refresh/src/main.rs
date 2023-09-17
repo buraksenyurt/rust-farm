@@ -1,6 +1,6 @@
 use std::f32::consts::{E, PI};
-use std::sync::mpsc;
 use std::sync::mpsc::{channel, Receiver, Sender};
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread::{sleep, spawn};
 use std::time::Duration;
 
@@ -14,7 +14,35 @@ fn main() {
     //use_sender_on_function();
     //send_multi_values();
     //send_multi_values_with_loop();
-    send_with_cloned_transmitter();
+    //send_with_cloned_transmitter();
+    handle_data_races();
+}
+
+fn handle_data_races() {
+    /*
+       010
+       aynı veriyi kullanmak isteyen thread'ler söz konusu olduğunda data races durumunu
+       engellemek için Arc ve Mutex enstrümanlarından yararlanılabilir.
+       shared_value hem thread-safe dir hem de lock'lanabilir
+    */
+    let shared_value = Arc::new(Mutex::new(PI));
+    let mut handles = vec![];
+    for i in 0..5 {
+        let safe_value = Arc::clone(&shared_value);
+        let handle = spawn(move || {
+            let mut value = safe_value.lock().unwrap();
+            *value += 1.;
+            println!("Güncel değer {}", value);
+            sleep(Duration::from_millis(500));
+        });
+        handles.push(handle);
+    }
+
+    for h in handles {
+        h.join().unwrap();
+    }
+
+    println!("Sonuç {}", *shared_value.lock().unwrap());
 }
 
 fn send_with_cloned_transmitter() {

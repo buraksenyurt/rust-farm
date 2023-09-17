@@ -11,18 +11,101 @@ fn main() {
     // take_ownership_err();
     // take_ownership();
     // use_mpsc();
-    use_sender_on_function();
+    //use_sender_on_function();
+    //send_multi_values();
+    //send_multi_values_with_loop();
+    send_with_cloned_transmitter();
+}
+
+fn send_with_cloned_transmitter() {
+    /*
+       009
+       Kanallara n sayıda mesajı n sayıda thread açarak da gönderebiliriz.
+       Bunun için transmitter'ı klonlamak yeterlidir.
+    */
+    let (transmitter_1, receiver) = channel();
+    let transmitter_2 = Sender::clone(&transmitter_1);
+    let transmitter_3 = Sender::clone(&transmitter_1);
+    spawn(move || {
+        transmitter_1.send("Oyuncu eklensin").unwrap();
+        sleep(Duration::from_millis(100));
+    });
+    spawn(move || {
+        transmitter_2.send("Rakip eklensin").unwrap();
+        sleep(Duration::from_millis(50));
+    });
+    spawn(move || {
+        transmitter_3.send("Çalılar eklensin").unwrap();
+        sleep(Duration::from_millis(200));
+    });
+    for r in receiver {
+        println!("Log:{r}");
+    }
+}
+
+fn send_multi_values_with_loop() {
+    /*
+       008
+       Kanallara n sayıda mesaj gönderimi de mümkündür.
+       Bunun için bir vektor kullanılabileceği gibi send fonksiyonu ardışıl olarak
+       n defa da çağrılabilir.
+    */
+    let (transmitter, receiver) = channel();
+    let handle = spawn(move || {
+        let variables = vec![1, 3, 5, 7, 9, 11];
+        for v in variables {
+            transmitter.send(v).unwrap();
+            sleep(Duration::from_millis(1000));
+        }
+    });
+    handle.join().unwrap();
+    for recv in receiver {
+        let _ = spawn(move || {
+            println!("Gelen değer {recv}");
+            sleep(Duration::from_millis(250));
+        });
+    }
+}
+
+fn send_multi_values() {
+    /*
+       007
+       Kanallara n sayıda mesaj gönderimi de mümkündür.
+       Bunun için bir vektor kullanılabileceği gibi send fonksiyonu ardışıl olarak
+       n defa da çağrılabilir.
+    */
+    let (transmitter, receiver) = channel();
+    let handle = spawn(move || {
+        let variables = vec![1, 3, 5, 7, 9, 11];
+        transmitter.send(variables).unwrap();
+        sleep(Duration::from_millis(1000));
+    });
+    handle.join().unwrap();
+    let handle = spawn(move || {
+        process_variables(receiver);
+    });
+    handle.join().unwrap();
+}
+fn process_variables(receiver: Receiver<Vec<i32>>) {
+    let values = receiver.recv().unwrap();
+    for v in values.iter() {
+        println!("Gelen değer {v}");
+        sleep(Duration::from_millis(250));
+    }
 }
 
 fn use_sender_on_function() {
     /*
-        006
-        Bu senaryoda transmitter ve receiver nesneleri fonksiyonlara
-        parametre olarak geçilerek kullanılmaktadır.
-     */
+       006
+       Bu senaryoda transmitter ve receiver nesneleri fonksiyonlara
+       parametre olarak geçilerek kullanılmaktadır.
+    */
     let (transmitter, receiver) = channel();
     let handle = spawn(move || {
-        write_log(transmitter, "Servis istek sayısı limit üstüne çıktı.".to_string());
+        write_log(
+            transmitter,
+            "Servis istek sayısı limit üstüne çıktı.".to_string(),
+        );
     });
     handle.join().unwrap();
 
@@ -33,14 +116,12 @@ fn use_sender_on_function() {
 }
 
 fn write_log(sender: Sender<String>, message: String) {
-    sender.send(message);
+    sender.send(message).unwrap();
 }
 fn read_log(receiver: Receiver<String>) {
     let message = receiver.recv().unwrap();
     println!("Gelen log mesajı: '{message}'");
 }
-
-
 
 fn use_mpsc() {
     /*

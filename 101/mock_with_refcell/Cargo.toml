@@ -1,0 +1,7 @@
+[package]
+name = "mock_with_refcell"
+version = "0.1.0"
+edition = "2021"
+description = "RefCell ile interior immutability kullanımı"
+
+[dependencies]

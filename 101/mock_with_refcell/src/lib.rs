@@ -1,6 +1,8 @@
 /*
    Örnek senaryodaki amacımız Update fonksiyonu için test metodu yazmak.
    Ancak bunu Watcher trait'ini mock'layarak yapmak istiyoruz.
+
+   Çözüm olarak RefCell kullanılır. Interior Mutability olarak geçen bir vakadır.
 */
 pub trait Watcher {
     fn send(&self, message: &str);
@@ -65,24 +67,31 @@ impl From<f64> for SystemStatus {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::RefCell;
 
     struct MockWatcher {
-        messages: Vec<String>,
+        messages: RefCell<Vec<String>>,
     }
     impl MockWatcher {
         fn new() -> MockWatcher {
-            MockWatcher { messages: vec![] }
+            MockWatcher {
+                messages: RefCell::new(vec![]),
+            }
         }
     }
 
     impl Watcher for MockWatcher {
-        /*
-            Mecburen mutable self kullandık ancak bu
-            error[E0053]: method `send` has an incompatible type for trait
-            hatasına sebep olur çünkü Watcher trait'inin bildirdiği ile uyumlu değildir.
-         */
-        fn send(&mut self, message: &str) {
-            self.messages.push(String::from(message))
+        // /*
+        //     Mecburen mutable self kullandık ancak bu
+        //     error[E0053]: method `send` has an incompatible type for trait
+        //     hatasına sebep olur çünkü Watcher trait'inin bildirdiği ile uyumlu değildir.
+        //  */
+        // fn send(&mut self, message: &str) {
+        //     self.messages.push(String::from(message))
+        // }
+
+        fn send(&self, message: &str) {
+            self.messages.borrow_mut().push(String::from(message))
         }
     }
 
@@ -91,6 +100,6 @@ mod tests {
         let mock_watcher = MockWatcher::new();
         let mut request_tracker = RequestTracker::new(&mock_watcher, 100);
         request_tracker.update(91);
-        assert_eq!(mock_watcher.messages.len(), 1);
+        assert_eq!(mock_watcher.messages.borrow().len(), 1);
     }
 }

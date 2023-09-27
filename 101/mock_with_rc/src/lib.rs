@@ -1,3 +1,7 @@
+/*
+   Örnek senaryodaki amacımız Update fonksiyonu için test metodu yazmak.
+   Ancak bunu Watcher trait'ini mock'layarak yapmak istiyoruz.
+*/
 pub trait Watcher {
     fn send(&self, message: &str);
 }
@@ -62,6 +66,31 @@ impl From<f64> for SystemStatus {
 mod tests {
     use super::*;
 
+    struct MockWatcher {
+        messages: Vec<String>,
+    }
+    impl MockWatcher {
+        fn new() -> MockWatcher {
+            MockWatcher { messages: vec![] }
+        }
+    }
+
+    impl Watcher for MockWatcher {
+        /*
+            Mecburen mutable self kullandık ancak bu
+            error[E0053]: method `send` has an incompatible type for trait
+            hatasına sebep olur çünkü Watcher trait'inin bildirdiği ile uyumlu değildir.
+         */
+        fn send(&mut self, message: &str) {
+            self.messages.push(String::from(message))
+        }
+    }
+
     #[test]
-    fn it_works() {}
+    fn should_send_message_over_90_percent() {
+        let mock_watcher = MockWatcher::new();
+        let mut request_tracker = RequestTracker::new(&mock_watcher, 100);
+        request_tracker.update(91);
+        assert_eq!(mock_watcher.messages.len(), 1);
+    }
 }

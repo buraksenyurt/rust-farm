@@ -1,6 +1,8 @@
-// use crate::AgentList::{Cons, Nil};
+// use crate::AgentList::{Friends, Nil};
 
-use crate::Agent::{Cons, Nil};
+use crate::AgentRc::{Friends, Nil};
+use std::rc::Rc;
+//use crate::Agent::{Friends, Nil};
 
 fn main() {
     let player: Box<dyn GameObject> = Box::new(Player {
@@ -36,20 +38,41 @@ fn main() {
     // // Önerilerde ise
     // //  insert some indirection (e.g., a `Box`, `Rc`, or `&`) to break the cycle
     // // yazar.
-    // let agents=Cons(1,Cons(2,Cons(3,Nil)));
+    // let agents=Friends(1,Friends(2,Friends(3,Nil)));
 
     // Box kullanarak veri boyutunu açıkça belirtebiliriz
-    let agents = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
+    // let agents = Friends(1, Box::new(Friends(2, Box::new(Friends(3, Box::new(Nil))))));
+
+    // // Yukarıda tek sahipliğin olduğu bir durum söz konusu.
+    // // Senaryoyu aşağıdaki gibi değiştirelim.
+    // // blue_agents ile green_barets red_agents'ı ortaklaşa kullanmak istiyorlar
+    // // ne var ki blue_agents oluşturulurken red_agents sahipliği de taşınıyor
+    // // ve dolayısıyla sonraki satırda kullanılamaz hale geliyor.
+    // let red_agents = Friends(1, Box::new(Friends(2, Box::new(Friends(3, Box::new(Nil))))));
+    // let blue_agents = Friends(4, Box::new(red_agents)); //value moved here
+    // let green_barets = Friends(5, Box::new(red_agents)); //value used here after move
+
+    // Bu tip bir senaryo için çözüm Rc(Reference Counted) Smart Pointer kullanılabilir.
+    let red_agents = Rc::new(Friends(1, Rc::new(Friends(2, Rc::new(Friends(3, Rc::new(Nil)))))));
+    let blue_agents = Friends(4, Rc::clone(&red_agents)); //value moved here
+    println!("{:?}", blue_agents);
+    let green_barets = Friends(5, Rc::clone(&red_agents)); //value used here after move
+    println!("{:?}", green_barets);
 }
 
 enum Agent {
-    Cons(i32, Box<Agent>),
+    Friends(i32, Box<Agent>),
     Nil,
 }
-enum AgentList {
-    Cons(i32, AgentList),
+#[derive(Debug)]
+enum AgentRc {
+    Friends(i32, Rc<AgentRc>),
     Nil,
 }
+// enum AgentList {
+//     Friends(i32, AgentList),
+//     Nil,
+// }
 
 #[derive(Debug)]
 struct Invoice {

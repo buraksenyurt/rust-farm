@@ -60,6 +60,31 @@ objdump -d target/release/rust_internals > artifact.txt
 
 ![../images/rust_internasl_02.png](../images/rust_internals_02.png)
 
+```shell
+# Bağımlılıkları(Dynamic Dependencies) incelemek için ldd aracını kullanabiliriz
+ldd target/release/rust_internals
+```
+
+![../images/rust_internasl_03.png](../images/rust_internals_03.png)
+
+ELF bilgilerini okumak için readelf aracını da kullanabiliriz.
+
+```shell
+# ELF Header bilgilerini okumak için
+readelf -h target/release/rust_internals
+```
+
+![../images/rust_internasl_04.png](../images/rust_internals_04.png)
+
+Bu dosyada örneğin Entry point adresi yer alır. Bu adresin objdump ile alınan çıktıdaki yerine bakarak program giriş noktasının assmebly kodlarına ulaşabiliriz. 
+
+Aşağıdaki komutu kullanarak da Dynamic Linker'ın ELF içerisindeki yerini görebiliriz. Dynamic Linker, bellek yerleşimi, bağımlılıkların yüklenmesi vb işleri üstlenir(Memory Mapping, Dependency Loading, Relocations)
+
+```shell
+readelf -x .interp target/release/rust_internals
+```
+
+![../images/rust_internasl_05.png](../images/rust_internals_05.png)
 
 
 

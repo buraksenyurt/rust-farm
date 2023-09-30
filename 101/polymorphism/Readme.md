@@ -85,3 +85,45 @@ impl VehicleCapability for Racer {
 }
 ```
 
+Örneğin son bölümünde ise birden fazla davranışını barındırabilen super trait örneği incelenmiştir.
+
+```rust
+// İstersek trait içerisinde varsayılan bir davranış da uyarlayabiliriz.
+// Bu durumda kendi veri modelimizde ezmezsek varsayılan versiyon çalışır
+trait VehicleCapability2 {
+    fn drive(&self) {
+        println!("Araç yolda");
+    }
+}
+
+trait WeaponCapability {
+    fn fire(&self) {
+        println!("Ateş ediyor");
+    }
+}
+
+// Military bir super trait'tir.
+// WeaponeCapability ile VehicleCapability2 trait'lerini de taşır
+trait Military: WeaponCapability + VehicleCapability2 {}
+struct Tank;
+// Tank veri modeli Military isimli super trait'i uyguladığı için
+// hem WeaponCapability hem de VehicleCapability2 trait'lerini
+// implemente etmek zorundadır.
+impl WeaponCapability for Tank {}
+impl VehicleCapability2 for Tank {}
+impl Military for Tank {}
+
+// Hem VehicleCapability hem WeaponCapability davranışlarını barındıran
+// Military davranışını uygulayan her veri modeli bu fonksiyona gelebilir.
+fn go_to_battle(vehicle: &impl Military) {
+    vehicle.drive();
+    vehicle.fire();
+}
+
+fn main() {
+    // super trait kullanım örneği
+    let soldir_of_fortune = Tank;
+    go_to_battle(&soldir_of_fortune);
+}
+```
+

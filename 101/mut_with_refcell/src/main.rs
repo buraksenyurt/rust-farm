@@ -19,7 +19,7 @@ fn main() {
         Movie::new(2, "Konstantine".to_string(), 7.1),
         Movie::new(3, "Şavnşenk Redempşın".to_string(), 9.1),
     ]));
-    let some_owner_1 = movies.borrow_mut();
+    let mut movies_ref = movies.borrow_mut();
     // Üst satırda mutable bir ödünç alma söz konusu. Bunun üstüne alt satırda mutable olarak
     // tekrar ödünç almaya çalışıyoruz. Aynı scope içinde iki mutable sahiplik olamayacaktır.
     // Dikkat edilmesi gereken RefCell'in bunu çalışma zamanı için yorumlatacak olması.
@@ -27,8 +27,14 @@ fn main() {
     // Çalışma zamanında ise
     // thread 'main' panicked at 'already borrowed: BorrowMutError', src/main.rs:26:12
     // şeklinde bir hata alırız.
-    movies.borrow_mut().push(Movie::new(4, "Star Wars I".to_string(), 8.5));
-    println!("{:#?}", movies);
+    // movies.borrow_mut().push(Movie::new(4, "Star Wars I".to_string(), 8.5));
+
+    // Burada movies'in değiştirilebilir bir sahibini alıp işlem yapabiliriz.
+    // Yani movies_ref'i mutable olarak RefCell üstünden alıp üzerinde değişiklik yapılabilir.
+
+    println!("{:#?}\n", *movies_ref);
+    movies_ref.push(Movie::new(4, "Star Wars I".to_string(), 8.5));
+    println!("{:#?}", movies_ref);
 }
 
 #[derive(Debug)]

@@ -39,9 +39,15 @@ fn execute_v3() {
             (true, false) => output.push_str("Fizz"),
             (false, true) => output.push_str("Buzz"),
             (true, true) => output.push_str("FizzBuzz"),
-            _ => output.push_str(&*num.to_string()),
+            _ => output.push_str(&num.to_string()),
         };
-        output.push('\n');
+        // Windows işletim sistemindeyse farklı satır sonu basılması için aşağıdaki kontrol eklenir
+        if cfg!(windows) {
+            output.push_str("\r\n");
+        }
+        if cfg!(not(windows)) {
+            output.push('\n');
+        }
     }
     println!("{output}");
 }

@@ -50,6 +50,7 @@ fn prepare_objects() -> Vec<Entity> {
             fpk: 10.50,
         }));
     }
+    println!("Works withs {} objects.", objects.len());
     objects
 }
 

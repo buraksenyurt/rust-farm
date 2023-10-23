@@ -46,6 +46,7 @@ fn prepare_objects() -> Vec<Box<dyn Entity>> {
             fpk: 10.50,
         }))
     }
+    println!("Works withs {} objects.", objects.len());
     objects
 }
 

@@ -12,3 +12,7 @@ path="src/version_00.rs"
 [[bin]]
 name="version_01"
 path="src/version_01.rs"
+
+[[bin]]
+name="version_02"
+path="src/version_02.rs"

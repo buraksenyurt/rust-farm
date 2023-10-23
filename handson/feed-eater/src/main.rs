@@ -8,5 +8,5 @@ fn main() {
         Feed::new("Tech Crunch", "https://techcrunch.com/feed/"),
         Feed::new("Hacker News", "https://news.ycombinator.com/rss"),
     ];
-    reader::load_feeds(&feeds);
+    reader::get(&feeds, 5);
 }

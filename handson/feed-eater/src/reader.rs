@@ -1,26 +1,38 @@
 use crate::feed::Feed;
-pub fn load_feeds(feeds: &Vec<Feed>) {
+pub fn get(feeds: &[Feed], count: u16) {
     feeds.iter().for_each(|f| {
         let body = reqwest::blocking::get(f.url).unwrap().text().unwrap();
         // println!("{}", body);
         let feed_body = feed_rs::parser::parse(body.as_bytes()).unwrap();
         //println!("{:#?}", feed_body);
         println!(
-            "{} ({}) - {}",
+            "*** {} ({}) - {} ***\n",
             f.title,
             feed_body.entries.len(),
             feed_body.updated.unwrap_or_default()
         );
-        feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
-            println!(
-                "{idx} - {} {}",
-                e.title.clone().unwrap().content,
-                e.links
-                    .iter()
-                    .map(|link| link.href.clone())
-                    .collect::<Vec<String>>()
-                    .join(", ")
-            );
-        });
+        feed_body
+            .entries
+            .iter()
+            .enumerate()
+            .take(count as usize)
+            .for_each(|(idx, e)| {
+                let title_clone = e.title.clone().unwrap();
+                let title = if title_clone.content.len() > 50 {
+                    title_clone.content[0..50].parse::<String>().unwrap()
+                } else {
+                    title_clone.content
+                };
+                println!(
+                    "{idx} - {} {} {}",
+                    title,
+                    e.links
+                        .iter()
+                        .map(|link| link.href.clone())
+                        .collect::<Vec<String>>()
+                        .join(", "),
+                    e.published.unwrap_or_default()
+                );
+            });
     });
 }

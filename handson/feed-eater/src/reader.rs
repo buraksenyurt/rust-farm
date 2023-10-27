@@ -7,18 +7,16 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
     let reader = BufReader::new(file);
     let mut feeds = Vec::new();
 
-    for line in reader.lines() {
-        if let Ok(line) = line {
-            let parts: Vec<&str> = line.split(',').collect();
-            println!("Parts len {}",parts.len());
-            if parts.len() == 2 {
-                let title = parts[0].trim().to_string();
-                let url = parts[1].trim().to_string();
-                println!("{title},{url}");
-                let feed = Feed::new(title, url);
-                println!("{}", feed.to_string());
-                feeds.push(feed);
-            }
+    for line in reader.lines().flatten() {
+        let parts: Vec<&str> = line.split(',').collect();
+        //println!("Parts len {}",parts.len());
+        if parts.len() == 2 {
+            let title = parts[0].trim().to_string();
+            let url = parts[1].trim().to_string();
+            //println!("{title},{url}");
+            let feed = Feed::new(title, url);
+            //println!("{}", feed.to_string());
+            feeds.push(feed);
         }
     }
 
@@ -27,7 +25,7 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
 
 pub fn get(feeds: &[Feed], count: u16) {
     feeds.iter().for_each(|f| {
-        println!("Request -> {}", f.url.as_str());
+        //println!("Request -> {}", f.url.as_str());
         let body = reqwest::blocking::get(f.url.as_str())
             .unwrap()
             .text()

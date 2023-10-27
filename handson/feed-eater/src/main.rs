@@ -6,10 +6,9 @@ mod feed;
 mod reader;
 
 fn main() {
-    dotenv().ok().expect("Environment dosyası okunamadı");
-    let source_path = env::var("DataSource").expect("Env dosyasında datasource içeriği yok");
+    dotenv().expect("Environment dosyası okunamadı");
+    let source_path = env::var("DATASOURCE").expect("Env dosyasında datasource içeriği yok");
     let feeds = load_feeds_from_file(source_path);
-    println!("Feed count {}", feeds.len());
 
     // let feeds.dat = vec![
     //     Feed::new("Tech Crunch", "https://techcrunch.com/feed/"),

@@ -1,5 +1,5 @@
 use crate::feed::Feed;
-use feed_rs::model::Text;
+use feed_rs::model::{Entry, Text};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -26,59 +26,44 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
 
 pub fn get(feeds: &[Feed], count: Option<u8>) {
     feeds.iter().for_each(|f| {
-        //println!("Request -> {}", f.url.as_str());
         let body = reqwest::blocking::get(f.url.as_str())
             .unwrap()
             .text()
             .unwrap();
-        // println!("{}", body);
         let feed_body = feed_rs::parser::parse(body.as_bytes()).unwrap();
-        //println!("{:#?}", feed_body);
+
         println!(
             "\n*** {} ({}) - {} ***\n",
             f.title,
             feed_body.entries.len(),
             feed_body.updated.unwrap_or_default()
         );
-        if count.is_some() {
-            feed_body
-                .entries
-                .iter()
-                .enumerate()
-                .take(count.unwrap() as usize)
-                .for_each(|(idx, e)| {
-                    let title = get_short(e.title.clone(), 50);
-                    //let summary = get_short(e.summary.clone(), 100);
-                    println!(
-                        "\n{idx} - {}... [{}]\n{}\n", //{}...",
-                        title,
-                        e.published.unwrap_or_default(),
-                        e.links
-                            .iter()
-                            .map(|link| link.href.clone())
-                            .collect::<Vec<String>>()
-                            .join(", "),
-                        //summary
-                    );
-                });
-        } else {
-            feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
-                let title = get_short(e.title.clone(), 50);
-                //let summary = get_short(e.summary.clone(), 100);
-                println!(
-                    "\n{idx} - {}... [{}]\n{}\n", //{}...",
-                    title,
-                    e.published.unwrap_or_default(),
-                    e.links
-                        .iter()
-                        .map(|link| link.href.clone())
-                        .collect::<Vec<String>>()
-                        .join(", "),
-                    //summary
-                );
-            });
-        }
+
+        feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
+            if let Some(c) = count {
+                if idx < c as usize {
+                    print_entry(idx, e);
+                }
+            } else {
+                print_entry(idx, e);
+            }
+        });
     });
+}
+
+fn print_entry(idx: usize, e: &Entry) {
+    let title = get_short(e.title.clone(), 50);
+    println!(
+        "\n{} - {}... [{}]\n{}\n",
+        idx,
+        title,
+        e.published.unwrap_or_default(),
+        e.links
+            .iter()
+            .map(|link| link.href.clone())
+            .collect::<Vec<String>>()
+            .join(", ")
+    );
 }
 
 fn get_short(e: Option<Text>, size: usize) -> String {

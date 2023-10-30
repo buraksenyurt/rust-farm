@@ -53,8 +53,9 @@ pub fn get(feeds: &[Feed], count: Option<u8>) {
 
 fn print_entry(idx: usize, e: &Entry) {
     let title = get_short(e.title.clone(), 50);
+    let summary = get_short(e.summary.clone(), 100);
     println!(
-        "\n{} - {}... [{}]\n{}\n",
+        "\n{} - {}... [{}]\n{}\n{}",
         idx,
         title,
         e.published.unwrap_or_default(),
@@ -62,11 +63,15 @@ fn print_entry(idx: usize, e: &Entry) {
             .iter()
             .map(|link| link.href.clone())
             .collect::<Vec<String>>()
-            .join(", ")
+            .join(", "),
+        summary
     );
 }
 
 fn get_short(e: Option<Text>, size: usize) -> String {
+    if e.is_none() {
+        return String::from("Not Available");
+    }
     let e_clone = e.unwrap().clone();
     if e_clone.content.len() > size {
         e_clone.content[0..size].parse::<String>().unwrap()

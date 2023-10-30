@@ -18,10 +18,14 @@ fn main() {
         Command::Top(value) => {
             reader::get(&feeds, value);
         }
-        Command::SelectAll => {}
-        Command::GetFeeds => {}
+        Command::SelectAll => {
+            reader::get(&feeds, None);
+        }
+        Command::GetFeeds => {
+            feeds.iter().for_each(|f| println!("{}", f));
+        }
         Command::Undefined => {
-            println!("Kullanabileceğiniz komutlar");
+            println!("Kullanabileceğiniz komutlar\n");
             println!("top value - belirtilen sayıda içeriği çeker.");
             println!("all - feed içeriklerinin tamamını çeker.");
             println!("feeds - güncel feed listesini verir");

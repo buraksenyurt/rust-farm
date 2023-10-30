@@ -24,7 +24,7 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
     feeds
 }
 
-pub fn get(feeds: &[Feed], count: u8) {
+pub fn get(feeds: &[Feed], count: Option<u8>) {
     feeds.iter().for_each(|f| {
         //println!("Request -> {}", f.url.as_str());
         let body = reqwest::blocking::get(f.url.as_str())
@@ -40,12 +40,29 @@ pub fn get(feeds: &[Feed], count: u8) {
             feed_body.entries.len(),
             feed_body.updated.unwrap_or_default()
         );
-        feed_body
-            .entries
-            .iter()
-            .enumerate()
-            .take(count as usize)
-            .for_each(|(idx, e)| {
+        if count.is_some() {
+            feed_body
+                .entries
+                .iter()
+                .enumerate()
+                .take(count.unwrap() as usize)
+                .for_each(|(idx, e)| {
+                    let title = get_short(e.title.clone(), 50);
+                    //let summary = get_short(e.summary.clone(), 100);
+                    println!(
+                        "\n{idx} - {}... [{}]\n{}\n", //{}...",
+                        title,
+                        e.published.unwrap_or_default(),
+                        e.links
+                            .iter()
+                            .map(|link| link.href.clone())
+                            .collect::<Vec<String>>()
+                            .join(", "),
+                        //summary
+                    );
+                });
+        } else {
+            feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
                 let title = get_short(e.title.clone(), 50);
                 //let summary = get_short(e.summary.clone(), 100);
                 println!(
@@ -60,6 +77,7 @@ pub fn get(feeds: &[Feed], count: u8) {
                     //summary
                 );
             });
+        }
     });
 }
 

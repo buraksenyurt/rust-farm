@@ -1,4 +1,5 @@
 use crate::feed::Feed;
+use feed_rs::model::Text;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -23,7 +24,7 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
     feeds
 }
 
-pub fn get(feeds: &[Feed], count: u16) {
+pub fn get(feeds: &[Feed], count: u8) {
     feeds.iter().for_each(|f| {
         //println!("Request -> {}", f.url.as_str());
         let body = reqwest::blocking::get(f.url.as_str())
@@ -34,7 +35,7 @@ pub fn get(feeds: &[Feed], count: u16) {
         let feed_body = feed_rs::parser::parse(body.as_bytes()).unwrap();
         //println!("{:#?}", feed_body);
         println!(
-            "*** {} ({}) - {} ***\n",
+            "\n*** {} ({}) - {} ***\n",
             f.title,
             feed_body.entries.len(),
             feed_body.updated.unwrap_or_default()
@@ -45,22 +46,28 @@ pub fn get(feeds: &[Feed], count: u16) {
             .enumerate()
             .take(count as usize)
             .for_each(|(idx, e)| {
-                let title_clone = e.title.clone().unwrap();
-                let title = if title_clone.content.len() > 50 {
-                    title_clone.content[0..50].parse::<String>().unwrap()
-                } else {
-                    title_clone.content
-                };
+                let title = get_short(e.title.clone(), 50);
+                //let summary = get_short(e.summary.clone(), 100);
                 println!(
-                    "{idx} - {} {} {}",
+                    "\n{idx} - {}... [{}]\n{}\n", //{}...",
                     title,
+                    e.published.unwrap_or_default(),
                     e.links
                         .iter()
                         .map(|link| link.href.clone())
                         .collect::<Vec<String>>()
                         .join(", "),
-                    e.published.unwrap_or_default()
+                    //summary
                 );
             });
     });
+}
+
+fn get_short(e: Option<Text>, size: usize) -> String {
+    let e_clone = e.unwrap().clone();
+    if e_clone.content.len() > size {
+        e_clone.content[0..size].parse::<String>().unwrap()
+    } else {
+        e_clone.content
+    }
 }

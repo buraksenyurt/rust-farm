@@ -1,8 +1,24 @@
 use crate::feed::Feed;
 use feed_rs::model::{Entry, Text};
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::fs::{File, OpenOptions};
+use std::io::{BufRead, BufReader, Write};
 
+pub fn write_all_feeds_again(source: String, feeds: Vec<Feed>) {
+    let mut file = File::create(source).expect("Dosya yazma modunda hata.");
+    let mut content = Vec::new();
+    feeds.iter().for_each(|f| {
+        content.extend_from_slice(format!("{},{}\n", f.title, f.url).as_bytes());
+    });
+    file.write_all(&content).expect("Dosyaya yazma hatası")
+}
+
+pub fn add_feed(source: String, feed: Feed) -> std::io::Result<usize> {
+    let mut file = OpenOptions::new()
+        .append(true)
+        .open(source)
+        .expect("Dosya ilave modda açılamadı");
+    file.write(format!("\n{},{}", feed.title, feed.url).as_bytes())
+}
 pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
     let file = File::open(source).expect("Dosya açma hatası");
     let reader = BufReader::new(file);
@@ -26,28 +42,30 @@ pub fn load_feeds_from_file(source: String) -> Vec<Feed> {
 
 pub fn get(feeds: &[Feed], count: Option<u8>) {
     feeds.iter().for_each(|f| {
-        let body = reqwest::blocking::get(f.url.as_str())
-            .unwrap()
-            .text()
-            .unwrap();
-        let feed_body = feed_rs::parser::parse(body.as_bytes()).unwrap();
+        if let Ok(body) = reqwest::blocking::get(f.url.as_str()) {
+            if let Ok(text) = body.text() {
+                let feed_body = feed_rs::parser::parse(text.as_bytes()).unwrap();
 
-        println!(
-            "\n*** {} ({}) - {} ***\n",
-            f.title,
-            feed_body.entries.len(),
-            feed_body.updated.unwrap_or_default()
-        );
+                println!(
+                    "\n*** {} ({}) - {} ***\n",
+                    f.title,
+                    feed_body.entries.len(),
+                    feed_body.updated.unwrap_or_default()
+                );
 
-        feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
-            if let Some(c) = count {
-                if idx < c as usize {
-                    print_entry(idx, e);
-                }
-            } else {
-                print_entry(idx, e);
+                feed_body.entries.iter().enumerate().for_each(|(idx, e)| {
+                    if let Some(c) = count {
+                        if idx < c as usize {
+                            print_entry(idx, e);
+                        }
+                    } else {
+                        print_entry(idx, e);
+                    }
+                });
             }
-        });
+        } else {
+            println!("\n!!! {} içeriği çekilemedi.\n", f);
+        }
     });
 }
 
@@ -77,5 +95,25 @@ fn get_short(e: Option<Text>, size: usize) -> String {
         e_clone.content[0..size].parse::<String>().unwrap()
     } else {
         e_clone.content
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::feed::Feed;
+    use crate::reader::add_feed;
+    use dotenv::dotenv;
+    use std::env;
+
+    #[test]
+    pub fn add_feed_works() {
+        dotenv().expect("Environment dosyası okunamadı");
+        let source_path = env::var("DATASOURCE").unwrap();
+        let feed = Feed::new(
+            "TEST Feed".to_string(),
+            "http://testfeed.com/feed".to_string(),
+        );
+        let actual = add_feed(source_path, feed);
+        assert!(actual.unwrap() > 0);
     }
 }

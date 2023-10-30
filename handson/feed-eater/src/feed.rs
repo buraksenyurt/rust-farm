@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Feed {
     pub title: String,
     pub url: String,

@@ -8,4 +8,21 @@ Web talepleri için reqwest, feed parsing işleri için feed-rs, environment dos
 cargo add reqwest -F "blocking"
 cargo add feed-rs
 cargo add dotenv
+
+# Bazı Test komutları
+
+# Feed listesinden her bir feed için ilk 3 girdinin çekilmesi
+cargo run -- top 3
+
+# Tüm feed içeriklerinin alınması
+cargo run -- all
+
+# Güncel feedlerin listesi
+cargo run -- feeds
+
+# Yeni bir feed eklemek için(örnek)
+cargo run -- add TechRadarComputingNews https://www.techradar.com/rss/news/computing
+
+# Feed listesinden seçerek feed silmek için
+cargo run -- del
 ```

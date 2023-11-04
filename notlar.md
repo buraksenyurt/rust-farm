@@ -295,3 +295,21 @@ cargo expand
 # Çalışma zamanını stable moduna çevirmek için
 rustup default stable
 ```
+
+- İsimlendirme Standartları (Naming Conventions) Bu standartlar bir kodun okunurluğunu artırma ve takımların küresel olarak aynı standartlarda çalışması açısından kıymetlidir. Rust için önerilen isimlendirme kuralları aşağıdaki gibi özetlenebilir.
+
+| Kaynak                              | Standart             |
+|-------------------------------------|----------------------|
+| Modüller (Modules)                  | snake_case           |
+| Tipler (Types)                      | UpperCamelCase       |
+| Traits                              | UpperCamelCase       |
+| Enum değerleri                      | UpperCamelCase       |
+| Metot/Fonksiyonlar                  | snake_case           |
+| Makrolar (Macros)                   | snake_case!          |
+| Yere Değişkenler  (Local Variables) | snake_case           |
+| Değişmezler  (Constants)            | SCREAMING_SNAKE_CASE |
+| Statik Değişkenler (Statics)        | SCREAMING_SNAKE_CASE |
+| Ömür Parametreleri (Lifetimes)      | lowercase            |
+| Generic tip  parametreleri          | UpperCamelCase       |
+
+- C#, Java gibi nesne yönelimli dillerde yapıcı metotlar *(Constructors)* genelde özel ve tek tipte tanımlanırlar. Örneğin C# dilinde dönüş tipi olmayan ve sınıfla aynı isme sahip metotlar constructor olarak kabul edilir. Rust tarafında nesne başlatıcısı fonksiyonlara ait özel bir tanım yoktur ancak yaygın olarak **new** veya **with_more_details** gibi isimlendirilmiş metotlar bu amaca hizmet edecek şekilde değerlendirilirler.

@@ -1,15 +1,13 @@
+mod constants;
 mod data;
 mod issue;
 
-use crate::data::{get_dummy_issues, to_json_array};
+use crate::constants::*;
+use crate::data::*;
 use std::fmt::{Display, Formatter};
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
-
-const HTTP_OK: &str = "HTTP/1.1 200 OK";
-const HTTP_NOT_FOUND: &str = "HTTP/1.1 404 NOT FOUND";
-const CONTENT_TYPE: &str = "Content-Type: application/json";
 
 fn main() {
     let mut threads = Vec::new();
@@ -45,10 +43,18 @@ fn main() {
             let mut buffer = [0; 1024];
             stream.read(&mut buffer).unwrap();
             let input = String::from_utf8_lossy(&buffer[..]).to_string();
-            println!("{}", input);
-            if input.starts_with("POST /issues HTTP/1.1") {
-                let response = Response::new(HttpResponse::Ok, String::default());
-                stream.write_all(response.to_string().as_bytes()).unwrap();
+            let line_count = input.lines().count();
+            println!("{}\n", input);
+            if input.starts_with(POST_ISSUE) {
+                let mut json_body = String::new();
+                input
+                    .lines()
+                    .skip(POST_SKIP_COUNT)
+                    .take(line_count - POST_SKIP_COUNT)
+                    .for_each(|line| json_body.push_str(line.trim()));
+                println!("{}", json_body);
+
+                write_std_response(&mut stream);
             }
         }
     });
@@ -69,23 +75,33 @@ impl<'a> Connection<'a> {
         let buffer_reader = BufReader::new(&mut stream);
         let request_line = buffer_reader.lines().next().unwrap().unwrap();
         println!("{}", request_line);
-        if request_line == "GET /hello HTTP/1.1" {
+        if request_line == GET_HELLO {
             let response = Response::new(
                 HttpResponse::Ok,
                 "{\"response\":\"hello there\"}".to_string(),
             );
             stream.write_all(response.to_string().as_bytes()).unwrap();
-        } else if request_line == "GET /issues HTTP/1.1" {
+        } else if request_line == GET_ALL_ISSUES {
             let dummy_issues = get_dummy_issues();
             let json_output = to_json_array(&dummy_issues);
             let response = Response::new(HttpResponse::Ok, json_output);
             stream.write_all(response.to_string().as_bytes()).unwrap();
+        } else if request_line.starts_with(DELETE_ISSUE) {
+            println!("Silme talebi geldi. {}", request_line);
+            write_std_response(&mut stream);
+        } else if request_line.starts_with(GET_ISSUE) {
+            println!("Tek issue talebi geldi {}", request_line);
+            write_std_response(&mut stream);
         } else {
             println!("Geçerli bir talep değil!");
-            let response = Response::new(HttpResponse::NotFound, String::default());
-            stream.write_all(response.to_string().as_bytes()).unwrap();
+            write_std_response(&mut stream);
         }
     }
+}
+
+fn write_std_response(stream: &mut TcpStream) {
+    let response = Response::new(HttpResponse::NotFound, String::default());
+    stream.write_all(response.to_string().as_bytes()).unwrap();
 }
 
 struct Response {

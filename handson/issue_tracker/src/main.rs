@@ -1,6 +1,11 @@
+mod data;
+mod issue;
+
+use crate::data::{get_dummy_issues, to_json_array};
 use std::fmt::{Display, Formatter};
 use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
+
 const HTTP_OK: &str = "HTTP/1.1 200 OK";
 const HTTP_NOT_FOUND: &str = "HTTP/1.1 404 NOT FOUND";
 const CONTENT_TYPE: &str = "Content-Type: application/json";
@@ -33,8 +38,9 @@ impl<'a> Connection<'a> {
             );
             stream.write_all(response.to_string().as_bytes()).unwrap();
         } else if request_line == "GET /issues HTTP/1.1" {
-            let response =
-                Response::new(HttpResponse::Ok, "{\"issues\":\"issues list\"}".to_string());
+            let dummy_issues = get_dummy_issues();
+            let json_output = to_json_array(&dummy_issues);
+            let response = Response::new(HttpResponse::Ok, json_output);
             stream.write_all(response.to_string().as_bytes()).unwrap();
         } else {
             println!("Geçerli bir talep değil!");

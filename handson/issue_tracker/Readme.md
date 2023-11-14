@@ -20,10 +20,29 @@ http://localhost:8086/issues
 
 ![../images/issue_tracker_01.png](../images/issue_tracker_01.png)
 
+Issue ve Owner veri yapıları için ters serileştirme işlevselliklerini ekledikten sonra örnek bir POST talebi için aşağıdaki sonucu elde etmeyi başardım.
+
+Örnek Post içeriği
+
+```json
+{
+    "id": 10001,
+    "title": "Windows Server'lar için Upgrade çalışması",
+    "state": "Warning",
+    "owner":{
+        "name":"martin",
+        "last_name":"mystery"
+    }
+}
+```
+
+![../images/issue_tracker_02.png](../images/issue_tracker_02.png)
+
 ## Yapmak İstediklerim
 
-- [ ] HTTP Post ile server tarafına Issue kaydı alabilmeliyim.
-- [ ] Issue için ters serileştirme işlevleri gerekiyor.
-- [ ] Server tarafı asenkron çalışacak hale getirilebilir.
+- [x] HTTP Post ile server tarafına Issue kaydı alabilmeliyim.
+- [x] Issue için ters serileştirme işlevleri gerekiyor.
+- [x] Server tarafı asenkron çalışacak hale getirilebilir.
+- [ ] Get/{id}, Delete ve hatta Put işlevsellikleri eklenmeli.
 - [ ] Issue'lar ilk etapta sıkıştırılmış bir dosya da saklanabilir _(DB kullanırsam DB ile konuşturma noktasında saf Rust işlevleri ile nasıl ilerleyeceğim. Bu önemli bir soru işaret :D )_
 

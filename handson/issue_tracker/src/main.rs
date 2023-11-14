@@ -3,11 +3,12 @@ mod data;
 mod issue;
 mod json;
 mod owner;
+mod response;
 mod test;
 
 use crate::constants::*;
 use crate::data::*;
-use std::fmt::{Display, Formatter};
+use crate::response::{HttpResponse, Response};
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::thread;
@@ -57,7 +58,7 @@ fn main() {
                     .for_each(|line| json_body.push_str(line.trim()));
                 println!("{}", json_body);
 
-                write_std_response(&mut stream);
+                write_std_response(&mut stream, HttpResponse::Created);
             }
         }
     });
@@ -91,57 +92,18 @@ impl<'a> Connection<'a> {
             stream.write_all(response.to_string().as_bytes()).unwrap();
         } else if request_line.starts_with(DELETE_ISSUE) {
             println!("Silme talebi geldi. {}", request_line);
-            write_std_response(&mut stream);
+            write_std_response(&mut stream, HttpResponse::Ok);
         } else if request_line.starts_with(GET_ISSUE) {
             println!("Tek issue talebi geldi {}", request_line);
-            write_std_response(&mut stream);
+            write_std_response(&mut stream, HttpResponse::Ok);
         } else {
             println!("Geçerli bir talep değil!");
-            write_std_response(&mut stream);
+            write_std_response(&mut stream, HttpResponse::NotFound);
         }
     }
 }
 
-fn write_std_response(stream: &mut TcpStream) {
-    let response = Response::new(HttpResponse::NotFound, String::default());
+fn write_std_response(stream: &mut TcpStream, res: HttpResponse) {
+    let response = Response::new(res, String::default());
     stream.write_all(response.to_string().as_bytes()).unwrap();
-}
-
-struct Response {
-    http_response: HttpResponse,
-    content: String,
-}
-
-impl Response {
-    pub fn new(http_response: HttpResponse, content: String) -> Self {
-        Self {
-            http_response,
-            content,
-        }
-    }
-}
-
-impl Display for Response {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}{}\r\n\r\n{}",
-            self.http_response, CONTENT_TYPE, self.content
-        )
-    }
-}
-
-enum HttpResponse {
-    Ok,
-    NotFound,
-}
-
-impl Display for HttpResponse {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let output = match self {
-            HttpResponse::Ok => HTTP_OK,
-            HttpResponse::NotFound => HTTP_NOT_FOUND,
-        };
-        write!(f, "{}\r\n", output)
-    }
 }

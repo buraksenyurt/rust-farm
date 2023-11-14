@@ -1,4 +1,4 @@
-use crate::json::Serializer;
+use crate::json::{Deserializer, Field, Serializer};
 
 #[derive(Debug)]
 pub struct Owner {
@@ -21,5 +21,13 @@ impl Serializer for Owner {
         json.push_str(&format!("\"last_name\": \"{}\"", self.last_name));
         json.push_str("}");
         json
+    }
+}
+
+impl Deserializer for Owner {
+    fn from(json_content: &str) -> Result<Self, String> {
+        let name = Field::get("name", &json_content)?;
+        let last_name = Field::get("last_name", &json_content)?;
+        Ok(Owner::new(name, last_name))
     }
 }

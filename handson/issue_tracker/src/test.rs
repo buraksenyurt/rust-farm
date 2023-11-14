@@ -2,7 +2,7 @@
 pub mod tests {
     use crate::data::get_dummy_issues;
     use crate::issue::{Issue, IssueState};
-    use crate::json::Serializer;
+    use crate::json::{Deserializer, Serializer};
     use crate::owner::Owner;
 
     #[test]
@@ -22,5 +22,17 @@ pub mod tests {
         let expected = issue.to_json();
         let actual = "{\"id\": 99,\"title\": \"Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli\",\"state\": \"Warning\",\"is_resolved\": false,\"owner\":{\"name\": \"Administrator\",\"last_name\": \"System\"}}";
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    pub fn from_json_to_issue_works_test() {
+        let json_content = r#"{"id": 10001,"title": "Windows Server'lar için Upgrade çalışması","state": "Warning","owner":{"name":"martin","last_name":"mystery"}}"#;
+        let issue = <Issue as Deserializer>::from(json_content);
+        let issue = issue.unwrap();
+        assert_eq!(issue.id, 10001);
+        assert_eq!(issue.title, "Windows Server'lar için Upgrade çalışması");
+        assert_eq!(issue.state, IssueState::Warning);
+        assert_eq!(issue.owner.name, "martin");
+        assert_eq!(issue.owner.last_name, "mystery");
     }
 }

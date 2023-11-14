@@ -1,5 +1,6 @@
-use crate::json::Serializer;
+use crate::json::{Deserializer, Field, Serializer};
 use crate::owner::Owner;
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct Issue {
@@ -10,7 +11,7 @@ pub struct Issue {
     pub owner: Owner,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum IssueState {
     Warning,
     Critical,
@@ -40,5 +41,26 @@ impl Serializer for Issue {
         json.push_str(&format!("{}", self.owner.to_json()));
         json.push_str("}");
         json
+    }
+}
+impl Deserializer for Issue {
+    fn from(json_content: &str) -> Result<Issue, String> {
+        println!("Content -> {}", json_content);
+        let id = Field::get("id", &json_content)?;
+        let title = Field::get("title", &json_content)?;
+        let state_input = Field::get("state", &json_content)?;
+        let state = match state_input.as_str() {
+            "Critical" => IssueState::Critical,
+            "Error" => IssueState::Error,
+            "Warning" => IssueState::Warning,
+            _ => return Err("Geçersiz 'state' değeri".to_string()),
+        };
+        let owner = <Owner as Deserializer>::from(json_content)?;
+        Ok(Issue::new(
+            i32::from_str(id.as_str()).unwrap(),
+            title,
+            owner,
+            state,
+        ))
     }
 }

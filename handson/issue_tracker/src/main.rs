@@ -8,6 +8,8 @@ mod test;
 
 use crate::constants::*;
 use crate::data::*;
+use crate::issue::Issue;
+use crate::json::Deserializer;
 use crate::response::{HttpResponse, Response};
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
@@ -45,7 +47,8 @@ fn main() {
         for stream in writer.incoming() {
             let mut stream = stream.unwrap();
             let mut buffer = [0; 1024];
-            stream.read(&mut buffer).unwrap();
+            let data_size = stream.read(&mut buffer).unwrap();
+            println!("{} byte içerik geldi", data_size);
             let input = String::from_utf8_lossy(&buffer[..]).to_string();
             let line_count = input.lines().count();
             println!("{}\n", input);
@@ -56,8 +59,9 @@ fn main() {
                     .skip(POST_SKIP_COUNT)
                     .take(line_count - POST_SKIP_COUNT)
                     .for_each(|line| json_body.push_str(line.trim()));
-                println!("{}", json_body);
-
+                //println!("{}", json_body);
+                let issue = <Issue as Deserializer>::from(json_body.as_str()).unwrap();
+                println!("Deserialized:\n{:?}", issue);
                 write_std_response(&mut stream, HttpResponse::Created);
             }
         }

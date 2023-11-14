@@ -33,6 +33,6 @@ pub fn to_json_array(issues: &Vec<Issue>) -> String {
             json_array.push_str(",\n");
         }
     }
-    json_array.push_str("]");
+    json_array.push(']');
     json_array
 }

@@ -33,22 +33,22 @@ impl Issue {
 impl Serializer for Issue {
     fn to_json(&self) -> String {
         let mut json = String::new();
-        json.push_str("{");
+        json.push('{');
         json.push_str(&format!("\"id\": {},", self.id));
         json.push_str(&format!("\"title\": \"{}\",", self.title));
         json.push_str(&format!("\"state\": \"{:?}\",", self.state));
         json.push_str(&format!("\"is_resolved\": {:?},", self.is_resolved));
-        json.push_str(&format!("{}", self.owner.to_json()));
-        json.push_str("}");
+        json.push_str(&self.owner.to_json());
+        json.push('}');
         json
     }
 }
 impl Deserializer for Issue {
     fn from(json_content: &str) -> Result<Issue, String> {
-        let id_input = Field::get("id", &json_content)?;
-        let title_input = Field::get("title", &json_content)?;
+        let id_input = Field::get("id", json_content)?;
+        let title_input = Field::get("title", json_content)?;
         let title = title_input.as_str()[2..title_input.len() - 1].to_string();
-        let state_input = Field::get("state", &json_content)?;
+        let state_input = Field::get("state", json_content)?;
         let state = match state_input.as_str()[2..state_input.len() - 1].as_ref() {
             "Critical" => IssueState::Critical,
             "Error" => IssueState::Error,

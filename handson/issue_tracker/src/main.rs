@@ -1,6 +1,9 @@
 mod constants;
 mod data;
 mod issue;
+mod json;
+mod owner;
+mod test;
 
 use crate::constants::*;
 use crate::data::*;

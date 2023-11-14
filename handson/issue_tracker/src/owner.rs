@@ -26,8 +26,10 @@ impl Serializer for Owner {
 
 impl Deserializer for Owner {
     fn from(json_content: &str) -> Result<Self, String> {
-        let name = Field::get("name", &json_content)?;
-        let last_name = Field::get("last_name", &json_content)?;
+        let name_input = Field::get("name", &json_content)?;
+        let name = name_input.as_str()[1..name_input.len() - 1].to_string();
+        let last_name_input = Field::get("last_name", &json_content)?;
+        let last_name = last_name_input.as_str()[1..last_name_input.len() - 1].to_string();
         Ok(Owner::new(name, last_name))
     }
 }

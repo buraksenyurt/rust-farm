@@ -2,6 +2,8 @@
 name = "issue_tracker"
 version = "0.1.0"
 edition = "2021"
+description = "A simple issue tracker service but it's not using any 3rd party crate something like that serde, serde_json or tokio"
+authors = ["BSŞ"]
 
 [dependencies]
 

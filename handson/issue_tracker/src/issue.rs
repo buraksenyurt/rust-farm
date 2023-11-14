@@ -45,11 +45,11 @@ impl Serializer for Issue {
 }
 impl Deserializer for Issue {
     fn from(json_content: &str) -> Result<Issue, String> {
-        println!("Content -> {}", json_content);
-        let id = Field::get("id", &json_content)?;
-        let title = Field::get("title", &json_content)?;
+        let id_input = Field::get("id", &json_content)?;
+        let title_input = Field::get("title", &json_content)?;
+        let title = title_input.as_str()[2..title_input.len() - 1].to_string();
         let state_input = Field::get("state", &json_content)?;
-        let state = match state_input.as_str() {
+        let state = match state_input.as_str()[2..state_input.len() - 1].as_ref() {
             "Critical" => IssueState::Critical,
             "Error" => IssueState::Error,
             "Warning" => IssueState::Warning,
@@ -57,7 +57,7 @@ impl Deserializer for Issue {
         };
         let owner = <Owner as Deserializer>::from(json_content)?;
         Ok(Issue::new(
-            i32::from_str(id.as_str()).unwrap(),
+            i32::from_str(id_input.as_str().trim()).unwrap(),
             title,
             owner,
             state,

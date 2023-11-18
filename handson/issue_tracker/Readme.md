@@ -38,11 +38,19 @@ Issue ve Owner veri yapıları için ters serileştirme işlevselliklerini ekled
 
 ![../images/issue_tracker_02.png](../images/issue_tracker_02.png)
 
+An itibariyle yapılan güncellemeler sonrası belli bir issue'yu çeken GET operasyonu da eklenmiş oldu.
+
+![../images/issue_tracker_03.png](../images/issue_tracker_03.png)
+
+![../images/issue_tracker_04.png](../images/issue_tracker_04.png)
+
 ## Yapmak İstediklerim
 
 - [x] HTTP Post ile server tarafına Issue kaydı alabilmeliyim.
 - [x] Issue için ters serileştirme işlevleri gerekiyor.
 - [x] Server tarafı asenkron çalışacak hale getirilebilir.
-- [ ] Get/{id}, Delete ve hatta Put işlevsellikleri eklenmeli.
+- [x] Handler kısmı Read Request ve Write Response şeklinde ayrıştırılabilir. 
+- [x] Get/{id} işlevselliğinin kazandırılması.
+- [ ] Delete ve hatta Put işlevsellikleri eklenmeli.
 - [ ] Issue'lar ilk etapta sıkıştırılmış bir dosya da saklanabilir _(DB kullanırsam DB ile konuşturma noktasında saf Rust işlevleri ile nasıl ilerleyeceğim. Bu önemli bir soru işaret :D )_
 

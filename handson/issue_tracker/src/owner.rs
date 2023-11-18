@@ -1,6 +1,6 @@
 use crate::json::{Deserializer, Field, Serializer};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Owner {
     pub name: String,
     pub last_name: String,

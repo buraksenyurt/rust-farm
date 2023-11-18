@@ -2,7 +2,7 @@ use crate::json::{Deserializer, Field, Serializer};
 use crate::owner::Owner;
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Issue {
     pub id: i32,
     pub title: String,
@@ -11,7 +11,7 @@ pub struct Issue {
     pub owner: Owner,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum IssueState {
     Warning,
     Critical,

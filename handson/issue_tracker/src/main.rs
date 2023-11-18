@@ -4,6 +4,7 @@ mod handlers;
 mod issue;
 mod json;
 mod owner;
+mod request;
 mod response;
 mod test;
 mod utility;
@@ -59,5 +60,4 @@ fn main() {
     for th in threads {
         th.join().unwrap();
     }
-    println!("Program sonlanıyor");
 }

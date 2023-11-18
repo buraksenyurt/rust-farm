@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-#[derive(Debug,PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Request {
     pub method: RequestMethod,
     pub protocol: String,

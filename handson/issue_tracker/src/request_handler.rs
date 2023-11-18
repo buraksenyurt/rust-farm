@@ -29,8 +29,18 @@ impl<'a> RequestHandler<'a> {
             println!("Silme talebi geldi. {}", request_line);
             write_std_response(&mut stream, HttpResponse::Ok);
         } else if request_line.starts_with(GET_ISSUE) {
-            println!("Tek issue talebi geldi {}", request_line);
-            write_std_response(&mut stream, HttpResponse::Ok);
+            let parts: Vec<&str> = request_line.split_whitespace().collect();
+            if let Some(second_part) = parts.get(1) {
+                let issue_part: Vec<&str> = second_part.split('/').collect();
+                if let Some(issue_number_str) = issue_part.get(2) {
+                    if let Ok(number) = issue_number_str.parse::<i32>() {
+                        println!("Talep edilen issue ID: {}", number);
+                        write_std_response(&mut stream, HttpResponse::Ok);
+                    } else {
+                        write_std_response(&mut stream, HttpResponse::BadRequest);
+                    }
+                }
+            }
         } else {
             println!("Geçerli bir talep değil!");
             write_std_response(&mut stream, HttpResponse::NotFound);

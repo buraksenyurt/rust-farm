@@ -29,6 +29,7 @@ pub enum HttpResponse {
     Ok,
     NotFound,
     Created,
+    BadRequest,
 }
 
 impl Display for HttpResponse {
@@ -37,6 +38,7 @@ impl Display for HttpResponse {
             HttpResponse::Ok => HTTP_OK,
             HttpResponse::Created => HTTP_CREATED,
             HttpResponse::NotFound => HTTP_NOT_FOUND,
+            HttpResponse::BadRequest => HTTP_BAD_REQUEST,
         };
         write!(f, "{}\r\n", output)
     }

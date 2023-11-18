@@ -1,8 +1,11 @@
 use crate::response::{HttpResponse, Response};
 use std::io::Write;
 use std::net::TcpStream;
+pub struct Utility {}
 
-pub fn write_std_response(stream: &mut TcpStream, res: HttpResponse) {
-    let response = Response::new(res, String::default());
-    stream.write_all(response.to_string().as_bytes()).unwrap();
+impl Utility {
+    pub fn send_response(stream: &mut TcpStream, content: String, res: HttpResponse) {
+        let response = Response::new(res, content);
+        stream.write_all(response.to_string().as_bytes()).unwrap();
+    }
 }

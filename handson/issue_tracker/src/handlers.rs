@@ -18,7 +18,7 @@ pub struct ReadRequestHandler<'a> {
 }
 
 impl<'a> Handler for ReadRequestHandler<'a> {
-    fn handle(&mut self, mut stream: TcpStream, issues: MutexGuard<Vec<Issue>>) {
+    fn handle(&mut self, mut stream: TcpStream, mut issues: MutexGuard<Vec<Issue>>) {
         let buffer_reader = BufReader::new(&mut stream);
         let request_line = buffer_reader.lines().next().unwrap().unwrap();
         println!("{}", request_line);
@@ -26,8 +26,29 @@ impl<'a> Handler for ReadRequestHandler<'a> {
         match request {
             Ok(req) => match req.method {
                 RequestMethod::DELETE => {
-                    println!("Silme talebi geldi. {}", request_line);
-                    Utility::send_response(&mut stream, String::default(), HttpResponse::Ok);
+                    let issue_part: Vec<&str> = req.route.split('/').collect();
+                    if let Some(issue_number_str) = issue_part.get(2) {
+                        if let Ok(id) = issue_number_str.parse::<i32>() {
+                            let issue = issues.iter().find(|i| i.id == id);
+                            match issue {
+                                Some(record) => {
+                                    let record_clone = record.clone();
+                                    println!("{} silinecek", record_clone.id);
+                                    issues.retain(|i| i.id != record_clone.id);
+                                    Utility::send_response(
+                                        &mut stream,
+                                        String::default(),
+                                        HttpResponse::Ok,
+                                    )
+                                }
+                                None => Utility::send_response(
+                                    &mut stream,
+                                    String::default(),
+                                    HttpResponse::NotFound,
+                                ),
+                            };
+                        }
+                    }
                 }
                 RequestMethod::GET => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();

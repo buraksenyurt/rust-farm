@@ -1,6 +1,6 @@
 use crate::constants::*;
+use crate::formatter::{Deserializer, Serializer};
 use crate::issue::Issue;
-use crate::json::{Deserializer, Serializer};
 use crate::request::{Request, RequestMethod};
 use crate::response::{HttpResponse, Response};
 use crate::utility::Utility;

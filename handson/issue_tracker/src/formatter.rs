@@ -1,9 +1,16 @@
+use std::io;
+
 pub trait Serializer {
     fn to_json(&self) -> String;
+    fn to_bytes(&self) -> io::Result<Vec<u8>>;
 }
 
 pub trait Deserializer {
     fn from(content: &str) -> Result<Self, String>
+    where
+        Self: Sized;
+
+    fn from_bytes(content: &[u8]) -> io::Result<Self>
     where
         Self: Sized;
 }

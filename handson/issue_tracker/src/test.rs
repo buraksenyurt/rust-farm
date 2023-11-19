@@ -1,8 +1,8 @@
 #[cfg(test)]
 pub mod tests {
     use crate::data::IssueStore;
+    use crate::formatter::{Deserializer, Serializer};
     use crate::issue::{Issue, IssueState};
-    use crate::json::{Deserializer, Serializer};
     use crate::owner::Owner;
     use crate::request::{Request, RequestMethod};
     use std::str::FromStr;
@@ -88,5 +88,27 @@ pub mod tests {
             "/issues".to_string(),
         );
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    pub fn issue_serialize_to_bytes_test() {
+        let issue = Issue::new(
+            99,
+            "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli".to_string(),
+            Owner::new("Administrator".to_string(), "System".to_string()),
+            IssueState::Warning,
+            false,
+        );
+        let issue_bytes = issue.to_bytes();
+        assert!(issue_bytes.is_ok());
+        assert_eq!(issue_bytes.unwrap().len(), 89);
+    }
+
+    #[test]
+    pub fn owner_serialize_to_bytes_test() {
+        let owner = Owner::new("Administrator".to_string(), "System".to_string());
+        let issue_bytes = owner.to_bytes();
+        assert!(issue_bytes.is_ok());
+        assert_eq!(issue_bytes.unwrap().len(), 19);
     }
 }

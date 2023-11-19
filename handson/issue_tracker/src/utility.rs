@@ -1,5 +1,5 @@
+use crate::formatter::Serializer;
 use crate::issue::Issue;
-use crate::json::Serializer;
 use crate::response::{HttpResponse, Response};
 use std::io::Write;
 use std::net::TcpStream;

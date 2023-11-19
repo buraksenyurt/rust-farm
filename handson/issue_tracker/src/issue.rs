@@ -1,5 +1,6 @@
-use crate::json::{Deserializer, Field, Serializer};
+use crate::formatter::{Deserializer, Field, Serializer};
 use crate::owner::Owner;
+use std::io::Write;
 use std::str::FromStr;
 
 #[derive(Debug, Clone)]
@@ -42,9 +43,26 @@ impl Serializer for Issue {
         json.push('}');
         json
     }
+
+    fn to_bytes(&self) -> std::io::Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+
+        bytes.write_all(&self.id.to_ne_bytes())?;
+        bytes.write_all(self.title.as_bytes())?;
+        bytes.write_all(&[self.state.clone() as u8])?;
+        bytes.write_all(&[self.is_resolved as u8])?;
+        if let Ok(owner_bytes) = &self.owner.to_bytes() {
+            bytes.write_all(owner_bytes)?;
+        }
+
+        Ok(bytes)
+    }
 }
 impl Deserializer for Issue {
-    fn from(json_content: &str) -> Result<Issue, String> {
+    fn from(json_content: &str) -> Result<Issue, String>
+    where
+        Self: Sized,
+    {
         let id_input = Field::get("id", json_content)?;
         let title_input = Field::get("title", json_content)?;
         let title = title_input.as_str()[2..title_input.len() - 1].to_string();
@@ -70,5 +88,9 @@ impl Deserializer for Issue {
             state,
             resolved,
         ))
+    }
+
+    fn from_bytes(_content: &[u8]) -> std::io::Result<Self> {
+        todo!()
     }
 }

@@ -1,4 +1,5 @@
-use crate::json::{Deserializer, Field, Serializer};
+use crate::formatter::{Deserializer, Field, Serializer};
+use std::io::Write;
 
 #[derive(Debug, Clone)]
 pub struct Owner {
@@ -22,14 +23,33 @@ impl Serializer for Owner {
         json.push('}');
         json
     }
+
+    fn to_bytes(&self) -> std::io::Result<Vec<u8>> {
+        let mut bytes = Vec::new();
+
+        bytes.write_all(self.name.as_bytes())?;
+        bytes.write_all(self.last_name.as_bytes())?;
+
+        Ok(bytes)
+    }
 }
 
 impl Deserializer for Owner {
-    fn from(json_content: &str) -> Result<Self, String> {
+    fn from(json_content: &str) -> Result<Self, String>
+    where
+        Self: Sized,
+    {
         let name_input = Field::get("name", json_content)?;
         let name = name_input.as_str()[2..name_input.len() - 1].to_string();
         let last_name_input = Field::get("last_name", json_content)?;
         let last_name = last_name_input.as_str()[2..last_name_input.len() - 1].to_string();
         Ok(Owner::new(name, last_name))
+    }
+
+    fn from_bytes(_content: &[u8]) -> std::io::Result<Self>
+    where
+        Self: Sized,
+    {
+        todo!()
     }
 }

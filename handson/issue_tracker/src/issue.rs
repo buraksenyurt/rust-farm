@@ -19,13 +19,13 @@ pub enum IssueState {
 }
 
 impl Issue {
-    pub fn new(id: i32, title: String, owner: Owner, state: IssueState) -> Self {
+    pub fn new(id: i32, title: String, owner: Owner, state: IssueState, is_resolved: bool) -> Self {
         Self {
             id,
             title,
             state,
             owner,
-            is_resolved: false,
+            is_resolved,
         }
     }
 }
@@ -55,12 +55,20 @@ impl Deserializer for Issue {
             "Warning" => IssueState::Warning,
             _ => return Err("Geçersiz 'state' değeri".to_string()),
         };
+        let mut resolved = false;
+        if let Ok(is_resolved_input) = Field::get("is_resolved", json_content) {
+            if let Ok(is_resolved) = bool::from_str(is_resolved_input.as_str().trim()) {
+                resolved = is_resolved;
+            }
+        };
+
         let owner = <Owner as Deserializer>::from(json_content)?;
         Ok(Issue::new(
             i32::from_str(id_input.as_str().trim()).unwrap(),
             title,
             owner,
             state,
+            resolved,
         ))
     }
 }

@@ -4,3 +4,5 @@ pub const HTTP_NOT_FOUND: &str = "HTTP/1.1 404 Not Found";
 pub const HTTP_BAD_REQUEST: &str = "HTTP/1.1 400 Bad Request";
 pub const CONTENT_TYPE: &str = "Content-Type: application/json";
 pub const POST_SKIP_COUNT: usize = 10;
+pub const READER_URL: &str = "127.0.0.1:8086";
+pub const WRITER_URL: &str = "127.0.0.1:8087";

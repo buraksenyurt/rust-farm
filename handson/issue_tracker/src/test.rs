@@ -43,7 +43,7 @@ pub mod tests {
         assert!(request.is_ok());
         let actual = request.unwrap();
         let expected = Request::new(
-            RequestMethod::GET,
+            RequestMethod::Get,
             "HTTP/1.1".to_string(),
             "/issues/1".to_string(),
         );
@@ -56,7 +56,7 @@ pub mod tests {
         assert!(request.is_ok());
         let actual = request.unwrap();
         let expected = Request::new(
-            RequestMethod::GET,
+            RequestMethod::Get,
             "HTTP/1.1".to_string(),
             "/issues".to_string(),
         );
@@ -69,7 +69,7 @@ pub mod tests {
         assert!(request.is_ok());
         let actual = request.unwrap();
         let expected = Request::new(
-            RequestMethod::DELETE,
+            RequestMethod::Delete,
             "HTTP/1.1".to_string(),
             "/issues/1".to_string(),
         );
@@ -82,7 +82,7 @@ pub mod tests {
         assert!(request.is_ok());
         let actual = request.unwrap();
         let expected = Request::new(
-            RequestMethod::POST,
+            RequestMethod::Post,
             "HTTP/1.1".to_string(),
             "/issues".to_string(),
         );

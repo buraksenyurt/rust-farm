@@ -19,10 +19,10 @@ impl Request {
 
 #[derive(Debug, PartialEq)]
 pub enum RequestMethod {
-    DELETE,
-    GET,
-    POST,
-    PUT,
+    Delete,
+    Get,
+    Post,
+    Put,
 }
 
 #[derive(Debug)]
@@ -40,10 +40,10 @@ impl FromStr for Request {
             return Err(RequestConvertError::Invalid);
         }
         let method = match line_parts[0] {
-            "GET" => RequestMethod::GET,
-            "POST" => RequestMethod::POST,
-            "PUT" => RequestMethod::PUT,
-            "DELETE" => RequestMethod::DELETE,
+            "GET" => RequestMethod::Get,
+            "POST" => RequestMethod::Post,
+            "PUT" => RequestMethod::Put,
+            "DELETE" => RequestMethod::Delete,
             _ => return Err(RequestConvertError::InvalidHttpMethod),
         };
 

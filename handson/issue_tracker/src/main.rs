@@ -9,6 +9,7 @@ mod response;
 mod test;
 mod utility;
 
+use crate::constants::{READER_URL, WRITER_URL};
 use crate::data::IssueStore;
 use crate::handlers::{Handler, ReadRequestHandler, WriteResponseHandler};
 use std::net::TcpListener;
@@ -23,10 +24,10 @@ fn main() {
     let data_1 = Arc::clone(&data);
     let data_2 = Arc::clone(&data);
     let mut read_handler = ReadRequestHandler {
-        host_address: "127.0.0.1:8086",
+        host_address: READER_URL,
     };
     let mut write_handler = WriteResponseHandler {
-        host_address: "127.0.0.1:8087",
+        host_address: WRITER_URL,
     };
     let listener = TcpListener::bind(read_handler.host_address).unwrap();
     println!(

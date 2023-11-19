@@ -25,7 +25,7 @@ impl<'a> Handler for ReadRequestHandler<'a> {
         let request = Request::from_str(request_line.as_str());
         match request {
             Ok(req) => match req.method {
-                RequestMethod::DELETE => {
+                RequestMethod::Delete => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if let Some(issue_number_str) = issue_part.get(2) {
                         if let Ok(id) = issue_number_str.parse::<i32>() {
@@ -50,7 +50,7 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                         }
                     }
                 }
-                RequestMethod::GET => {
+                RequestMethod::Get => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if issue_part.len() == 2 {
                         let json_output = Utility::vec_to_json(issues.to_vec());
@@ -83,8 +83,7 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                         }
                     }
                 }
-                RequestMethod::POST => {}
-                RequestMethod::PUT => {}
+                _ => {}
             },
             Err(_) => {
                 println!("Geçerli bir talep değil!");
@@ -110,15 +109,8 @@ impl<'a> Handler for WriteResponseHandler<'a> {
         match request {
             Ok(req) => {
                 match req.method {
-                    RequestMethod::POST => {
-                        let mut json_body = String::new();
-                        input
-                            .lines()
-                            .skip(POST_SKIP_COUNT)
-                            .take(line_count - POST_SKIP_COUNT)
-                            .for_each(|line| json_body.push_str(line.trim()));
-                        //println!("{}", json_body);
-                        let issue = <Issue as Deserializer>::from(json_body.as_str()).unwrap();
+                    RequestMethod::Post => {
+                        let issue = Self::catch_issue(input, line_count);
                         issues.push(issue);
                         //println!("Deserialized:\n{:?}", issue);
                         Utility::send_response(
@@ -126,6 +118,38 @@ impl<'a> Handler for WriteResponseHandler<'a> {
                             String::default(),
                             HttpResponse::Created,
                         );
+                    }
+                    RequestMethod::Put => {
+                        let issue_part: Vec<&str> = req.route.split('/').collect();
+                        if let Some(issue_number_str) = issue_part.get(2) {
+                            if let Ok(id) = issue_number_str.parse::<i32>() {
+                                let issue = issues.iter_mut().find(|i| i.id == id);
+                                match issue {
+                                    Some(record) => {
+                                        println!("{} için güncelleme", record.id);
+                                        let payload = Self::catch_issue(input, line_count);
+
+                                        record.title = payload.title;
+                                        record.state = payload.state;
+                                        record.is_resolved = payload.is_resolved;
+                                        record.owner.name = payload.owner.name;
+                                        record.owner.last_name = payload.owner.last_name;
+                                        record.is_resolved = payload.is_resolved;
+
+                                        Utility::send_response(
+                                            &mut stream,
+                                            String::default(),
+                                            HttpResponse::Ok,
+                                        )
+                                    }
+                                    None => Utility::send_response(
+                                        &mut stream,
+                                        String::default(),
+                                        HttpResponse::NotFound,
+                                    ),
+                                };
+                            }
+                        }
                     }
                     _ => {
                         Utility::send_response(
@@ -140,5 +164,19 @@ impl<'a> Handler for WriteResponseHandler<'a> {
                 Utility::send_response(&mut stream, String::default(), HttpResponse::BadRequest);
             }
         }
+    }
+}
+
+impl<'a> WriteResponseHandler<'a> {
+    fn catch_issue(input: String, line_count: usize) -> Issue {
+        let mut json_body = String::new();
+        input
+            .lines()
+            .skip(POST_SKIP_COUNT)
+            .take(line_count - POST_SKIP_COUNT)
+            .for_each(|line| json_body.push_str(line.trim()));
+        //println!("{}", json_body);
+        let issue = <Issue as Deserializer>::from(json_body.as_str()).unwrap();
+        issue
     }
 }

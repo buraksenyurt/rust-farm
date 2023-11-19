@@ -20,6 +20,7 @@ pub mod tests {
             "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli".to_string(),
             Owner::new("Administrator".to_string(), "System".to_string()),
             IssueState::Warning,
+            false
         );
         let expected = issue.to_json();
         let actual = "{\"id\": 99,\"title\": \"Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli\",\"state\": \"Warning\",\"is_resolved\": false,\"owner\":{\"name\": \"Administrator\",\"last_name\": \"System\"}}";

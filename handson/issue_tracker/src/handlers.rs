@@ -132,8 +132,10 @@ impl<'a> Handler for WriteResponseHandler<'a> {
                                         record.title = payload.title;
                                         record.state = payload.state;
                                         record.is_resolved = payload.is_resolved;
-                                        record.owner.name = payload.owner.name;
-                                        record.owner.last_name = payload.owner.last_name;
+                                        // record.owner.name = payload.owner.name;
+                                        // record.owner.last_name = payload.owner.last_name;
+                                        println!("{}",payload.owner.name);
+                                        println!("{}",payload.owner.last_name);
                                         record.is_resolved = payload.is_resolved;
 
                                         Utility::send_response(

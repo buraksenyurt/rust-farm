@@ -62,4 +62,5 @@ Bir Issue'nun bilgilerini güncellemek için de PUT operasyonundan yararlanılab
   - [ ] Yeni bir Issue eklendiğinde olay bilgisi yayınlanması.
   - [ ] Bir Issue state değişikliğine uğradığında olay bilgisi yayınlanması.
 - [ ] Persistancy mod eklenmesi _(DB kullanılırsa DB ile konuşturma noktasında saf Rust işlevleri ile nasıl ilerlenebilir? İlk etapta dosyaya binary yazma düşünülebilir mi? )_
+- [ ] Uygulamanın Dockerize edilmesi
 

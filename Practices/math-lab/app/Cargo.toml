@@ -1,0 +1,9 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+homepage.workspace = true
+
+[dependencies]
+algebra = { version = "0.1.0", path = "../algebra" }
+basic = { version = "0.1.0", path = "../basic" }

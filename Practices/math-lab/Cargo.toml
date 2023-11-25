@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "app",
+    "basic",
+    "algebra",
+    "poc"
+]
+default-members=[
+    "app"
+]
+exclude = [
+    "poc"
+]
+[workspace.package]
+homepage = "https://www.buraksenyurt.com"

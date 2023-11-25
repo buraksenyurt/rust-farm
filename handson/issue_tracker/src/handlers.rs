@@ -28,9 +28,7 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                 RequestMethod::Delete => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if let Some(issue_number_str) = issue_part.get(2) {
-                        let issue = issues
-                            .iter()
-                            .find(|i| i.id.value == issue_number_str.to_string());
+                        let issue = issues.iter().find(|i| i.id.value == *issue_number_str);
                         match issue {
                             Some(record) => {
                                 let record_clone = record.clone();
@@ -59,9 +57,7 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                     }
                     if let Some(issue_number_str) = issue_part.get(2) {
                         println!("Talep edilen issue ID: {}", issue_number_str);
-                        let issue = issues
-                            .iter()
-                            .find(|i| i.id.value == issue_number_str.to_string());
+                        let issue = issues.iter().find(|i| i.id.value == *issue_number_str);
                         match issue {
                             Some(record) => {
                                 println!("{} bulundu", record.id);
@@ -115,9 +111,7 @@ impl<'a> Handler for WriteResponseHandler<'a> {
                 RequestMethod::Put => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if let Some(issue_number_str) = issue_part.get(2) {
-                        let issue = issues
-                            .iter_mut()
-                            .find(|i| i.id.value == issue_number_str.to_string());
+                        let issue = issues.iter_mut().find(|i| i.id.value == *issue_number_str);
                         match issue {
                             Some(record) => {
                                 println!("{} için güncelleme", record.id);

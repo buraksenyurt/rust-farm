@@ -49,7 +49,7 @@ impl Serializer for Issue {
     fn to_bytes(&self) -> std::io::Result<Vec<u8>> {
         let mut bytes = Vec::new();
 
-        bytes.write_all(&self.id.value.as_bytes())?;
+        bytes.write_all(self.id.value.as_bytes())?;
         bytes.write_all(self.title.as_bytes())?;
         bytes.push(0_u8);
         match self.state {

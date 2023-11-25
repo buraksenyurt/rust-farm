@@ -135,7 +135,7 @@ impl Deserializer for Issue {
         */
         println!("Is Resolved {}", is_resolved);
         let owner_slice = &content[(title_end + 7)..];
-        let owner = Owner::from_bytes(&owner_slice).unwrap();
+        let owner = Owner::from_bytes(owner_slice).unwrap();
 
         Ok(Issue {
             id,

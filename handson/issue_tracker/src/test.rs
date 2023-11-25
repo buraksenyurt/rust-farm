@@ -5,6 +5,7 @@ pub mod tests {
     use crate::issue::{Issue, IssueState};
     use crate::owner::Owner;
     use crate::request::{Request, RequestMethod};
+    use crate::utility::Utility;
     use std::str::FromStr;
 
     #[test]
@@ -133,5 +134,12 @@ pub mod tests {
         assert_eq!(issue.owner.name, "Administrator".to_string());
         assert_eq!(issue.owner.last_name, "System".to_string());
         assert_eq!(issue.state, IssueState::Warning);
+    }
+
+    #[test]
+    pub fn generated_guid_is_valid_test() {
+        let guid = Utility::gen_guid();
+        assert_eq!(guid.len(), 36);
+        assert!(guid.chars().all(|c| c.is_digit(16) || c == '-'));
     }
 }

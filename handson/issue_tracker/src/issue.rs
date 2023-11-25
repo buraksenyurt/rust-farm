@@ -1,6 +1,6 @@
 use crate::formatter::{Deserializer, Field, Serializer};
 use crate::owner::Owner;
-use std::io::Write;
+use std::io::{Error, ErrorKind, Write};
 use std::str::FromStr;
 
 #[derive(Debug, Clone)]
@@ -49,7 +49,12 @@ impl Serializer for Issue {
 
         bytes.write_all(&self.id.to_ne_bytes())?;
         bytes.write_all(self.title.as_bytes())?;
-        bytes.write_all(&[self.state.clone() as u8])?;
+        bytes.push(0_u8);
+        match self.state {
+            IssueState::Warning => bytes.write_all(&0_u8.to_ne_bytes())?,
+            IssueState::Critical => bytes.write_all(&1_u8.to_ne_bytes())?,
+            IssueState::Error => bytes.write_all(&2_u8.to_ne_bytes())?,
+        }
         bytes.write_all(&[self.is_resolved as u8])?;
         if let Ok(owner_bytes) = &self.owner.to_bytes() {
             bytes.write_all(owner_bytes)?;
@@ -90,7 +95,54 @@ impl Deserializer for Issue {
         ))
     }
 
-    fn from_bytes(_content: &[u8]) -> std::io::Result<Self> {
-        todo!()
+    fn from_bytes(content: &[u8]) -> std::io::Result<Self> {
+        let content_length = content.len();
+        // İlk 4 byte'tan i32 türünden id değerini alırız
+        let id = i32::from_ne_bytes([content[0], content[1], content[2], content[3]]);
+        println!("ID {}", id);
+        /*
+            title bilgisinin bittiği yeri bulmak için içeriğin 4ncü byte'ından itibaren
+            tüm içeriğin uzunluğu kadar hareket edip o anki karakterin C-Style string'lerin bitiş
+            noktasını ifade eden null byte ('\0') olup olmadığına bakılır.
+            Böylece title bilgisinin bittiği yerin konumu bulunur. Benzer strateji,
+            owner'ın name ve last_name içeriklerinin bulunmasında da kullanılır.
+        */
+        let title_end = content[4..]
+            .iter()
+            .position(|&x| x == 0)
+            .unwrap_or(content_length);
+        let title = String::from_utf8_lossy(&content[4..title_end + 4]).into_owned();
+        println!("Title {}", title);
+        // devam eden byte içeriğindeki bilgi 0,1,2 olma durumuna göre IssueState enum sabitidir
+        let state = match content[title_end + 5] {
+            0 => IssueState::Warning,
+            1 => IssueState::Critical,
+            2 => IssueState::Error,
+            _ => {
+                return Err(Error::new(
+                    ErrorKind::InvalidData,
+                    format!("Geçersiz state. State value {:?}", content[title_end + 1]),
+                ))
+            }
+        };
+        println!("State {:?}", state);
+        // yine takip eden bitin 0 veya 1 olma hali is_resolved için false, true olma halidir
+        let is_resolved = content[title_end + 6] != 0;
+        /*
+            Bu kısımdan itibaren Owner bilgisi başlar.
+            Başlığın bittiği konumdan sonra gelen state ve is_resolved konumlarına göre
+            3 birim ileri gidilerek name ve last_name kısımları bulunur.
+        */
+        println!("Is Resolved {}", is_resolved);
+        let owner_slice = &content[(title_end + 7)..];
+        let owner = Owner::from_bytes(&owner_slice).unwrap();
+
+        Ok(Issue {
+            id,
+            title,
+            state,
+            is_resolved,
+            owner,
+        })
     }
 }

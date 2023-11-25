@@ -28,7 +28,9 @@ impl Serializer for Owner {
         let mut bytes = Vec::new();
 
         bytes.write_all(self.name.as_bytes())?;
+        bytes.push(0_u8);
         bytes.write_all(self.last_name.as_bytes())?;
+        bytes.push(0_u8);
 
         Ok(bytes)
     }
@@ -46,10 +48,15 @@ impl Deserializer for Owner {
         Ok(Owner::new(name, last_name))
     }
 
-    fn from_bytes(_content: &[u8]) -> std::io::Result<Self>
+    fn from_bytes(content: &[u8]) -> std::io::Result<Self>
     where
         Self: Sized,
     {
-        todo!()
+        let name_end = content[..].iter().position(|&x| x == 0).unwrap_or(0);
+        let name = String::from_utf8_lossy(&content[..name_end]).into_owned();
+        println!("Owner Name {} Name end {}", name, name_end);
+        let last_name = String::from_utf8_lossy(&content[name_end+1..content.len()-1]).into_owned();
+        println!("Last Name {}", last_name);
+        Ok(Self { name, last_name })
     }
 }

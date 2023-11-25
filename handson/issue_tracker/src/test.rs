@@ -94,14 +94,14 @@ pub mod tests {
     pub fn issue_serialize_to_bytes_test() {
         let issue = Issue::new(
             99,
-            "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli".to_string(),
+            "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli.".to_string(),
             Owner::new("Administrator".to_string(), "System".to_string()),
             IssueState::Warning,
             false,
         );
         let issue_bytes = issue.to_bytes();
         assert!(issue_bytes.is_ok());
-        assert_eq!(issue_bytes.unwrap().len(), 89);
+        assert_eq!(issue_bytes.unwrap().len(), 93);
     }
 
     #[test]
@@ -109,6 +109,29 @@ pub mod tests {
         let owner = Owner::new("Administrator".to_string(), "System".to_string());
         let issue_bytes = owner.to_bytes();
         assert!(issue_bytes.is_ok());
-        assert_eq!(issue_bytes.unwrap().len(), 19);
+        assert_eq!(issue_bytes.unwrap().len(), 21);
+    }
+
+    #[test]
+    pub fn issue_deserialize_from_bytes_test() {
+        let issue = Issue::new(
+            99,
+            "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli.".to_string(),
+            Owner::new("Administrator".to_string(), "System".to_string()),
+            IssueState::Warning,
+            false,
+        );
+        let binding = issue.to_bytes().unwrap();
+        let source_bytes = binding.as_slice();
+        let issue = Issue::from_bytes(source_bytes).unwrap();
+        assert_eq!(issue.id, 99);
+        assert_eq!(issue.is_resolved, false);
+        assert_eq!(
+            issue.title,
+            "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli.".to_string()
+        );
+        assert_eq!(issue.owner.name, "Administrator".to_string());
+        assert_eq!(issue.owner.last_name, "System".to_string());
+        assert_eq!(issue.state, IssueState::Warning);
     }
 }

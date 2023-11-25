@@ -26,7 +26,6 @@ Issue ve Owner veri yapıları için ters serileştirme işlevselliklerini ekled
 
 ```json
 {
-    "id": 10001,
     "title": "Windows Server'lar için Upgrade çalışması",
     "state": "Warning",
     "owner":{
@@ -42,19 +41,25 @@ Belli bir issue'yu çeken GET operasyonu da aşağıdaki gibi çalışmakta.
 
 ![../images/issue_tracker_03.png](../images/issue_tracker_03.png)
 
+Belli bir issue'yu silmek için DELETE operasyonu da aşağıdaki gibi çalışmakta.
+
 ![../images/issue_tracker_04.png](../images/issue_tracker_04.png)
 
 Bir Issue'nun bilgilerini güncellemek için de PUT operasyonundan yararlanılabiliyor.
 
 ![../images/issue_tracker_05.png](../images/issue_tracker_05.png)
 
-## Yapmak İstediklerim
+## Yapılacaklar
 
-- [x] HTTP Post ile server tarafına Issue kaydı alabilmeliyim.
-- [x] Issue için ters serileştirme işlevleri gerekiyor.
-- [x] Server tarafı asenkron çalışacak hale getirilebilir.
-- [x] Handler kısmı Read Request ve Write Response şeklinde ayrıştırılabilir. 
+- [x] HTTP Post ile server tarafına Issue kaydı alınması.
+- [x] Issue için ters serileştirme işlevleri.
+- [x] Server tarafının asenkron çalıştırılması.
+- [x] Handler kısmının talepleri okuma ve yazma noktasında ikiye ayrılması. 
 - [x] Get/{id} işlevselliğinin kazandırılması.
-- [x] Delete ve hatta Put işlevsellikleri eklenmeli.
-- [ ] Issue'lar ilk etapta sıkıştırılmış bir dosya da saklanabilir _(DB kullanırsam DB ile konuşturma noktasında saf Rust işlevleri ile nasıl ilerleyeceğim. Bu önemli bir soru işaret :D )_
+- [x] Delete/{id} ve Put işlevsellikleri.
+- [x] Issue verilerindeki Id değerinin GUID türüne dönüştürülmesi.
+- [ ] Sisteme asenkron bir event kurgusunun eklenmesi ve aşağıdaki olayların takibi.
+  - [ ] Yeni bir Issue eklendiğinde olay bilgisi yayınlanması.
+  - [ ] Bir Issue state değişikliğine uğradığında olay bilgisi yayınlanması.
+- [ ] Persistancy mod eklenmesi _(DB kullanılırsa DB ile konuşturma noktasında saf Rust işlevleri ile nasıl ilerlenebilir? İlk etapta dosyaya binary yazma düşünülebilir mi? )_
 

@@ -1,3 +1,4 @@
+use crate::constants::UUID_LENGTH;
 use crate::formatter::{Deserializer, Field, Serializer};
 use crate::owner::Owner;
 use crate::uuid::Uuid;
@@ -91,24 +92,25 @@ impl Deserializer for Issue {
 
     fn from_bytes(content: &[u8]) -> std::io::Result<Self> {
         let content_length = content.len();
-        let id_value = String::from_utf8_lossy(&content[0..32]).into_owned();
+        let id_value = String::from_utf8_lossy(&content[0..UUID_LENGTH]).into_owned();
         let id = Uuid { value: id_value };
         println!("ID {}", id);
         /*
-            title bilgisinin bittiği yeri bulmak için içeriğin 4ncü byte'ından itibaren
-            tüm içeriğin uzunluğu kadar hareket edip o anki karakterin C-Style string'lerin bitiş
-            noktasını ifade eden null byte ('\0') olup olmadığına bakılır.
+            title bilgisinin bittiği yeri bulmak için içeriğin 36 byte'lık guid değerinin bittiği
+            yerden itibaren tüm içeriğin uzunluğu kadar hareket edip o anki karakterin
+            C-Style string'lerin bitiş noktasını ifade eden null byte ('\0') olup olmadığına bakılır.
             Böylece title bilgisinin bittiği yerin konumu bulunur. Benzer strateji,
             owner'ın name ve last_name içeriklerinin bulunmasında da kullanılır.
         */
-        let title_end = content[32..]
+        let title_end = content[UUID_LENGTH..]
             .iter()
             .position(|&x| x == 0)
             .unwrap_or(content_length);
-        let title = String::from_utf8_lossy(&content[32..title_end + 4]).into_owned();
+        let title =
+            String::from_utf8_lossy(&content[UUID_LENGTH..title_end + UUID_LENGTH]).into_owned();
         println!("Title {}", title);
         // devam eden byte içeriğindeki bilgi 0,1,2 olma durumuna göre IssueState enum sabitidir
-        let state = match content[title_end + 5] {
+        let state = match content[title_end + UUID_LENGTH + 1] {
             0 => IssueState::Warning,
             1 => IssueState::Critical,
             2 => IssueState::Error,
@@ -121,14 +123,14 @@ impl Deserializer for Issue {
         };
         println!("State {:?}", state);
         // yine takip eden bitin 0 veya 1 olma hali is_resolved için false, true olma halidir
-        let is_resolved = content[title_end + 6] != 0;
+        let is_resolved = content[title_end + UUID_LENGTH + 2] != 0;
         /*
             Bu kısımdan itibaren Owner bilgisi başlar.
             Başlığın bittiği konumdan sonra gelen state ve is_resolved konumlarına göre
             3 birim ileri gidilerek name ve last_name kısımları bulunur.
         */
         println!("Is Resolved {}", is_resolved);
-        let owner_slice = &content[(title_end + 7)..];
+        let owner_slice = &content[(title_end + UUID_LENGTH + 3)..];
         let owner = Owner::from_bytes(owner_slice).unwrap();
 
         Ok(Issue {

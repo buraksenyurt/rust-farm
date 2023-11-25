@@ -6,3 +6,4 @@ pub const CONTENT_TYPE: &str = "Content-Type: application/json";
 pub const POST_SKIP_COUNT: usize = 10;
 pub const READER_URL: &str = "127.0.0.1:8086";
 pub const WRITER_URL: &str = "127.0.0.1:8087";
+pub const UUID_LENGTH: usize = 36;

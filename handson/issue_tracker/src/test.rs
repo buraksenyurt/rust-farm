@@ -6,7 +6,6 @@ pub mod tests {
     use crate::owner::Owner;
     use crate::request::{Request, RequestMethod};
     use crate::utility::Utility;
-    use crate::uuid::Uuid;
     use std::str::FromStr;
 
     #[test]
@@ -17,29 +16,24 @@ pub mod tests {
     }
     #[test]
     pub fn issue_to_json_works_test() {
-        let uuid = Uuid::new();
         let issue = Issue::new(
-            uuid.clone(),
             "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli".to_string(),
             Owner::new("Administrator".to_string(), "System".to_string()),
             IssueState::Warning,
             false,
         );
+        let uuid_value = issue.clone().id.value;
         let expected = issue.to_json();
-        let actual = r#"{"id": "#
-            + uuid.value
-            + r#","title": "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli","state": "Warning","owner": {"name": "Administrator","last_name": "System"}}"#;
+        let actual = r#"{"id": ""#.to_owned()
+            + &uuid_value
+            + r#"","title": "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli","state": "Warning","is_resolved": false,"owner":{"name": "Administrator","last_name": "System"}}"#;
         assert_eq!(expected, actual);
     }
     #[test]
     pub fn from_json_to_issue_works_test() {
-        let uuid = Uuid::new();
-        let json_content = r#"{"id": "#
-            + uuid.clone().value
-            + r#","title": "Windows Server'lar için Upgrade çalışması","state": "Warning","owner": {"name": "martin","last_name": "mystery"}}"#;
+        let json_content = r#"{"title": "Windows Server'lar için Upgrade çalışması","state": "Warning","owner": {"name": "martin","last_name": "mystery"}}"#;
         let issue = <Issue as Deserializer>::from(json_content);
         let issue = issue.unwrap();
-        assert_eq!(issue.id.value, uuid.value);
         assert_eq!(issue.title, "Windows Server'lar için Upgrade çalışması");
         assert_eq!(issue.state, IssueState::Warning);
         assert_eq!(issue.owner.name, "martin");
@@ -101,7 +95,6 @@ pub mod tests {
     #[test]
     pub fn issue_serialize_to_bytes_test() {
         let issue = Issue::new(
-            Uuid::new(),
             "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli.".to_string(),
             Owner::new("Administrator".to_string(), "System".to_string()),
             IssueState::Warning,
@@ -109,7 +102,7 @@ pub mod tests {
         );
         let issue_bytes = issue.to_bytes();
         assert!(issue_bytes.is_ok());
-        assert_eq!(issue_bytes.unwrap().len(), 93);
+        assert_eq!(issue_bytes.unwrap().len(), 125);
     }
 
     #[test]
@@ -122,9 +115,7 @@ pub mod tests {
 
     #[test]
     pub fn issue_deserialize_from_bytes_test() {
-        let uuid = Uuid::new();
         let issue = Issue::new(
-            Uuid::new(),
             "Load Balancer'da bilinmeyen kesintiler söz konusu. İncelenmeli.".to_string(),
             Owner::new("Administrator".to_string(), "System".to_string()),
             IssueState::Warning,
@@ -133,7 +124,6 @@ pub mod tests {
         let binding = issue.to_bytes().unwrap();
         let source_bytes = binding.as_slice();
         let issue = Issue::from_bytes(source_bytes).unwrap();
-        assert_eq!(issue.id, uuid.value);
         assert_eq!(issue.is_resolved, false);
         assert_eq!(
             issue.title,

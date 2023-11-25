@@ -28,26 +28,26 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                 RequestMethod::Delete => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if let Some(issue_number_str) = issue_part.get(2) {
-                        if let Ok(id) = issue_number_str.parse::<i32>() {
-                            let issue = issues.iter().find(|i| i.id == id);
-                            match issue {
-                                Some(record) => {
-                                    let record_clone = record.clone();
-                                    println!("{} silinecek", record_clone.id);
-                                    issues.retain(|i| i.id != record_clone.id);
-                                    Utility::send_response(
-                                        &mut stream,
-                                        String::default(),
-                                        HttpResponse::Ok,
-                                    )
-                                }
-                                None => Utility::send_response(
+                        let issue = issues
+                            .iter()
+                            .find(|i| i.id.value == issue_number_str.to_string());
+                        match issue {
+                            Some(record) => {
+                                let record_clone = record.clone();
+                                println!("{} silinecek", record_clone.id);
+                                issues.retain(|i| i.id.value != record_clone.id.value);
+                                Utility::send_response(
                                     &mut stream,
                                     String::default(),
-                                    HttpResponse::NotFound,
-                                ),
-                            };
-                        }
+                                    HttpResponse::Ok,
+                                )
+                            }
+                            None => Utility::send_response(
+                                &mut stream,
+                                String::default(),
+                                HttpResponse::NotFound,
+                            ),
+                        };
                     }
                 }
                 RequestMethod::Get => {
@@ -58,29 +58,28 @@ impl<'a> Handler for ReadRequestHandler<'a> {
                         return;
                     }
                     if let Some(issue_number_str) = issue_part.get(2) {
-                        if let Ok(id) = issue_number_str.parse::<i32>() {
-                            println!("Talep edilen issue ID: {}", id);
-                            let issue = issues.iter().find(|i| i.id == id);
-                            match issue {
-                                Some(record) => {
-                                    println!("{} bulundu", record.id);
-                                    let response =
-                                        Response::new(HttpResponse::Ok, record.to_json());
-                                    stream.write_all(response.to_string().as_bytes()).unwrap();
-                                }
-                                None => Utility::send_response(
-                                    &mut stream,
-                                    String::default(),
-                                    HttpResponse::NotFound,
-                                ),
-                            };
-                        } else {
-                            Utility::send_response(
+                        println!("Talep edilen issue ID: {}", issue_number_str);
+                        let issue = issues
+                            .iter()
+                            .find(|i| i.id.value == issue_number_str.to_string());
+                        match issue {
+                            Some(record) => {
+                                println!("{} bulundu", record.id);
+                                let response = Response::new(HttpResponse::Ok, record.to_json());
+                                stream.write_all(response.to_string().as_bytes()).unwrap();
+                            }
+                            None => Utility::send_response(
                                 &mut stream,
                                 String::default(),
-                                HttpResponse::BadRequest,
-                            );
-                        }
+                                HttpResponse::NotFound,
+                            ),
+                        };
+                    } else {
+                        Utility::send_response(
+                            &mut stream,
+                            String::default(),
+                            HttpResponse::BadRequest,
+                        );
                     }
                 }
                 _ => {}
@@ -116,33 +115,33 @@ impl<'a> Handler for WriteResponseHandler<'a> {
                 RequestMethod::Put => {
                     let issue_part: Vec<&str> = req.route.split('/').collect();
                     if let Some(issue_number_str) = issue_part.get(2) {
-                        if let Ok(id) = issue_number_str.parse::<i32>() {
-                            let issue = issues.iter_mut().find(|i| i.id == id);
-                            match issue {
-                                Some(record) => {
-                                    println!("{} için güncelleme", record.id);
-                                    let payload = Self::catch_issue(input, line_count);
+                        let issue = issues
+                            .iter_mut()
+                            .find(|i| i.id.value == issue_number_str.to_string());
+                        match issue {
+                            Some(record) => {
+                                println!("{} için güncelleme", record.id);
+                                let payload = Self::catch_issue(input, line_count);
 
-                                    record.title = payload.title;
-                                    record.state = payload.state;
-                                    record.is_resolved = payload.is_resolved;
-                                    record.owner.name = payload.owner.name;
-                                    record.owner.last_name = payload.owner.last_name;
-                                    record.is_resolved = payload.is_resolved;
+                                record.title = payload.title;
+                                record.state = payload.state;
+                                record.is_resolved = payload.is_resolved;
+                                record.owner.name = payload.owner.name;
+                                record.owner.last_name = payload.owner.last_name;
+                                record.is_resolved = payload.is_resolved;
 
-                                    Utility::send_response(
-                                        &mut stream,
-                                        String::default(),
-                                        HttpResponse::Ok,
-                                    )
-                                }
-                                None => Utility::send_response(
+                                Utility::send_response(
                                     &mut stream,
                                     String::default(),
-                                    HttpResponse::NotFound,
-                                ),
-                            };
-                        }
+                                    HttpResponse::Ok,
+                                )
+                            }
+                            None => Utility::send_response(
+                                &mut stream,
+                                String::default(),
+                                HttpResponse::NotFound,
+                            ),
+                        };
                     }
                 }
                 _ => {

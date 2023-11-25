@@ -10,21 +10,18 @@ impl IssueStore {
     pub fn seed(&mut self) {
         self.data = vec![
             Issue::new(
-                1,
                 "txtPassword kontrolünde güvenlik açığı var.".to_string(),
                 Owner::new("Bill".to_string(), "Geyts".to_string()),
                 IssueState::Critical,
                 false,
             ),
             Issue::new(
-                2,
                 "GetProductList metodunda hatalı Dependecy kullanımı söz konusu.".to_string(),
                 Owner::new("Nadonna".to_string(), "De Lafuante".to_string()),
                 IssueState::Error,
                 false,
             ),
             Issue::new(
-                3,
                 "Konfigurasyon dosyasındaki db adları güvenli alana taşınmalı".to_string(),
                 Owner::new("Bizim".to_string(), "Con Do".to_string()),
                 IssueState::Warning,

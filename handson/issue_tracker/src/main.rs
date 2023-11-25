@@ -8,6 +8,7 @@ mod request;
 mod response;
 mod test;
 mod utility;
+mod uuid;
 
 use crate::constants::{READER_URL, WRITER_URL};
 use crate::data::IssueStore;
@@ -15,12 +16,8 @@ use crate::handlers::{Handler, ReadRequestHandler, WriteResponseHandler};
 use std::net::TcpListener;
 use std::sync::{Arc, Mutex};
 use std::thread;
-use crate::utility::Utility;
 
 fn main() {
-    let guid=Utility::gen_guid();
-    println!("{}",guid);
-
     let mut threads = Vec::new();
     let mut store = IssueStore::default();
     store.seed();

@@ -4,14 +4,20 @@ use std::sync::{Arc, Mutex};
 */
 
 fn main() {
-    let mut products = Database::new();
+    let mut products: Database<Product> = Database::new();
 
     /*
         products değişkeni ile temsil edilen Database veri yapısındaki
         data vecktörüne yeni eleman eklenince subscribe ettiğimiz fonksiyon çalıştırılacaktır.
     */
-    products.subscribe(|| {
-        println!("Veri değişikliği oldu.");
+    products.subscribe(|event| match event {
+        DatabaseEvent::Add(p) => {
+            println!(
+                "{} kodlu yeni bir ürün eklendi. Stok seviyesi {}.",
+                p.code, p.stock_level
+            );
+        }
+        _ => {}
     });
 
     products.add(Product {
@@ -28,6 +34,12 @@ fn main() {
     });
 }
 
+enum DatabaseEvent<T> {
+    Add(T),
+    Delete(T),
+    Update(T),
+}
+
 struct Database<T> {
     // Asıl datayı tuttuğumuz vektör. Burayı gözlemleyebilmek istiyoruz.
     data: Arc<Mutex<Vec<T>>>,
@@ -38,10 +50,14 @@ struct Database<T> {
     // Send bir tipin başka bir thread'e gönderilebilceğini belirtir
     // Sync ise bir tipin birden fazla thread tarafından aynı anda kullanılabileceğini belirtir
     // Yani Fn() ile bir işlevi çağırabilir ve farklı thread'lerde kullanabilir hale geliyoruz.
-    observers: Vec<Box<dyn Fn() + Send + Sync>>,
+    observers: Vec<Box<dyn Fn(DatabaseEvent<T>) + Send + Sync>>,
 }
 
-impl<T> Database<T> {
+impl<T> Database<T>
+where
+    T: Clone,
+    T: Copy,
+{
     fn new() -> Self {
         Self {
             data: Arc::new(Mutex::new(Vec::new())),
@@ -56,7 +72,9 @@ impl<T> Database<T> {
         // observer'ları subscribe metodu ile observers listesine ekleriz
         // Bu birden fazla yerden observer fonksiyonları tanımlayıp
         // değişiklikleri izleyebileceğimiz anlamına gelir
-        let _ = &self.observers.iter().for_each(|observer| observer());
+        for observer in &self.observers {
+            observer(DatabaseEvent::Add(item.clone()));
+        }
     }
 
     fn get_data(&self) -> Vec<T>
@@ -68,13 +86,15 @@ impl<T> Database<T> {
 
     fn subscribe<F>(&mut self, observer: F)
     where
-        F: Fn() + Send + Sync + 'static,
+        F: Fn(DatabaseEvent<T>) + Send + Sync + 'static,
     {
-        self.observers.push(Box::new(observer));
+        self.observers.push(Box::new(move |event| {
+            observer(event);
+        }));
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 struct Product {
     code: u32,
     stock_level: u32,

@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "clock",
+    "gigasecond",
+    "reverse_string"
+]

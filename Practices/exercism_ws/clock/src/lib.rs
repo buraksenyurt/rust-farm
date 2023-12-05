@@ -8,41 +8,23 @@ pub struct Clock {
 
 impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
-        let mut h = 0;
-        if hours >= 24 {
-            h = hours % 24;
-        } else {
-            h = hours
+        let total_minutes = (hours * 60 + minutes).rem_euclid(24 * 60);
+        let m = total_minutes % 60;
+        let h = (total_minutes / 60).rem_euclid(24);
+
+        Self {
+            hours: h,
+            minutes: m,
         }
-        Self { hours: h, minutes }
     }
     pub fn add_minutes(&self, minutes: i32) -> Self {
-        if self.minutes + minutes < 60 {
-            Self {
-                hours: self.hours,
-                minutes: self.minutes + minutes,
-            }
-        } else {
-            let remaining = (self.minutes + minutes) % 60;
-            let hours = self.hours + (self.minutes + minutes).div_euclid(60);
-            Self::new(hours, remaining)
-        }
+        Self::new(self.hours, self.minutes + minutes)
     }
 }
 
 impl Display for Clock {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let hours = if self.hours < 10 {
-            format!("0{}", self.hours)
-        } else {
-            format!("{}", self.hours)
-        };
-        let minutes = if self.minutes < 10 {
-            format!("0{}", self.minutes)
-        } else {
-            format!("{}", self.minutes)
-        };
-        write!(f, "{}:{}", hours, minutes)
+        write!(f, "{:02}:{:02}", self.hours, self.minutes)
     }
 }
 

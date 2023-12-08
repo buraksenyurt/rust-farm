@@ -2,5 +2,6 @@
 members = [
     "clock",
     "gigasecond",
-    "reverse_string"
+    "reverse_string",
+    "anagram"
 ]

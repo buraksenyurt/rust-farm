@@ -23,56 +23,76 @@ pub trait Planet {
         d.seconds / (EARTH_YEARS_IN_SECONDS * EARTH_ORBITAL_PERIOD)
     }
 }
+// pub struct Mercury;
+// pub struct Venus;
+// pub struct Earth;
+// pub struct Mars;
+// pub struct Jupiter;
+// pub struct Saturn;
+// pub struct Uranus;
+// pub struct Neptune;
 
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
+macro_rules! planet {
+    ($struct_name:ident,$orbital_period:expr) => {
+        #[derive(Debug)]
+        pub struct $struct_name;
 
-impl Planet for Mercury {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * MERCURY_ORBITAL_PERIOD)
-    }
+        impl Planet for $struct_name {
+            fn years_during(d: &Duration) -> f64 {
+                d.seconds / (EARTH_YEARS_IN_SECONDS * $orbital_period)
+            }
+        }
+    };
 }
-impl Planet for Venus {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * VENUS_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Earth {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * EARTH_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Mars {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * MARS_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Jupiter {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * JUPITER_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Saturn {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * SATURN_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Uranus {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * URANUS_ORBITAL_PERIOD)
-    }
-}
-impl Planet for Neptune {
-    fn years_during(d: &Duration) -> f64 {
-        d.seconds / (EARTH_YEARS_IN_SECONDS * NEPTUNE_ORBITAL_PERIOD)
-    }
-}
+planet!(Mercury, MERCURY_ORBITAL_PERIOD);
+planet!(Venus, VENUS_ORBITAL_PERIOD);
+planet!(Earth, EARTH_ORBITAL_PERIOD);
+planet!(Mars, MARS_ORBITAL_PERIOD);
+planet!(Jupiter, JUPITER_ORBITAL_PERIOD);
+planet!(Saturn, SATURN_ORBITAL_PERIOD);
+planet!(Uranus, URANUS_ORBITAL_PERIOD);
+planet!(Neptune, NEPTUNE_ORBITAL_PERIOD);
+
+// impl Planet for Mercury {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * MERCURY_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Venus {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * VENUS_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Earth {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * EARTH_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Mars {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * MARS_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Jupiter {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * JUPITER_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Saturn {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * SATURN_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Uranus {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * URANUS_ORBITAL_PERIOD)
+//     }
+// }
+// impl Planet for Neptune {
+//     fn years_during(d: &Duration) -> f64 {
+//         d.seconds / (EARTH_YEARS_IN_SECONDS * NEPTUNE_ORBITAL_PERIOD)
+//     }
+// }
 
 fn assert_in_delta(expected: f64, actual: f64) {
     let diff: f64 = (expected - actual).abs();

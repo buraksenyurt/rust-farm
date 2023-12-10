@@ -5,7 +5,8 @@
 - [x] 02 Clock
 - [x] 03 Anagram
 - [x] 04 Space Age
-- [ ] 05 Sublist
+- [x] 05 Sublist
+- [x] 06 Minesweeper
 
 ## Test
 

@@ -7,6 +7,7 @@
 - [x] 04 Space Age
 - [x] 05 Sublist
 - [x] 06 Minesweeper
+- [ ] 07 Luhn
 
 ## Test
 

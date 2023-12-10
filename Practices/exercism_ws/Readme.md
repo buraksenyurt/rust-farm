@@ -1,12 +1,15 @@
 # Exercism Problem Çözümleri
 
-- [ ] 00 Reverse String
-- [ ] 01 Gigasecond
-- [ ] 02 Clock
+- [x] 00 Reverse String
+- [x] 01 Gigasecond
+- [x] 02 Clock
+- [x] 03 Anagram
+- [x] 04 Space Age
+- [ ] 05 Sublist
 
 ## Test
 
-Testleri yapmak için workspace üstünde şöyle ilerlenebilir.
+Program testlerini koşturmakiçin workspace üstünde aşağıdaki terminal komutları ile ilerlenebilir.
 
 ```bash
 # sadece clock kütüphanesindeki testleri çalıştırır.

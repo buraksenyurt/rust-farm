@@ -4,5 +4,6 @@ members = [
     "gigasecond",
     "reverse_string",
     "anagram",
-    "space_age"
+    "space_age",
+    "sublist"
 ]

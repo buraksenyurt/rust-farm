@@ -6,6 +6,7 @@ members = [
     "easy/gigasecond",
     "easy/reverse_string",
     "easy/armstrong_numbers",
+    "easy/beer_song",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

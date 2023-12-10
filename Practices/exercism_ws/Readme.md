@@ -4,6 +4,7 @@
   - [x] 00 Reverse String
   - [x] 01 Gigasecond
   - [x] 02 Armstrong Numbers
+  - [ ] 03 Beer Song
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram
@@ -17,7 +18,7 @@
 
 ## Test
 
-Program testlerini koşturmakiçin workspace üstünde aşağıdaki terminal komutları ile ilerlenebilir.
+Program testlerini koşturmak için workspace üstünde aşağıdaki terminal komutları ile ilerlenebilir.
 
 ```bash
 # sadece clock kütüphanesindeki testleri çalıştırır.

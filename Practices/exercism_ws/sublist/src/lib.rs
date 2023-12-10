@@ -20,33 +20,32 @@ pub fn is_in_the_middle<T: PartialEq>(first_list: &[T], second_list: &[T]) -> bo
 }
 
 pub fn sublist<T: PartialEq>(first_list: &[T], second_list: &[T]) -> Comparison {
-    if first_list.is_empty() && second_list.is_empty() {
-        return Comparison::Equal;
-    } else if !first_list.is_empty() && second_list.is_empty() {
-        return Comparison::Superlist;
-    } else if first_list.is_empty() && !second_list.is_empty() {
-        return Comparison::Sublist;
-    } else if first_list.len() == second_list.len() {
-        if first_list.eq(second_list) {
-            return Comparison::Equal;
-        }
-    } else if first_list.len() < second_list.len() {
-        if second_list.starts_with(first_list)
-            || second_list.ends_with(first_list)
-            || is_in_the_middle(first_list, second_list)
-        {
-            return Comparison::Sublist;
-        }
-    } else if first_list.len() > second_list.len() {
-        if first_list.starts_with(second_list)
-            || first_list.ends_with(second_list)
-            || is_in_the_middle(second_list, first_list)
-        {
-            return Comparison::Superlist;
+    match (first_list.is_empty(), second_list.is_empty()) {
+        (true, true) => Comparison::Equal,
+        (true, false) => Comparison::Sublist,
+        (false, true) => Comparison::Superlist,
+        _ => {
+            if first_list.len() == second_list.len() {
+                if first_list.eq(second_list) {
+                    return Comparison::Equal;
+                }
+            } else if first_list.len() < second_list.len() {
+                if second_list.starts_with(first_list)
+                    || second_list.ends_with(first_list)
+                    || is_in_the_middle(first_list, second_list)
+                {
+                    return Comparison::Sublist;
+                }
+            } else if first_list.len() > second_list.len()
+                && (first_list.starts_with(second_list)
+                    || first_list.ends_with(second_list)
+                    || is_in_the_middle(second_list, first_list))
+            {
+                return Comparison::Superlist;
+            }
+            Comparison::Unequal
         }
     }
-
-    Comparison::Unequal
 }
 
 #[cfg(test)]

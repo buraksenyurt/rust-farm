@@ -10,25 +10,27 @@ pub fn is_valid(code: &str) -> bool {
             .filter_map(|c| c.to_digit(10))
             .map(|digit| digit as i32)
             .collect();
-        let check_digit = numbers[numbers.len() - 2];
 
-        println!("Numbers {:?}", numbers);
         let mut total = 0;
-        for i in (0..numbers.len() - 1).rev() {
-            total += match i % 2 == 0 {
-                true => {
-                    let doubled = numbers[i] * 2;
-                    if doubled > 9 {
-                        doubled - 9
-                    } else {
-                        doubled
-                    }
+        for (i, number) in numbers.iter().rev().skip(1).enumerate() {
+            let mut sum = 0;
+
+            if i % 2 == 0 {
+                sum = *number * 2;
+                if sum > 9 {
+                    sum -= 9;
                 }
-                false => numbers[i],
+            } else {
+                sum = *number;
             }
+
+            total += sum;
         }
-        println!("Total {}, Check Digit {}", 10 - (total % 10), check_digit);
-        10 - (total % 10) == check_digit
+        if 10 - total % 10 == 10 {
+            return true;
+        }
+
+        (10 - total % 10) == numbers.last().cloned().unwrap_or_default()
     };
 }
 

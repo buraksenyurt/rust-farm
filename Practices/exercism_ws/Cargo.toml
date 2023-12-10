@@ -1,11 +1,15 @@
 [workspace]
+resolver="2"
+
 members = [
-    "clock",
-    "gigasecond",
-    "reverse_string",
-    "anagram",
-    "space_age",
-    "sublist",
-    "minesweeper",
-    "luhn"
+    "medium/clock",
+    "easy/gigasecond",
+    "easy/reverse_string",
+    "medium/anagram",
+    "medium/space_age",
+    "medium/sublist",
+    "medium/minesweeper",
+    "medium/luhn",
+    "hard/parallel_letter_frequency",
+    "hard/macros"
 ]

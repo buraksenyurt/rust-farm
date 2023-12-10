@@ -1,13 +1,19 @@
 # Exercism Problem Çözümleri
 
-- [x] 00 Reverse String
-- [x] 01 Gigasecond
-- [x] 02 Clock
-- [x] 03 Anagram
-- [x] 04 Space Age
-- [x] 05 Sublist
-- [x] 06 Minesweeper
-- [ ] 07 Luhn
+- **Easy**
+  - [x] 00 Reverse String
+  - [x] 01 Gigasecond
+  - [ ] 02 Armstrong Numbers
+- **Medium**
+  - [x] 01 Clock
+  - [x] 02 Anagram
+  - [x] 03 Space Age
+  - [x] 04 Sublist
+  - [x] 05 Minesweeper
+  - [x] 06 Luhn
+- **Hard**
+  - [ ] 01 Parallel Letter Frequency
+  - [ ] 02 Macros
 
 ## Test
 

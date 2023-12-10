@@ -1,41 +1,35 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    let numbers: String = code.chars().filter(|c| !c.is_whitespace()).collect();
-    println!("{:?}", numbers);
-    if numbers.chars().filter(|c| !c.is_ascii_digit()).count() > 0 || numbers.len() <= 1 {
-        return false;
+    let trimmed: String = code.chars().filter(|c| !c.is_whitespace()).collect();
+    return if trimmed.chars().filter(|c| !c.is_ascii_digit()).count() > 0 || trimmed.len() <= 1 {
+        false
     } else {
-        let reversed: Vec<char> = numbers
+        let numbers: Vec<i32> = trimmed
             .chars()
-            .rev()
+            .filter(|c| !c.is_whitespace())
+            .filter_map(|c| c.to_digit(10))
+            .map(|digit| digit as i32)
             .collect();
-        println!("Reversed {:?}", reversed);
-        let mut count_of_seconds = 0;
-        for i in (1..reversed.len()).step_by(2) {
-            let number = reversed[i].to_digit(10).unwrap();
-            println!("Current number {number}");
-            if (number * 2) > 9 {
-                count_of_seconds += (number * 2) - 9;
-            } else {
-                count_of_seconds += number * 2;
+        let check_digit = numbers[numbers.len() - 2];
+
+        println!("Numbers {:?}", numbers);
+        let mut total = 0;
+        for i in (0..numbers.len() - 1).rev() {
+            total += match i % 2 == 0 {
+                true => {
+                    let doubled = numbers[i] * 2;
+                    if doubled > 9 {
+                        doubled - 9
+                    } else {
+                        doubled
+                    }
+                }
+                false => numbers[i],
             }
         }
-        let mut count_of_others = 0;
-        for i in (0..numbers.chars().count()).step_by(2) {
-            println!(
-                "Other number {}",
-                numbers.chars().nth(i).unwrap().to_digit(10).unwrap()
-            );
-            count_of_others += numbers.chars().nth(i).unwrap().to_digit(10).unwrap();
-        }
-        let total = count_of_seconds + count_of_others;
-        println!("{count_of_seconds} + {count_of_others} = {total}");
-        if total % 10 == 0 {
-            return true;
-        }
-    }
-
-    false
+        println!("Total {}, Check Digit {}", 10 - (total % 10), check_digit);
+        10 - (total % 10) == check_digit
+    };
 }
 
 #[cfg(test)]

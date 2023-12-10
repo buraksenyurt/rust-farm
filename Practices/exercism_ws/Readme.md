@@ -4,7 +4,7 @@
   - [x] 00 Reverse String
   - [x] 01 Gigasecond
   - [x] 02 Armstrong Numbers
-  - [ ] 03 Beer Song
+  - [x] 03 Beer Song
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

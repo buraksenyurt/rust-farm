@@ -1,37 +1,32 @@
 /// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
     let trimmed: String = code.chars().filter(|c| !c.is_whitespace()).collect();
-    return if trimmed.chars().filter(|c| !c.is_ascii_digit()).count() > 0 || trimmed.len() <= 1 {
-        false
-    } else {
-        let numbers: Vec<i32> = trimmed
-            .chars()
-            .filter(|c| !c.is_whitespace())
-            .filter_map(|c| c.to_digit(10))
-            .map(|digit| digit as i32)
-            .collect();
+    if trimmed.chars().filter(|c| !c.is_ascii_digit()).count() > 0 || trimmed.len() <= 1 {
+        return false;
+    }
+    let numbers: Vec<i32> = trimmed
+        .chars()
+        .filter(|c| c.is_ascii_digit())
+        .map(|c| c.to_digit(10).unwrap() as i32)
+        .collect();
 
-        let mut total = 0;
-        for (i, number) in numbers.iter().rev().skip(1).enumerate() {
-            let mut sum = 0;
-
-            if i % 2 == 0 {
-                sum = *number * 2;
-                if sum > 9 {
-                    sum -= 9;
-                }
+    let mut total = 0;
+    for (i, &number) in numbers.iter().rev().skip(1).enumerate() {
+        let sum = if i % 2 == 0 {
+            let doubled = number * 2;
+            if doubled > 9 {
+                doubled - 9
             } else {
-                sum = *number;
+                doubled
             }
+        } else {
+            number
+        };
 
-            total += sum;
-        }
-        if 10 - total % 10 == 10 {
-            return true;
-        }
+        total += sum;
+    }
 
-        (10 - total % 10) == numbers.last().cloned().unwrap_or_default()
-    };
+    (10 - total % 10) % 10 == numbers.last().cloned().unwrap_or_default()
 }
 
 #[cfg(test)]

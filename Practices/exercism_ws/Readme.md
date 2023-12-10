@@ -3,7 +3,7 @@
 - **Easy**
   - [x] 00 Reverse String
   - [x] 01 Gigasecond
-  - [ ] 02 Armstrong Numbers
+  - [x] 02 Armstrong Numbers
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

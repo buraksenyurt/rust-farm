@@ -5,6 +5,7 @@ members = [
     "medium/clock",
     "easy/gigasecond",
     "easy/reverse_string",
+    "easy/armstrong_numbers",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

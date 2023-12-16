@@ -7,6 +7,7 @@
   - [x] 03 Beer Song
   - [x] 04 Difference of Squares
   - [x] 05 Grains
+  - [x] 06 Leap
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

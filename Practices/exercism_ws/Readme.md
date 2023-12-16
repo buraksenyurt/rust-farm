@@ -5,6 +5,7 @@
   - [x] 01 Gigasecond
   - [x] 02 Armstrong Numbers
   - [x] 03 Beer Song
+  - [ ] 04 Difference of Squares
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

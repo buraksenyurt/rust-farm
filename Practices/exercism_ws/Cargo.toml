@@ -10,6 +10,7 @@ members = [
     "easy/difference_of_square",
     "easy/grains",
     "easy/leap",
+    "easy/nth_prime",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

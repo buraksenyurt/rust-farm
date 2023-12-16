@@ -8,6 +8,7 @@
   - [x] 04 Difference of Squares
   - [x] 05 Grains
   - [x] 06 Leap
+  - [x] 07 Nth Prime
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

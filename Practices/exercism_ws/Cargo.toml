@@ -8,6 +8,7 @@ members = [
     "easy/armstrong_numbers",
     "easy/beer_song",
     "easy/difference_of_square",
+    "easy/grains",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

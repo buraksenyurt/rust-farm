@@ -1,43 +1,113 @@
-use std::collections::HashMap;
+const UNITS: [&str; 20] = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+];
+const TENS: [&str; 10] = [
+    "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety",
+];
 
 pub fn encode(n: u64) -> String {
-    let mut numbers: HashMap<u64, String> = HashMap::new();
-    numbers.insert(0, "zero".to_string());
-    numbers.insert(1, "one".to_string());
-    numbers.insert(2, "two".to_string());
-    numbers.insert(3, "three".to_string());
-    numbers.insert(4, "four".to_string());
-    numbers.insert(5, "five".to_string());
-    numbers.insert(6, "six".to_string());
-    numbers.insert(7, "seven".to_string());
-    numbers.insert(8, "eight".to_string());
-    numbers.insert(9, "nine".to_string());
-    numbers.insert(10, "ten".to_string());
-    numbers.insert(11, "eleven".to_string());
-    numbers.insert(12, "twelve".to_string());
-    numbers.insert(13, "thirteen".to_string());
-    numbers.insert(14, "fourteen".to_string());
-    numbers.insert(15, "fifteen".to_string());
-    numbers.insert(16, "sixteen".to_string());
-    numbers.insert(17, "seventeen".to_string());
-    numbers.insert(18, "eighteen".to_string());
-    numbers.insert(19, "nineteen".to_string());
-    numbers.insert(20, "twenty".to_string());
-    numbers.insert(30, "thirty".to_string());
-    numbers.insert(40, "forty".to_string());
-    numbers.insert(50, "fifty".to_string());
-    numbers.insert(60, "sixty".to_string());
-    numbers.insert(70, "seventy".to_string());
-    numbers.insert(80, "eighty".to_string());
-    numbers.insert(90, "ninety".to_string());
-    numbers.insert(1_000, "one thousand".to_string());
-    numbers.insert(1_000_000, "one million".to_string());
-    numbers.insert(1_000_000_000, "one billion".to_string());
-
-    if let Some(value) = numbers.get(&n) {
-        return value.to_string();
+    if n < 20 {
+        UNITS[n as usize].to_string()
+    } else if n <= 99 {
+        format!(
+            "{}{}",
+            TENS[(n / 10) as usize],
+            if n % 10 > 0 {
+                format!("-{}", encode(n % 10))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999 {
+        format!(
+            "{} hundred{}",
+            UNITS[(n / 100) as usize],
+            if n % 100 > 0 {
+                format!(" {}", encode(n % 100))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999_999 {
+        format!(
+            "{} thousand{}",
+            encode(n / 1000),
+            if n % 1000 > 0 {
+                format!(" {}", encode(n % 1000))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999_999_999 {
+        format!(
+            "{} million{}",
+            encode(n / 1_000_000),
+            if n % 1_000_000 > 0 {
+                format!(" {}", encode(n % 1_000_000))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999_999_999_999 {
+        format!(
+            "{} billion{}",
+            encode(n / 1_000_000_000),
+            if n % 1_000_000_000 > 0 {
+                format!(" {}", encode(n % 1_000_000_000))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999_999_999_999_999 {
+        format!(
+            "{} trillion{}",
+            encode(n / 1_000_000_000_000),
+            if n % 1_000_000_000_000 > 0 {
+                format!(" {}", encode(n % 1_000_000_000_000))
+            } else {
+                "".to_string()
+            }
+        )
+    } else if n <= 999_999_999_999_999_999 {
+        format!(
+            "{} quadrillion{}",
+            encode(n / 1_000_000_000_000_000),
+            if n % 1_000_000_000_000_000 > 0 {
+                format!(" {}", encode(n % 1_000_000_000_000_000))
+            } else {
+                "".to_string()
+            }
+        )
+    } else {
+        format!(
+            "{} quintillion{}",
+            encode(n / 1_000_000_000_000_000_000),
+            if n % 1_000_000_000_000_000_000 > 0 {
+                format!(" {}", encode(n % 1_000_000_000_000_000_000))
+            } else {
+                "".to_string()
+            }
+        )
     }
-    String::new()
 }
 
 #[cfg(test)]
@@ -166,7 +236,7 @@ mod tests {
 
     #[test]
     fn one_billion() {
-        let input = 1000000000;
+        let input = 1_000_000_000;
         let output = encode(input);
         let expected = "one billion";
         assert_eq!(output, expected);

@@ -1,6 +1,8 @@
-pub struct Allergies;
+pub struct Allergies {
+    pub score: u32,
+}
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Allergen {
     Eggs,
     Peanuts,
@@ -12,17 +14,43 @@ pub enum Allergen {
     Cats,
 }
 
+const ALLERGIES: [Allergen; 8] = [
+    Allergen::Eggs,
+    Allergen::Peanuts,
+    Allergen::Shellfish,
+    Allergen::Strawberries,
+    Allergen::Tomatoes,
+    Allergen::Chocolate,
+    Allergen::Pollen,
+    Allergen::Cats,
+];
+
 impl Allergies {
     pub fn new(score: u32) -> Self {
-        todo!("Given the '{score}' score, construct a new Allergies struct.");
+        Self { score }
     }
 
     pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        todo!("Determine if the patient is allergic to the '{allergen:?}' allergen.");
+        let index = ALLERGIES
+            .iter()
+            .position(|a| a == allergen)
+            .unwrap_or_default();
+        self.score == 2_i32.pow(index as u32) as u32
     }
 
     pub fn allergies(&self) -> Vec<Allergen> {
-        todo!("Return the list of allergens contained within the score with which the Allergies struct was made.");
+        let mut s = self.score;
+        let series = [1, 2, 4, 8, 16, 32, 64, 128];
+        let mut allergens = Vec::new();
+        for i in (0..series.len()-1).rev() {
+            if s >= series[i] {
+                let f = series[i].ilog2() as usize;
+                let a = ALLERGIES.get(f).cloned().unwrap();
+                allergens.push(a);
+                s -= series[i];
+            }
+        }
+        allergens
     }
 }
 

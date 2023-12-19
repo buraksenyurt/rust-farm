@@ -1,5 +1,5 @@
 pub struct Allergies {
-    pub score: u32,
+    pub allergens: Vec<Allergen>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -27,22 +27,10 @@ const ALLERGIES: [Allergen; 8] = [
 
 impl Allergies {
     pub fn new(score: u32) -> Self {
-        Self { score }
-    }
-
-    pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        let index = ALLERGIES
-            .iter()
-            .position(|a| a == allergen)
-            .unwrap_or_default();
-        self.score == 2_i32.pow(index as u32) as u32
-    }
-
-    pub fn allergies(&self) -> Vec<Allergen> {
-        let mut s = self.score;
-        let series = [1, 2, 4, 8, 16, 32, 64, 128];
+        let mut s = score;
         let mut allergens = Vec::new();
-        for i in (0..series.len()-1).rev() {
+        let series = [1, 2, 4, 8, 16, 32, 64, 128];
+        for i in (0..series.len() - 1).rev() {
             if s >= series[i] {
                 let f = series[i].ilog2() as usize;
                 let a = ALLERGIES.get(f).cloned().unwrap();
@@ -50,7 +38,15 @@ impl Allergies {
                 s -= series[i];
             }
         }
-        allergens
+        Self { allergens }
+    }
+
+    pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
+        ALLERGIES.iter().any(|a| a == allergen)
+    }
+
+    pub fn allergies(&self) -> Vec<Allergen> {
+        self.allergens.clone()
     }
 }
 

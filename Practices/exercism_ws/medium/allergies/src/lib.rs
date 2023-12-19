@@ -27,17 +27,14 @@ const ALLERGIES: [Allergen; 8] = [
 
 impl Allergies {
     pub fn new(score: u32) -> Self {
-        let mut s = score;
+        let mut s = score % 256;
         let mut allergens = Vec::new();
-        let series = [1, 2, 4, 8, 16, 32, 64, 128];
-        for i in (0..series.len() - 1).rev() {
-            if s >= series[i] {
-                let f = series[i].ilog2() as usize;
-                let a = ALLERGIES.get(f).cloned().unwrap();
-                allergens.push(a);
-                s -= series[i];
+        for (index, allergen) in ALLERGIES.iter().enumerate() {
+            if s & (1 << index) != 0 {
+                allergens.push(allergen.clone());
             }
         }
+
         Self { allergens }
     }
 

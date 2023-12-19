@@ -16,7 +16,7 @@
   - [x] 04 Sublist
   - [x] 05 Minesweeper
   - [x] 06 Luhn
-  - [ ] 07 Perfect Numbers
+  - [x] 07 Perfect Numbers
 - **Hard**
   - [ ] 01 Parallel Letter Frequency
   - [ ] 02 Macros

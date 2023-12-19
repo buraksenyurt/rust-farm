@@ -9,20 +9,12 @@ pub fn classify(num: u64) -> Option<Classification> {
     if num == 0 {
         return None;
     }
-    let mut total = 0;
-    for n in 1..num {
-        if num % n == 0 {
-            total += n
-        }
-    }
-    if total == num {
-        Some(Classification::Perfect)
-    } else if total > num {
-        Some(Classification::Abundant)
-    } else if total < num {
-        Some(Classification::Deficient)
-    } else {
-        None
+    let total: u64 = (1..num).filter(|n| num % n == 0).sum();
+    match total {
+        t if t == num => Some(Classification::Perfect),
+        t if t > num => Some(Classification::Abundant),
+        t if t < num => Some(Classification::Deficient),
+        _ => None,
     }
 }
 

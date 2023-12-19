@@ -27,19 +27,18 @@ const ALLERGIES: [Allergen; 8] = [
 
 impl Allergies {
     pub fn new(score: u32) -> Self {
-        let mut s = score % 256;
         let mut allergens = Vec::new();
-        for (index, allergen) in ALLERGIES.iter().enumerate() {
-            if s & (1 << index) != 0 {
-                allergens.push(allergen.clone());
+        let series = [1, 2, 4, 8, 16, 32, 64, 128];
+        for i in 0..series.len() {
+            if score & 1 << i != 0 {
+                allergens.push(ALLERGIES[i].clone());
             }
         }
-
         Self { allergens }
     }
 
     pub fn is_allergic_to(&self, allergen: &Allergen) -> bool {
-        ALLERGIES.iter().any(|a| a == allergen)
+        self.allergens.iter().any(|a| a == allergen)
     }
 
     pub fn allergies(&self) -> Vec<Allergen> {

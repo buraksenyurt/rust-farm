@@ -18,7 +18,7 @@
   - [x] 06 Luhn
   - [x] 07 Perfect Numbers
   - [x] 08 Say
-  - [ ] 09 Allergies
+  - [x] 09 Allergies
 - **Hard**
   - [ ] 01 Parallel Letter Frequency
   - [ ] 02 Macros

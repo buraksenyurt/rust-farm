@@ -9,6 +9,7 @@
   - [x] 05 Grains
   - [x] 06 Leap
   - [x] 07 Nth Prime
+  - [ ] 08 Bob
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

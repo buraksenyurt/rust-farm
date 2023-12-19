@@ -11,6 +11,7 @@ members = [
     "easy/grains",
     "easy/leap",
     "easy/nth_prime",
+    "easy/bob",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

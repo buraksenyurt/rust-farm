@@ -17,7 +17,8 @@
   - [x] 05 Minesweeper
   - [x] 06 Luhn
   - [x] 07 Perfect Numbers
-  - [ ] 08 Say
+  - [x] 08 Say
+  - [ ] 09 Allergies
 - **Hard**
   - [ ] 01 Parallel Letter Frequency
   - [ ] 02 Macros

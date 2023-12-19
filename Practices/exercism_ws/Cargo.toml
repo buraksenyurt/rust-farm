@@ -18,6 +18,7 @@ members = [
     "medium/luhn",
     "medium/perfect_numbers",
     "medium/say",
+    "medium/allergies",
     "hard/parallel_letter_frequency",
     "hard/macros"
 ]

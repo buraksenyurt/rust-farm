@@ -16,6 +16,7 @@ members = [
     "medium/sublist",
     "medium/minesweeper",
     "medium/luhn",
+    "medium/perfect_numbers",
     "hard/parallel_letter_frequency",
     "hard/macros"
 ]

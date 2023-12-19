@@ -1,11 +1,22 @@
 pub fn reply(message: &str) -> &str {
-    let input = message.trim_end();
+    let input = message.trim();
     if input.is_empty() {
         return "Fine. Be that way!";
     }
-    if input.ends_with('?') {
+    let letters = input.chars().any(|c| c.is_alphabetic());
+    let is_all_uppercase = letters && input == input.to_uppercase();
+    let is_question = input.ends_with('?');
+    if is_all_uppercase {
+        return if is_question {
+            "Calm down, I know what I'm doing!"
+        } else {
+            "Whoa, chill out!"
+        };
+    }
+    if is_question {
         return "Sure.";
     }
+
     "Whatever."
 }
 

@@ -1,6 +1,8 @@
 use crate::game::Game;
 use std::collections::HashMap;
+use std::fmt::Display;
 use std::fs::File;
+use std::hash::Hash;
 use std::io;
 use std::io::{BufRead, BufReader, Error, Write};
 
@@ -29,49 +31,32 @@ fn read_file(file_path: &str) -> io::Result<Vec<Game>> {
     Ok(games)
 }
 
-pub fn cluster_by_release_year(games: Vec<Game>) -> HashMap<u16, Vec<Game>> {
-    let mut clusters = HashMap::new();
+fn organize_by<Key, F>(games: Vec<Game>, mut key_function: F) -> HashMap<Key, Vec<Game>>
+where
+    Key: Eq + Hash + Clone,
+    F: FnMut(&Game) -> Key,
+{
+    let mut result_set = HashMap::new();
     for game in games {
-        clusters
-            .entry(game.release_year)
-            .or_insert_with(Vec::new)
-            .push(game);
+        let key = key_function(&game);
+        result_set.entry(key).or_insert_with(Vec::new).push(game);
     }
-    clusters
-}
-pub fn cluster_by_producer(games: Vec<Game>) -> HashMap<String, Vec<Game>> {
-    let mut clusters = HashMap::new();
-    for game in games {
-        let producer = game.producer.clone();
-        clusters
-            .entry(game.producer)
-            .or_insert_with(Vec::new)
-            .push(Game {
-                id: game.id,
-                title: game.title,
-                average_point: game.average_point,
-                release_year: game.release_year,
-                producer,
-                platform: game.platform,
-            });
-    }
-    clusters
+    result_set
 }
 
-pub fn save_release_year_based_clusters(clusters: HashMap<u16, Vec<Game>>) -> Result<(), Error> {
-    for (release_year, games) in clusters {
-        let mut file = File::create(format!("{release_year}.txt"))?;
-        for game in games {
-            writeln!(file, "{}", game.to_string())?;
-        }
-    }
-    Ok(())
+pub fn organize_by_release_year(games: Vec<Game>) -> HashMap<u16, Vec<Game>> {
+    organize_by(games, |g| g.release_year)
+}
+pub fn organize_by_producer(games: Vec<Game>) -> HashMap<String, Vec<Game>> {
+    organize_by(games, |g| g.producer.clone())
 }
 
-pub fn save_producer_based_clusters(clusters: HashMap<String, Vec<Game>>) -> Result<(), Error> {
-    for (producer, games) in clusters {
-        let mut file = File::create(format!("{producer}.txt"))?;
-
+pub fn save<K>(data_set: HashMap<K, Vec<Game>>) -> Result<(), Error>
+where
+    K: Display,
+{
+    for (key, games) in data_set {
+        let mut file = File::create(format!("{key}.txt"))?;
         for game in games {
             writeln!(file, "{}", game.to_string())?;
         }
@@ -94,7 +79,7 @@ mod tests {
     fn get_cluster_by_release_year_test() {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
-        let clustered = cluster_by_release_year(games.unwrap());
+        let clustered = organize_by_release_year(games.unwrap());
         assert!(clustered.get(&1996).is_some());
     }
 
@@ -102,7 +87,7 @@ mod tests {
     fn get_cluster_by_producer_test() {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
-        let clustered = cluster_by_producer(games.unwrap());
+        let clustered = organize_by_producer(games.unwrap());
         assert!(clustered.get("Nintendo").is_some());
     }
 
@@ -110,8 +95,8 @@ mod tests {
     fn save_producer_based_clusters_works_test() {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
-        let clustered = cluster_by_producer(games.unwrap());
-        let result = save_producer_based_clusters(clustered);
+        let data_set = organize_by_producer(games.unwrap());
+        let result = save(data_set);
         assert!(result.is_ok());
     }
 
@@ -119,8 +104,8 @@ mod tests {
     fn save_release_year_based_clusters_works_test() {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
-        let clustered = cluster_by_release_year(games.unwrap());
-        let result = save_release_year_based_clusters(clustered);
+        let data_set = organize_by_release_year(games.unwrap());
+        let result = save(data_set);
         assert!(result.is_ok());
     }
 }

@@ -5,10 +5,11 @@ use std::fs::File;
 use std::hash::Hash;
 use std::io;
 use std::io::{BufRead, BufReader, Error, Write};
+use std::path::PathBuf;
 
 mod game;
 
-fn read_file(file_path: &str) -> io::Result<Vec<Game>> {
+pub fn read_file(file_path: &str) -> io::Result<Vec<Game>> {
     let mut games = Vec::new();
     let f = File::open(file_path)?;
     let reader = BufReader::new(f);
@@ -51,14 +52,17 @@ pub fn organize_by_producer(games: Vec<Game>) -> HashMap<String, Vec<Game>> {
     organize_by(games, |g| g.producer.clone())
 }
 
-pub fn save<K>(data_set: HashMap<K, Vec<Game>>) -> Result<(), Error>
+pub fn save<K>(data_set: HashMap<K, Vec<Game>>, dir: PathBuf) -> Result<(), Error>
 where
     K: Display,
 {
     for (key, games) in data_set {
-        let mut file = File::create(format!("{key}.txt"))?;
+        let file_name = key.to_string().replace(|c: char| !c.is_alphanumeric(), "_");
+        let file_path = dir.join(format!("{file_name}.txt"));
+        let mut file = File::create(file_path)?;
+
         for game in games {
-            writeln!(file, "{}", game.to_string())?;
+            writeln!(file, "{}", game)?;
         }
     }
     Ok(())
@@ -96,7 +100,7 @@ mod tests {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
         let data_set = organize_by_producer(games.unwrap());
-        let result = save(data_set);
+        let result = save(data_set, PathBuf::new());
         assert!(result.is_ok());
     }
 
@@ -105,7 +109,7 @@ mod tests {
         let file_path = "game_data.txt";
         let games = read_file(file_path);
         let data_set = organize_by_release_year(games.unwrap());
-        let result = save(data_set);
+        let result = save(data_set, PathBuf::new());
         assert!(result.is_ok());
     }
 }

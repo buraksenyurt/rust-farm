@@ -1,0 +1,50 @@
+16|Doom|8.6|1993|id Software|Various
+35|Gran Turismo 2|7.5|1999|Polyphony Digital|PlayStation
+8|Metroid|7.2|1986|Nintendo|NES
+50|Paper Mario|8.4|2000|Intelligent Systems|N64
+3|Frogger|7.2|1981|Konami|Arcade, Atari 2600, more
+23|Final Fantasy VII|9.0|1997|Square|PlayStation, PC
+41|Perfect Dark|7.2|2000|Rare|N64
+12|Sonic the Hedgehog|7.5|1991|Sega|Sega Genesis
+47|Chrono Cross|7.9|2000|Square|PlayStation
+29|Pokemon Red/Blue|7.4|1998|Game Freak|Game Boy
+38|Diablo II|8.8|2000|Blizzard Entertainment|PC
+9|Mega Man|6.5|1987|Capcom|NES
+6|Tetris|8.4|1984|Alexey Pajitnov|Various
+17|Myst|5.4|1993|Cyan|Various
+42|Baldur's Gate II: Shadows of Amn|8.2|2000|BioWare|PC
+33|Tony Hawk's Pro Skater|8.3|1999|Neversoft|Various
+26|StarCraft|8.5|1998|Blizzard Entertainment|PC
+45|Shenmue|7.8|2000|Sega AM2|Dreamcast
+19|Warcraft II: Tides of Darkness|7.1|1995|Blizzard Entertainment|PC, Mac
+40|Deus Ex|9.0|2000|Ion Storm|PC
+27|The Legend of Zelda: Ocarina of Time|8.9|1998|Nintendo|N64
+13|Street Fighter II|8.3|1991|Capcom|Various
+48|Command & Conquer: Red Alert 2|6.7|2000|Westwood Studios|PC
+7|The Legend of Zelda|7.8|1986|Nintendo|NES
+30|Baldur's Gate|6.8|1998|BioWare|PC
+21|Super Mario 64|8.8|1996|Nintendo|N64
+5|Mario Bros.|6.5|1983|Nintendo|Arcade, Atari 2600, more
+34|Age of Empires II: The Age of Kings|8.7|1999|Ensemble Studios|PC
+2|Donkey Kong|5.7|1981|Nintendo|Arcade, Atari 2600, more
+37|The Sims|8.0|2000|Maxis|PC
+49|Hitman: Codename 47|5.5|2000|IO Interactive|PC
+31|Crash Bandicoot: Warped|6.6|1998|Naughty Dog|PlayStation
+44|Jet Set Radio|7.1|2000|Smilebit|Dreamcast
+10|Final Fantasy|8.1|1987|Square|NES
+39|Final Fantasy IX|7.7|2000|Square|PlayStation
+24|GoldenEye 007|8.2|1997|Rare|N64
+36|Resident Evil 3: Nemesis|6.4|1999|Capcom|PlayStation
+28|Metal Gear Solid|7.6|1998|Konami|PlayStation
+25|Half-Life|8.7|1998|Valve Corporation|PC
+43|Counter-Strike|8.6|2000|Valve Corporation|PC
+1|Pac-Man|5.8|1980|Namco|Arcade
+11|Super Mario Bros. 3|8.9|1988|Nintendo|NES
+20|Resident Evil|6.9|1996|Capcom|PlayStation, Sega Saturn
+4|Pitfall!|8.2|1982|Activision|Atari 2600
+14|Mortal Kombat|6.7|1992|Midway Games|Various
+18|Donkey Kong Country|8.0|1994|Rare|SNES
+32|Sonic Adventure|7.0|1998|Sega|Dreamcast
+46|Banjo-Tooie|7.3|2000|Rare|N64
+15|Super Mario Kart|7.9|1992|Nintendo|SNES
+22|Tomb Raider|7.3|1996|Core Design|Various

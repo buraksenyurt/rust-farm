@@ -12,6 +12,7 @@ members = [
     "easy/leap",
     "easy/nth_prime",
     "easy/bob",
+    "easy/matching_brackets",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

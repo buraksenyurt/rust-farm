@@ -1,14 +1,29 @@
 pub fn brackets_are_balanced(string: &str) -> bool {
-    let mut result = false;
+    let mut stacks = Vec::new();
 
-    if let Some(pos) = string.find(|c| c == '[') {
-        println!("{pos}");
-        if let Some(last_pos) = string[pos..].chars().find(|c| *c == ']') {
-            result = true;
+    for c in string.chars() {
+        match c {
+            '[' | '(' | '{' => stacks.push(c),
+            ']' => {
+                if stacks.pop() != Some('[') {
+                    return false;
+                }
+            }
+            '}' => {
+                if stacks.pop() != Some('{') {
+                    return false;
+                }
+            }
+            ')' => {
+                if stacks.pop() != Some(')') {
+                    return false;
+                }
+            }
+            _ => {}
         }
     }
 
-    return result;
+    stacks.is_empty()
 }
 
 #[cfg(test)]
@@ -108,13 +123,7 @@ mod tests {
     #[test]
     fn complex_latex_expression() {
         let input = "\\left(\\begin{array}{cc} \\frac{1}{3} & x\\\\ \\mathrm{e}^{x} &... x^2 \
-
-        
-
-          
-
                  \\end{array}\\right)";
-
         assert!(brackets_are_balanced(input));
     }
 }

@@ -1,10 +1,15 @@
 pub fn factors(mut n: u64) -> Vec<u64> {
     let mut result = Vec::new();
-    for i in 2..=n {
-        while n % i == 0 {
-            result.push(i);
-            n /= i;
+    let mut curr = 2;
+    while curr * curr <= n {
+        while n % curr == 0 {
+            result.push(curr);
+            n /= curr;
         }
+        curr += 1;
+    }
+    if n > 1 {
+        result.push(n);
     }
     return result;
 }

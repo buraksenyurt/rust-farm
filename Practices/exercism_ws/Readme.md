@@ -11,7 +11,7 @@
   - [x] 07 Nth Prime
   - [x] 08 Bob
   - [x] 09 Matching Brackets
-  - [ ] 10 Prime Factors
+  - [x] 10 Prime Factors
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

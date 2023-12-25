@@ -13,6 +13,7 @@ members = [
     "easy/nth_prime",
     "easy/bob",
     "easy/matching_brackets",
+    "easy/prime_factors",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

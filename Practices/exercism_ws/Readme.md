@@ -10,7 +10,8 @@
   - [x] 06 Leap
   - [x] 07 Nth Prime
   - [x] 08 Bob
-  - [ ] 09 Matching Brackets
+  - [x] 09 Matching Brackets
+  - [ ] 10 Prime Factors
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

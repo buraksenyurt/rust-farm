@@ -15,7 +15,7 @@ pub fn brackets_are_balanced(string: &str) -> bool {
                 }
             }
             ')' => {
-                if stacks.pop() != Some(')') {
+                if stacks.pop() != Some('(') {
                     return false;
                 }
             }

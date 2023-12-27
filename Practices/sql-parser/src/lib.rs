@@ -4,6 +4,7 @@
    SQL'deki select sorgusu benzeri ifadenin bir tokenize, parse mekanizmalarını ele alıyoruz.
 */
 
+#[derive(Debug, PartialEq)]
 pub struct TakeCommand {
     fields: Vec<String>,
     source: String,
@@ -20,7 +21,17 @@ pub enum Token {
     Find,
     Identifier(String),
     Comma,
-    Equality,
+    Compare(Compare),
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Compare {
+    Eq,
+    Gt,
+    Lt,
+    Neq,
+    GtEq,
+    LtEq,
 }
 
 // İfade içerisinde token'ları çekmek için kullanacağımız metot
@@ -57,13 +68,69 @@ pub fn tokenize(expression: &str) -> Vec<Token> {
     tokens
 }
 
+// Bu fonksiyon ile de gelen token dizisini parse ediyoruz
+pub fn parse(tokens: &[Token]) -> Result<TakeCommand, String> {
+    let mut fields = Vec::new();
+    let mut source = String::new();
+    // Eğer boş bir vektör söz konusu ise Err dönülür
+    if tokens.is_empty() {
+        return Err("Unexpected command expression".to_string());
+    }
+
+    let mut token_iter = tokens.iter().peekable();
+    match token_iter.next() {
+        Some(Token::Take) => (),
+        _ => return Err("Expression must start with take command".to_string()),
+    }
+
+    // tüm tokenları dolaşacak bir döngü açılır
+    // bu döngü peekable iterasyon üzerinden ilerler
+    while let Some(token) = token_iter.next() {
+        // O anki token'ın ne olduğuna bakılır
+        match token {
+            // Bir tanımlayıcı ise ve bir field yakalanmışsa
+            Token::Identifier(name) => {
+                // field listeye eklenir
+                fields.push(name.clone());
+            }
+            // , veya boşluk gibi comma iterasyondan devam edilir
+            Token::Comma => continue,
+            // From ile karşılaşılmışsa
+            Token::From => {
+                // Yine source adı yakalanan kadar iterasyonda hareket edilir
+                if let Some(Token::Identifier(name)) = token_iter.next() {
+                    source = name.clone();
+                    break;
+                } else {
+                    // buraya Source name yakalanamadıysa gelinir
+                    return Err("Expected SOURCE NAME after TAKE".to_string());
+                }
+            }
+            // Diğer koşullar dışında hata verilir
+            _ => return Err("Unexpected token in fields".to_string()),
+        }
+    }
+
+    // Hiç bir field veya source olmaması da bir hatadır. Err ile cezalandırılır
+    if fields.is_empty() || source.is_empty() {
+        return Err("Unapplicable command expression".to_string());
+    }
+
+    Ok(TakeCommand { fields, source })
+}
+
 // Bu fonksiyon gelen metin diliminin hangi Token enum değerine denk geldiğini bulmak için kullanılır
 pub fn map_token(input: &str) -> Token {
     match input.to_lowercase().as_str() {
         "take" => Token::Take,
         "from" => Token::From,
         "find" => Token::Find,
-        "eq" => Token::Equality,
+        "eq" => Token::Compare(Compare::Eq),
+        "gt" => Token::Compare(Compare::Gt),
+        "lt" => Token::Compare(Compare::Lt),
+        "neq" => Token::Compare(Compare::Neq),
+        "lteq" => Token::Compare(Compare::LtEq),
+        "gteq" => Token::Compare(Compare::GtEq),
         _ => Token::Identifier(input.to_string()), // field adlarını yakalarız
     }
 }
@@ -100,7 +167,7 @@ mod tests {
             Token::Identifier("products".to_string()),
             Token::Find,
             Token::Identifier("category_id".to_string()),
-            Token::Equality,
+            Token::Compare(Compare::Eq),
             Token::Identifier("10".to_string()),
         ];
         assert_eq!(actual, expected);
@@ -124,5 +191,29 @@ mod tests {
             Token::Identifier("bla".to_string()),
         ];
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn empty_token_vec_raise_an_error_test() {
+        let tokens = vec![];
+        let actual = parse(&tokens);
+        assert!(actual.is_err());
+    }
+
+    #[test]
+    fn valid_expression_can_parse_test() {
+        let expression = "take id,title,unit_price from products";
+        let tokens = tokenize(expression);
+        let actual = parse(&tokens);
+        let expected = TakeCommand {
+            source: "products".to_string(),
+            fields: vec![
+                "id".to_string(),
+                "title".to_string(),
+                "unit_price".to_string(),
+            ],
+        };
+        assert!(actual.is_ok());
+        assert_eq!(actual, Ok(expected));
     }
 }

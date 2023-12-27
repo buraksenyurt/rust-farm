@@ -17,8 +17,10 @@ pub enum Query {
 pub enum Token {
     Take,
     From,
+    Find,
     Identifier(String),
     Comma,
+    Equality,
 }
 
 // İfade içerisinde token'ları çekmek için kullanacağımız metot
@@ -60,6 +62,8 @@ pub fn map_token(input: &str) -> Token {
     match input.to_lowercase().as_str() {
         "take" => Token::Take,
         "from" => Token::From,
+        "find" => Token::Find,
+        "eq" => Token::Equality,
         _ => Token::Identifier(input.to_string()), // field adlarını yakalarız
     }
 }
@@ -67,7 +71,6 @@ pub fn map_token(input: &str) -> Token {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Take;
 
     #[test]
     fn tokenize_a_simple_query_test() {
@@ -80,6 +83,45 @@ mod tests {
             Token::Identifier("unit_price".to_string()),
             Token::From,
             Token::Identifier("products".to_string()),
+        ];
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn tokenize_a_query_with_find_test() {
+        let expression = "take id,title,unit_price from products find category_id eq 10";
+        let actual = tokenize(expression);
+        let expected = vec![
+            Token::Take,
+            Token::Identifier("id".to_string()),
+            Token::Identifier("title".to_string()),
+            Token::Identifier("unit_price".to_string()),
+            Token::From,
+            Token::Identifier("products".to_string()),
+            Token::Find,
+            Token::Identifier("category_id".to_string()),
+            Token::Equality,
+            Token::Identifier("10".to_string()),
+        ];
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn tokenize_an_empty_expression_query_test() {
+        let expression = "";
+        let actual = tokenize(expression);
+        let expected = vec![];
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn tokenize_a_wrong_query_test() {
+        let expression = "bla bla bla";
+        let actual = tokenize(expression);
+        let expected = vec![
+            Token::Identifier("bla".to_string()),
+            Token::Identifier("bla".to_string()),
+            Token::Identifier("bla".to_string()),
         ];
         assert_eq!(actual, expected);
     }

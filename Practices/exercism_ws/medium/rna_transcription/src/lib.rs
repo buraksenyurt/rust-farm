@@ -6,6 +6,12 @@ pub struct Rna(String);
 
 impl Dna {
     pub fn new(dna: &str) -> Result<Dna, usize> {
+        for (idx, c) in dna.chars().enumerate() {
+            match c {
+                'G' | 'C' | 'T' | 'A' => continue,
+                _ => return Err(idx),
+            }
+        }
         Ok(Dna(dna.to_string()))
     }
 
@@ -26,6 +32,12 @@ impl Dna {
 
 impl Rna {
     pub fn new(rna: &str) -> Result<Rna, usize> {
+        for (idx, c) in rna.chars().enumerate() {
+            match c {
+                'C' | 'G' | 'A' | 'U' => continue,
+                _ => return Err(idx),
+            }
+        }
         Ok(Rna(rna.to_string()))
     }
 }

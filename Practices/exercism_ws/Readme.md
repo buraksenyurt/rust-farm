@@ -12,6 +12,7 @@
   - [x] 08 Bob
   - [x] 09 Matching Brackets
   - [x] 10 Prime Factors
+  - [x] 11 Raindrops
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

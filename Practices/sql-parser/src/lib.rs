@@ -113,7 +113,7 @@ pub fn parse(tokens: &[Token]) -> Result<TakeCommand, String> {
 
     // Hiç bir field veya source olmaması da bir hatadır. Err ile cezalandırılır
     if fields.is_empty() || source.is_empty() {
-        return Err("Unapplicable command expression".to_string());
+        return Err("Inapplicable command expression".to_string());
     }
 
     Ok(TakeCommand { fields, source })

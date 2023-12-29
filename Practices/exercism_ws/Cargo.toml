@@ -23,6 +23,7 @@ members = [
     "medium/perfect_numbers",
     "medium/say",
     "medium/allergies",
+    "medium/rna_transcription",
     "hard/parallel_letter_frequency",
     "hard/macros"
 ]

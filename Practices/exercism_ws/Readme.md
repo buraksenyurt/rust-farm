@@ -23,6 +23,7 @@
   - [x] 07 Perfect Numbers
   - [x] 08 Say
   - [x] 09 Allergies
+  - [ ] 10 RNA Transcription
 - **Hard**
   - [ ] 01 Parallel Letter Frequency
   - [ ] 02 Macros

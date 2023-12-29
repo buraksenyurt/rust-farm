@@ -8,6 +8,14 @@
 pub struct TakeCommand {
     fields: Vec<String>,
     source: String,
+    find: Option<FindCommand>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct FindCommand {
+    field: String,
+    condition: Compare,
+    value: String,
 }
 
 pub enum Query {
@@ -24,7 +32,7 @@ pub enum Token {
     Compare(Compare),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Compare {
     Eq,
     Gt,
@@ -72,6 +80,7 @@ pub fn tokenize(expression: &str) -> Vec<Token> {
 pub fn parse(tokens: &[Token]) -> Result<TakeCommand, String> {
     let mut fields = Vec::new();
     let mut source = String::new();
+    let mut find_command = None;
     // Eğer boş bir vektör söz konusu ise Err dönülür
     if tokens.is_empty() {
         return Err("Unexpected command expression".to_string());
@@ -100,10 +109,28 @@ pub fn parse(tokens: &[Token]) -> Result<TakeCommand, String> {
                 // Yine source adı yakalanan kadar iterasyonda hareket edilir
                 if let Some(Token::Identifier(name)) = token_iter.next() {
                     source = name.clone();
-                    break;
                 } else {
                     // buraya Source name yakalanamadıysa gelinir
                     return Err("Expected SOURCE NAME after TAKE".to_string());
+                }
+            }
+            Token::Find => {
+                if let Some(Token::Identifier(field)) = token_iter.next() {
+                    if let Some(Token::Compare(condition)) = token_iter.next() {
+                        if let Some(Token::Identifier(value)) = token_iter.next() {
+                            find_command = Some(FindCommand {
+                                field: field.clone(),
+                                condition: condition.clone(),
+                                value: value.clone(),
+                            });
+                        } else {
+                            return Err("Unexpected comparison operator.".to_string());
+                        }
+                    } else {
+                        return Err("Unexpected comparison operator.".to_string());
+                    }
+                } else {
+                    return Err("There is no conditional field.".to_string());
                 }
             }
             // Diğer koşullar dışında hata verilir
@@ -116,7 +143,11 @@ pub fn parse(tokens: &[Token]) -> Result<TakeCommand, String> {
         return Err("Inapplicable command expression".to_string());
     }
 
-    Ok(TakeCommand { fields, source })
+    Ok(TakeCommand {
+        fields,
+        source,
+        find: find_command,
+    })
 }
 
 // Bu fonksiyon gelen metin diliminin hangi Token enum değerine denk geldiğini bulmak için kullanılır
@@ -212,6 +243,29 @@ mod tests {
                 "title".to_string(),
                 "unit_price".to_string(),
             ],
+            find: None,
+        };
+        assert!(actual.is_ok());
+        assert_eq!(actual, Ok(expected));
+    }
+
+    #[test]
+    fn valid_expression_with_find_parse_test() {
+        let expression = "take id,title,unit_price from products find category_id eq 3";
+        let tokens = tokenize(expression);
+        let actual = parse(&tokens);
+        let expected = TakeCommand {
+            source: "products".to_string(),
+            fields: vec![
+                "id".to_string(),
+                "title".to_string(),
+                "unit_price".to_string(),
+            ],
+            find: Some(FindCommand {
+                condition: Compare::Eq,
+                field: "category_id".to_string(),
+                value: "3".to_string(),
+            }),
         };
         assert!(actual.is_ok());
         assert_eq!(actual, Ok(expected));

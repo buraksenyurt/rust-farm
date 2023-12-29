@@ -6,39 +6,39 @@ pub struct Rna(String);
 
 impl Dna {
     pub fn new(dna: &str) -> Result<Dna, usize> {
-        for (idx, c) in dna.chars().enumerate() {
-            match c {
-                'G' | 'C' | 'T' | 'A' => continue,
-                _ => return Err(idx),
-            }
-        }
-        Ok(Dna(dna.to_string()))
+        dna.chars()
+            .enumerate()
+            .find_map(|(idx, c)| match c {
+                'G' | 'C' | 'T' | 'A' => None,
+                _ => Some(Err(idx)),
+            })
+            .unwrap_or_else(|| Ok(Dna(dna.to_string())))
     }
 
     pub fn into_rna(self) -> Rna {
-        let mut sequence = String::new();
-        for c in self.0.chars() {
-            match c {
-                'G' => sequence.push('C'),
-                'C' => sequence.push('G'),
-                'T' => sequence.push('A'),
-                'A' => sequence.push('U'),
-                _ => {}
-            }
-        }
-        Rna(sequence)
+        Rna(self
+            .0
+            .chars()
+            .map(|c| match c {
+                'G' => 'C',
+                'C' => 'G',
+                'T' => 'A',
+                'A' => 'U',
+                _ => c, // This should never happen if DNA is valid
+            })
+            .collect())
     }
 }
 
 impl Rna {
     pub fn new(rna: &str) -> Result<Rna, usize> {
-        for (idx, c) in rna.chars().enumerate() {
-            match c {
-                'C' | 'G' | 'A' | 'U' => continue,
-                _ => return Err(idx),
-            }
-        }
-        Ok(Rna(rna.to_string()))
+        rna.chars()
+            .enumerate()
+            .find_map(|(idx, c)| match c {
+                'C' | 'G' | 'A' | 'U' => None,
+                _ => Some(Err(idx)),
+            })
+            .unwrap_or_else(|| Ok(Rna(rna.to_string())))
     }
 }
 

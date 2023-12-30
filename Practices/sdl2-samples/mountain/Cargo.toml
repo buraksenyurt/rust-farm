@@ -1,5 +1,5 @@
 [package]
-name = "hello-sdl2"
+name = "mountain"
 version = "0.1.0"
 edition = "2021"
 

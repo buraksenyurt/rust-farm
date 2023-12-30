@@ -1,4 +1,3 @@
-use std::cmp::max;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
@@ -41,7 +40,7 @@ fn main() -> Result<(), String> {
 
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         let max_peak = 400;
-        let peaks = vec![
+        let peaks = [
             (0, HEIGHT - 10),
             (100, HEIGHT - 10),
             (200, max_peak),

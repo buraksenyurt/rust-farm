@@ -1,11 +1,9 @@
+use common::*;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseButton;
 use sdl2::pixels::Color;
 use sdl2::rect::Point;
-use sdl2::render::Canvas;
-use sdl2::video::Window;
-use std::f64::consts::PI;
 use std::time::Duration;
 
 const WIDTH: i32 = 800;
@@ -45,10 +43,7 @@ fn main() -> Result<(), String> {
                     mouse_btn, x, y, ..
                 } => {
                     if mouse_btn == MouseButton::Left {
-                        circles.push(Circle {
-                            center: Point::new(x, y),
-                            radius: 5,
-                        });
+                        circles.push(Circle::new(Point::new(x, y), 5));
                     }
                 }
                 _ => {}
@@ -80,47 +75,12 @@ fn main() -> Result<(), String> {
         }
 
         for c in &circles {
-            draw_circle(&mut canvas, c, Color::RGB(255, 255, 255))?;
+            c.draw_circle(&mut canvas, Color::RGB(255, 255, 255))?;
         }
 
         canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
+        std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 
-    Ok(())
-}
-
-#[derive(Copy, Clone)]
-struct Circle {
-    pub center: Point,
-    pub radius: i32,
-}
-
-fn draw_circle(canvas: &mut Canvas<Window>, circle: &Circle, color: Color) -> Result<(), String> {
-    canvas.set_draw_color(color);
-    for i in 0..360 {
-        let radian = (i as f64 * PI) / 180.0;
-        let x = circle.center.x + (radian.cos() * circle.radius as f64) as i32;
-        let y = circle.center.y + (radian.sin() * circle.radius as f64) as i32;
-        canvas.draw_point(Point::new(x, y))?;
-    }
-    Ok(())
-}
-
-fn draw_strong_line(
-    canvas: &mut Canvas<Window>,
-    start: Point,
-    end: Point,
-    color: Color,
-    thickness: i32,
-) -> Result<(), String> {
-    canvas.set_draw_color(color);
-    for i in 0..thickness {
-        let offset = i - thickness / 2;
-        canvas.draw_line(
-            Point::new(start.x + offset, start.y + offset),
-            Point::new(end.x + offset, end.y + offset),
-        )?;
-    }
     Ok(())
 }

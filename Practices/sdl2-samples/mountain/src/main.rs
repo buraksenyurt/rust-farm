@@ -1,6 +1,10 @@
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
+use sdl2::mouse::MouseButton;
 use sdl2::pixels::Color;
+use sdl2::rect::Point;
+use sdl2::render::Canvas;
+use sdl2::video::Window;
 use std::time::Duration;
 
 const WIDTH: i32 = 800;
@@ -18,8 +22,11 @@ fn main() -> Result<(), String> {
     let mut canvas = window.into_canvas().build().map_err(|e| e.to_string())?;
 
     let mut event_pump = sdl_context.event_pump()?;
+    canvas.set_draw_color(Color::RGB(107, 140, 255));
+    canvas.clear();
 
     'running: loop {
+
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit { .. }
@@ -32,11 +39,16 @@ fn main() -> Result<(), String> {
                 Event::MouseMotion { x, y, .. } => {
                     println!("{x}:{y}")
                 }
+                Event::MouseButtonDown {
+                    mouse_btn, x, y, ..
+                } => {
+                    if mouse_btn == MouseButton::Left {
+                        draw_circle(&mut canvas, Point::new(x, y), 5, Color::RGB(255, 255, 255))?;
+                    }
+                }
                 _ => {}
             }
         }
-        canvas.set_draw_color(Color::RGB(107, 140, 255));
-        canvas.clear();
 
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         let max_peak = 400;
@@ -59,5 +71,21 @@ fn main() -> Result<(), String> {
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 
+    Ok(())
+}
+
+fn draw_circle(
+    canvas: &mut Canvas<Window>,
+    center: Point,
+    radius: i32,
+    color: Color,
+) -> Result<(), String> {
+    canvas.set_draw_color(color);
+    for i in 0..360 {
+        let radian = (i as f64 * std::f64::consts::PI) / 180.0;
+        let x = center.x() + (radian.cos() * radius as f64) as i32;
+        let y = center.y() + (radian.sin() * radius as f64) as i32;
+        canvas.draw_point(Point::new(x, y))?;
+    }
     Ok(())
 }

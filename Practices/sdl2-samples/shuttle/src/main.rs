@@ -28,7 +28,7 @@ fn main() -> Result<(), String> {
     let shuttle = Shuttle::new(Point::new(200, 80));
 
     let window = video_subsystem
-        .window("Mountain Scene", WIDTH as u32, HEIGHT as u32)
+        .window("Shuttle Scene", WIDTH as u32, HEIGHT as u32)
         .position_centered()
         .build()
         .map_err(|e| e.to_string())?;
@@ -49,6 +49,18 @@ fn main() -> Result<(), String> {
                     ..
                 } => {
                     break 'running;
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::Left),
+                    ..
+                } => {
+                    velocity.x -= 0.25;
+                }
+                Event::KeyDown {
+                    keycode: Some(Keycode::Right),
+                    ..
+                } => {
+                    velocity.x += 0.25;
                 }
                 _ => {}
             }
@@ -78,7 +90,7 @@ fn main() -> Result<(), String> {
             )?;
         }
         shuttle.draw(&mut canvas, Color::RGB(255, 255, 0), velocity.to_point())?;
-        velocity.y += 0.1;
+        velocity.y += 0.05;
 
         canvas.present();
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
@@ -122,14 +134,19 @@ impl Shuttle {
         let point = self.top_left;
 
         canvas.set_draw_color(color);
-        canvas.draw_rect(Rect::new(point.x, point.y + velocity.y, 25, 25))?;
+        canvas.draw_rect(Rect::new(
+            point.x + velocity.x,
+            point.y + velocity.y,
+            25,
+            25,
+        ))?;
         canvas.draw_line(
-            Point::new(point.x, point.y + 25 + velocity.y),
-            Point::new(point.x - 10, point.y + 55 + velocity.y),
+            Point::new(point.x + velocity.x, point.y + 25 + velocity.y),
+            Point::new(point.x - 10 + velocity.x, point.y + 55 + velocity.y),
         )?;
         canvas.draw_line(
-            Point::new(point.x + 25, point.y + 25 + velocity.y),
-            Point::new(point.x + 35, point.y + 55 + velocity.y),
+            Point::new(point.x + 25 + velocity.x, point.y + 25 + velocity.y),
+            Point::new(point.x + 35 + velocity.x, point.y + 55 + velocity.y),
         )?;
 
         Ok(())

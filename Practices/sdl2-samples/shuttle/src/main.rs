@@ -78,7 +78,7 @@ fn main() -> Result<(), String> {
             )?;
         }
         shuttle.draw(&mut canvas, Color::RGB(255, 255, 0), velocity.to_point())?;
-        velocity.x += 0.1;
+        velocity.y += 0.1;
 
         canvas.present();
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
@@ -119,33 +119,17 @@ impl Shuttle {
         color: Color,
         velocity: Point,
     ) -> Result<(), String> {
+        let point = self.top_left;
+
         canvas.set_draw_color(color);
-        canvas.draw_rect(Rect::new(200, 80 + velocity.x, 25, 25))?;
-        canvas.draw_rect(Rect::new(201, 81 + velocity.x, 25, 25))?;
-        canvas.draw_rect(Rect::new(199, 79 + velocity.x, 25, 25))?;
+        canvas.draw_rect(Rect::new(point.x, point.y + velocity.y, 25, 25))?;
         canvas.draw_line(
-            Point::new(200, 105 + velocity.x),
-            Point::new(190, 135 + velocity.x),
+            Point::new(point.x, point.y + 25 + velocity.y),
+            Point::new(point.x - 10, point.y + 55 + velocity.y),
         )?;
         canvas.draw_line(
-            Point::new(199, 105 + velocity.x),
-            Point::new(189, 135 + velocity.x),
-        )?;
-        canvas.draw_line(
-            Point::new(198, 105 + velocity.x),
-            Point::new(188, 135 + velocity.x),
-        )?;
-        canvas.draw_line(
-            Point::new(225, 105 + velocity.x),
-            Point::new(235, 135 + velocity.x),
-        )?;
-        canvas.draw_line(
-            Point::new(224, 105 + velocity.x),
-            Point::new(234, 135 + velocity.x),
-        )?;
-        canvas.draw_line(
-            Point::new(223, 105 + velocity.x),
-            Point::new(233, 135 + velocity.x),
+            Point::new(point.x + 25, point.y + 25 + velocity.y),
+            Point::new(point.x + 35, point.y + 55 + velocity.y),
         )?;
 
         Ok(())

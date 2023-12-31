@@ -4,6 +4,7 @@ resolver = "2"
 members = [
     "hello-sdl2",
     "mountain",
+    "shuttle"
 ]
 
 [workspace.dependencies]

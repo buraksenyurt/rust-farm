@@ -1,4 +1,4 @@
-#[derive(Clone)]
+#[derive(Clone, Hash, PartialEq, Eq)]
 pub enum Genre {
     Action,
     Adventure,

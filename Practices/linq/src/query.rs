@@ -1,4 +1,5 @@
-use crate::domain::{Expertise, Game, Genre, Programmer};
+use crate::domain::{Expertise, Game, Genre, Order, Programmer};
+use std::collections::HashMap;
 
 pub struct GameQueryEngine {
     pub games: Vec<Game>,
@@ -11,6 +12,35 @@ impl GameQueryEngine {
             .filter(|&g| g.rating >= rate)
             .cloned()
             .collect()
+    }
+
+    pub fn get_game_names(&mut self, order: Order) -> Vec<String> {
+        let mut sorted_games = self.games.clone();
+        match order {
+            Order::Ascending => sorted_games.sort_by(|g1, g2| g1.name.cmp(&g2.name)),
+            Order::Descending => sorted_games.sort_by(|g1, g2| g2.name.cmp(&g1.name)),
+        }
+        sorted_games.iter().map(|g| g.name.clone()).collect()
+    }
+
+    pub fn get_average_rate(&self) -> f32 {
+        let l = self.games.len();
+        self.games.iter().map(|g| g.rating).sum::<f32>() / l as f32
+    }
+
+    pub fn grouped_by_genre(&self) -> HashMap<Genre, Vec<Game>> {
+        let mut games_by_genre = HashMap::new();
+        for game in self.games.iter() {
+            games_by_genre
+                .entry(game.genre.clone())
+                .or_insert_with(Vec::new)
+                .push(game.clone());
+        }
+        games_by_genre
+    }
+
+    pub fn get_higher_rated_game(&self) -> Option<Game> {
+        self.games.iter().max_by_key(|g| g.rating as u32).cloned()
     }
 
     pub fn init() -> Self {

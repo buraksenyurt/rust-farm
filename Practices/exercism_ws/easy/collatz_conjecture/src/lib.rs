@@ -6,12 +6,10 @@ pub fn find_collatz(n: u64, counter: u64) -> Option<u64> {
         (0, _) => None,
         (1, _) => Some(counter),
         (i, 0) => find_collatz(i / 2, counter + 1),
-        (i, _) => {
-            match i.checked_mul(3)?.checked_add(1) {
-                Some(new_i) => find_collatz(new_i, counter + 1),
-                None => None,
-            }
-        }
+        (i, _) => match i.checked_mul(3)?.checked_add(1) {
+            Some(new_i) => find_collatz(new_i, counter + 1),
+            None => None,
+        },
     }
 }
 

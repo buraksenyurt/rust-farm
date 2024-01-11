@@ -25,6 +25,7 @@ members = [
     "medium/say",
     "medium/allergies",
     "medium/rna_transcription",
+    "medium/tournament",
     "hard/parallel_letter_frequency",
     "hard/macros"
 ]

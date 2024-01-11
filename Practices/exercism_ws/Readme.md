@@ -14,6 +14,7 @@
   - [x] 10 Prime Factors
   - [x] 11 Raindrops
   - [x] 12 Collatz Conjecture
+  - [ ] 13 Sum of Multiples
 - **Medium**
   - [x] 01 Clock
   - [x] 02 Anagram

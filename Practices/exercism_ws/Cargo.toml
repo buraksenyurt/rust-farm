@@ -16,6 +16,7 @@ members = [
     "easy/prime_factors",
     "easy/raindrops",
     "easy/collatz_conjecture",
+    "easy/sum_of_multiples",
     "medium/anagram",
     "medium/space_age",
     "medium/sublist",

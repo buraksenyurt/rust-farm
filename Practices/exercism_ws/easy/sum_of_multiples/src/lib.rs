@@ -1,12 +1,35 @@
+use std::collections::HashSet;
+
 pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
-    // Community tarafından uygulanan en iyi çözümlerden birisi ise şu şekilde
-    (1..limit)
-        .filter(|number| {
-            factors
-                .iter()
-                .any(|&factor| factor != 0 && number % factor == 0)
-        })
-        .sum()
+    // // Higher Order Function versiyonu
+    // // Community tarafından uygulanan en iyi çözümlerden birisi ise şu şekilde
+    // // Burada fonksiyonel programlamanın ne kadar etkili olduğunu görüyoruz.
+    //
+    // (1..limit)
+    //     .filter(|number| {
+    //         factors
+    //             .iter()
+    //             .any(|&factor| factor != 0 && number % factor == 0)
+    //     })
+    //     .sum()
+
+    // Altta yer alan döngülü çözümün bir başka versiyonu.
+    // Bu nispeten daha kabul edilebilir bir sürüm
+    let mut sum = 0;
+    let mut lookup = HashSet::new();
+    for &factor in factors {
+        if factor == 0 || factor >= limit {
+            continue;
+        }
+        let mut multiple = factor;
+        while multiple < limit {
+            if lookup.insert(multiple) {
+                sum += multiple;
+            }
+            multiple += factor;
+        }
+    }
+    sum
 
     // // Benim uyguladığım ilk çözüm ki epey kötü... Iyyyyyyyy!!!!
     // if factors.iter().all(|f| f.gt(&limit)) {

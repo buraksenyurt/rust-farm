@@ -39,6 +39,14 @@ impl GameQueryEngine {
         games_by_genre
     }
 
+    pub fn grouped_by_genre_with_game_count(&self) -> HashMap<Genre, usize> {
+        let mut counts_by_genre = HashMap::new();
+        for game in &self.games {
+            *counts_by_genre.entry(game.genre.clone()).or_insert(0) += 1;
+        }
+        counts_by_genre
+    }
+
     pub fn get_higher_rated_game(&self) -> Option<Game> {
         self.games.iter().max_by_key(|g| g.rating as u32).cloned()
     }

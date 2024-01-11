@@ -48,4 +48,12 @@ mod tests {
         let most_popular = curious.get_higher_rated_game();
         assert!(most_popular.is_some());
     }
+
+    #[test]
+    fn test_grouped_by_genre_with_game_count() {
+        let mut curious = GameQueryEngine::init();
+        let grouped = curious.grouped_by_genre();
+        assert!(grouped.get(&Genre::Action).is_some());
+        assert_eq!(grouped.get(&Genre::Action).unwrap().len(), 2);
+    }
 }

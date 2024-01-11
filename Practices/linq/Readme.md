@@ -159,6 +159,31 @@ impl GameQueryEngine {
         self.games.iter().max_by_key(|g| g.rating as u32).cloned()
     }
 
+    pub fn get_oldest_games(&mut self) -> Option<Vec<&Game>> {
+        if let Some(min_release_year) = self.games.iter().map(|g| g.release_year).min() {
+            return Some(
+                self.games
+                    .iter()
+                    .filter(|g| g.release_year == min_release_year)
+                    .collect(),
+            );
+        }
+        None
+    }
+
+    pub fn get_games_by_specific_expertise(&self, expertise: Expertise) -> Vec<Game> {
+        self.games
+            .iter()
+            .filter(|&g| {
+                g.programmer
+                    .iter()
+                    .find(|p| p.expertise == expertise)
+                    .is_some()
+            })
+            .cloned()
+            .collect()
+    }
+
     pub fn init() -> Self {
         Self {
             games: vec![
@@ -166,6 +191,7 @@ impl GameQueryEngine {
                     name: "Space Adventure".to_string(),
                     genre: Genre::Action,
                     rating: 4.5,
+                    release_year: 1998,
                     programmer: vec![
                         Programmer {
                             name: "Alicey Johnson".to_string(),
@@ -181,6 +207,7 @@ impl GameQueryEngine {
                     name: "Speed Racer".to_string(),
                     genre: Genre::Racing,
                     rating: 4.7,
+                    release_year: 1999,
                     programmer: vec![
                         Programmer {
                             name: "Chlie Brown".to_string(),
@@ -200,6 +227,7 @@ impl GameQueryEngine {
                     name: "Mystic Quest".to_string(),
                     genre: Genre::Adventure,
                     rating: 4.2,
+                    release_year: 1998,
                     programmer: vec![
                         Programmer {
                             name: "David Lee".to_string(),
@@ -223,6 +251,7 @@ impl GameQueryEngine {
                     name: "Future Shock".to_string(),
                     genre: Genre::Shooter,
                     rating: 4.8,
+                    release_year: 1991,
                     programmer: vec![Programmer {
                         name: "Monaa Lissa".to_string(),
                         expertise: Expertise::Gameplay,
@@ -232,6 +261,7 @@ impl GameQueryEngine {
                     name: "Battlefield Glory".to_string(),
                     genre: Genre::Shooter,
                     rating: 4.3,
+                    release_year: 1984,
                     programmer: vec![Programmer {
                         name: "Natahan Darke".to_string(),
                         expertise: Expertise::Gameplay,
@@ -241,6 +271,7 @@ impl GameQueryEngine {
                     name: "Magic Tower".to_string(),
                     genre: Genre::Puzzle,
                     rating: 3.9,
+                    release_year: 1983,
                     programmer: vec![Programmer {
                         name: "Umaa Turman".to_string(),
                         expertise: Expertise::Story,
@@ -250,6 +281,7 @@ impl GameQueryEngine {
                     name: "Race Challenge".to_string(),
                     genre: Genre::Racing,
                     rating: 4.1,
+                    release_year: 1984,
                     programmer: vec![
                         Programmer {
                             name: "Monaa Lissa".to_string(),
@@ -265,6 +297,7 @@ impl GameQueryEngine {
                     name: "Deep Dive".to_string(),
                     genre: Genre::Adventure,
                     rating: 4.4,
+                    release_year: 2001,
                     programmer: vec![Programmer {
                         name: "Viktor Hogo".to_string(),
                         expertise: Expertise::Gameplay,
@@ -274,6 +307,7 @@ impl GameQueryEngine {
                     name: "Soccer Sim".to_string(),
                     genre: Genre::Sports,
                     rating: 3.8,
+                    release_year: 1992,
                     programmer: vec![
                         Programmer {
                             name: "Viktor Hogo".to_string(),
@@ -289,6 +323,7 @@ impl GameQueryEngine {
                     name: "Galaxy Invaders".to_string(),
                     genre: Genre::Action,
                     rating: 4.6,
+                    release_year: 1983,
                     programmer: vec![
                         Programmer {
                             name: "The Chosen Bill".to_string(),
@@ -308,6 +343,7 @@ impl GameQueryEngine {
                     name: "Treasure Island".to_string(),
                     genre: Genre::Adventure,
                     rating: 4.5,
+                    release_year: 1983,
                     programmer: vec![
                         Programmer {
                             name: "Viktor Hogo".to_string(),

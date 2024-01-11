@@ -26,6 +26,7 @@
   - [x] 09 Allergies
   - [x] 10 RNA Transcription
   - [x] 11 Tournament
+  - [ ] 12 Fizzy
 - **Hard**
   - [ ] 01 Parallel Letter Frequency
   - [ ] 02 Macros

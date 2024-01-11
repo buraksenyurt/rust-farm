@@ -19,7 +19,7 @@ pub enum Order {
     Descending,
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub enum Expertise {
     AI,
     Graphics,
@@ -39,5 +39,6 @@ pub struct Game {
     pub name: String,
     pub genre: Genre,
     pub rating: f32,
+    pub release_year: usize,
     pub programmer: Vec<Programmer>,
 }

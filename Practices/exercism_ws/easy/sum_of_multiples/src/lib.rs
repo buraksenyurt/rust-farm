@@ -1,33 +1,39 @@
 pub fn sum_of_multiples(limit: u32, factors: &[u32]) -> u32 {
-    let mut iterator = factors.into_iter();
-    if iterator.all(|f| f.gt(&limit)) {
-        return 0;
-    }
-    let mut sum = 0;
-    let mut lookup = vec![];
-    for f in factors.iter() {
-        if *f == 0 {
-            continue;
-        }
-        //println!("f is {f}");
-        let mut i = 1;
-        loop {
-            let m = f * i;
-            //println!("\tf is {f} m is {m}, i is {i}, limit is {limit}");
-            if m < limit {
-                i += 1;
-                //println!("\t\t{m} added");
-                if !lookup.contains(&m) {
-                    lookup.push(m);
-                    sum += m;
-                    continue;
-                }
-            } else {
-                break;
-            }
-        }
-    }
-    sum
+    // Community tarafından uygulanan en iyi çözümlerden birisi ise şu şekilde
+    (1..limit)
+        .filter(|number| {
+            factors
+                .iter()
+                .any(|&factor| factor != 0 && number % factor == 0)
+        })
+        .sum()
+
+    // // Benim uyguladığım ilk çözüm ki epey kötü... Iyyyyyyyy!!!!
+    // if factors.iter().all(|f| f.gt(&limit)) {
+    //     return 0;
+    // }
+    // let mut sum = 0;
+    // let mut lookup = vec![];
+    // for f in factors.iter() {
+    //     if *f == 0 {
+    //         continue;
+    //     }
+    //     let mut i = 1;
+    //     loop {
+    //         let m = f * i;
+    //         if m < limit {
+    //             i += 1;
+    //             if !lookup.contains(&m) {
+    //                 lookup.push(m);
+    //                 sum += m;
+    //                 continue;
+    //             }
+    //         } else {
+    //             break;
+    //         }
+    //     }
+    // }
+    // sum
 }
 
 #[cfg(test)]

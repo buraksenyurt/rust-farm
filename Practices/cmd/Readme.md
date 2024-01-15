@@ -30,7 +30,10 @@ cargo build -r
 ./cmd --add "Programming with Rust" 34.55 true
 
 # Bir kitap aradığımızı düşünelim
-./cmd --find "Programming with Rust"
+./cmd --find title eq "Programming with Rust"
+
+# ya da liste fiyatı belli bir değerin altında olanları
+./cmd --find listPrice gt 90.50
 
 # Kitapları isme göre ters sırada listelettiğimizi düşünelim
 ./cmd --list name desc
@@ -45,3 +48,11 @@ cargo build -r
 İşte örnek bir çalışma zamanı çıktısı görüntüsü.
 
 ![../images/cmd_runtime_01.png](../images/cmd_runtime_01.png)
+
+Bu örnekte kullanılan enstrümanlar veya kavramları şöyle özetleyebiliriz.
+
+- Command tasarım desenini uyguladık.
+- Kendi trait modelimizi yazdık.
+- FromStr ve Display trait'lerini kendi enum türlerimize uyguladık.
+- Birim test yazdık.
+- Pattern Matching kullandık.

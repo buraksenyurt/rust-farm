@@ -9,7 +9,7 @@ impl SortStrategy for Bubble {
         let mut swapped;
         let len = data.len();
 
-        for _ in 0..len - 0 {
+        for _ in 0..len {
             swapped = false;
             for j in 0..len - 1 {
                 if data[j] > data[j + 1] {
@@ -67,10 +67,12 @@ impl SortStrategy for Insertion {
     }
 }
 
+#[allow(dead_code)]
 struct SortingMaster {
     strategy: Box<dyn SortStrategy>,
 }
 
+#[allow(dead_code)]
 impl SortingMaster {
     fn new(strategy: Box<dyn SortStrategy>) -> Self {
         Self { strategy }
@@ -112,6 +114,23 @@ mod tests {
         let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
         let insertion_sort = Insertion;
         let sorter = SortingMaster::new(Box::new(insertion_sort));
+        sorter.sort(&mut numbers);
+        let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
+        assert_eq!(numbers, expected);
+    }
+
+    #[test]
+    fn change_sort_strategy_test() {
+        let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
+        let insertion_sort = Insertion;
+        let mut sorter = SortingMaster::new(Box::new(insertion_sort));
+        sorter.sort(&mut numbers);
+        let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
+        assert_eq!(numbers, expected);
+
+        let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
+        let bubble_sort = Bubble;
+        sorter.change(Box::new(bubble_sort));
         sorter.sort(&mut numbers);
         let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
         assert_eq!(numbers, expected);

@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 fn main() {
@@ -29,7 +30,7 @@ impl Command for ListCommand {
     fn execute(&self, args: Vec<String>) {
         if args.len() == 4 {
             let args_1 = args[2].to_string();
-            let args_2 = args[3].to_string();
+            let args_2 = Ordering::from_str(args[3].as_str()).unwrap_or_default();
             println!("--list işletilecek. Parametreler -> {args_1} , {args_2}");
         }
     }
@@ -64,5 +65,47 @@ impl CommandParser {
             Some("--find") => Box::new(FindCommand),
             _ => Box::new(UnknownCommand),
         }
+    }
+}
+
+#[derive(Debug, PartialEq, Default)]
+enum Ordering {
+    #[default]
+    Ascending,
+    Descending,
+}
+impl FromStr for Ordering {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "desc" => Ok(Self::Descending),
+            _ => Ok(Self::Ascending),
+        }
+    }
+}
+
+impl Display for Ordering {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Ascending => write!(f, "ascending"),
+            Self::Descending => write!(f, "descending"),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::Ordering;
+    use std::str::FromStr;
+
+    #[test]
+    fn from_str_to_ordering_test() {
+        let actual = Ordering::from_str("desc").unwrap();
+        let expected = Ordering::Descending;
+        assert_eq!(actual, expected);
+        let actual = Ordering::from_str("middle").unwrap();
+        let expected = Ordering::Ascending;
+        assert_eq!(actual, expected);
     }
 }

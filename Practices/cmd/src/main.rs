@@ -19,7 +19,7 @@ impl Command for AddCommand {
             let title = args[2].to_string();
             let price = f32::from_str(args[3].as_str()).unwrap_or_default();
             let in_stock = bool::from_str(args[4].as_str()).unwrap_or_default();
-            println!("--add işletilecek. Parametreler -> {title} , {price} , {in_stock}");
+            println!("--add işletilecek. Ürün adı {title} , Fiyat {price} , Stokta mı? {in_stock}");
         }
     }
 }
@@ -29,9 +29,9 @@ struct ListCommand;
 impl Command for ListCommand {
     fn execute(&self, args: Vec<String>) {
         if args.len() == 4 {
-            let args_1 = args[2].to_string();
-            let args_2 = Ordering::from_str(args[3].as_str()).unwrap_or_default();
-            println!("--list işletilecek. Parametreler -> {args_1} , {args_2}");
+            let field_name = args[2].to_string();
+            let ordering = Ordering::from_str(args[3].as_str()).unwrap_or_default();
+            println!("--list işletilecek. Parametreler -> {field_name} , {ordering}");
         }
     }
 }
@@ -40,9 +40,11 @@ struct FindCommand;
 
 impl Command for FindCommand {
     fn execute(&self, args: Vec<String>) {
-        if args.len() == 3 {
-            let args_1 = args[2].to_string();
-            println!("--find işletilecek. Parametreler -> {args_1}");
+        if args.len() == 5 {
+            let field_name = args[2].to_string();
+            let cmp_operator = CompareOperator::from_str(args[3].as_str()).unwrap_or_default();
+            let value = args[4].to_string();
+            println!("--find işletilecek. {field_name} {cmp_operator} {value}");
         }
     }
 }
@@ -94,9 +96,61 @@ impl Display for Ordering {
     }
 }
 
+#[derive(Debug, PartialEq, Default)]
+enum CompareOperator {
+    #[default]
+    Equal,
+    GreaterThan,
+    GreaterThanEqual,
+    LessThan,
+    LessThanEqual,
+    NotEqual,
+}
+
+impl FromStr for CompareOperator {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(match s.to_lowercase().as_str() {
+            "eq" => Self::Equal,
+            "neq" => Self::NotEqual,
+            "gt" => Self::GreaterThan,
+            "gte" => Self::GreaterThanEqual,
+            "lt" => Self::LessThan,
+            "lte" => Self::LessThanEqual,
+            _ => Self::Equal,
+        })
+    }
+}
+
+impl Display for CompareOperator {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            CompareOperator::Equal => {
+                write!(f, "=")
+            }
+            CompareOperator::GreaterThan => {
+                write!(f, ">")
+            }
+            CompareOperator::GreaterThanEqual => {
+                write!(f, ">=")
+            }
+            CompareOperator::LessThan => {
+                write!(f, "<")
+            }
+            CompareOperator::LessThanEqual => {
+                write!(f, "<=")
+            }
+            CompareOperator::NotEqual => {
+                write!(f, "!=")
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
-    use crate::Ordering;
+    use crate::{CompareOperator, Ordering};
     use std::str::FromStr;
 
     #[test]
@@ -107,5 +161,21 @@ mod test {
         let actual = Ordering::from_str("middle").unwrap();
         let expected = Ordering::Ascending;
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn from_str_to_compare_operator_test() {
+        let test_cases = vec![
+            ("eq", CompareOperator::Equal),
+            ("neq", CompareOperator::NotEqual),
+            ("gt", CompareOperator::GreaterThan),
+            ("gte", CompareOperator::GreaterThanEqual),
+            ("lt", CompareOperator::LessThan),
+            ("lte", CompareOperator::LessThanEqual),
+        ];
+        for (input, expected) in test_cases {
+            let actual = CompareOperator::from_str(input).unwrap();
+            assert_eq!(actual, expected);
+        }
     }
 }

@@ -6,16 +6,21 @@ Tasarım kalıplarının Rust tarafındaki uygulanmasında trait' ler büyük ö
 
 Örnekte amaç sıralama algoritmalarının nasıl yazıldığını öğrenmekten ziyade _(ki internette her yerde bulunabilirler ve bende öyle yaptım hatta :D )_ nesne davranış biçimleri ile ilgili olan strategy tasarım kalıbınının rust tarafında nasıl uygulanacağını anlamaktır.
 
-## Çalışma Zamanı Çıktısı
+## Release 0.1
+
+### Çalışma Zamanı Çıktısı
 
 ![../images/strategical_sorts_runtime.png](../images/strategical_sorts_runtime.png)
 
-## Çalışmada Kullanılan Enstrümanlar / Kavramlar
+### Çalışmada Kullanılan Enstrümanlar / Kavramlar
 
 - Starteji tasarım kalıbının kullanılması
 - Kendi trait modelimizin geliştirilmesi
 - Birim testler
-- ~~Box pointer ile dynamic dispatch uygulanması~~
+- Box pointer ile dynamic dispatch uygulanması
+
+### Update 0.1.1
+
 - Generic tür ile çalışma ve PhantomData kullanımı.
 
 Örneğin yeni versiyonunda SortStrategy isimli trait aşağıdaki şekilde değiştirilmiştir.
@@ -70,4 +75,10 @@ where
     }
 }
 ```
+
+### Update 0.1.2
+
+- PartialOrd ve PartialEq trait implementasyonları
+
+Bu sefer kendi tasarladığımız bir data structure üzerinde sorting algoritmalarını çalıştırıyoruz. Nesnelerin birbirleriyle nasıl kıyaslanacağı bilindiğinde bu işlem kolay. Bu nedenle Player isimli veri yapısında PartialOrd ve PartialEq trait'lerinin uygulanması söz konusu. Sıralamalar buradaki kriterlere göre Point alanı üzerinden yapılıyor.
 

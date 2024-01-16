@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::marker::PhantomData;
 
 trait SortStrategy<T> {
@@ -132,5 +133,51 @@ mod tests {
         sorter.sort(&mut numbers);
         let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
         assert_eq!(numbers, expected);
+    }
+
+    #[test]
+    fn insertion_sort_on_player_list_test() {
+        let mut players = vec![
+            Player::new(1, "Player 1", 9.5),
+            Player::new(2, "Player 2", 5.5),
+            Player::new(3, "Player 3", 8.5),
+            Player::new(4, "Player 4", 7.5),
+            Player::new(5, "Player 5", 2.5),
+        ];
+        let sorter = SortingMaster::new(Insertion);
+        sorter.sort(&mut players);
+        let expected = vec![
+            Player::new(5, "Player 5", 2.5),
+            Player::new(2, "Player 2", 5.5),
+            Player::new(4, "Player 4", 7.5),
+            Player::new(3, "Player 3", 8.5),
+            Player::new(1, "Player 1", 9.5),
+        ];
+        assert_eq!(players, expected);
+    }
+}
+
+#[derive(Debug, Copy, Clone)]
+struct Player<'a> {
+    id: i32,
+    title: &'a str,
+    point: f32,
+}
+
+impl<'a> Player<'a> {
+    pub fn new(id: i32, title: &'a str, point: f32) -> Self {
+        Self { id, title, point }
+    }
+}
+
+impl<'a> PartialEq<Self> for Player<'a> {
+    fn eq(&self, other: &Self) -> bool {
+        self.point.eq(&other.point)
+    }
+}
+
+impl<'a> PartialOrd for Player<'a> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.point.partial_cmp(&other.point)
     }
 }

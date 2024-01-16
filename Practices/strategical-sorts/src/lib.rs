@@ -5,7 +5,6 @@ mod strategy;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::concrete_strategy::*;
     use crate::context::SortingMaster;
     use crate::entity::Player;

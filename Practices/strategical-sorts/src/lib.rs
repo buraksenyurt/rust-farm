@@ -1,11 +1,16 @@
-trait SortStrategy {
-    fn sort(&self, data: &mut Vec<i32>);
+use std::marker::PhantomData;
+
+trait SortStrategy<T> {
+    fn sort(&self, data: &mut Vec<T>);
 }
 
 struct Bubble;
 
-impl SortStrategy for Bubble {
-    fn sort(&self, data: &mut Vec<i32>) {
+impl<T> SortStrategy<T> for Bubble
+where
+    T: PartialOrd,
+{
+    fn sort(&self, data: &mut Vec<T>) {
         let mut swapped;
         let len = data.len();
 
@@ -26,13 +31,16 @@ impl SortStrategy for Bubble {
 
 struct Quick;
 
-impl SortStrategy for Quick {
-    fn sort(&self, data: &mut Vec<i32>) {
+impl<T> SortStrategy<T> for Quick
+where
+    T: PartialOrd + Copy,
+{
+    fn sort(&self, data: &mut Vec<T>) {
         quick_sort(data, 0, data.len() as isize - 1);
     }
 }
 
-fn quick_sort(data: &mut Vec<i32>, low: isize, high: isize) {
+fn quick_sort<T: PartialOrd + Copy>(data: &mut Vec<T>, low: isize, high: isize) {
     if low < high {
         let pivot = data[high as usize];
         let mut i = low - 1;
@@ -52,8 +60,11 @@ fn quick_sort(data: &mut Vec<i32>, low: isize, high: isize) {
 
 struct Insertion;
 
-impl SortStrategy for Insertion {
-    fn sort(&self, data: &mut Vec<i32>) {
+impl<T> SortStrategy<T> for Insertion
+where
+    T: PartialOrd + Copy,
+{
+    fn sort(&self, data: &mut Vec<T>) {
         let len = data.len();
         for i in 1..len {
             let key = data[i];
@@ -68,19 +79,26 @@ impl SortStrategy for Insertion {
 }
 
 #[allow(dead_code)]
-struct SortingMaster {
-    strategy: Box<dyn SortStrategy>,
+struct SortingMaster<T, S>
+where
+    S: SortStrategy<T>,
+{
+    strategy: S,
+    _phantom_data: PhantomData<T>,
 }
 
 #[allow(dead_code)]
-impl SortingMaster {
-    fn new(strategy: Box<dyn SortStrategy>) -> Self {
-        Self { strategy }
+impl<T, S> SortingMaster<T, S>
+where
+    S: SortStrategy<T>,
+{
+    fn new(strategy: S) -> Self {
+        Self {
+            strategy,
+            _phantom_data: PhantomData,
+        }
     }
-    fn change(&mut self, strategy: Box<dyn SortStrategy>) {
-        self.strategy = strategy
-    }
-    fn sort(&self, data: &mut Vec<i32>) {
+    fn sort(&self, data: &mut Vec<T>) {
         self.strategy.sort(data);
     }
 }
@@ -92,8 +110,7 @@ mod tests {
     #[test]
     fn quick_sort_test() {
         let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
-        let quick_sort = Quick;
-        let sorter = SortingMaster::new(Box::new(quick_sort));
+        let sorter = SortingMaster::new(Quick);
         sorter.sort(&mut numbers);
         let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
         assert_eq!(numbers, expected);
@@ -102,8 +119,7 @@ mod tests {
     #[test]
     fn bubble_sort_test() {
         let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
-        let bubble_sort = Bubble;
-        let sorter = SortingMaster::new(Box::new(bubble_sort));
+        let sorter = SortingMaster::new(Bubble);
         sorter.sort(&mut numbers);
         let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
         assert_eq!(numbers, expected);
@@ -112,25 +128,7 @@ mod tests {
     #[test]
     fn insertion_sort_test() {
         let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
-        let insertion_sort = Insertion;
-        let sorter = SortingMaster::new(Box::new(insertion_sort));
-        sorter.sort(&mut numbers);
-        let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
-        assert_eq!(numbers, expected);
-    }
-
-    #[test]
-    fn change_sort_strategy_test() {
-        let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
-        let insertion_sort = Insertion;
-        let mut sorter = SortingMaster::new(Box::new(insertion_sort));
-        sorter.sort(&mut numbers);
-        let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
-        assert_eq!(numbers, expected);
-
-        let mut numbers = vec![3, 6, 1, 2, 9, 12, 23, 8, 90, 45, 24, 7, 8];
-        let bubble_sort = Bubble;
-        sorter.change(Box::new(bubble_sort));
+        let sorter = SortingMaster::new(Insertion);
         sorter.sort(&mut numbers);
         let expected = vec![1, 2, 3, 6, 7, 8, 8, 9, 12, 23, 24, 45, 90];
         assert_eq!(numbers, expected);

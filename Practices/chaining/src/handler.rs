@@ -3,11 +3,12 @@ pub struct HttpRequest {
     pub path: String,
     pub body: String,
 }
-pub struct HttpResponse {
+#[derive(Copy, Clone)]
+pub struct HttpResponse<'a> {
     pub code: u16,
-    pub body: String,
+    pub body: &'a str,
 }
 pub trait HttpRequestHandler {
-    fn next(&mut self, handler: Box<dyn HttpRequestHandler>);
+    //fn set_next(&mut self, handler: Box<dyn HttpRequestHandler>);
     fn process(&self, request: &HttpRequest) -> Option<HttpResponse>;
 }

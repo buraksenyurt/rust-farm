@@ -1,112 +1,14 @@
-use std::cmp::Ordering;
-use std::marker::PhantomData;
-
-trait SortStrategy<T> {
-    fn sort(&self, data: &mut Vec<T>);
-}
-
-struct Bubble;
-
-impl<T> SortStrategy<T> for Bubble
-where
-    T: PartialOrd,
-{
-    fn sort(&self, data: &mut Vec<T>) {
-        let mut swapped;
-        let len = data.len();
-
-        for _ in 0..len {
-            swapped = false;
-            for j in 0..len - 1 {
-                if data[j] > data[j + 1] {
-                    data.swap(j, j + 1);
-                    swapped = true;
-                }
-            }
-            if !swapped {
-                break;
-            }
-        }
-    }
-}
-
-struct Quick;
-
-impl<T> SortStrategy<T> for Quick
-where
-    T: PartialOrd + Copy,
-{
-    fn sort(&self, data: &mut Vec<T>) {
-        quick_sort(data, 0, data.len() as isize - 1);
-    }
-}
-
-fn quick_sort<T: PartialOrd + Copy>(data: &mut Vec<T>, low: isize, high: isize) {
-    if low < high {
-        let pivot = data[high as usize];
-        let mut i = low - 1;
-        for j in low..high {
-            if data[j as usize] <= pivot {
-                i += 1;
-                data.swap(i as usize, j as usize);
-            }
-        }
-        data.swap((i + 1) as usize, high as usize);
-        let pi = i + 1;
-
-        quick_sort(data, low, pi - 1);
-        quick_sort(data, pi + 1, high);
-    }
-}
-
-struct Insertion;
-
-impl<T> SortStrategy<T> for Insertion
-where
-    T: PartialOrd + Copy,
-{
-    fn sort(&self, data: &mut Vec<T>) {
-        let len = data.len();
-        for i in 1..len {
-            let key = data[i];
-            let mut j = i as isize - 1;
-            while j >= 0 && data[j as usize] > key {
-                data[(j + 1) as usize] = data[j as usize];
-                j -= 1;
-            }
-            data[(j + 1) as usize] = key;
-        }
-    }
-}
-
-#[allow(dead_code)]
-struct SortingMaster<T, S>
-where
-    S: SortStrategy<T>,
-{
-    strategy: S,
-    _phantom_data: PhantomData<T>,
-}
-
-#[allow(dead_code)]
-impl<T, S> SortingMaster<T, S>
-where
-    S: SortStrategy<T>,
-{
-    fn new(strategy: S) -> Self {
-        Self {
-            strategy,
-            _phantom_data: PhantomData,
-        }
-    }
-    fn sort(&self, data: &mut Vec<T>) {
-        self.strategy.sort(data);
-    }
-}
+mod concrete_strategy;
+mod context;
+mod entity;
+mod strategy;
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::concrete_strategy::*;
+    use crate::context::SortingMaster;
+    use crate::entity::Player;
 
     #[test]
     fn quick_sort_test() {
@@ -138,46 +40,21 @@ mod tests {
     #[test]
     fn insertion_sort_on_player_list_test() {
         let mut players = vec![
-            Player::new(1, "Player 1", 9.5),
-            Player::new(2, "Player 2", 5.5),
-            Player::new(3, "Player 3", 8.5),
-            Player::new(4, "Player 4", 7.5),
-            Player::new(5, "Player 5", 2.5),
+            Player::new(1, "John Doe", 9.5),
+            Player::new(2, "Darth Veydar", 5.5),
+            Player::new(3, "Kristin", 8.5),
+            Player::new(4, "Sandra Makarena", 7.5),
+            Player::new(5, "Super Maryo", 2.5),
         ];
         let sorter = SortingMaster::new(Insertion);
         sorter.sort(&mut players);
         let expected = vec![
-            Player::new(5, "Player 5", 2.5),
-            Player::new(2, "Player 2", 5.5),
-            Player::new(4, "Player 4", 7.5),
-            Player::new(3, "Player 3", 8.5),
-            Player::new(1, "Player 1", 9.5),
+            Player::new(5, "Super Maryo", 2.5),
+            Player::new(2, "Darth Veydar", 5.5),
+            Player::new(4, "Sandra Makarena", 7.5),
+            Player::new(3, "Kristin", 8.5),
+            Player::new(1, "John Doe", 9.5),
         ];
         assert_eq!(players, expected);
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-struct Player<'a> {
-    id: i32,
-    title: &'a str,
-    point: f32,
-}
-
-impl<'a> Player<'a> {
-    pub fn new(id: i32, title: &'a str, point: f32) -> Self {
-        Self { id, title, point }
-    }
-}
-
-impl<'a> PartialEq<Self> for Player<'a> {
-    fn eq(&self, other: &Self) -> bool {
-        self.point.eq(&other.point)
-    }
-}
-
-impl<'a> PartialOrd for Player<'a> {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.point.partial_cmp(&other.point)
     }
 }

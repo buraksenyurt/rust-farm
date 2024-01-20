@@ -7,7 +7,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const socket = new WebSocket('ws://127.0.0.1:9001');
 
-            socket.addEventListener('open', function (event) {
+            socket.addEventListener('open', function () {
                 console.log('WS Server bağlantısı');
                 socket.send('Ping Pong oynamak ister misin!');
             });
@@ -20,7 +20,7 @@
                 console.error('WebSocket hatası tespit edildi:', event);
             });
 
-            socket.addEventListener('close', function (event) {
+            socket.addEventListener('close', function () {
                 console.log('WebSocket bağlantısı kapatıldı');
             });
 

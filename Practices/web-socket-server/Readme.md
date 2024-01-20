@@ -21,4 +21,4 @@ futures-util = { version = "0.3.30", features = ["sink"] }
 
 Sunucu çalışır haldeyken web socket sunucusuna mesaj gönderen html sayfası açılıp test edilebilir.
 
-![../../images/web-socket-server.png](../../images/web-socket-server.png)
+![../images/web-socket-server.png](../images/web-socket-server.png)

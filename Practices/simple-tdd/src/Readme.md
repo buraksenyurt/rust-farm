@@ -67,3 +67,37 @@ mod tests {
 ![../images/simple_tdd_green.png](../images/simple_tdd_green.png)
 
 ## Blue (Refactor State)
+
+Refactor aşaması kodun iyileştirilmesi için çalışmalar yapılır. Örneğin faktöryel hesabı yapan fonksiyon da 0 ve 1 olma halleri daha farklı bir şekilde ele alınabilir.
+
+```rust
+pub fn factorial(number: u64) -> u64 {
+    if number <= 1 {
+        1
+    } else {
+        number * factorial(number - 1)
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn factorial_of_0_test() {
+        assert_eq!(factorial(0), 1);
+    }
+
+    #[test]
+    fn factorial_of_1_test() {
+        assert_eq!(factorial(1), 1);
+    }
+    #[test]
+    fn factorial_of_4_test() {
+        assert_eq!(factorial(4), 24);
+    }
+}
+```
+
+Elbette bu aşamada da tüm birim testlerin başarılı şekilde çalışması beklenir.
+
+## Sürekli Test
+

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test Client</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const socket = new WebSocket('ws://127.0.0.1:9001');
+
+            socket.addEventListener('open', function (event) {
+                console.log('WS Server bağlantısı');
+                socket.send('Ping Pong oynamak ister misin!');
+            });
+
+            socket.addEventListener('message', function (event) {
+                console.log('Sunucudan gelen mesaj ', event.data);
+            });
+
+            socket.addEventListener('error', function (event) {
+                console.error('WebSocket hatası tespit edildi:', event);
+            });
+
+            socket.addEventListener('close', function (event) {
+                console.log('WebSocket bağlantısı kapatıldı');
+            });
+
+            document.getElementById('btnSend').addEventListener('click', function() {
+                const message = document.getElementById('messageInput').value;
+                socket.send(message);
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>WebSocket İstemcisi (Test)</h1>
+<label for="messageInput"></label><input type="text" id="messageInput" placeholder="Bir mesaj yaz">
+<button id="btnSend">Gönder</button>
+</body>
+</html>

@@ -4,5 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tokio = { version = "1.35.1", features = ["full"] }
-tokio-tungstenite = "0.21.0"
+tokio = { version = "1.28.1", features = ["full"] }
+tokio-websockets = { version = "0.5.1", features = ["client", "fastrand", "server", "sha1_smol"] }
+futures-util = { version = "0.3.30", features = ["sink"] }

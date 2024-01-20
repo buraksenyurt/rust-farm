@@ -8,11 +8,17 @@ Bu protokelde sunuculara ws veya wss _(güvenli olan versiyonu. https gibi düş
 
 HTTP'nin aksine WebSocket iletişiminde bağlantı sürekli açık kalır, veri stream olarak değil mesaj tabanlı hareket eder.
 
-Örneğe tokio paketini eklemek için aşağıdaki terminal komutu ile ilerlenebilir.
+Örnekte kullanılan küfeler için toml içeriği şu şekildedir.
 
-```shell
-# asenkron çalışma zamanı için tokio
-cargo add tokio -F full
-# websocket desteği içinse tokio-tungstenite
-cargo add tokio-tungstenite
+```toml
+[dependencies]
+tokio = { version = "1.28.1", features = ["full"] }
+tokio-websockets = { version = "0.5.1", features = ["client", "fastrand", "server", "sha1_smol"] }
+futures-util = { version = "0.3.30", features = ["sink"] }
 ```
+
+## Test
+
+Sunucu çalışır haldeyken web socket sunucusuna mesaj gönderen html sayfası açılıp test edilebilir.
+
+![../../images/web-socket-server.png](../../images/web-socket-server.png)

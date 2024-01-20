@@ -31,7 +31,7 @@ mod tests {
 
 Burada faktöryel hesabı yapan fonksiyon için 3 test yazılmıştır. 0 ve 1 için faktöryel değer 1 dönerken, 4 için 24 dönmesi beklenir. Bu aşam esasında fonksiyonun parametre yapısının, dönüş değerinin belirlendiği ve kabul kriterlerinin inşa edildiği safhadır diye düşünebiliriz. Çok doğal olarak cargo test çalıştırıldığında unimplemented makrosunun kullanılması sebebiyle birim testlerini üçü de fail olacaktır.
 
-![../../images/simple_tdd_red.png](../../images/simple_tdd_red.png)
+![../images/simple_tdd_red.png](../images/simple_tdd_red.png)
 
 ## Green (Pass State)
 
@@ -64,7 +64,7 @@ mod tests {
 }
 ```
 
-![../../images/simple_tdd_green.png](../../images/simple_tdd_green.png)
+![../images/simple_tdd_green.png](../images/simple_tdd_green.png)
 
 ## Blue (Refactor State)
 
@@ -117,7 +117,7 @@ fn factorial_of_32_test() {
 }
 ```
 
-![../../images/simple_tdd_red_2.png](../../images/simple_tdd_red_2.png)
+![../images/simple_tdd_red_2.png](../images/simple_tdd_red_2.png)
 
 Görüldüğü gibi çarpma operasyonu bir yerden sonra overflow vermiştir. Burada Divide and Conquer algoritmasını kullanarak fonksiyonu değiştirip testin pass hale gelmesine uğraşabiliriz.
 
@@ -133,7 +133,7 @@ pub fn factorial_for_big(number: u64) -> u64 {
 
 Ancak sonuç değişmeyecek ve test overflow hatası vermese de fail olacaktır. Burası çözüm için ek bir crate kullanmak zorunda kaldığımız yerdir. BigInt kütüphanesi bu amaçla kullanılabilir.
 
-![../../images/simple_tdd_red_3.png](../../images/simple_tdd_red_3.png)
+![../images/simple_tdd_red_3.png](../images/simple_tdd_red_3.png)
 
 ```shell
 cargo add num-bigint num-traits
@@ -186,6 +186,6 @@ mod tests {
 }
 ```
 
-![../../images/simple_tdd_green_2.png](../../images/simple_tdd_green_2.png)
+![../images/simple_tdd_green_2.png](../images/simple_tdd_green_2.png)
 
 

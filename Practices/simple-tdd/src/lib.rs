@@ -1,5 +1,9 @@
-pub fn factorial(_number: u64) -> u64 {
-    unimplemented!()
+pub fn factorial(number: u64) -> u64 {
+    if number == 0 || number == 1 {
+        1
+    } else {
+        number * factorial(number - 1)
+    }
 }
 #[cfg(test)]
 mod tests {

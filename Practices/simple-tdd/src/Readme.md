@@ -35,6 +35,35 @@ Burada faktöryel hesabı yapan fonksiyon için 3 test yazılmıştır. 0 ve 1 i
 
 ## Green (Pass State)
 
+Bu aşamada fonksiyon için yazılan birim testin (testlerin) başarılı olması için gerekli kodlamalar yapılır.
 
+```rust
+pub fn factorial(number: u64) -> u64 {
+    if number == 0 || number == 1 {
+        1
+    } else {
+        number * factorial(number - 1)
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn factorial_of_0_test() {
+        assert_eq!(factorial(0), 1);
+    }
+
+    #[test]
+    fn factorial_of_1_test() {
+        assert_eq!(factorial(1), 1);
+    }
+    #[test]
+    fn factorial_of_4_test() {
+        assert_eq!(factorial(4), 24);
+    }
+}
+```
+
+![../images/simple_tdd_green.png](../images/simple_tdd_green.png)
 
 ## Blue (Refactor State)

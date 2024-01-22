@@ -6,4 +6,7 @@ Bu örneği Electro Cat Studios'un bir [youtube öğretisini](https://www.youtub
 
 ```shell
 sudo apt-get install libsdl2-ttf-dev
+
+# Hatta image paketi içinde benzer hatayı aldım ve
+sudo apt-get install libsdl2-image-dev
 ```

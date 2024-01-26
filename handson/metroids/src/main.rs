@@ -1,8 +1,10 @@
 mod constants;
 mod texture_manager;
+mod utility;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
+use std::collections::HashMap;
 use std::path::Path;
 use std::thread::sleep;
 
@@ -23,6 +25,7 @@ fn render(
     texture_manager: &mut TextureManager<WindowContext>,
     _texture_creator: &TextureCreator<WindowContext>,
     _font: &Font,
+    key_manager: &HashMap<String, bool>,
 ) -> Result<(), String> {
     let color = Color::RGB(0, 0, 0);
     canvas.set_draw_color(color);
@@ -42,7 +45,17 @@ fn render(
         (SPACE_SHIP_OUTPUT_HEIGHT / 2) as i32,
     );
     let texture = texture_manager.load("assets/space_ship.png")?;
-    canvas.copy_ex(&texture, src, dest, 45., center, false, false)?;
+    let mut angle = 0.;
+    if utility::is_key_pressed(&key_manager, "W") {
+        angle = 0.;
+    } else if utility::is_key_pressed(&key_manager, "D") {
+        angle = 90.;
+    } else if utility::is_key_pressed(&key_manager, "S") {
+        angle = 180.;
+    } else if utility::is_key_pressed(&key_manager, "A") {
+        angle = 270.;
+    }
+    canvas.copy_ex(&texture, src, dest, angle, center, false, false)?;
 
     // let greetings = "M E T R O I D S".to_string();
     // let surface = font
@@ -82,6 +95,7 @@ fn main() -> Result<(), String> {
     font.set_style(FontStyle::BOLD);
 
     let mut event_pump = sdl_context.event_pump()?;
+    let mut key_manager = HashMap::new();
 
     'run: loop {
         for event in event_pump.poll_iter() {
@@ -93,10 +107,28 @@ fn main() -> Result<(), String> {
                 } => {
                     break 'run;
                 }
+                Event::KeyDown { keycode, .. } => match keycode {
+                    None => {}
+                    Some(key) => {
+                        utility::key_down(&mut key_manager, key.to_string());
+                    }
+                },
+                Event::KeyUp { keycode, .. } => match keycode {
+                    None => {}
+                    Some(key) => {
+                        utility::key_up(&mut key_manager, key.to_string());
+                    }
+                },
                 _ => {}
             }
         }
-        render(&mut canvas, &mut texture_manager, &texture_creator, &font)?;
+        render(
+            &mut canvas,
+            &mut texture_manager,
+            &texture_creator,
+            &font,
+            &key_manager,
+        )?;
         sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
     Ok(())

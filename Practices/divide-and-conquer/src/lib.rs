@@ -1,5 +1,16 @@
 pub fn get_max_value(values: &[i32]) -> i32 {
-    0
+    if values.len() == 1 {
+        values[0]
+    } else {
+        let mid = values.len() / 2;
+        let first_max = get_max_value(&values[..mid]);
+        let second_max = get_max_value(&values[mid..]);
+        if first_max > second_max {
+            first_max
+        } else {
+            second_max
+        }
+    }
 }
 
 #[cfg(test)]

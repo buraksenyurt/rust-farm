@@ -9,7 +9,6 @@ Buna göre O(n) türünden bir time complexity değeri vardır diyebiliriz.
 */
 
 use std::collections::HashMap;
-use std::hash::Hash;
 
 pub fn get_max_value(values: &[i32]) -> i32 {
     if values.len() == 1 {
@@ -30,10 +29,18 @@ pub fn get_max_value(values: &[i32]) -> i32 {
 
     Bu ikinci örnekte bir kelime havuzundaki kelimelerden kaçar adet bulunduğunun hesaplanması için
     divide and conquer algoritmasından yararlanılmaktadır. Burada Map Reduce şeklinde ilerlenilmiştir.
-    Öncek her bir kelime 0 adet geçiyor olarak gruplanır. Bu Map aşaması olarak ifade edilir.
-    Reduce aşamasında ise Map aşamasında elde edilen veri setindeki eşleşmeşere bakılır ve toplam
-    adetleri bulunur.
+    Öncek her bir kelime için key-value çifti oluşturulur ve
+    her kelime için value değeri 1 olarak set edilir. Bu Map aşaması olarak ifade edilir.
+    Map aşamasında her bir kelime için anahtar değer çifti oluşturulur ama bu sabit zamanlı bir işlemdir.
+    Dolayısıyla Big O değeri O(n) dir.
 
+    Reduce aşamasında ise Map aşamasında elde edilen veri seti üstünde
+    ileri yönlü bir iterasyon başlatılır ve her bir kelimenin toplam değeri hesaplanır.
+    Reduce fonksiyonu her bir anahtar bilgisi için işlem yapar. Big O değeri O(n) dir.
+
+    get_words_count fonksiyonu alt fonksiyon çağrılarına göre O(2n) değerinde zaman karmaşıklığına
+    sahiptir. O(n) + O(n) olması sebebiyle. Ancak Big O notasyonunda sabit katsayılar önemsenmediğinden
+    Time Complexity(Zaman Karmaşıklığı) değeri O(n) olarak ifade edilir.
  */
 pub struct WordProcessor;
 
@@ -43,13 +50,10 @@ impl WordProcessor {
         Self::reduce(mapped)
     }
 
-    // Önce her bir kelime sayısı 1 olacak şekilde hash map'e eklenir.
     fn map(words: Vec<&str>) -> Vec<(&str, i32)> {
         words.into_iter().map(|w| (w, 1)).collect()
     }
 
-    // Ayrılmış ve her biri 1 adet olacak şekilde eşlenmiş map üstündeki her bir
-    // key:value çifti dolaşılır ve toplam sayıları bulunarak güncellenir
     fn reduce(mapped: Vec<(&str, i32)>) -> HashMap<&str, i32> {
         let mut counted = HashMap::new();
         for (w, c) in mapped {

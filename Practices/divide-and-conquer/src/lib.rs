@@ -9,6 +9,7 @@ Buna göre O(n) türünden bir time complexity değeri vardır diyebiliriz.
 */
 
 use std::collections::HashMap;
+use std::fs::read_to_string;
 
 pub fn get_max_value(values: &[i32]) -> i32 {
     if values.len() == 1 {
@@ -27,21 +28,21 @@ pub fn get_max_value(values: &[i32]) -> i32 {
 
 /*
 
-    Bu ikinci örnekte bir kelime havuzundaki kelimelerden kaçar adet bulunduğunun hesaplanması için
-    divide and conquer algoritmasından yararlanılmaktadır. Burada Map Reduce şeklinde ilerlenilmiştir.
-    Öncek her bir kelime için key-value çifti oluşturulur ve
-    her kelime için value değeri 1 olarak set edilir. Bu Map aşaması olarak ifade edilir.
-    Map aşamasında her bir kelime için anahtar değer çifti oluşturulur ama bu sabit zamanlı bir işlemdir.
-    Dolayısıyla Big O değeri O(n) dir.
+   Bu ikinci örnekte bir kelime havuzundaki kelimelerden kaçar adet bulunduğunun hesaplanması için
+   divide and conquer algoritmasından yararlanılmaktadır. Burada Map Reduce şeklinde ilerlenilmiştir.
+   Öncek her bir kelime için key-value çifti oluşturulur ve
+   her kelime için value değeri 1 olarak set edilir. Bu Map aşaması olarak ifade edilir.
+   Map aşamasında her bir kelime için anahtar değer çifti oluşturulur ama bu sabit zamanlı bir işlemdir.
+   Dolayısıyla Big O değeri O(n) dir.
 
-    Reduce aşamasında ise Map aşamasında elde edilen veri seti üstünde
-    ileri yönlü bir iterasyon başlatılır ve her bir kelimenin toplam değeri hesaplanır.
-    Reduce fonksiyonu her bir anahtar bilgisi için işlem yapar. Big O değeri O(n) dir.
+   Reduce aşamasında ise Map aşamasında elde edilen veri seti üstünde
+   ileri yönlü bir iterasyon başlatılır ve her bir kelimenin toplam değeri hesaplanır.
+   Reduce fonksiyonu her bir anahtar bilgisi için işlem yapar. Big O değeri O(n) dir.
 
-    get_words_count fonksiyonu alt fonksiyon çağrılarına göre O(2n) değerinde zaman karmaşıklığına
-    sahiptir. O(n) + O(n) olması sebebiyle. Ancak Big O notasyonunda sabit katsayılar önemsenmediğinden
-    Time Complexity(Zaman Karmaşıklığı) değeri O(n) olarak ifade edilir.
- */
+   get_words_count fonksiyonu alt fonksiyon çağrılarına göre O(2n) değerinde zaman karmaşıklığına
+   sahiptir. O(n) + O(n) olması sebebiyle. Ancak Big O notasyonunda sabit katsayılar önemsenmediğinden
+   Time Complexity(Zaman Karmaşıklığı) değeri O(n) olarak ifade edilir.
+*/
 pub struct WordProcessor;
 
 impl WordProcessor {
@@ -60,6 +61,38 @@ impl WordProcessor {
             *counted.entry(w).or_insert(0) += c;
         }
         counted
+    }
+}
+
+pub struct DocumentProcessor;
+
+impl DocumentProcessor {
+    pub fn top_words(top_number: usize, file_name: &str) -> HashMap<String, i32> {
+        let content = read_to_string(file_name).expect("File read error");
+        let mapped = Self::map(&content);
+        let word_counts = Self::reduce(mapped);
+
+        let mut word_counts_vec: Vec<_> = word_counts.into_iter().collect();
+        word_counts_vec.sort_by(|a, b| b.1.cmp(&a.1));
+
+        let mut top_words_map = HashMap::new();
+        for (word, count) in word_counts_vec.into_iter().take(top_number) {
+            top_words_map.insert(word, count);
+        }
+
+        top_words_map
+    }
+
+    fn map(contents: &str) -> Vec<(&str, i32)> {
+        contents.split_whitespace().map(|word| (word, 1)).collect()
+    }
+
+    fn reduce(mapped: Vec<(&str, i32)>) -> HashMap<String, i32> {
+        let mut counts = HashMap::new();
+        for (word, count) in mapped {
+            *counts.entry(word.to_lowercase()).or_insert(0) += count;
+        }
+        counts
     }
 }
 
@@ -91,6 +124,19 @@ mod tests {
         counted.insert("join", 1);
         counted.insert("where", 1);
         counted.insert("equal", 1);
+        assert_eq!(actual, counted);
+    }
+
+    #[test]
+    fn get_top_words_from_text_test() {
+        let file_name = "dummy_text.txt";
+        let actual = DocumentProcessor::top_words(5, file_name);
+        let mut counted = HashMap::new();
+        counted.insert("conquer".to_string(), 4);
+        counted.insert("veri".to_string(), 6);
+        counted.insert("ve".to_string(), 5);
+        counted.insert("and".to_string(), 4);
+        counted.insert("divide".to_string(), 4);
         assert_eq!(actual, counted);
     }
 }

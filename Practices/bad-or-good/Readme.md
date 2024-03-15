@@ -13,3 +13,53 @@ Fibonacci yapısında iki fonksiyon yer alıyor. Aslında bir programlama dilind
 
 Şimdi yazılması biraz daha zor olan ikinci fonksiyona bakalım, calc_green. Bu fonksiyon fibonacci hesaplaması için Memoization tekniğini kullanır. Bu teknikte amaç önceden yapılmış hesaplamaların bir HashMap' te tutulması ve tekrar ihtiyaç duyulması halinde yeniden hesaplamaya gerek kalmadan kullanılabilmesidir. Dolayısıyla her sayı için hesaplama sadece bir kez yapılır diyebiliriz. Her sayı için tek bir hesaplama yapılması zaman karmaşıklığının O(n) olması anlamına gelir. Bu modelin kıymeti özellikle yüksek fibonacci sıra sayıları için anlamlıdır. 51 değerinin hesaplamasına birde bu fonksiyonla bakın derim ;)
 
+## Test ve Benchmarks
+
+Örnek fonksiyonlara ait testleri çalıştırmak ve benchmark çıktıları için aşağıdaki komutları kullanabiliriz.
+
+```shell
+cargo test
+cargo bench
+```
+
+## Sistem
+
+Benchmark koşularını yaptığım makinenin özellikleri şöyle.
+
+| Özellik | Değer                                   |
+|---------|-----------------------------------------|
+| OS      | Ubuntu 22.04                            |
+| CPU     | Intel® Core™ i7-6700T CPU @ 2.80GHz × 8 |
+| RAM     | 32 Gb                                   |
+
+## Fibonacci Benchmark
+
+İlk olarak Fibonacci benchmark ölçümlerini yorumlamaya çalışalım. Criterion küfesi ile elde ettiğim sonuçlar şöyle.
+
+```text
+Worst Case/Worst/36     time:   [58.093 ms 60.141 ms 63.221 ms]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Worst Case/Worst/37     time:   [95.947 ms 98.038 ms 100.20 ms]
+Worst Case/Worst/38     time:   [160.89 ms 171.29 ms 177.80 ms]
+Worst Case/Worst/39     time:   [246.47 ms 253.76 ms 262.40 ms]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) low mild
+Benchmarking Worst Case/Worst/40: Warming up for 3.0000 s
+Warning: Unable to complete 10 samples in 20.0s. You may wish to increase target time to 23.6s or enable flat sampling.
+Worst Case/Worst/40     time:   [414.04 ms 425.41 ms 443.02 ms]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+
+Green Case/Green/36     time:   [17.796 ns 18.378 ns 18.844 ns]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Green Case/Green/37     time:   [17.580 ns 17.863 ns 18.181 ns]
+Green Case/Green/38     time:   [17.780 ns 17.973 ns 18.232 ns]
+Green Case/Green/39     time:   [17.451 ns 17.772 ns 18.349 ns]
+Found 2 outliers among 10 measurements (20.00%)
+  2 (20.00%) high mild
+Green Case/Green/40     time:   [17.795 ns 18.611 ns 19.507 ns]
+```
+
+Pek tabii O(n^2) ile çalışan fonksiyon O(n) çalışana göre değerler arttıkça çok çok daha yavaş kalıyor diyebiliriz. Hatta 40 değeri için Worst Case bir uyarı mesajı da vermekte. Uyarı mesajı belirlenen sürede 10 örneğin **tamamlanamadığını** söylüyor. Green Case gruplamasındaki sonuçlara göre hesaplama sürelerinin milisaniye'den nanosaniyeler seviyesine düştüğünü görüyoruz. Memoization tekniğinin bir sonucu. Buna Dramatik Performans İyileşmesi diyelim. 36'dan 40'a kadar olan hesaplamalarda Green Case için hesaplama sürelerinin neredeyse aynı kaldığına da dikkat edelim. 

@@ -13,6 +13,19 @@ Fibonacci yapısında iki fonksiyon yer alıyor. Aslında bir programlama dilind
 
 Şimdi yazılması biraz daha zor olan ikinci fonksiyona bakalım, calc_green. Bu fonksiyon fibonacci hesaplaması için Memoization tekniğini kullanır. Bu teknikte amaç önceden yapılmış hesaplamaların bir HashMap' te tutulması ve tekrar ihtiyaç duyulması halinde yeniden hesaplamaya gerek kalmadan kullanılabilmesidir. Dolayısıyla her sayı için hesaplama sadece bir kez yapılır diyebiliriz. Her sayı için tek bir hesaplama yapılması zaman karmaşıklığının O(n) olması anlamına gelir. Bu modelin kıymeti özellikle yüksek fibonacci sıra sayıları için anlamlıdır. 51 değerinin hesaplamasına birde bu fonksiyonla bakın derim ;)
 
+## Coin Change Problemi
+
+Para üstü hesaplayacağız ancak bunu minimum sayıda bozuk para kullanarak yapmak istiyoruz. Mesela 41 cents verilirse 1 Quarter + 1 Dime + 1 Nickel + 1 Penny yeterlidir. Bu en az bozukluk kullanarak 41 Cents üretilmesidir.
+
+```text
+1 Penny     = 1 Cent
+1 Nickel    = 5 Cents
+1 Dime      = 10 Cents
+1 Quarter   = 25 Cents
+```
+
+Bu problem Coin Change olarak adlandırılıyor. İki senaryo olarak ele alınabilir. Bir senaryoda _(ki benim bu kütüphanede ele alacağımdır)_ belli bir miktarı oluşturmak için gerekli minimum bozuk para sayısı hesaplanmaya çalışılır. Diğer senaryoda ise bu miktarı oluşturmak için hangi bozukluklarının kullanılması gerektiği hesaplanır.    
+
 ## Test ve Benchmarks
 
 Örnek fonksiyonlara ait testleri çalıştırmak ve benchmark çıktıları için aşağıdaki komutları kullanabiliriz.

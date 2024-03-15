@@ -2,7 +2,12 @@
 name = "bad-or-good"
 version = "0.1.0"
 edition = "2021"
+description = "Step by step into Green Coding Principles"
+authors = ["Burak Selim Şenyurt"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dev-dependencies]
+criterion = "0.5.1"
 
-[dependencies]
+[[bench]]
+name = "green_coding_benchmark"
+harness = false

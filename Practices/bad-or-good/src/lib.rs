@@ -19,7 +19,8 @@ impl Fibonacci {
             return *memoization.get(&number).unwrap();
         }
         // Sayı Hashmap'te yoksa fibonacci toplamını yap
-        let result = Self::calc_green(number - 1, memoization) + Self::calc_green(number - 2, memoization);
+        let result =
+            Self::calc_green(number - 1, memoization) + Self::calc_green(number - 2, memoization);
         // bulunan değeri HashMap'e insert et
         memoization.insert(number, result);
         result

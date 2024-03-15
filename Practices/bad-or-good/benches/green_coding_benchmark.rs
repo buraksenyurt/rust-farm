@@ -3,30 +3,34 @@ use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criteri
 use std::collections::HashMap;
 use std::time::Duration;
 
-fn fibonacci_benchmark(c: &mut Criterion) {
-    let mut group = c.benchmark_group("Fibonacci Benchmark");
-    group.measurement_time(Duration::from_secs(20));
-    group.sample_size(10);
+fn fibonacci_benchmarks(c: &mut Criterion) {
+    let mut worst_case_group = c.benchmark_group("Worst Case");
+    worst_case_group.measurement_time(Duration::from_secs(20));
+    worst_case_group.sample_size(10);
 
     for i in 36..=40 {
-        group.bench_with_input(BenchmarkId::from_parameter(i), &i, |b, &i| {
+        worst_case_group.bench_with_input(BenchmarkId::new("Worst", i), &i, |b, &i| {
             b.iter(|| Fibonacci::calc_worst(black_box(i)));
         });
     }
+    worst_case_group.finish();
+
+    let mut green_case_group = c.benchmark_group("Green Case");
+    green_case_group.measurement_time(Duration::from_secs(20));
+    green_case_group.sample_size(10);
 
     for i in 36..=40 {
-        group.bench_with_input(BenchmarkId::from_parameter(i +10), &i, |b, &i| {
+        green_case_group.bench_with_input(BenchmarkId::new("Green", i), &i, |b, &i| {
             let mut memo_set: HashMap<u64, u64> = HashMap::new();
             b.iter(|| Fibonacci::calc_green(black_box(i), black_box(&mut memo_set)));
         });
     }
-
-    group.finish();
+    green_case_group.finish();
 }
 
 criterion_group! {
     name = benches;
     config = Criterion::default().sample_size(10);
-    targets = fibonacci_benchmark
+    targets = fibonacci_benchmarks
 }
 criterion_main!(benches);

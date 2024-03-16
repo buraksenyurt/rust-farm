@@ -33,6 +33,10 @@ Bu problem Coin Change olarak adlandırılıyor. İki senaryo olarak ele alınab
 ```shell
 cargo test
 cargo bench
+
+# Belli bir benchmark'ı çalıştırmak için
+cargo bench --bench coin_change_benchmark
+cargo bench --bench fibonacci_benchmark
 ```
 
 ## Sistem
@@ -124,4 +128,48 @@ Found 1 outliers among 10 measurements (10.00%)
 
 Özellikle worst case durumunda girdi boyutu(n) arttıkça milisaniye cinsinden ölçülen süreler ciddi biçimde artış göstermekte. Mesela 36 değeri için bu süre 611.26 mikro saniye iken, 40 değeri için bu süre 1.8649 mikrosaniyeye çıkmış. Tabii green case'de durum çok daha iyi. Green case senaryosunda aynen Fibonacci probleminde olduğu gibi Meomization tekniği kullanıldığından ölçülen süreler nanosaniye cinsinden neredeyse aynı kalmış durumda.Hatta ilerledikçe az miktar da olsa daha da iyileşiyor. Dolayısıyla stabil bir performans sergilendiğini söylemek mümkün.
 
-Genel bir yorum olarak hem Fibonacci hem de Coin Change problemlerinde tekrar eden recursive işlerin küçük değerlerde çok düşük performans göstermediğini ancak girdi boyutunun arttığı durumlarda Memoization gibi teknikler kullanılmadığı takdirde dramatik olarak kötüleşen bir performans sergilediklerini ifade edebiliriz. Dolayısıyla problem içinde tekrar eden ve sonraki iterasyonlarda yeniden kullanılabilecek hesaplamalar varsa, Memoization tekniği performans sürelerinin Dramatik biçimde iyileştirilmesine imkan sağlar diyebiliriz. 
+Genel bir yorum olarak hem Fibonacci hem de Coin Change problemlerinde tekrar eden recursive işlerin küçük değerlerde çok düşük performans göstermediğini ancak girdi boyutunun arttığı durumlarda Memoization gibi teknikler kullanılmadığı takdirde dramatik olarak kötüleşen bir performans sergilediklerini ifade edebiliriz. Dolayısıyla problem içinde tekrar eden ve sonraki iterasyonlarda yeniden kullanılabilecek hesaplamalar varsa, Memoization tekniği performans sürelerinin dramatik biçimde iyileştirilmesine imkan sağlar diyebiliriz.
+
+## Drama
+
+Kendi sistemide dramatik performans kaybını görmek için Coin Change problemindeki değer aralığı ile biraz oynadım. Buna göre 1, 17, 41, 63 ve 72 cents olması halini ele aldım. Memoization uygulanmayan senaryoda nanosaniye ile başlayan ölçümleme, önce mikro saniyeye sonrasında mili saniyeye, sonrasında saniye seviyesine çıktı. Ancak son iki ölçümleme süreleri arasında belirgin bir süre farkı var. Güncel istatistik durumu aşağıdaki gibi gerçekleşti.
+
+```text
+Coin Change Worst Case/Worst/1
+                        time:   [10.837 ns 11.282 ns 11.665 ns]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Coin Change Worst Case/Worst/17
+                        time:   [1.9924 µs 2.0595 µs 2.1584 µs]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Coin Change Worst Case/Worst/41
+                        time:   [3.0442 ms 3.1005 ms 3.1826 ms]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high severe
+Benchmarking Coin Change Worst Case/Worst/63: Warming up for 3.0000 s
+Warning: Unable to complete 10 samples in 20.0s. You may wish to increase target time to 27.4s.
+Coin Change Worst Case/Worst/63
+                        time:   [2.6580 s 2.7268 s 2.8061 s]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Benchmarking Coin Change Worst Case/Worst/72: Warming up for 3.0000 s
+Warning: Unable to complete 10 samples in 20.0s. You may wish to increase target time to 432.2s.
+Coin Change Worst Case/Worst/72
+                        time:   [43.679 s 44.946 s 46.245 s]
+
+Coin Change Green Case/Green/1
+                        time:   [4.7950 ns 4.8900 ns 4.9771 ns]
+Coin Change Green Case/Green/17
+                        time:   [4.7075 ns 4.8722 ns 4.9892 ns]
+Coin Change Green Case/Green/41
+                        time:   [5.3489 ns 5.6212 ns 5.8755 ns]
+Coin Change Green Case/Green/63
+                        time:   [4.7910 ns 5.1268 ns 5.4764 ns]
+Coin Change Green Case/Green/72
+                        time:   [4.5325 ns 4.6094 ns 4.7159 ns]
+```
+
+Ancak memoization tekniğini kullandığımız durumda ölçümlemeler belli bir nanosaniye seviyesinde stabil kaldı. Yüksek performans tüketimi noktasında işlemci çekirdekleri de sıklıkla %100 peek time noktalarına ulaştı. İşte örnek bir görüntü.
+
+![CPU Peek Time](../images/bad_or_good_01.png)

@@ -13,7 +13,7 @@ fn coin_change_benchmarks(c: &mut Criterion) {
         Coin::Quarter as i32,
     ];
 
-    for amount in [1, 17, 41, 63, 77] {
+    for amount in [1, 17, 41, 63, 72] {
         worst_case_group.bench_with_input(BenchmarkId::new("Worst", amount), &amount, |b, &i| {
             b.iter(|| CoinChange::calc_worst(black_box(&coins), black_box(i)));
         });
@@ -24,7 +24,7 @@ fn coin_change_benchmarks(c: &mut Criterion) {
     green_case_group.measurement_time(Duration::from_secs(10));
     green_case_group.sample_size(10);
 
-    for amount in [1, 17, 41, 63, 77] {
+    for amount in [1, 17, 41, 63, 72] {
         green_case_group.bench_with_input(BenchmarkId::new("Green", amount), &amount, |b, &i| {
             let mut memo_set = vec![-1; (i + 1) as usize];
             memo_set[0] = 0;

@@ -75,4 +75,53 @@ Found 2 outliers among 10 measurements (20.00%)
 Green Case/Green/40     time:   [17.795 ns 18.611 ns 19.507 ns]
 ```
 
-Pek tabii O(n^2) ile çalışan fonksiyon O(n) çalışana göre değerler arttıkça çok çok daha yavaş kalıyor diyebiliriz. Hatta 40 değeri için Worst Case bir uyarı mesajı da vermekte. Uyarı mesajı belirlenen sürede 10 örneğin **tamamlanamadığını** söylüyor. Green Case gruplamasındaki sonuçlara göre hesaplama sürelerinin milisaniye'den nanosaniyeler seviyesine düştüğünü görüyoruz. Memoization tekniğinin bir sonucu. Buna Dramatik Performans İyileşmesi diyelim. 36'dan 40'a kadar olan hesaplamalarda Green Case için hesaplama sürelerinin neredeyse aynı kaldığına da dikkat edelim. 
+Pek tabii O(n^2) ile çalışan fonksiyon O(n) çalışana göre değerler arttıkça çok çok daha yavaş kalıyor diyebiliriz. Hatta 40 değeri için Worst Case bir uyarı mesajı da vermekte. Uyarı mesajı belirlenen sürede 10 örneğin **tamamlanamadığını** söylüyor. Green Case gruplamasındaki sonuçlara göre hesaplama sürelerinin milisaniye'den nanosaniyeler seviyesine düştüğünü görüyoruz. Memoization tekniğinin bir sonucu. Buna Dramatik Performans İyileşmesi diyelim. 36'dan 40'a kadar olan hesaplamalarda Green Case için hesaplama sürelerinin neredeyse aynı kaldığına da dikkat edelim.
+
+## Coin Change Benchmark
+
+Coin Change problemi için çalışma zamanı çıktıları aşağıdaki gibidir.
+
+```text
+Coin Change Worst Case/Worst/36
+                        time:   [611.26 µs 627.59 µs 652.29 µs]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Coin Change Worst Case/Worst/37
+                        time:   [758.61 µs 780.84 µs 827.42 µs]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Coin Change Worst Case/Worst/38
+                        time:   [1.0093 ms 1.0188 ms 1.0471 ms]
+Coin Change Worst Case/Worst/39
+                        time:   [1.3730 ms 1.3779 ms 1.3838 ms]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Coin Change Worst Case/Worst/40
+                        time:   [1.8649 ms 1.9118 ms 2.0086 ms]
+Found 2 outliers among 10 measurements (20.00%)
+  2 (20.00%) high severe
+
+Coin Change Green Case/Green/36
+                        time:   [4.5870 ns 4.8340 ns 5.1681 ns]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high severe
+Coin Change Green Case/Green/37
+                        time:   [4.5327 ns 4.6901 ns 4.9041 ns]
+Coin Change Green Case/Green/38
+                        time:   [4.3169 ns 4.4797 ns 4.7035 ns]
+Found 2 outliers among 10 measurements (20.00%)
+  1 (10.00%) high mild
+  1 (10.00%) high severe
+Coin Change Green Case/Green/39
+                        time:   [4.3651 ns 4.4933 ns 4.7226 ns]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high severe
+Coin Change Green Case/Green/40
+                        time:   [4.4541 ns 4.6296 ns 4.8259 ns]
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+```
+
+Özellikle worst case durumunda girdi boyutu(n) arttıkça milisaniye cinsinden ölçülen süreler ciddi biçimde artış göstermekte. Mesela 36 değeri için bu süre 611.26 mikro saniye iken, 40 değeri için bu süre 1.8649 mikrosaniyeye çıkmış. Tabii green case'de durum çok daha iyi. Green case senaryosunda aynen Fibonacci probleminde olduğu gibi Meomization tekniği kullanıldığından ölçülen süreler nanosaniye cinsinden neredeyse aynı kalmış durumda.Hatta ilerledikçe az miktar da olsa daha da iyileşiyor. Dolayısıyla stabil bir performans sergilendiğini söylemek mümkün.
+
+Genel bir yorum olarak hem Fibonacci hem de Coin Change problemlerinde tekrar eden recursive işlerin küçük değerlerde çok düşük performans göstermediğini ancak girdi boyutunun arttığı durumlarda Memoization gibi teknikler kullanılmadığı takdirde dramatik olarak kötüleşen bir performans sergilediklerini ifade edebiliriz. Dolayısıyla problem içinde tekrar eden ve sonraki iterasyonlarda yeniden kullanılabilecek hesaplamalar varsa, Memoization tekniği performans sürelerinin Dramatik biçimde iyileştirilmesine imkan sağlar diyebiliriz. 

@@ -9,5 +9,9 @@ authors = ["Burak Selim Şenyurt"]
 criterion = "0.5.1"
 
 [[bench]]
-name = "green_coding_benchmark"
+name = "fibonacci_benchmark"
+harness = false
+
+[[bench]]
+name = "coin_change_benchmark"
 harness = false

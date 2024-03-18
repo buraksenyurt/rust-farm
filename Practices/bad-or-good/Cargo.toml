@@ -15,3 +15,7 @@ harness = false
 [[bench]]
 name = "coin_change_benchmark"
 harness = false
+
+[[bench]]
+name = "string_ops_benchmark"
+harness = false

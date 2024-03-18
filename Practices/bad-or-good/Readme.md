@@ -173,3 +173,25 @@ Coin Change Green Case/Green/72
 Ancak memoization tekniğini kullandığımız durumda ölçümlemeler belli bir nanosaniye seviyesinde stabil kaldı. Yüksek performans tüketimi noktasında işlemci çekirdekleri de sıklıkla %100 peek time noktalarına ulaştı. İşte örnek bir görüntü.
 
 ![CPU Peek Time](../images/bad_or_good_01.png)
+
+## Concatenate Strings
+
+Üçüncü vaka da pek çok programlama dili için baş belası olan metinsel veri türü String ele alınıyor. StringOps veri yapısının sunduğu fonksiyonlar ile aslında basit bir metinsel birleştirme operasyonu simüle ediliyor.
+
+Worst senaryoda String içerikleri += operasyonu ile arka arkaya eklenmektedir. Burada döngü her kelime için bir kere çalıştığında O(n) türünden bir zaman karmaşıklığı olur diye düşünebiliriz ancak her adımda yeni bir String yaratılır ve bu işlem de belirtilen String'in uzunluğuna bağlı olacaktır. Bu nedenle Big O ölçümü için O(n^2) daha iyi bir tespit olabilir. Her adımda artan uzunlukta yeni String'ler üretilmesi bellek tüketimini de artırmaktadır yani Space Complexity değerinin de O(n^2) olarak yükseldiğini ifade edebiliriz.
+
+Bu senaryodaki Green fonksiyonumuz ise öncelikle üretilecek toplam String boyutunu hesaplar ve buna göre tek bir String oluşturur ve kelimeler bu String'e eklenir. Toplam uzunluğun bulunması ve kelimelerin bu String'e eklenmesi O(n) birimlik zaman karmaşıklığına sebebiyet verir. Fonksiyonun üretmesi gereken String veri uzunluğu gelen vektöre içerisindeki elemanların uzunluğuna göre ilk seferde hesaplandığından bellek tüketimi de belli ve sabit kalacaktır.
+
+```text
+String Concatenate Worst Case/Worst Case
+                        time:   [671.39 ns 684.79 ns 701.22 ns]
+Found 1 outliers among 50 measurements (2.00%)
+  1 (2.00%) high severe
+
+String Concatenate Green Case/Green Case
+                        time:   [595.27 ns 605.19 ns 615.02 ns]
+Found 2 outliers among 50 measurements (4.00%)
+  2 (4.00%) high mild
+```
+
+String birleştirme işi ile ilgili Criterion benchmark ölçümleri yukarıdaki gibidir. Aslında belirgin bir süre farkı görünmüyor diyebiliriz ancak bu senaryoda hızdan ziyade bellek tüketiminin fazlalığı öne çıkmaktadır.

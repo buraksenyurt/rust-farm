@@ -195,3 +195,25 @@ Found 2 outliers among 50 measurements (4.00%)
 ```
 
 String birleştirme işi ile ilgili Criterion benchmark ölçümleri yukarıdaki gibidir. Aslında belirgin bir süre farkı görünmüyor diyebiliriz ancak bu senaryoda hızdan ziyade bellek tüketiminin fazlalığı öne çıkmaktadır.
+
+Bellek üzerindeki işleyişi inclemek için 3ncü parti araçlardan yararlanılabilir. C ve C++ tarafında kullanılan valgrind önerilen araçlardan birisi. Öncelikle onu sistem kurmam gerekti.
+
+```bash
+sudo apt-get install valgrind
+```
+
+Sonrasında String operasyonları içeren fonksiyonları işletecek bir terminal uygulaması yazmak zorunda kaldım. Ardından aşağıdaki adımları takip ederek bellek kullanımına ilişkin analiz raporlarını çıkarttım.
+
+```bash
+# Önce bir release almak gerekiyor
+cargo build -r
+
+# ardından Valgrind ile program çalıştırılıyor
+valgrind --tool=massif ./target/release/bad-or-good-client
+
+# Bu sistemde bir snapshot dosyası da oluşturacaktır
+# Bunun içeriğini okuyabilmek içinse aşağıdaki komut kullanılır
+# (Burada 173903 üretine Pid değeridir)
+ms_print massif.out.173903 > analysis_worst.txt
+```
+

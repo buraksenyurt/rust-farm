@@ -7,7 +7,7 @@ use std::sync::Mutex;
 fn main() {
     let now = std::time::Instant::now();
 
-    let file_path = "lorem_ipsum_large.txt";
+    let file_path = "large_file.txt";
     let output = Processor::find_words_count(file_path);
     let words_count = output.lock().unwrap();
     for (word, count) in words_count.iter() {

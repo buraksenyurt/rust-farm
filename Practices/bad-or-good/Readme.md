@@ -217,3 +217,10 @@ valgrind --tool=massif ./target/release/bad-or-good-client
 ms_print massif.out.173903 > analysis_worst.txt
 ```
 
+## Yardımcı Notlar
+
+Big O notasyonu ile ilgili olarak [şu adresteki özetten yararlanılabilir](https://www.bigocheatsheet.com/) Ben her ihitmale karşı kısaca hatırlamak adına bir çizelge de ilave edeyim.
+
+![BigO Time Complexity](https://github.com/buraksenyurt/rust-farm/assets/2705782/f07aad6f-8424-43c0-89db-e2e9c1c6ce5e)
+
+Tahmin edileceği gibi yeşil renk en ideal ve ulaşılmak algoritmaların zamansal değerlerini ifade ederken, kırmızı en kötü sonuçları veren algoritmaları işaret ediyor.

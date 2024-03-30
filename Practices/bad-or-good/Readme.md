@@ -126,13 +126,13 @@ Found 1 outliers among 10 measurements (10.00%)
   1 (10.00%) high mild
 ```
 
-Özellikle worst case durumunda girdi boyutu(n) arttıkça milisaniye cinsinden ölçülen süreler ciddi biçimde artış göstermekte. Mesela 36 değeri için bu süre 611.26 mikro saniye iken, 40 değeri için bu süre 1.8649 mikrosaniyeye çıkmış. Tabii green case'de durum çok daha iyi. Green case senaryosunda aynen Fibonacci probleminde olduğu gibi Meomization tekniği kullanıldığından ölçülen süreler nanosaniye cinsinden neredeyse aynı kalmış durumda.Hatta ilerledikçe az miktar da olsa daha da iyileşiyor. Dolayısıyla stabil bir performans sergilendiğini söylemek mümkün.
+Özellikle worst case durumunda girdi boyutu(n) arttıkça milisaniye cinsinden ölçülen süreler ciddi biçimde artış göstermekte. Mesela 36 değeri için bu süre 611.26 mikrosaniye iken, 40 değeri için bu süre 1.8649 mikrosaniyeye çıkmış. Tabii green case'de durum çok daha iyi. Green case senaryosunda aynen Fibonacci probleminde olduğu gibi Meomization tekniği kullanıldığından ölçülen süreler nanosaniye cinsinden neredeyse aynı kalmış durumda.Hatta ilerledikçe az miktar da olsa daha da iyileşiyor. Dolayısıyla stabil bir performans sergilendiğini söylemek mümkün.
 
 Genel bir yorum olarak hem Fibonacci hem de Coin Change problemlerinde tekrar eden recursive işlerin küçük değerlerde çok düşük performans göstermediğini ancak girdi boyutunun arttığı durumlarda Memoization gibi teknikler kullanılmadığı takdirde dramatik olarak kötüleşen bir performans sergilediklerini ifade edebiliriz. Dolayısıyla problem içinde tekrar eden ve sonraki iterasyonlarda yeniden kullanılabilecek hesaplamalar varsa, Memoization tekniği performans sürelerinin dramatik biçimde iyileştirilmesine imkan sağlar diyebiliriz.
 
 ## Drama
 
-Kendi sistemide dramatik performans kaybını görmek için Coin Change problemindeki değer aralığı ile biraz oynadım. Buna göre 1, 17, 41, 63 ve 72 cents olması halini ele aldım. Memoization uygulanmayan senaryoda nanosaniye ile başlayan ölçümleme, önce mikro saniyeye sonrasında mili saniyeye, sonrasında saniye seviyesine çıktı. Ancak son iki ölçümleme süreleri arasında belirgin bir süre farkı var. Güncel istatistik durumu aşağıdaki gibi gerçekleşti.
+Kendi sistemide dramatik performans kaybını görmek için Coin Change problemindeki değer aralığı ile biraz oynadım. Buna göre 1, 17, 41, 63 ve 72 cents olması halini ele aldım. Memoization uygulanmayan senaryoda nanosaniye ile başlayan ölçümleme, önce mikrosaniye sonrasında milisaniyeye, sonrasında saniye seviyesine çıktı. Ancak son iki ölçümleme süreleri arasında belirgin bir süre farkı var. Güncel istatistik durumu aşağıdaki gibi gerçekleşti.
 
 ```text
 Coin Change Worst Case/Worst/1
@@ -217,6 +217,29 @@ valgrind --tool=massif ./target/release/bad-or-good-client
 ms_print massif.out.173903 > analysis_worst.txt
 ```
 
+## Sorting Benchmarks
+
+Bu kısımda iki örnek sıralama algoritması ele alınmıştır. Birisi Bubble Sort diğeri de Radix Sort. Radix sort özellikle büyük veri setlerinde yüksek performans sunar. Bubble sort, Big O zaman karmaşıklığı olarak O(n^2) değerine sahip bir algoritmadır. Buna göre veri setinin büyüklüğü 2 katına çıktığında çalışma süresi dört katına çıkar. Radix sort ise çalışma prensibine göre O(n*k) zaman karmaşıklığına sahiptir. n değeri ile sıralanacak eleman sayısı k ile de uzunluğu maksimum olan sayı ifade edilmektedir. Space Complexiy değeri açısından bakıldığında Radix, O(n+k) karmaşıklığa sahiptir. Buna karşın Bubble sort O(1) space complexity değerine sahiptir. Benchmark çıktısı aşağıdaki gibidir.
+
+```text
+Sorting Benchmarks/Radix Sort 10
+                        time:   [1.9139 µs 1.9924 µs 2.0669 µs]
+Sorting Benchmarks/Bubble Sort 10
+                        time:   [78.989 ns 92.234 ns 100.00 ns]
+Sorting Benchmarks/Radix Sort 10000
+                        time:   [449.86 µs 461.28 µs 476.00 µs]
+Benchmarking Sorting Benchmarks/Bubble Sort 10000: Warming up for 3.0000 s
+Warning: Unable to complete 10 samples in 5.0s. You may wish to increase target time to 7.1s or enable flat sampling.
+Sorting Benchmarks/Bubble Sort 10000
+                        time:   [127.45 ms 127.72 ms 127.91 ms]
+Sorting Benchmarks/Radix Sort 50000
+                        time:   [2.0773 ms 2.0846 ms 2.0931 ms]
+Benchmarking Sorting Benchmarks/Bubble Sort 50000: Warming up for 3.0000 s
+Warning: Unable to complete 10 samples in 5.0s. You may wish to increase target time to 44.4s.
+```
+
+Sadece 10 elemanlı bir kümede Bubble Sort nanosaniye olarak cevap verirken Radix sort daha kötü bir performans ile mikrosaniye ölçüsünde tepki verebilmiştir. Veri kümesi büyüdüğünde ise Radix sort algoritması çok daha iyi sonuçlar vermiştir. 10_000 eleman için mikrosaniyede kalırken, Bubble Sort milisaniye değerlerine çıkmıştır. Hatta 50_000 elemanlı kümeye baktığımızda Bubble Sort'u tamamlamak için gereken süre çok daha yüksek olduğundan Benchmark zaman aşımına uğramış ve geldiği noktada sıralamayı saniye cinsinden yapabilmiştir.
+
 ## Yardımcı Notlar
 
 Big O notasyonu ile ilgili olarak [şu adresteki özetten yararlanılabilir](https://www.bigocheatsheet.com/) Ben her ihitmale karşı kısaca hatırlamak adına bir çizelge de ilave edeyim.
@@ -224,3 +247,13 @@ Big O notasyonu ile ilgili olarak [şu adresteki özetten yararlanılabilir](htt
 ![BigO Time Complexity](https://github.com/buraksenyurt/rust-farm/assets/2705782/f07aad6f-8424-43c0-89db-e2e9c1c6ce5e)
 
 Tahmin edileceği gibi yeşil renk en ideal ve ulaşılmak algoritmaların zamansal değerlerini ifade ederken, kırmızı en kötü sonuçları veren algoritmaları işaret ediyor.
+
+Benchmark'lar da süreler nanosaniye, mikrosaniye, milisaniye ve saniye türündendir. Bu süreler arasındaki ilişkileri aşağıdaki tablo ile özetleyebiliriz.
+
+| **Zaman Birimi**    | **Detay**                    | **Karşılaştırma**                       |
+|-----------------|--------------------------|-------------------------------------|
+| Saniye (s)      | Temel zaman birimi       | 1 saniye = 1 saniye                 |
+| Milisaniye (ms) | Saniyenin Binde Biri     | 1 saniye = 1_000 milisaniye         |
+| Mikrosaniye (µs)| Saniyenin Milyonda Biri  | 1 saniye = 1_000_000 mikrosaniye    |
+| Nanosaniye (ns) | Saniyenin Milyarda Biri  | 1 saniye = 1_000_000_000 nanosaniye |
+

@@ -19,3 +19,10 @@ harness = false
 [[bench]]
 name = "string_ops_benchmark"
 harness = false
+
+[[bench]]
+name = "sorting_benchmark"
+harness = false
+
+[dependencies]
+rand = "0.9.0-alpha.1"

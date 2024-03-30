@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 pub struct Fibonacci;
 
@@ -94,6 +94,50 @@ impl StringOps {
             output.push_str(&word);
         }
         output
+    }
+}
+
+pub struct Sorting;
+
+impl Sorting {
+    pub fn radix(data: &mut Vec<i32>) {
+        let max = *data.iter().max().unwrap_or(&0) as usize;
+        let mut digit_place = 1;
+
+        while max / digit_place > 0 {
+            let mut buckets: Vec<VecDeque<i32>> = vec![VecDeque::new(); 10];
+
+            for &number in data.iter() {
+                let digit = (number as usize / digit_place) % 10;
+                buckets[digit].push_back(number);
+            }
+
+            let mut index = 0;
+            for bucket in buckets {
+                for &number in bucket.iter() {
+                    data[index] = number;
+                    index += 1;
+                }
+            }
+
+            digit_place *= 10;
+        }
+    }
+
+    pub fn bubble(data: &mut Vec<i32>) {
+        let mut n = data.len();
+        let mut swapped = true;
+
+        while swapped {
+            swapped = false;
+            for i in 1..n {
+                if data[i - 1] > data[i] {
+                    data.swap(i - 1, i);
+                    swapped = true;
+                }
+            }
+            n -= 1;
+        }
     }
 }
 

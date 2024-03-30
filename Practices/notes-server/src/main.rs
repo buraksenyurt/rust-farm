@@ -4,7 +4,7 @@ use serde_json::from_str;
 use std::fs::File;
 use std::io::Read;
 use std::sync::Arc;
-use warp::{http::Response, Filter};
+use warp::{http::Response, reject, reply::Reply, Filter, Rejection};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Note {
@@ -18,35 +18,48 @@ struct Note {
     day: usize,
 }
 
-#[tokio::main]
-async fn main() {
+async fn render() -> Result<impl Reply, Rejection> {
     let mut handlebars = Handlebars::new();
-    handlebars
+    if handlebars
         .register_template_file("index", "./templates/index.hbs")
-        .expect("Template dosyası yüklenemedi");
+        .is_err()
+    {
+        return Err(reject::not_found());
+    }
 
     let handlebars = Arc::new(handlebars);
 
-    let route = warp::path!("note").map(move || {
-        let hb = handlebars.clone();
+    let mut file = match File::open("notes.json") {
+        Ok(file) => file,
+        Err(_) => return Err(reject::not_found()),
+    };
+    let mut contents = String::new();
+    if file.read_to_string(&mut contents).is_err() {
+        return Err(reject::not_found());
+    }
 
-        let mut file = File::open("notes.json").expect("JSON dosyası okunamadı");
-        let mut contents = String::new();
-        file.read_to_string(&mut contents)
-            .expect("Failed to read JSON");
+    let note: Note = match from_str(&contents) {
+        Ok(note) => note,
+        Err(_) => return Err(reject::not_found()),
+    };
 
-        let note: Note = from_str(&contents).expect("JSON serileştirmede problem var");
+    let rendered = match handlebars.render("index", &note) {
+        Ok(rendered) => rendered,
+        Err(_) => return Err(reject::not_found()),
+    };
 
-        let rendered = hb
-            .render("index", &note)
-            .unwrap();
+    Ok(Response::builder()
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(rendered)
+        .unwrap())
+}
 
-        Response::builder()
-            .header("Content-Type", "text/html; charset=utf-8")
-            .body(rendered)
-            .unwrap()
-    });
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let route = warp::path!("note").and_then(render);
 
-    println!("Server is active on localhost:5555");
+    println!("Server is running on localhost:5555");
     warp::serve(route).run(([127, 0, 0, 1], 5555)).await;
+
+    Ok(())
 }

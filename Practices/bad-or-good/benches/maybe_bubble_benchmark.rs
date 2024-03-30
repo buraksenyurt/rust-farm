@@ -1,7 +1,6 @@
 use bad_or_good::Sorting;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use rand::Rng;
-use std::time::Duration;
 
 /*
    Bu örnekte Bubble Sort'un Radix Sort'tan hızlı çalışıp çalışamayacağı konusu araştırılıyor.

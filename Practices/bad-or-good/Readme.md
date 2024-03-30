@@ -240,6 +240,50 @@ Warning: Unable to complete 10 samples in 5.0s. You may wish to increase target 
 
 Sadece 10 elemanlı bir kümede Bubble Sort nanosaniye olarak cevap verirken Radix sort daha kötü bir performans ile mikrosaniye ölçüsünde tepki verebilmiştir. Veri kümesi büyüdüğünde ise Radix sort algoritması çok daha iyi sonuçlar vermiştir. 10_000 eleman için mikrosaniyede kalırken, Bubble Sort milisaniye değerlerine çıkmıştır. Hatta 50_000 elemanlı kümeye baktığımızda Bubble Sort'u tamamlamak için gereken süre çok daha yüksek olduğundan Benchmark zaman aşımına uğramış ve geldiği noktada sıralamayı saniye cinsinden yapabilmiştir.
 
+_Bubble Sort, veri setindeki her iki bitişik elemanı karşılaştırır ve gerekirse yerlerini değiştirir. Bu işlem, tüm veri seti sıralanana kadar tekrarlanır. Ayrıca sıralama işlemi veri setinin kendisi üzerinde gerçekleşir ve sıralama için ek bir alan gerekmez._ 
+
+Tabii bu ölçümler akla şu soruyu da getirir; "Neden Bubble Sort kullanalım?". Esasında kodun anlaşılırlığı açısından Bubble Sort, Radix'e göre daha basittir. Çok küçük veri setleri ve neredeyse sıralanmış veri setlerinde daha iyi performans gösterebilir. Bunun yanında Bubble Sort ek bellek alanına ihtiyaç duymadan çalışır ki bu da bazı hallerde daha iyi performans göstermesine sebebiyet verebilir. Son olarak canlı veri akışı olan hallerde gelen verinin hemen işlenerek sıralama yapılması gerektiğinde de tercih edilebilir. Bu durumu incelemek için maybe_bubble_benchmark isimli yeni bir benchmark dosyası ekledim. Burada yine büyük veri setleri oluşturuluyor ancak çoğunlukla sıralanmış halde. İçinde çok küçük bir küme sıralanmamış olarak duruyor. Teorik olarak Bubble Sort'un bu gibi hallerde Radix'e göre avantajlı olması lazım. İşte benchmark sonuçları;
+
+```text
+Sorting Benchmarks/Radix Sort 10
+                        time:   [604.72 ns 629.34 ns 666.32 ns]
+                        change: [-66.602% -65.208% -63.556%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Sorting Benchmarks/Bubble Sort 10
+                        time:   [88.866 ns 89.345 ns 89.750 ns]
+                        change: [-1.0647% +0.7205% +2.8473%] (p = 0.54 > 0.05)
+                        No change in performance detected.
+Found 4 outliers among 10 measurements (40.00%)
+  2 (20.00%) low mild
+  2 (20.00%) high severe
+Sorting Benchmarks/Radix Sort 10000
+                        time:   [354.02 µs 360.17 µs 372.90 µs]
+                        change: [-1.4834% +0.4337% +2.9188%] (p = 0.77 > 0.05)
+                        No change in performance detected.
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Sorting Benchmarks/Bubble Sort 10000
+                        time:   [40.671 ms 41.185 ms 41.894 ms]
+                        change: [-68.706% -68.449% -68.083%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 10 measurements (20.00%)
+  2 (20.00%) high severe
+Sorting Benchmarks/Radix Sort 50000
+                        time:   [1.7058 ms 1.7189 ms 1.7366 ms]
+                        change: [-17.458% -16.435% -15.083%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 10 measurements (10.00%)
+  1 (10.00%) high mild
+Sorting Benchmarks/Bubble Sort 50000
+                        time:   [1.4803 s 1.4866 s 1.4934 s]
+                        change: [-67.174% -66.697% -66.372%] (p = 0.00 < 0.05)
+                        Performance has improved.
+```
+
+Gördüğüm kadarı ile her iki sıralama algoritması, büyük çoğunluğu sıralı olan bir veri setinde kendilerini öncekine göre iyileştirmiş durumda. Hatta Bubble sort bile epey iyileşme göstermiş fakat yine de Radix daha performanslı çalışmış görünüyor.
+
 ## Yardımcı Notlar
 
 Big O notasyonu ile ilgili olarak [şu adresteki özetten yararlanılabilir](https://www.bigocheatsheet.com/) Ben her ihitmale karşı kısaca hatırlamak adına bir çizelge de ilave edeyim.

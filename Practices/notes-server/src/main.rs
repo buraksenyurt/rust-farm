@@ -1,53 +1,13 @@
+mod cache;
+mod entity;
+mod utility;
+
+use crate::cache::update_cache_if_needed;
+use crate::utility::get_file_path;
 use handlebars::Handlebars;
 use rand::seq::SliceRandom;
-use serde::{Deserialize, Serialize};
-use serde_json::from_str;
-use std::env;
-use std::fs::File;
-use std::io::Read;
 use std::sync::Arc;
 use warp::{http::Response, reject, reply::Reply, Filter, Rejection};
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Note {
-    id: usize,
-    title: String,
-    body: String,
-    publisher: String,
-    author: String,
-    #[serde(rename = "mediaType")]
-    media_type: MediaType,
-    year: usize,
-    month: String,
-    day: usize,
-    #[serde(default)]
-    externals: Option<Vec<External>>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct External {
-    title: String,
-    url: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "PascalCase")]
-enum MediaType {
-    Gazete,
-    Dergi,
-    Dijital,
-    Kitap,
-    Podcast,
-    Medium,
-    Unknown,
-}
-
-fn get_file_path(relative_path: &str) -> String {
-    match env::var("DOCKER_ENV") {
-        Ok(_) => format!("/usr/local/bin/{}", relative_path),
-        Err(_) => format!("{}", relative_path),
-    }
-}
 
 async fn render() -> Result<impl Reply, Rejection> {
     let mut handlebars = Handlebars::new();
@@ -57,30 +17,13 @@ async fn render() -> Result<impl Reply, Rejection> {
     {
         return Err(reject::not_found());
     }
-
     let handlebars = Arc::new(handlebars);
 
-    let mut file = match File::open(get_file_path("notes.json")) {
-        Ok(file) => file,
-        Err(e) => {
-            println!("{}", e);
-            return Err(reject::not_found());
-        }
-    };
-    let mut contents = String::new();
-    if file.read_to_string(&mut contents).is_err() {
-        return Err(reject::not_found());
-    }
+    let cache = update_cache_if_needed().await;
+    let cache = cache.lock().await;
+    let cached_notes = cache.as_ref().unwrap();
 
-    let notes: Vec<Note> = match from_str(&contents) {
-        Ok(notes) => notes,
-        Err(e) => {
-            println!("{}", e);
-            return Err(reject::not_found());
-        }
-    };
-
-    let note = notes.choose(&mut rand::thread_rng());
+    let note = cached_notes.notes.choose(&mut rand::thread_rng());
     let rendered = match handlebars.render("index", &note) {
         Ok(rendered) => rendered,
         Err(_) => return Err(reject::not_found()),

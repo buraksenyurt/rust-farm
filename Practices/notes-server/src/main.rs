@@ -1,4 +1,5 @@
 use handlebars::Handlebars;
+use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
 use std::fs::File;
@@ -13,9 +14,18 @@ struct Note {
     body: String,
     publisher: String,
     author: String,
+    #[serde(rename = "mediaType")]
+    media_type: String,
     year: usize,
     month: String,
     day: usize,
+    externals: Vec<External>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct External {
+    title: String,
+    url: String,
 }
 
 async fn render() -> Result<impl Reply, Rejection> {
@@ -38,11 +48,12 @@ async fn render() -> Result<impl Reply, Rejection> {
         return Err(reject::not_found());
     }
 
-    let note: Note = match from_str(&contents) {
-        Ok(note) => note,
+    let notes: Vec<Note> = match from_str(&contents) {
+        Ok(notes) => notes,
         Err(_) => return Err(reject::not_found()),
     };
 
+    let note = notes.choose(&mut rand::thread_rng());
     let rendered = match handlebars.render("index", &note) {
         Ok(rendered) => rendered,
         Err(_) => return Err(reject::not_found()),

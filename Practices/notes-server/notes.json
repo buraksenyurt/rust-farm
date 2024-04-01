@@ -8,13 +8,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "Mart",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 2,
@@ -25,13 +19,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "Mart",
-    "day": 31,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 31
   },
   {
     "id": 3,
@@ -42,13 +30,7 @@
     "mediaType": "Podcast",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 4,
@@ -59,13 +41,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 5,
@@ -76,13 +52,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 6,
@@ -93,13 +63,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 7,
@@ -110,13 +74,7 @@
     "mediaType": "Medium",
     "year": 2024,
     "month": "Şubat",
-    "day": 11,
-    "externals": [
-      {
-        "title": "Link",
-        "url": "https://aysenisaakgun.medium.com/giri%C5%9Fimcilik-ekosistemi-2023-de%C4%9Ferlendirmesi-17006f9fd8ae"
-      }
-    ]
+    "day": 11
   },
   {
     "id": 8,
@@ -130,7 +88,7 @@
     "day": 11,
     "externals": [
       {
-        "title": "Source",
+        "title": "Scammers Trick Company Employee Using Video Call Filled",
         "url": "https://www.techspot.com/news/101758-scammers-trick-company-employee-using-video-call-filled.html"
       }
     ]
@@ -147,12 +105,12 @@
     "day": 11,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "UW Madison Resarchers First To 3D Print Functional Human Brain Tissue",
         "url": "https://news.wisc.edu/uw-madison-researchers-first-to-3d-print-functional-human-brain-tissue/"
       },
       {
-        "title": "Source 2",
-        "url": "https://www.cell.com/cell-stem-cell/fulltext/S1934-5909(23)00439-3?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS1934590923004393%3Fshowall%3Dtrue"
+        "title": "3D bioprinting of human neural tissues with functional connectivity",
+        "url": "https://www.cell.com/cell-stem-cell/fulltext/S1934-5909(23)00439-3"
       }
     ]
   },
@@ -168,7 +126,7 @@
     "day": 12,
     "externals": [
       {
-        "title": "Source",
+        "title": "Plastic Recycling Climate Change Microplastics",
         "url": "https://www.technologyreview.com/2023/10/12/1081129/plastic-recycling-climate-change-microplastics"
       }
     ]
@@ -185,15 +143,15 @@
     "day": 26,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "AI will Transform The Global Economy Lets Make Sure It Benefits Humanity",
         "url": "https://www.imf.org/en/Blogs/Articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity"
       },
       {
-        "title": "Source 2",
+        "title": "Global Economics Analyst The Potentially Large Effects of AI on Economic Growth Briggs Kodnani",
         "url": "https://www.key4biz.it/wp-content/uploads/2023/03/Global-Economics-Analyst_-The-Potentially-Large-Effects-of-Artificial-Intelligence-on-Economic-Growth-Briggs_Kodnani.pdf"
       },
       {
-        "title": "Source 3",
+        "title": "Harnessing Automation for a Future That Works",
         "url": "https://www.mckinsey.com/global-themes/digital-disruption/harnessing-automation-for-a-future-that-works"
       }
     ]
@@ -207,13 +165,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Mart",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 13,
@@ -224,13 +176,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 14,
@@ -241,13 +187,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 15,
@@ -258,13 +198,7 @@
     "mediaType": "Kitap",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 16,
@@ -275,13 +209,7 @@
     "mediaType": "Kitap",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 17,
@@ -292,13 +220,7 @@
     "mediaType": "Kitap",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 18,
@@ -309,13 +231,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "Source",
-        "url": "https://haberglobal.com.tr/bilim-teknoloji/oluler-yapay-zeka-ile-diriliyor-303150"
-      }
-    ]
+    "day": 0
   },
   {
     "id": 19,
@@ -326,13 +242,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "Source",
-        "url": "https://www.ekonomim.com/hafta/yapay-zeka-yeni-yilda-neler-vaat-ediyor-haberi-723921#google_vignette"
-      }
-    ]
+    "day": 0
   },
   {
     "id": 20,
@@ -346,15 +256,15 @@
     "day": 14,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "Usage policies",
         "url": "https://substack.com/redirect/d0346d9c-8a00-42cf-8fff-5e967ebd55dd?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 2",
+        "title": "OpenAI Quietly Deletes Ban on Using ChatGPT for “Military and Warfare”",
         "url": "https://substack.com/redirect/0e14e60e-93b1-456e-8bdd-a49c88417844?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 3",
+        "title": "SUS companies and Chinese experts engaged in secret diplomacy on AI safety",
         "url": "https://substack.com/redirect/8a308cc1-288d-4bd7-9e49-2b7d7a4f39bd?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       }
     ]
@@ -371,24 +281,20 @@
     "day": 14,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "Exclusive: Unity Software to cut 25% of staff in ‘company reset’ continuation",
         "url": "https://substack.com/redirect/b48b3ca3-640e-4947-b896-19cc9e46a081?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 2",
+        "title": "A Difficult Update about our Workforce",
         "url": "https://substack.com/redirect/4e22187b-c708-4831-9321-909be9ad9d32?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 3",
+        "title": "Discord Cuts 17% of Workers in Latest Tech Layoffs",
         "url": "https://substack.com/redirect/8b363c22-b5c7-44ff-8cb0-3a506244ae88?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 4",
+        "title": "Google confirms it just laid off around a thousand employees / Or more than a thousand? Depends on the definition of “few”.",
         "url": "https://substack.com/redirect/a90e1ee1-9c51-47e0-ac47-25baba5bec16?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
-      },
-      {
-        "title": "Source 5",
-        "url": "https://substack.com/redirect/ac3255eb-7c91-47c1-9251-7e5e65d6bfc4?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       }
     ]
   },
@@ -404,7 +310,7 @@
     "day": 14,
     "externals": [
       {
-        "title": "Source",
+        "title": "Apple CEO Tim Cook’s earnings fell by $36M in 2023",
         "url": "https://substack.com/redirect/9efedddc-5141-4632-9d28-10d95a7e9ba2?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       }
     ]
@@ -421,15 +327,15 @@
     "day": 21,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "AI Will Transform the Global Economy. Let’s Make Sure It Benefits Humanity",
         "url": "https://substack.com/redirect/685fbbf8-de6f-48bf-b498-de47c2dbe177?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 2",
+        "title": "AI to hit 40% of jobs and worsen inequality, IMF says",
         "url": "https://substack.com/redirect/1050b58c-09f3-43cd-8553-ebd72438b85a?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 3",
+        "title": "AI will affect 40% of jobs and probably worsen inequality, says IMF head",
         "url": "https://substack.com/redirect/26084bb2-4931-4e9c-9516-3057e6aab7bd?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       }
     ]
@@ -446,11 +352,11 @@
     "day": 21,
     "externals": [
       {
-        "title": "Source 1",
+        "title": "Arctic Ice",
         "url": "https://substack.com/redirect/1eb4c22d-36e3-4aa5-a66b-fd64a9fb7a1c?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       },
       {
-        "title": "Source 2",
+        "title": "Greenland startup begins shipping glacier ice to cocktail bars in the UAE",
         "url": "https://substack.com/redirect/cc010f88-d00f-408f-b663-e3acba5a933c?j=eyJ1IjoiMXk5emJ6In0.R6SJffBZOwAJQX4wKTqMlHa8g1h54LoHl7yUKrCPoL4"
       }
     ]
@@ -464,13 +370,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 26,
@@ -481,13 +381,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 27,
@@ -498,13 +392,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 28,
@@ -515,13 +403,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 29,
@@ -532,13 +414,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 30,
@@ -549,13 +425,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 31,
@@ -566,13 +436,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 32,
@@ -583,13 +447,7 @@
     "mediaType": "Dijital",
     "year": 2018,
     "month": "Ocak",
-    "day": 20,
-    "externals": [
-      {
-        "title": "Source",
-        "url": "https://duslerdengercege.com/2018/01/20/yapay-zeka-ve-bilinmezlikleri/"
-      }
-    ]
+    "day": 20
   },
   {
     "id": 33,
@@ -600,13 +458,7 @@
     "mediaType": "Dergi",
     "year": 2024,
     "month": "Ocak",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 34,
@@ -617,13 +469,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 35,
@@ -634,13 +480,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 36,
@@ -651,13 +491,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 37,
@@ -668,13 +502,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 38,
@@ -685,13 +513,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 39,
@@ -702,13 +524,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 40,
@@ -719,13 +535,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 41,
@@ -736,13 +546,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 42,
@@ -753,13 +557,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 43,
@@ -770,13 +568,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 44,
@@ -787,13 +579,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 45,
@@ -804,13 +590,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 46,
@@ -821,13 +601,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 47,
@@ -838,13 +612,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 48,
@@ -855,13 +623,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 49,
@@ -872,13 +634,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 50,
@@ -889,13 +645,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 51,
@@ -906,13 +656,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 52,
@@ -923,13 +667,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 53,
@@ -940,13 +678,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 54,
@@ -957,13 +689,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 16,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 16
   },
   {
     "id": 55,
@@ -974,13 +700,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 56,
@@ -991,13 +711,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 57,
@@ -1008,13 +722,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 58,
@@ -1025,13 +733,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 59,
@@ -1042,13 +744,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 60,
@@ -1059,13 +755,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 61,
@@ -1076,13 +766,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 62,
@@ -1093,13 +777,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 63,
@@ -1110,13 +788,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 64,
@@ -1127,13 +799,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 65,
@@ -1144,13 +810,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 66,
@@ -1161,13 +821,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 67,
@@ -1178,13 +832,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 68,
@@ -1195,13 +843,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 69,
@@ -1212,13 +854,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 70,
@@ -1229,13 +865,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 2,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 2
   },
   {
     "id": 71,
@@ -1246,13 +876,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 72,
@@ -1263,13 +887,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 73,
@@ -1280,13 +898,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 74,
@@ -1297,13 +909,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 75,
@@ -1314,13 +920,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 76,
@@ -1331,13 +931,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 77,
@@ -1348,13 +942,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 15,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 15
   },
   {
     "id": 78,
@@ -1365,13 +953,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 15,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 15
   },
   {
     "id": 79,
@@ -1382,13 +964,7 @@
     "mediaType": "Dijital",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 80,
@@ -1399,13 +975,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Ekim",
-    "day": 26,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 26
   },
   {
     "id": 81,
@@ -1416,13 +986,7 @@
     "mediaType": "Dijital",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 82,
@@ -1433,13 +997,7 @@
     "mediaType": "Dijital",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 83,
@@ -1450,13 +1008,7 @@
     "mediaType": "Dijital",
     "year": 2024,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 84,
@@ -1467,13 +1019,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 30,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 30
   },
   {
     "id": 85,
@@ -1484,13 +1030,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 28,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 28
   },
   {
     "id": 86,
@@ -1501,13 +1041,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ekim",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 87,
@@ -1518,13 +1052,7 @@
     "mediaType": "Kitap",
     "year": 2016,
     "month": "Nisan",
-    "day": 4,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 4
   },
   {
     "id": 88,
@@ -1535,13 +1063,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ağustos",
-    "day": 6,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 6
   },
   {
     "id": 89,
@@ -1552,13 +1074,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 3,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 3
   },
   {
     "id": 90,
@@ -1569,13 +1085,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 3,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 3
   },
   {
     "id": 91,
@@ -1586,13 +1096,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 3,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 3
   },
   {
     "id": 92,
@@ -1603,13 +1107,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 3,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 3
   },
   {
     "id": 93,
@@ -1620,13 +1118,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Ağustos",
-    "day": 6,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 6
   },
   {
     "id": 93,
@@ -1637,13 +1129,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 17,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 17
   },
   {
     "id": 94,
@@ -1654,13 +1140,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 17,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 17
   },
   {
     "id": 95,
@@ -1671,13 +1151,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 96,
@@ -1688,13 +1162,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 97,
@@ -1705,13 +1173,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 98,
@@ -1722,13 +1184,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Eylül",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 99,
@@ -1739,13 +1195,7 @@
     "mediaType": "Dijital",
     "year": 2023,
     "month": "Kasım",
-    "day": 5,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 5
   },
   {
     "id": 100,
@@ -1756,13 +1206,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 9,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 9
   },
   {
     "id": 101,
@@ -1773,13 +1217,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 9,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 9
   },
   {
     "id": 102,
@@ -1790,13 +1228,7 @@
     "mediaType": "Gazete",
     "year": 2023,
     "month": "Kasım",
-    "day": 9,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 9
   },
   {
     "id": 103,
@@ -1807,13 +1239,7 @@
     "mediaType": "Dijital",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   },
   {
     "id": 104,
@@ -1824,13 +1250,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 105,
@@ -1841,13 +1261,7 @@
     "mediaType": "Dergi",
     "year": 2023,
     "month": "Kasım/Aralık",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 106,
@@ -1858,13 +1272,7 @@
     "mediaType": "Gazete",
     "year": 2024,
     "month": "Mart",
-    "day": 1,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 1
   },
   {
     "id": 107,
@@ -1875,13 +1283,7 @@
     "mediaType": "Gazete",
     "year": 2024,
     "month": "Mart",
-    "day": 24,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 24
   },
   {
     "id": 108,
@@ -1892,12 +1294,6 @@
     "mediaType": "Dijital",
     "year": 0,
     "month": "",
-    "day": 0,
-    "externals": [
-      {
-        "title": "",
-        "url": ""
-      }
-    ]
+    "day": 0
   }
 ]

@@ -19,7 +19,8 @@ struct Note {
     year: usize,
     month: String,
     day: usize,
-    externals: Vec<External>,
+    #[serde(default)]
+    externals: Option<Vec<External>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

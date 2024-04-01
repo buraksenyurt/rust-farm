@@ -12,6 +12,12 @@
     <h1 class="mt-5">{{title}}</h1>
     <p class="lead">{{{body}}}</p>
     <p>Mecra : {{mediaType}}</p>
+    <div class="list-group mt-3">
+        <p>Harici Linkler</p>
+        {{#each externals}}
+            <a href="{{this.url}}" class="list-group-item list-group-item-action" target="_blank">{{this.title}}</a>
+        {{/each}}
+    </div>
     <footer>
         <p><i>{{author}}, {{publisher}}, {{day}} {{month}} {{year}}</i></p>
     </footer>

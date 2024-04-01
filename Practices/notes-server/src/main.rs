@@ -2,6 +2,7 @@ use handlebars::Handlebars;
 use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
+use std::env;
 use std::fs::File;
 use std::io::Read;
 use std::sync::Arc;
@@ -31,20 +32,27 @@ struct External {
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
-enum MediaType{
+enum MediaType {
     Gazete,
     Dergi,
     Dijital,
     Kitap,
     Podcast,
     Medium,
-    Unknown
+    Unknown,
+}
+
+fn get_file_path(relative_path: &str) -> String {
+    match env::var("DOCKER_ENV") {
+        Ok(_) => format!("/usr/local/bin/{}", relative_path),
+        Err(_) => format!("{}", relative_path),
+    }
 }
 
 async fn render() -> Result<impl Reply, Rejection> {
     let mut handlebars = Handlebars::new();
     if handlebars
-        .register_template_file("index", "./templates/index.hbs")
+        .register_template_file("index", get_file_path("templates/index.hbs"))
         .is_err()
     {
         return Err(reject::not_found());
@@ -52,9 +60,12 @@ async fn render() -> Result<impl Reply, Rejection> {
 
     let handlebars = Arc::new(handlebars);
 
-    let mut file = match File::open("notes.json") {
+    let mut file = match File::open(get_file_path("notes.json")) {
         Ok(file) => file,
-        Err(_) => return Err(reject::not_found()),
+        Err(e) => {
+            println!("{}", e);
+            return Err(reject::not_found());
+        }
     };
     let mut contents = String::new();
     if file.read_to_string(&mut contents).is_err() {
@@ -64,9 +75,9 @@ async fn render() -> Result<impl Reply, Rejection> {
     let notes: Vec<Note> = match from_str(&contents) {
         Ok(notes) => notes,
         Err(e) => {
-            println!("{}",e);
+            println!("{}", e);
             return Err(reject::not_found());
-        },
+        }
     };
 
     let note = notes.choose(&mut rand::thread_rng());
@@ -86,7 +97,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let route = warp::path!("note").and_then(render);
 
     println!("Server is running on localhost:5555");
-    warp::serve(route).run(([127, 0, 0, 1], 5555)).await;
+    warp::serve(route).run(([0, 0, 0, 0], 5555)).await;
 
     Ok(())
 }

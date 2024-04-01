@@ -15,7 +15,7 @@ struct Note {
     publisher: String,
     author: String,
     #[serde(rename = "mediaType")]
-    media_type: String,
+    media_type: MediaType,
     year: usize,
     month: String,
     day: usize,
@@ -26,6 +26,18 @@ struct Note {
 struct External {
     title: String,
     url: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "PascalCase")]
+enum MediaType{
+    Gazete,
+    Dergi,
+    Dijital,
+    Kitap,
+    Podcast,
+    Medium,
+    Unknown
 }
 
 async fn render() -> Result<impl Reply, Rejection> {
@@ -50,7 +62,10 @@ async fn render() -> Result<impl Reply, Rejection> {
 
     let notes: Vec<Note> = match from_str(&contents) {
         Ok(notes) => notes,
-        Err(_) => return Err(reject::not_found()),
+        Err(e) => {
+            println!("{}",e);
+            return Err(reject::not_found());
+        },
     };
 
     let note = notes.choose(&mut rand::thread_rng());

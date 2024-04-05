@@ -1,6 +1,8 @@
+use apistos::ApiComponent;
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, ApiComponent, JsonSchema)]
 pub struct Challenge {
     pub id: i32,
     pub serial_code: String,
@@ -14,7 +16,7 @@ pub struct Challenge {
     pub benefits: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, ApiComponent, JsonSchema)]
 pub enum DurationType {
     Day,
     Week,

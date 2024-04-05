@@ -2,12 +2,16 @@
 name = "gcc-api"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "Green Code Challenge Rest Service"
 
 [dependencies]
 actix-rt = "2.9.0"
 actix-web = "4.5.1"
+env_logger = "0.11.3"
+log = "0.4.21"
 rusqlite = "0.31.0"
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.115"
+apistos = { version = "0.1", features = ["extras", "qs_query"] }
+schemars = { package = "apistos-schemars", version = "0.8", features = ["chrono", "url", "rust_decimal"] }
+actix-cors = "0.7.0"

@@ -136,3 +136,18 @@ Tabii buradaki çağrıları anlamak için Linux Kernel ve kaynak kodları hakk�
 - sysinfo: Sistem hakkında genel bilgileri alır.
 
 Buradaki bazı komutların ls içerisinde çağırıldığına dikkat edelim.
+
+Ubuntu 24.04 LTS tarafında kullanılabilen Sys Calls listesine [bu adresten](https://manpages.ubuntu.com/manpages/noble/en/man2/syscalls.2.html) bakabiliriz.
+
+## 4ncü Örnek
+
+Dördüncü örnekte basit bir echo server uygulaması var. Yine Sys Call komutları kullanılıyor. 7600 numaralı porttan dinlemede olan bir sunucu var. ping mesajı gönderilirse geriye pong cevabını veriyor. Test etmek için telnet komutundan yararlanılabilir.
+
+```bash
+# Sunucu çalıştırıldıktan sonra aşağıdaki komut ile terminal açılır
+telnet localhost 7604
+
+# Açılan terminalde ping komutu yollanır
+```
+
+![Sys Calls Sample 01](../images/syscalls_01.png)

@@ -1,0 +1,3 @@
+# Green Code Challenge
+
+Burada Sustainability ile ilgili problem girişlerinin yapıldığı bir uygulama yazmaya çalışıyorum. Oldukça basit bir düzeneğe sahip. Daha az enerji sarfiyatı ve çevre dostu projeler üretmek için karşılaştığımız problemleri toplayacağımı bir web uygulaması olarak düşünebiliriz. Backend tarafında SQlite ile çalışan bir Web API hizmeti kullanmayı planlıyorum. Bu hizmeti Rust ile yazacağım. Önyüz tarafını Vue.js ile geliştirmeyi planlıyorum. Vue.js uygulaması, backend hizmeti çok basit REST çağrıları yaparak haberleşecek.

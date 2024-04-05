@@ -1,5 +1,6 @@
 use std::ffi::{CStr, CString};
-use std::{io, ptr};
+use std::os::raw::c_void;
+use std::{io, mem, ptr};
 
 fn main() -> io::Result<()> {
     // Example 01
@@ -30,7 +31,7 @@ fn main() -> io::Result<()> {
     unsafe {
         // 4096 byte'lık bir bellek bölgesi açılıyor
         let address = libc::mmap(
-            std::ptr::null_mut(),
+            ptr::null_mut(),
             4096,
             libc::PROT_READ | libc::PROT_WRITE,
             libc::MAP_ANON | libc::MAP_PRIVATE,
@@ -68,5 +69,87 @@ fn main() -> io::Result<()> {
         libc::munmap(address, 4096);
     }
 
-    Ok(())
+    // Example 04
+    // Çok basit bir echo server.
+    // ping mesajına pong ile cevap dönüyor
+
+    unsafe {
+        let socket = libc::socket(libc::AF_INET, libc::SOCK_STREAM, 0);
+        if socket == -1 {
+            panic!("Socket can't created");
+        }
+
+        let port = 7604_u16.to_be();
+        let address = libc::sockaddr_in {
+            sin_family: libc::AF_INET as libc::sa_family_t,
+            sin_port: port,
+            sin_addr: libc::in_addr {
+                s_addr: libc::INADDR_ANY.to_be(),
+            },
+            sin_zero: [0; 8],
+        };
+
+        if libc::bind(
+            socket,
+            &address as *const _ as *const libc::sockaddr,
+            mem::size_of::<libc::sockaddr_in>() as libc::socklen_t,
+        ) == -1
+        {
+            libc::close(socket);
+            panic!("Bind error");
+        }
+
+        if libc::listen(socket, 5) == -1 {
+            libc::close(socket);
+            panic!("Listen error");
+        }
+
+        println!("Server listening on port {}", port);
+
+        loop {
+            let mut client_address = mem::zeroed::<libc::sockaddr_in>();
+            let mut client_address_size = mem::size_of::<libc::sockaddr_in>() as libc::socklen_t;
+            let client_socket = libc::accept(
+                socket,
+                &mut client_address as *mut _ as *mut libc::sockaddr,
+                &mut client_address_size,
+            );
+
+            if client_socket == -1 {
+                continue;
+            }
+
+            println!(
+                "Client has been connected successfully: {:?}",
+                client_socket
+            );
+
+            let mut buffer = [0u8; 1024];
+            let number_of_bytes = libc::recv(
+                client_socket,
+                buffer.as_mut_ptr() as *mut c_void,
+                buffer.len(),
+                0,
+            );
+
+            if number_of_bytes > 0 {
+                let received_data = CStr::from_ptr(buffer.as_ptr() as *const i8);
+                println!("Incoming Message -> {:?}", received_data);
+
+                if received_data.to_str().unwrap_or_default() == "ping\r\n" {
+                    let response = "pong\n";
+                    libc::send(
+                        client_socket,
+                        response.as_ptr() as *const c_void,
+                        response.len(),
+                        0,
+                    );
+                }
+            }
+
+            //Kontrol etmek lazım. Port belli süre açık kalıyor ve uygulamadan tekrardan başlatılınca hata veriyor.
+            libc::close(client_socket);
+            //libc::close(socket);
+        }
+    }
 }

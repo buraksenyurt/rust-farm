@@ -39,3 +39,5 @@ Docker image 5556 nolu portu kullandığından sorunsuz şekilde hem docker imaj
 Yeni notlar eklenmesini kolaylaştırmak için basit bir form eklendi.
 
 ![Yeni not ekleme formu](../images/notes_server_07.png)
+
+![Yeni not ekleme işlemi başarılı olduğunda](../images/notes_server_08.png)

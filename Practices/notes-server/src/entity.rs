@@ -2,24 +2,24 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Note {
-    id: usize,
-    title: String,
-    body: String,
-    publisher: String,
-    author: String,
+    pub id: usize,
+    pub title: String,
+    pub body: String,
+    pub publisher: String,
+    pub author: String,
     #[serde(rename = "mediaType")]
-    media_type: MediaType,
-    year: usize,
-    month: String,
-    day: usize,
+    pub media_type: MediaType,
+    pub year: usize,
+    pub month: String,
+    pub day: usize,
     #[serde(default)]
-    externals: Option<Vec<External>>,
+    pub externals: Option<Vec<External>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct External {
-    title: String,
-    url: String,
+    pub title: String,
+    pub url: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -32,4 +32,17 @@ pub enum MediaType {
     Podcast,
     Medium,
     Unknown,
+}
+
+#[derive(Deserialize)]
+pub struct NoteForm {
+    pub title: String,
+    pub body: String,
+    pub publisher: String,
+    pub author: String,
+    pub media_type: MediaType,
+    pub year: usize,
+    pub month: String,
+    pub day: usize,
+    pub externals: Vec<External>,
 }

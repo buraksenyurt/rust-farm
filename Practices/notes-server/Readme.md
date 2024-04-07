@@ -21,7 +21,11 @@ Projeyi dockerize etmek için bir Dockerfile eklenmiştir. Sonrasında aşağıd
 sudo docker build -t notes-server .
 
 # Image başarılı bir şekilde oluştuysa çalıştırabiliriz.
-sudo docker run -d -p 5555:5555 notes-server
+sudo docker run -d -p 5556:5555 notes-server
+
+# Eğer makine her başlatıldığında bu servis aktif olarak çalışsın istiyorsak
+# aşağıdaki komutu da kullanabiliriz
+sudo docker run -d --restart always -p 5556:5555 notes-server
 ```
 
 ![Docker Image görüntüsü](../images/notes_server_04.png)
@@ -41,3 +45,28 @@ Yeni notlar eklenmesini kolaylaştırmak için basit bir form eklendi.
 ![Yeni not ekleme formu](../images/notes_server_07.png)
 
 ![Yeni not ekleme işlemi başarılı olduğunda](../images/notes_server_08.png)
+
+## Bazı Notlar
+
+Bu örnekle çalışırken sistemde dangling olarak adlandırılan none isimli bazı docker imajlarına rastladım. Bunları yönetmek için aşağıdaki komutlardan yararlandım.
+
+```bash
+# Dangling statüsündeki imajları listelemek için
+sudo docker images -f "dangling=true"
+
+# Dangling statüsündeki imajları silmek için
+sudo docker image prune
+
+# Kullanılmayan imajlarla birlikte, kullanılmayan ağ tanımlamalarını, hacimleri(volumes)
+# topluca temizlemek için. Dikkatli olunması gereken bir komuttur.
+sudo docker system prune
+
+# Tabii container ile çalışırken bazı kayıtları oraya atmış bulundum
+# Hal böyle olunca oradaki güncel json içeriği de gerekti.
+# Aşağıdaki komut ile container içerisindeki json dosyasını bulunduğum klasöre kopyalayabildim.
+
+sudo docker cp notes-server:/usr/local/bin/notes.json .
+
+# notes-server yerine çalışan container'ın id'si de yazılabilir. Örneğin aşağıdaki gibi.
+sudo docker cp 236ff7:/usr/local/bin/notes.json .
+```

@@ -33,3 +33,9 @@ Bu örnek uygulamada dikkat edilmesi gereken bazı noktalar var. Örneğin docke
 Docker image 5556 nolu portu kullandığından sorunsuz şekilde hem docker imajı hem de local ortamı birlikte kullanabiliriz. Elbette yapılacak kod değişiklikleri sonrası docker imajının yeniden build edilmesi gerekecektir.
 
 ![Local çalışma zamanı görüntüsü](../images/notes_server_06.png)
+
+## Güncelleme
+
+Yeni notlar eklenmesini kolaylaştırmak için basit bir form eklendi.
+
+![Yeni not ekleme formu](../images/notes_server_07.png)

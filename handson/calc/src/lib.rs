@@ -1,27 +1,44 @@
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_arch = "wasm32")]
+use web_sys::console;
+
 #[wasm_bindgen]
 pub fn add(x: f64, y: f64) -> f64 {
+    log("Toplama işlemi...", &format!("{}, {}", x, y));
     x + y
 }
 
 #[wasm_bindgen]
 pub fn subtract(x: f64, y: f64) -> f64 {
+    log("Çıkarma işlemi...", &format!("{}, {}", x, y));
     x - y
 }
 
 #[wasm_bindgen]
 pub fn multiply(x: f64, y: f64) -> f64 {
+    log("Çarpma işlemi...", &format!("{}, {}", x, y));
     x * y
 }
 
 #[wasm_bindgen]
 pub fn divide(x: f64, y: f64) -> f64 {
+    log("Bölme işlemi...", &format!("{}, {}", x, y));
     if y == 0.0 {
         panic!("Division by zero!");
     }
     x / y
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn log(message: &str, values: &str) {
+    println!("{}, {}", message, values);
+}
+
+#[cfg(target_arch = "wasm32")]
+fn log(message: &str, values: &str) {
+    console::log_2(&message.into(), &values.into());
 }
 
 #[cfg(test)]

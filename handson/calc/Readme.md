@@ -1,0 +1,3 @@
+# Web Assembly Calculator
+
+Rust ve Web Assembly kullanımının temellerini anlamak için oluşturulmuş basit bir girizgah örneğidir. HTML sayfasındaki kontrollerle etkileşim, hesaplamaların Rust kütüphanesinden yaptırılması gibi unsurları barındırır. Rust tarafındaki bağımlılıklar cdylib kütüphanesi ile wasm-bindgen isimli küfedir(crate). cdylib kütüphanesi Rust kodunun derlenmiş sonucunun, tarayıcıda veya WASM destekli diğer ortamlarda çalıştırılabilecek bir biçimde paketlenmesinde rol oynar.

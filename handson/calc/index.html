@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basit Hesap Makinesi (4 İşlem)</title>
+</head>
+<body>
+    <h1>Bu örnekte hesaplamalar WASM ile derlenmiş Rust kütüphanesinde yapılmaktadır.</h1>
+    <input id="number1" type="number" step="any">
+    <select id="operator">
+        <option value="add">+</option>
+        <option value="subtract">-</option>
+        <option value="multiply">*</option>
+        <option value="divide">/</option>
+    </select>
+    <input id="number2" type="number" step="any">
+    <button onclick="calculate()">Calculate</button>
+    <p>İşlem sonucu: <span id="result"></span></p>
+    <script type="module">
+        import init, { add, subtract, multiply, divide } from './pkg/wasm_calculator.js';
+
+        async function calculate() {
+            await init();
+            const number1 = parseFloat(document.getElementById('number1').value);
+            const number2 = parseFloat(document.getElementById('number2').value);
+            const operator = document.getElementById('operator').value;
+            let result;
+            switch (operator) {
+                case 'add':
+                    result = add(number1, number2);
+                    break;
+                case 'subtract':
+                    result = subtract(number1, number2);
+                    break;
+                case 'multiply':
+                    result = multiply(number1, number2);
+                    break;
+                case 'divide':
+                    result = divide(number1, number2);
+                    break;
+            }
+            document.getElementById('result').innerText = result.toFixed(2);
+        }
+    </script>
+</body>
+</html>

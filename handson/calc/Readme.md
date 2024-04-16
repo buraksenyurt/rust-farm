@@ -49,3 +49,11 @@ calc/
 ├── package.json
 └── Cargo.toml
 ```
+
+## Rust Tarafından Loglama
+
+- Uygulamada rust tarafındaki fonksiyonlarda loglama yapılır. Ne var ki söz konusu kütüphane WASM derlmesine tabii tutulur ve aslında tarayıcı üzerinde çalışacak hale getirilir. Bu nedenle rust ortamına log bırakmak yerine tarayıcının console'una log bırakması beklenir. Tarayıcı tarafındaki console paketini kullanabilmek için web-sys küfesinden yararlanılır. Bu küfedeki log_1 ve log_2 gibi fonksiyonlar, tarayıcı konsolune log bırakabilir. Ne var ki bu durumda _cargo test_ ile test koşumu yapılamaz. Nitekim ilgili log_1 ve log_2 fonksiyonları wasm ortamına aittir. Bu nedenle basit bir mock stratejisi kullanılmaktadır. cfg niteliğinde target_arch ile, uygulandığı enstrümanın hangi çalışma zamanında kullanılacağı ifade edilir. Bu durumda _cargo test_ çağrısı yapıldığında tarayıcı konsolu ve wasm ortamı değil rust çalışma zamanının işletilmesi sağlanmış olur.
+
+İşte çalışma zamanıan ait örnek bir çıktı...
+
+![Runtime](runtime.png)

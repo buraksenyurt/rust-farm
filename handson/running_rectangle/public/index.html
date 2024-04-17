@@ -13,27 +13,29 @@
 
 <body>
     <h1>Moveable Rectangle with WASM</h1>
-    <svg id="map" width="400" height="400">
+    <svg id="level1">
         <rect id="rectangle" width="0" height="0" fill="none" stroke="black" />
     </svg>
     <script type="module">
-        import init, { Rectangle, Position } from './pkg/running_rectangle.js';
+        import init, { Rectangle, Position, Schene } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
 
-            const map = document.getElementById('map');
-            const svgRect = document.getElementById('rectangle');
-            //console.log(svgRect.getAttribute('x') + " " + svgRect.getAttribute('y'))
-            const position = Position.new(map.getAttribute('width') / 2, map.getAttribute('height') / 2);
-            const rect = Rectangle.new(position);
-            svgRect.setAttribute('width', rect.get_width());
-            svgRect.setAttribute('height', rect.get_height());
+            const schene = Schene.new(400, 400);
+            const level1 = document.getElementById('level1');
+            const player = document.getElementById('rectangle');
+            level1.setAttribute('width', schene.max_width);
+            level1.setAttribute('height', schene.max_height);
+            const position = Position.new(level1.getAttribute('width') / 2, level1.getAttribute('height') / 2);
+            const rect = Rectangle.new(position, 64, 64);
+            player.setAttribute('width', rect.get_width());
+            player.setAttribute('height', rect.get_height());
             //console.log(rect.get_x() + "x" + rect.get_y())
 
             function updatePosition() {
-                svgRect.setAttribute('x', rect.get_x());
-                svgRect.setAttribute('y', rect.get_y());
+                player.setAttribute('x', rect.get_x());
+                player.setAttribute('y', rect.get_y());
             }
 
             updatePosition();

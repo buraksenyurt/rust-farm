@@ -3,6 +3,22 @@ extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
+pub struct Schene {
+    pub max_width: u32,
+    pub max_height: u32,
+}
+
+#[wasm_bindgen]
+impl Schene {
+    pub fn new(max_width: u32, max_height: u32) -> Self {
+        Self {
+            max_width,
+            max_height,
+        }
+    }
+}
+
+#[wasm_bindgen]
 pub struct Position {
     pub x: i32,
     pub y: i32,
@@ -24,28 +40,36 @@ pub struct Rectangle {
 
 #[wasm_bindgen]
 impl Rectangle {
-    pub fn new(position: Position) -> Self {
+    pub fn new(position: Position, width: u32, height: u32) -> Self {
         Self {
             position,
-            width: 64,
-            height: 64,
+            width,
+            height,
         }
     }
 
     pub fn move_left(&mut self) {
-        self.position.x -= 5;
+        if (self.position.x as u32) > 0 {
+            self.position.x -= 5;
+        }
     }
 
     pub fn move_right(&mut self) {
-        self.position.x += 5;
+        if (self.position.x as u32) < 400 - self.width - 5 {
+            self.position.x += 5;
+        }
     }
 
     pub fn move_up(&mut self) {
-        self.position.y -= 5;
+        if (self.position.y as u32) > 0 {
+            self.position.y -= 5;
+        }
     }
 
     pub fn move_down(&mut self) {
-        self.position.y += 5;
+        if (self.position.y as u32) < 400 - self.height - 5 {
+            self.position.y += 5;
+        }
     }
 
     pub fn get_x(&self) -> i32 {
@@ -72,7 +96,7 @@ mod test {
     #[test]
     fn create_rect_test() {
         let position = Position::new(50, 10);
-        let rect = Rectangle::new(position);
+        let rect = Rectangle::new(position, 64, 64);
         assert_eq!(rect.get_x(), 50);
         assert_eq!(rect.get_y(), 10);
         assert_eq!(rect.get_width(), 64);
@@ -82,7 +106,7 @@ mod test {
     #[test]
     fn move_left_rect_test() {
         let position = Position::new(50, 10);
-        let mut rect = Rectangle::new(position);
+        let mut rect = Rectangle::new(position, 64, 64);
         rect.move_left();
         assert_eq!(rect.get_x(), 45);
     }
@@ -90,7 +114,7 @@ mod test {
     #[test]
     fn move_right_rect_test() {
         let position = Position::new(50, 10);
-        let mut rect = Rectangle::new(position);
+        let mut rect = Rectangle::new(position, 64, 64);
         rect.move_right();
         assert_eq!(rect.get_x(), 55);
     }
@@ -98,7 +122,7 @@ mod test {
     #[test]
     fn move_up_rect_test() {
         let position = Position::new(50, 10);
-        let mut rect = Rectangle::new(position);
+        let mut rect = Rectangle::new(position, 64, 64);
         rect.move_up();
         assert_eq!(rect.get_y(), 5);
     }
@@ -106,7 +130,7 @@ mod test {
     #[test]
     fn move_down_rect_test() {
         let position = Position::new(50, 10);
-        let mut rect = Rectangle::new(position);
+        let mut rect = Rectangle::new(position, 64, 64);
         rect.move_down();
         assert_eq!(rect.get_y(), 15);
     }

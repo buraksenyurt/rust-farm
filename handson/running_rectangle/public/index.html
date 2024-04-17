@@ -13,16 +13,23 @@
 
 <body>
     <h1>Moveable Rectangle with WASM</h1>
-    <svg width="400" height="400">
-        <rect id="rectangle" width="64" height="64" x="50" y="10" fill="none" stroke="black" />
+    <svg id="map" width="400" height="400">
+        <rect id="rectangle" width="0" height="0" fill="none" stroke="black" />
     </svg>
     <script type="module">
-        import init, { Rectangle } from './pkg/running_rectangle.js';
+        import init, { Rectangle, Position } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
-            const rect = Rectangle.new();
+
+            const map = document.getElementById('map');
             const svgRect = document.getElementById('rectangle');
+            //console.log(svgRect.getAttribute('x') + " " + svgRect.getAttribute('y'))
+            const position = Position.new(map.getAttribute('width') / 2, map.getAttribute('height') / 2);
+            const rect = Rectangle.new(position);
+            svgRect.setAttribute('width', rect.get_width());
+            svgRect.setAttribute('height', rect.get_height());
+            //console.log(rect.get_x() + "x" + rect.get_y())
 
             function updatePosition() {
                 svgRect.setAttribute('x', rect.get_x());

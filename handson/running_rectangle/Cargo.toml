@@ -1,0 +1,12 @@
+[package]
+name = "running_rectangle"
+version = "0.1.0"
+edition = "2021"
+description = "A simple rectangle movement system written with rust and wasm"
+authors = ["Burak Selim Şenyurt"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.92"

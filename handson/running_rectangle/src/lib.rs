@@ -3,22 +3,43 @@ extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub struct Schene {
+pub struct Game {
+    rectangles: Vec<Rectangle>,
     pub max_width: u32,
     pub max_height: u32,
 }
 
 #[wasm_bindgen]
-impl Schene {
+impl Game {
     pub fn new(max_width: u32, max_height: u32) -> Self {
         Self {
             max_width,
             max_height,
+            rectangles: Vec::new(),
         }
+    }
+
+    pub fn add_rectangle(&mut self, rect: Rectangle) {
+        self.rectangles.push(rect);
+    }
+
+    pub fn update(&mut self) {
+        for rect in &mut self.rectangles {
+            rect.move_down();
+        }
+    }
+
+    pub fn get_rectangles_count(&self) -> usize {
+        self.rectangles.len()
+    }
+
+    pub fn get_rectangles_at(&self, index: usize) -> Rectangle {
+        self.rectangles[index].clone()
     }
 }
 
 #[wasm_bindgen]
+#[derive(Clone)]
 pub struct Position {
     pub x: i32,
     pub y: i32,
@@ -32,6 +53,7 @@ impl Position {
 }
 
 #[wasm_bindgen]
+#[derive(Clone)]
 pub struct Rectangle {
     position: Position,
     width: u32,

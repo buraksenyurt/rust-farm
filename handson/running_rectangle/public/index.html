@@ -17,28 +17,26 @@
         <rect id="rectangle" width="0" height="0" fill="none" stroke="black" />
     </svg>
     <script type="module">
-        import init, { Rectangle, Position, Schene } from './pkg/running_rectangle.js';
+        import init, { Rectangle, Position, Game } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
 
-            const schene = Schene.new(400, 400);
+            const game = Game.new(400, 400);
             const level1 = document.getElementById('level1');
             const player = document.getElementById('rectangle');
-            level1.setAttribute('width', schene.max_width);
-            level1.setAttribute('height', schene.max_height);
+            level1.setAttribute('width', game.max_width);
+            level1.setAttribute('height', game.max_height);
             const position = Position.new(level1.getAttribute('width') / 2, level1.getAttribute('height') / 2);
+
             const rect = Rectangle.new(position, 64, 64);
             player.setAttribute('width', rect.get_width());
             player.setAttribute('height', rect.get_height());
-            //console.log(rect.get_x() + "x" + rect.get_y())
 
             function updatePosition() {
                 player.setAttribute('x', rect.get_x());
                 player.setAttribute('y', rect.get_y());
             }
-
-            updatePosition();
 
             window.addEventListener('keydown', event => {
                 switch (event.key) {
@@ -57,6 +55,13 @@
                 }
                 updatePosition();
             });
+
+            function gameLoop() {
+                game.update();
+                requestAnimationFrame(gameLoop);
+            }
+
+            gameLoop();
         }
 
         run();

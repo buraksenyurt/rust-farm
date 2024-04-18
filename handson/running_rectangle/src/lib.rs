@@ -12,10 +12,16 @@ pub struct Game {
 #[wasm_bindgen]
 impl Game {
     pub fn new(max_width: u32, max_height: u32) -> Self {
+        let rectangles = vec![
+            Rectangle::new(Position::new(0, 0), 32, 32),
+            Rectangle::new(Position::new(128, 0), 16, 16),
+            Rectangle::new(Position::new(64, 0), 24, 24),
+            Rectangle::new(Position::new(256, 0), 8, 8),
+        ];
         Self {
             max_width,
             max_height,
-            rectangles: Vec::new(),
+            rectangles,
         }
     }
 

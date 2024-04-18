@@ -14,7 +14,8 @@
 <body>
     <h1>Moveable Rectangle with WASM</h1>
     <svg id="level1">
-        <rect id="rectangle" width="0" height="0" fill="none" stroke="black" />
+        <g id="blocksContainer"></g>
+        <rect id="player" width="0" height="0" fill="none" stroke="black" />
     </svg>
     <script type="module">
         import init, { Rectangle, Position, Game } from './pkg/running_rectangle.js';
@@ -22,42 +23,64 @@
         async function run() {
             await init();
 
+            let pBoxWidth = 64;
+            let pBoxHeight = 64;
+
             const game = Game.new(400, 400);
             const level1 = document.getElementById('level1');
-            const player = document.getElementById('rectangle');
+            const playerElement = document.getElementById('player');
             level1.setAttribute('width', game.max_width);
             level1.setAttribute('height', game.max_height);
-            const position = Position.new(level1.getAttribute('width') / 2, level1.getAttribute('height') / 2);
+            const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
 
-            const rect = Rectangle.new(position, 64, 64);
-            player.setAttribute('width', rect.get_width());
-            player.setAttribute('height', rect.get_height());
+            const playerRectangle = Rectangle.new(position, pBoxWidth, pBoxHeight);
+            playerElement.setAttribute('width', playerRectangle.get_width());
+            playerElement.setAttribute('height', playerRectangle.get_height());
 
             function updatePosition() {
-                player.setAttribute('x', rect.get_x());
-                player.setAttribute('y', rect.get_y());
+                playerElement.setAttribute('x', playerRectangle.get_x());
+                playerElement.setAttribute('y', playerRectangle.get_y());
             }
+
+            updatePosition();
 
             window.addEventListener('keydown', event => {
                 switch (event.key) {
                     case 'ArrowLeft':
-                        rect.move_left();
+                        playerRectangle.move_left();
                         break;
                     case 'ArrowRight':
-                        rect.move_right();
+                        playerRectangle.move_right();
                         break;
                     case 'ArrowUp':
-                        rect.move_up();
+                        playerRectangle.move_up();
                         break;
                     case 'ArrowDown':
-                        rect.move_down();
+                        playerRectangle.move_down();
                         break;
                 }
                 updatePosition();
             });
 
+            function draw() {
+                const blocksContainer = document.getElementById('blocksContainer');
+                blocksContainer.innerHTML = '';
+                const count = game.get_rectangles_count();
+                for (let i = 0; i < count; i++) {
+                    const rect = game.get_rectangles_at(i);
+                    const block = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    block.setAttribute('x', rect.get_x());
+                    block.setAttribute('y', rect.get_y());
+                    block.setAttribute('width', rect.get_width());
+                    block.setAttribute('height', rect.get_height());
+                    block.setAttribute('fill', 'blue');
+                    blocksContainer.appendChild(block);
+                }
+            }
+
             function gameLoop() {
                 game.update();
+                draw();
                 requestAnimationFrame(gameLoop);
             }
 

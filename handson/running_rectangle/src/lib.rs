@@ -30,8 +30,9 @@ impl Game {
     }
 
     pub fn update(&mut self) {
+        let velocity = Velocity::new(0, 1);
         for rect in &mut self.rectangles {
-            rect.move_down();
+            rect.move_to(velocity.clone());
         }
     }
 
@@ -60,6 +61,20 @@ impl Position {
 
 #[wasm_bindgen]
 #[derive(Clone)]
+pub struct Velocity {
+    pub x: i32,
+    pub y: i32,
+}
+
+#[wasm_bindgen]
+impl Velocity {
+    pub fn new(x: i32, y: i32) -> Self {
+        Self { x, y }
+    }
+}
+
+#[wasm_bindgen]
+#[derive(Clone)]
 pub struct Rectangle {
     position: Position,
     width: u32,
@@ -76,27 +91,15 @@ impl Rectangle {
         }
     }
 
-    pub fn move_left(&mut self) {
-        if (self.position.x as u32) > 0 {
-            self.position.x -= 5;
+    pub fn move_to(&mut self, velocity: Velocity) {
+        let new_x = self.position.x + velocity.x;
+        if new_x >= 0 && (new_x as u32 + self.width <= 400) {
+            self.position.x = new_x;
         }
-    }
 
-    pub fn move_right(&mut self) {
-        if (self.position.x as u32) < 400 - self.width - 5 {
-            self.position.x += 5;
-        }
-    }
-
-    pub fn move_up(&mut self) {
-        if (self.position.y as u32) > 0 {
-            self.position.y -= 5;
-        }
-    }
-
-    pub fn move_down(&mut self) {
-        if (self.position.y as u32) < 400 - self.height - 5 {
-            self.position.y += 5;
+        let new_y = self.position.y + velocity.y;
+        if new_y >= 0 && (new_y as u32 + self.height <= 400) {
+            self.position.y = new_y;
         }
     }
 
@@ -134,32 +137,36 @@ mod test {
     #[test]
     fn move_left_rect_test() {
         let position = Position::new(50, 10);
+        let velocity = Velocity::new(-5, 0);
         let mut rect = Rectangle::new(position, 64, 64);
-        rect.move_left();
+        rect.move_to(velocity);
         assert_eq!(rect.get_x(), 45);
     }
 
     #[test]
     fn move_right_rect_test() {
         let position = Position::new(50, 10);
+        let velocity = Velocity::new(5, 0);
         let mut rect = Rectangle::new(position, 64, 64);
-        rect.move_right();
+        rect.move_to(velocity);
         assert_eq!(rect.get_x(), 55);
     }
 
     #[test]
     fn move_up_rect_test() {
         let position = Position::new(50, 10);
+        let velocity = Velocity::new(0, -5);
         let mut rect = Rectangle::new(position, 64, 64);
-        rect.move_up();
+        rect.move_to(velocity);
         assert_eq!(rect.get_y(), 5);
     }
 
     #[test]
     fn move_down_rect_test() {
         let position = Position::new(50, 10);
+        let velocity = Velocity::new(0, 5);
         let mut rect = Rectangle::new(position, 64, 64);
-        rect.move_down();
+        rect.move_to(velocity);
         assert_eq!(rect.get_y(), 15);
     }
 }

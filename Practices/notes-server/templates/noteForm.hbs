@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr-TR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>{{title}}</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Not Ekle</h2>
+    <form id="noteForm">
+        <div class="form-group">
+            <label for="title">Başlık</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Konu başlığını buraya yazın">
+        </div>
+        <div class="form-group">
+            <label for="body">Not İçeriği</label>
+            <textarea class="form-control" id="body" name="body" rows="3" placeholder="Konu içeriğini buraya yazın"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="publisher">Kaynak</label>
+            <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Dergi, Kitap adı, Makale başlığı vb.">
+        </div>
+        <div class="form-group">
+            <label for="author">Yazar</label>
+            <input type="text" class="form-control" id="author" name="author" placeholder="Yazar kim?">
+        </div>
+        <div class="form-group">
+            <label for="mediaType">Medya Türü</label>
+            <select class="form-control" id="mediaType" name="mediaType">
+                <option value="Gazete">Gazete</option>
+                <option value="Dergi">Dergi</option>
+                <option value="Dijital">Dijital</option>
+                <option value="Kitap">Kitap</option>
+                <option value="Podcast">Podcast</option>
+                <option value="Medium">Medium</option>
+                <option value="Unknown">Bilinmiyor</option>
+            </select>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <label for="year">Yıl</label>
+                <input type="number" class="form-control" id="year" name="year" placeholder="Yıl">
+            </div>
+            <div class="col-md-3">
+                <label for="month">Ay</label>
+                <select class="form-control" id="month" name="month">
+                    <option value="Ocak">Ocak</option>
+                    <option value="Şubat">Şubat</option>
+                    <option value="Mart">Mart</option>
+                    <option value="Nisan">Nisan</option>
+                    <option value="Mayıs">Mayıs</option>
+                    <option value="Haziran">Haziran</option>
+                    <option value="Temmuz">Temmuz</option>
+                    <option value="Ağustos">Ağustos</option>
+                    <option value="Eylül">Eylül</option>
+                    <option value="Ekim">Ekim</option>
+                    <option value="Kasım">Kasım</option>
+                    <option value="Aralık">Aralık</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="day">Gün</label>
+                <input type="number" class="form-control" id="day" name="day" placeholder="Gün">
+            </div>
+        </div>
+        <div id="externals-container">
+            <label for="externals">Dış Bağlantılar</label>
+            <button type="button" id="add-external-link" class="btn btn-info mb-2">Ekle</button>
+        </div>
+        <button type="button" id="saveNote" class="btn btn-primary">Kaydet</button>
+    </form>
+</div>
+<div class="container">
+    <a href="/note" class="link-dark">Ana Sayfa</a>
+</div>
+<script>
+    $(document).ready(function() {
+        addExternalLink();
+
+        $("#add-external-link").click(function() {
+            addExternalLink();
+        });
+
+        function addExternalLink() {
+            var externalDiv = $("<div class='external mb-3'></div>");
+            var titleInput = $("<input type='text' class='form-control externalTitle mb-2' placeholder='Başlık' name='externals[][title]'>");
+            var urlInput = $("<input type='text' class='form-control externalUrl' placeholder='URL' name='externals[][url]'>");
+
+            var removeButton = $("<button type='button' class='btn btn-danger btn-sm remove-external'>Sil</button>").click(function() {
+                $(this).parent().remove();
+            });
+
+            externalDiv.append(titleInput);
+            externalDiv.append(urlInput);
+            externalDiv.append(removeButton);
+
+            $("#externals-container").append(externalDiv);
+        }
+
+        $("#saveNote").click(function(e) {
+            e.preventDefault();
+
+            var externals = [];
+            $(".external").each(function() {
+                var title = $(this).find(".externalTitle").val();
+                var url = $(this).find(".externalUrl").val();
+                if (title && url) {
+                    externals.push({ title: title, url: url });
+                }
+            });
+
+            var noteData = {
+                title: $("#title").val(),
+                body: $("#body").val(),
+                publisher: $("#publisher").val(),
+                author: $("#author").val(),
+                media_type: $("#mediaType").val(),
+                year: parseInt($("#year").val(), 10),
+                month: $("#month").val(),
+                day: parseInt($("#day").val(), 10),
+                externals: externals
+            };
+
+            $.ajax({
+                url: '/note/create',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(noteData),
+                success: function(_) {
+                    alert("Not başarılı şekilde kaydedildi.");
+                    $('#noteForm').trigger("reset");
+                    $(".external").not(":first").remove();
+                    addExternalLink();
+                },
+                error: function(response) {
+                    alert("Kaydetme işlemi sırasında bir hata oluştu: " + response.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>

@@ -76,23 +76,45 @@ async fn add_note_handler(note_data: NoteForm) -> Result<impl Reply, Rejection> 
     }
 }
 
+async fn note_form_handler() -> Result<impl Reply, Rejection> {
+    let mut handlebars = Handlebars::new();
+    if handlebars
+        .register_template_file("noteForm", get_file_path("templates/noteForm.hbs"))
+        .is_err()
+    {
+        return Err(reject::not_found());
+    }
+    let handlebars = Arc::new(handlebars);
+
+    let rendered = handlebars
+        .render("noteForm", &{})
+        .map_err(|_| reject::not_found())?;
+
+    Ok(Response::builder()
+        .header("Content-Type", "text/html; charset=utf-8")
+        .body(rendered)
+        .unwrap())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cors = warp::cors()
         .allow_any_origin()
         .allow_headers(vec!["Content-Type"])
-        .allow_methods(vec!["POST"]);
+        .allow_methods(vec!["GET", "POST"]);
 
-    let index_route = warp::path("note").and(warp::get()).and_then(index_handler);
+    let index_route = warp::path!("note").and(warp::get()).and_then(index_handler);
 
-    let add_note_route = warp::path("note")
-        .and(warp::path("create"))
+    let note_form_route = warp::path!("note" / "add")
+        .and(warp::get())
+        .and_then(note_form_handler);
+
+    let add_note_route = warp::path!("note" / "create")
         .and(warp::post())
         .and(warp::body::json())
-        .and_then(add_note_handler)
-        .with(cors);
+        .and_then(add_note_handler);
 
-    let routes = index_route.or(add_note_route);
+    let routes = index_route.or(note_form_route).or(add_note_route);
 
     println!("Server is running on localhost:5555");
     warp::serve(routes).run(([0, 0, 0, 0], 5555)).await;

@@ -35,7 +35,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let detail_note_route = warp::path!("note" / "detail" / usize)
         .and(warp::get())
-        .and_then(|id| Handler::get_by_id(id));
+        .and(with_handlebars(handlebars.clone()))
+        .and_then(|id, handlebars: Arc<Handlebars<'static>>| Handler::get_by_id(id, handlebars));
 
     let add_note_route = warp::path!("note" / "create")
         .and(warp::post())
@@ -55,7 +56,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn with_handlebars(
-    handlebars: Arc<Handlebars<'_>>,
-) -> impl Filter<Extract = (Arc<Handlebars<'_>>,), Error = std::convert::Infallible> + Clone {
+    handlebars: Arc<Handlebars>,
+) -> impl Filter<Extract = (Arc<Handlebars>,), Error = std::convert::Infallible> + Clone {
     warp::any().map(move || handlebars.clone())
 }

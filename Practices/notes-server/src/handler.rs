@@ -18,7 +18,9 @@ impl Reject for NoteError {}
 pub struct Handler {}
 
 impl Handler {
-    pub async fn index_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
+    pub async fn index_handler<'a>(
+        handlebars: Arc<Handlebars<'a>>,
+    ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.choose(&mut rand::thread_rng());
         let rendered = match handlebars.render("index", &note) {
@@ -31,8 +33,8 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-    pub async fn note_form_handler(
-        handlebars: Arc<Handlebars<'_>>,
+    pub async fn note_form_handler<'a>(
+        handlebars: Arc<Handlebars<'a>>,
     ) -> Result<impl Reply, Rejection> {
         let rendered = handlebars
             .render("noteForm", &{})
@@ -79,7 +81,9 @@ impl Handler {
             }
         }
     }
-    pub async fn get_all_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
+    pub async fn get_all_handler<'a>(
+        handlebars: Arc<Handlebars<'a>>,
+    ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let data = serde_json::json!({ "notes": &cached_notes.notes });
 
@@ -96,24 +100,11 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-    pub async fn get_by_id(id: usize) -> Result<impl Reply, Rejection> {
+    pub async fn get_by_id(
+        id: usize,
+        handlebars: Arc<Handlebars<'static>>,
+    ) -> Result<impl Reply, Rejection> {
         info!("Requested note id is {}", id);
-
-        let mut handlebars = Handlebars::new();
-        if handlebars
-            .register_template_file("detail", get_file_path("templates/detail.hbs"))
-            .is_err()
-        {
-            return Err(reject::not_found());
-        }
-        if handlebars
-            .register_template_file("error", get_file_path("templates/error.hbs"))
-            .is_err()
-        {
-            return Err(reject::not_found());
-        }
-
-        let handlebars = Arc::new(handlebars);
 
         let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.iter().find(|n| n.id == id);

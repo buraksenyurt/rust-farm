@@ -2,7 +2,7 @@ use crate::utility::get_file_path;
 use handlebars::Handlebars;
 use std::sync::Arc;
 
-pub async fn create_handlebars() -> Arc<Handlebars<'static>> {
+pub async fn create_handlebars<'a>() -> Arc<Handlebars<'a>> {
     let mut handlebars = Handlebars::new();
 
     handlebars

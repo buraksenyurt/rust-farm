@@ -1,5 +1,6 @@
 use crate::entity::Note;
 use crate::utility::get_file_path;
+use log::info;
 use once_cell::sync::Lazy;
 use serde_json::from_str;
 use std::sync::Arc;
@@ -26,7 +27,7 @@ pub async fn update_cache_if_needed() -> Arc<Mutex<Option<NotesCache>>> {
     match *cache {
         Some(ref cache) if cache.last_modified >= last_modified => Arc::clone(&CACHED_NOTES),
         _ => {
-            println!("Reading to cache");
+            info!("Reading to cache");
             let mut file = File::open(path).await.unwrap();
             let mut contents = String::new();
             file.read_to_string(&mut contents).await.unwrap();

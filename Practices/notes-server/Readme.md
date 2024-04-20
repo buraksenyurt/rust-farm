@@ -82,3 +82,9 @@ RUST_LOG=info cargo run
 # aşağıdaki gibi ilerlenebilir
 sudo docker logs <container_adı_veya_id_değeri> 
 ```
+
+Yeni bilgi ekleme formu ayrıldı ve tüm notları listeleyen başka bir sayfa daha eklendi.
+
+![Yeni not ekleme formu](../images/notes_server_10.png)
+
+![Tüm notlar](../images/notes_server_09.png)

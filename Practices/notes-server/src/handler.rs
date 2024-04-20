@@ -101,4 +101,34 @@ impl Handler {
             }
         }
     }
+
+    pub async fn get_all_handler() -> Result<impl Reply, Rejection> {
+        let mut handlebars = Handlebars::new();
+        if handlebars
+            .register_template_file("list", get_file_path("templates/list.hbs"))
+            .is_err()
+        {
+            return Err(reject::not_found());
+        }
+        let handlebars = Arc::new(handlebars);
+
+        let cache = update_cache_if_needed().await;
+        let cache = cache.lock().await;
+        let cached_notes = cache.as_ref().unwrap();
+
+        let data = serde_json::json!({ "notes": &cached_notes.notes });
+
+        let rendered = match handlebars.render("list", &data) {
+            Ok(rendered) => rendered,
+            Err(e) => {
+                error!("{}", e);
+                return Err(reject::not_found());
+            }
+        };
+
+        Ok(Response::builder()
+            .header("Content-Type", "text/html; charset=utf-8")
+            .body(rendered)
+            .unwrap())
+    }
 }

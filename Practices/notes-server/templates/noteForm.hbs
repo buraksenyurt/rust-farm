@@ -71,7 +71,9 @@
             <label for="externals">Dış Bağlantılar</label>
             <button type="button" id="add-external-link" class="btn btn-info mb-2">Ekle</button>
         </div>
-        <button type="button" id="saveNote" class="btn btn-primary">Kaydet</button>
+        <div>
+            <button type="button" id="saveNote" class="btn btn-primary">Kaydet</button>
+        </div>
     </form>
 </div>
 <div class="container">
@@ -79,7 +81,6 @@
 </div>
 <script>
     $(document).ready(function() {
-        addExternalLink();
 
         $("#add-external-link").click(function() {
             addExternalLink();
@@ -134,7 +135,6 @@
                     alert("Not başarılı şekilde kaydedildi.");
                     $('#noteForm').trigger("reset");
                     $(".external").not(":first").remove();
-                    addExternalLink();
                 },
                 error: function(response) {
                     alert("Kaydetme işlemi sırasında bir hata oluştu: " + response.responseText);

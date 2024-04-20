@@ -70,3 +70,15 @@ sudo docker cp notes-server:/usr/local/bin/notes.json .
 # notes-server yerine çalışan container'ın id'si de yazılabilir. Örneğin aşağıdaki gibi.
 sudo docker cp 236ff7:/usr/local/bin/notes.json .
 ```
+
+## Güncelleme
+
+Uygulamaya loglama eklendi. Local'de çalıştırırken aşağıdaki gibi ilerlenebilir.
+
+```bash
+RUST_LOG=info cargo run
+
+# Docker container ile çalıştığında oluşan logları yakalamak içinse
+# aşağıdaki gibi ilerlenebilir
+sudo docker logs <container_adı_veya_id_değeri> 
+```

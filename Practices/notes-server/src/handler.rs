@@ -18,16 +18,7 @@ impl Reject for NoteError {}
 pub struct Handler {}
 
 impl Handler {
-    pub async fn index_handler() -> Result<impl Reply, Rejection> {
-        let mut handlebars = Handlebars::new();
-        if handlebars
-            .register_template_file("index", get_file_path("templates/index.hbs"))
-            .is_err()
-        {
-            return Err(reject::not_found());
-        }
-        let handlebars = Arc::new(handlebars);
-
+    pub async fn index_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.choose(&mut rand::thread_rng());
         let rendered = match handlebars.render("index", &note) {
@@ -40,16 +31,9 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-    pub async fn note_form_handler() -> Result<impl Reply, Rejection> {
-        let mut handlebars = Handlebars::new();
-        if handlebars
-            .register_template_file("noteForm", get_file_path("templates/noteForm.hbs"))
-            .is_err()
-        {
-            return Err(reject::not_found());
-        }
-        let handlebars = Arc::new(handlebars);
-
+    pub async fn note_form_handler(
+        handlebars: Arc<Handlebars<'_>>,
+    ) -> Result<impl Reply, Rejection> {
         let rendered = handlebars
             .render("noteForm", &{})
             .map_err(|_| reject::not_found())?;
@@ -95,16 +79,7 @@ impl Handler {
             }
         }
     }
-    pub async fn get_all_handler() -> Result<impl Reply, Rejection> {
-        let mut handlebars = Handlebars::new();
-        if handlebars
-            .register_template_file("list", get_file_path("templates/list.hbs"))
-            .is_err()
-        {
-            return Err(reject::not_found());
-        }
-        let handlebars = Arc::new(handlebars);
-
+    pub async fn get_all_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let data = serde_json::json!({ "notes": &cached_notes.notes });
 
@@ -123,6 +98,7 @@ impl Handler {
     }
     pub async fn get_by_id(id: usize) -> Result<impl Reply, Rejection> {
         info!("Requested note id is {}", id);
+
         let mut handlebars = Handlebars::new();
         if handlebars
             .register_template_file("detail", get_file_path("templates/detail.hbs"))

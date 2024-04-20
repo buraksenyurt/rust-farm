@@ -1,9 +1,10 @@
-use crate::cache::update_cache_if_needed;
+use crate::cache::{update_cache_if_needed, NotesCache};
 use crate::entity::{Note, NoteForm};
 use crate::utility::get_file_path;
 use handlebars::Handlebars;
 use log::{error, info};
 use rand::prelude::SliceRandom;
+use serde_json::json;
 use std::fs;
 use std::sync::Arc;
 use warp::http::{Response, StatusCode};
@@ -11,9 +12,8 @@ use warp::reject::Reject;
 use warp::{reject, Rejection, Reply};
 
 #[derive(Debug)]
-struct NoteError {
-    pub message: String,
-}
+struct NoteError(String);
+
 impl Reject for NoteError {}
 pub struct Handler {}
 
@@ -28,10 +28,7 @@ impl Handler {
         }
         let handlebars = Arc::new(handlebars);
 
-        let cache = update_cache_if_needed().await;
-        let cache = cache.lock().await;
-        let cached_notes = cache.as_ref().unwrap();
-
+        let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.choose(&mut rand::thread_rng());
         let rendered = match handlebars.render("index", &note) {
             Ok(rendered) => rendered,
@@ -43,7 +40,6 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-
     pub async fn note_form_handler() -> Result<impl Reply, Rejection> {
         let mut handlebars = Handlebars::new();
         if handlebars
@@ -63,7 +59,6 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-
     pub async fn add_note_handler(note_data: NoteForm) -> Result<impl Reply, Rejection> {
         let path = get_file_path("notes.json");
         let notes_file_content = fs::read_to_string(path).unwrap_or_else(|_| "[]".to_string());
@@ -94,14 +89,12 @@ impl Handler {
                 ))
             }
             Err(e) => {
-                error!("{}", e);
-                Err(warp::reject::custom(NoteError {
-                    message: "Failed to write to file".to_string(),
-                }))
+                let note_error = NoteError("Failed to write to file".to_string());
+                error!("{}.{}", note_error.0, e);
+                Err(reject::custom(note_error))
             }
         }
     }
-
     pub async fn get_all_handler() -> Result<impl Reply, Rejection> {
         let mut handlebars = Handlebars::new();
         if handlebars
@@ -112,10 +105,7 @@ impl Handler {
         }
         let handlebars = Arc::new(handlebars);
 
-        let cache = update_cache_if_needed().await;
-        let cache = cache.lock().await;
-        let cached_notes = cache.as_ref().unwrap();
-
+        let cached_notes = Self::get_notes_from_cache().await?;
         let data = serde_json::json!({ "notes": &cached_notes.notes });
 
         let rendered = match handlebars.render("list", &data) {
@@ -131,7 +121,6 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-
     pub async fn get_by_id(id: usize) -> Result<impl Reply, Rejection> {
         info!("Requested note id is {}", id);
         let mut handlebars = Handlebars::new();
@@ -141,25 +130,58 @@ impl Handler {
         {
             return Err(reject::not_found());
         }
+        if handlebars
+            .register_template_file("error", get_file_path("templates/error.hbs"))
+            .is_err()
+        {
+            return Err(reject::not_found());
+        }
+
         let handlebars = Arc::new(handlebars);
 
-        let cache = update_cache_if_needed().await;
-        let cache = cache.lock().await;
-        let cached_notes = cache.as_ref().unwrap();
-
+        let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.iter().find(|n| n.id == id);
 
-        let rendered = match handlebars.render("detail", &note) {
-            Ok(rendered) => rendered,
-            Err(e) => {
-                error!("{}", e);
-                return Err(reject::not_found());
-            }
-        };
+        match note {
+            Some(note) => {
+                let rendered = match handlebars.render("detail", &note) {
+                    Ok(rendered) => rendered,
+                    Err(e) => {
+                        error!("{}", e);
+                        return Err(reject::not_found());
+                    }
+                };
 
-        Ok(Response::builder()
-            .header("Content-Type", "text/html; charset=utf-8")
-            .body(rendered)
-            .unwrap())
+                Ok(Response::builder()
+                    .header("Content-Type", "text/html; charset=utf-8")
+                    .body(rendered)
+                    .unwrap())
+            }
+            None => {
+                let data = json!({
+                    "title": "Hata",
+                    "message": "Aranan not bilgisi bulunamadı."
+                });
+                let rendered = handlebars.render("error", &data).unwrap_or_else(|_| {
+                    "<h1>500 Internal Server Error</h1><p>Hata sayfası render edilemedi.</p>"
+                        .to_string()
+                });
+
+                Ok(Response::builder()
+                    .header("Content-Type", "text/html; charset=utf-8")
+                    .body(rendered)
+                    .unwrap())
+            }
+        }
+    }
+    async fn get_notes_from_cache() -> Result<Arc<NotesCache>, Rejection> {
+        let cache = update_cache_if_needed().await;
+        let locked_cache = cache.lock().await;
+        let cached_notes = locked_cache.as_ref().ok_or_else(|| {
+            let note_error = NoteError("Failed to retrieve notes from cache".to_string());
+            error!("{}", note_error.0);
+            reject::custom(note_error)
+        })?;
+        Ok(Arc::from(cached_notes.clone()))
     }
 }

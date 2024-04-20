@@ -131,4 +131,35 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
+
+    pub async fn get_by_id(id: usize) -> Result<impl Reply, Rejection> {
+        info!("Requested note id is {}", id);
+        let mut handlebars = Handlebars::new();
+        if handlebars
+            .register_template_file("detail", get_file_path("templates/detail.hbs"))
+            .is_err()
+        {
+            return Err(reject::not_found());
+        }
+        let handlebars = Arc::new(handlebars);
+
+        let cache = update_cache_if_needed().await;
+        let cache = cache.lock().await;
+        let cached_notes = cache.as_ref().unwrap();
+
+        let note = cached_notes.notes.iter().find(|n| n.id == id);
+
+        let rendered = match handlebars.render("detail", &note) {
+            Ok(rendered) => rendered,
+            Err(e) => {
+                error!("{}", e);
+                return Err(reject::not_found());
+            }
+        };
+
+        Ok(Response::builder()
+            .header("Content-Type", "text/html; charset=utf-8")
+            .body(rendered)
+            .unwrap())
+    }
 }

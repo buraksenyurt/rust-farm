@@ -15,9 +15,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .and(warp::get())
         .and_then(Handler::index_handler);
 
-    let list_notes = warp::path!("note" / "list")
+    let list_notes_route = warp::path!("note" / "list")
         .and(warp::get())
         .and_then(Handler::get_all_handler);
+
+    let detail_note_route = warp::path!("note" / "detail" / usize)
+        .and(warp::get())
+        .and_then(|id: usize| Handler::get_by_id(id));
 
     let note_form_route = warp::path!("note" / "add")
         .and(warp::get())
@@ -31,7 +35,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let routes = index_route
         .or(note_form_route)
         .or(add_note_route)
-        .or(list_notes);
+        .or(list_notes_route)
+        .or(detail_note_route);
 
     info!("Server is running on localhost:5555");
     warp::serve(routes).run(([0, 0, 0, 0], 5555)).await;

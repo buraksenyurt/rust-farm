@@ -1,8 +1,11 @@
 mod colors;
+mod constants;
 
 extern crate wasm_bindgen;
 
 use crate::colors::get_random_color;
+use crate::constants::*;
+use rand::prelude::SliceRandom;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -14,16 +17,17 @@ pub struct Game {
 
 #[wasm_bindgen]
 impl Game {
-    pub fn new(max_width: u32, max_height: u32) -> Self {
+    pub fn new() -> Self {
         let rectangles = vec![
-            Rectangle::new(Position::new(0, 0), 32, 32, get_random_color()),
-            Rectangle::new(Position::new(128, 0), 16, 16, get_random_color()),
-            Rectangle::new(Position::new(64, 0), 24, 24, get_random_color()),
-            Rectangle::new(Position::new(256, 0), 8, 8, get_random_color()),
+            Rectangle::new(Position::new(0, 0), get_random_size(), get_random_color()),
+            Rectangle::new(Position::new(64, 0), get_random_size(), get_random_color()),
+            Rectangle::new(Position::new(128, 0), get_random_size(), get_random_color()),
+            Rectangle::new(Position::new(256, 0), get_random_size(), get_random_color()),
+            Rectangle::new(Position::new(320, 0), get_random_size(), get_random_color()),
         ];
         Self {
-            max_width,
-            max_height,
+            max_width: MAX_SCREEN_WIDTH,
+            max_height: MAX_SCREEN_HEIGHT,
             rectangles,
         }
     }
@@ -80,30 +84,71 @@ impl Velocity {
 #[derive(Clone)]
 pub struct Rectangle {
     position: Position,
-    width: u32,
-    height: u32,
+    size: Size,
     color: String,
 }
 
 #[wasm_bindgen]
+#[derive(Clone)]
+pub struct Size {
+    width: u32,
+    height: u32,
+}
+
+#[wasm_bindgen]
+impl Size {
+    pub fn new(width: u32, height: u32) -> Self {
+        Self { width, height }
+    }
+}
+
+enum BlockSize {
+    Short,
+    Tall,
+    Grande,
+    Venti,
+}
+
+impl BlockSize {
+    pub fn to_size(&self) -> Size {
+        match *self {
+            BlockSize::Short => Size::new(8, 8),
+            BlockSize::Tall => Size::new(16, 16),
+            BlockSize::Grande => Size::new(32, 32),
+            BlockSize::Venti => Size::new(64, 64),
+        }
+    }
+}
+
+pub fn get_random_size() -> Size {
+    let mut rng = rand::thread_rng();
+    let block_sizes = [
+        BlockSize::Short,
+        BlockSize::Tall,
+        BlockSize::Grande,
+        BlockSize::Venti,
+    ];
+    block_sizes.choose(&mut rng).unwrap().to_size()
+}
+
+#[wasm_bindgen]
 impl Rectangle {
-    pub fn new(position: Position, width: u32, height: u32, color: String) -> Self {
+    pub fn new(position: Position, size: Size, color: String) -> Self {
         Self {
             position,
-            width,
-            height,
+            size,
             color,
         }
     }
 
     pub fn move_to(&mut self, velocity: Velocity) {
         let new_x = self.position.x + velocity.x;
-        if new_x >= 0 && (new_x as u32 + self.width <= 400) {
+        if new_x >= 0 && (new_x as u32 + self.size.width <= MAX_SCREEN_WIDTH) {
             self.position.x = new_x;
         }
 
         let new_y = self.position.y + velocity.y;
-        if new_y >= 0 && (new_y as u32 + self.height <= 400) {
+        if new_y >= 0 && (new_y as u32 + self.size.height <= MAX_SCREEN_HEIGHT) {
             self.position.y = new_y;
         }
     }
@@ -115,10 +160,10 @@ impl Rectangle {
         self.position.y
     }
     pub fn get_width(&self) -> u32 {
-        self.width
+        self.size.width
     }
     pub fn get_height(&self) -> u32 {
-        self.height
+        self.size.height
     }
     pub fn get_color(self) -> String {
         self.color
@@ -132,7 +177,7 @@ mod test {
     #[test]
     fn create_rect_test() {
         let position = Position::new(50, 10);
-        let rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
+        let rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         assert_eq!(rect.get_x(), 50);
         assert_eq!(rect.get_y(), 10);
         assert_eq!(rect.get_width(), 64);
@@ -143,7 +188,7 @@ mod test {
     fn move_left_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(-5, 0);
-        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
+        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_x(), 45);
     }
@@ -152,7 +197,7 @@ mod test {
     fn move_right_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(5, 0);
-        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
+        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_x(), 55);
     }
@@ -161,7 +206,7 @@ mod test {
     fn move_up_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, -5);
-        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
+        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_y(), 5);
     }
@@ -170,7 +215,7 @@ mod test {
     fn move_down_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, 5);
-        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
+        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_y(), 15);
     }

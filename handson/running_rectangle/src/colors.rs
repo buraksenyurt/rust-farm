@@ -15,6 +15,9 @@ enum Color {
     NavajoWhite,
     Chocolate,
     MistyRose,
+    MidnightBlue,
+    BurlyWood,
+    Aquamarine,
 }
 
 impl Color {
@@ -34,6 +37,9 @@ impl Color {
             Color::NavajoWhite => "#FFDEAD",
             Color::Chocolate => "#D2691E",
             Color::MistyRose => "#FFE4E1",
+            Color::MidnightBlue => "#191970",
+            Color::BurlyWood => "#DEB887",
+            Color::Aquamarine => "#7FFFD4",
         }
     }
 }
@@ -55,6 +61,9 @@ pub fn get_random_color() -> String {
         Color::NavajoWhite,
         Color::Chocolate,
         Color::MistyRose,
+        Color::MidnightBlue,
+        Color::BurlyWood,
+        Color::Aquamarine,
     ];
     colors.choose(&mut rng).unwrap().to_hex().to_string()
 }

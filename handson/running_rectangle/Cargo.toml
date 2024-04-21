@@ -9,4 +9,6 @@ authors = ["Burak Selim Şenyurt"]
 crate-type = ["cdylib"]
 
 [dependencies]
+rand = "0.8.5"
+getrandom = { version = "0.2.14", features = ["js"] }
 wasm-bindgen = "0.2.92"

@@ -1,5 +1,8 @@
+mod colors;
+
 extern crate wasm_bindgen;
 
+use crate::colors::get_random_color;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -13,10 +16,10 @@ pub struct Game {
 impl Game {
     pub fn new(max_width: u32, max_height: u32) -> Self {
         let rectangles = vec![
-            Rectangle::new(Position::new(0, 0), 32, 32, "#f5b041".to_string()),
-            Rectangle::new(Position::new(128, 0), 16, 16, "#6c3483".to_string()),
-            Rectangle::new(Position::new(64, 0), 24, 24, "#2874a6".to_string()),
-            Rectangle::new(Position::new(256, 0), 8, 8, "#45b39d".to_string()),
+            Rectangle::new(Position::new(0, 0), 32, 32, get_random_color()),
+            Rectangle::new(Position::new(128, 0), 16, 16, get_random_color()),
+            Rectangle::new(Position::new(64, 0), 24, 24, get_random_color()),
+            Rectangle::new(Position::new(256, 0), 8, 8, get_random_color()),
         ];
         Self {
             max_width,

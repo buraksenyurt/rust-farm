@@ -13,10 +13,10 @@ pub struct Game {
 impl Game {
     pub fn new(max_width: u32, max_height: u32) -> Self {
         let rectangles = vec![
-            Rectangle::new(Position::new(0, 0), 32, 32),
-            Rectangle::new(Position::new(128, 0), 16, 16),
-            Rectangle::new(Position::new(64, 0), 24, 24),
-            Rectangle::new(Position::new(256, 0), 8, 8),
+            Rectangle::new(Position::new(0, 0), 32, 32, "#f5b041".to_string()),
+            Rectangle::new(Position::new(128, 0), 16, 16, "#6c3483".to_string()),
+            Rectangle::new(Position::new(64, 0), 24, 24, "#2874a6".to_string()),
+            Rectangle::new(Position::new(256, 0), 8, 8, "#45b39d".to_string()),
         ];
         Self {
             max_width,
@@ -79,15 +79,17 @@ pub struct Rectangle {
     position: Position,
     width: u32,
     height: u32,
+    color: String,
 }
 
 #[wasm_bindgen]
 impl Rectangle {
-    pub fn new(position: Position, width: u32, height: u32) -> Self {
+    pub fn new(position: Position, width: u32, height: u32, color: String) -> Self {
         Self {
             position,
             width,
             height,
+            color,
         }
     }
 
@@ -106,17 +108,17 @@ impl Rectangle {
     pub fn get_x(&self) -> i32 {
         self.position.x
     }
-
     pub fn get_y(&self) -> i32 {
         self.position.y
     }
-
     pub fn get_width(&self) -> u32 {
         self.width
     }
-
     pub fn get_height(&self) -> u32 {
         self.height
+    }
+    pub fn get_color(self) -> String {
+        self.color
     }
 }
 
@@ -127,7 +129,7 @@ mod test {
     #[test]
     fn create_rect_test() {
         let position = Position::new(50, 10);
-        let rect = Rectangle::new(position, 64, 64);
+        let rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
         assert_eq!(rect.get_x(), 50);
         assert_eq!(rect.get_y(), 10);
         assert_eq!(rect.get_width(), 64);
@@ -138,7 +140,7 @@ mod test {
     fn move_left_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(-5, 0);
-        let mut rect = Rectangle::new(position, 64, 64);
+        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_x(), 45);
     }
@@ -147,7 +149,7 @@ mod test {
     fn move_right_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(5, 0);
-        let mut rect = Rectangle::new(position, 64, 64);
+        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_x(), 55);
     }
@@ -156,7 +158,7 @@ mod test {
     fn move_up_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, -5);
-        let mut rect = Rectangle::new(position, 64, 64);
+        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_y(), 5);
     }
@@ -165,7 +167,7 @@ mod test {
     fn move_down_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, 5);
-        let mut rect = Rectangle::new(position, 64, 64);
+        let mut rect = Rectangle::new(position, 64, 64, "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_y(), 15);
     }

@@ -33,7 +33,7 @@
             level1.setAttribute('height', game.max_height);
             const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
 
-            const playerRectangle = Rectangle.new(position, pBoxWidth, pBoxHeight);
+            const playerRectangle = Rectangle.new(position, pBoxWidth, pBoxHeight,'');
             playerElement.setAttribute('width', playerRectangle.get_width());
             playerElement.setAttribute('height', playerRectangle.get_height());
 
@@ -73,11 +73,11 @@
                 for (let i = 0; i < count; i++) {
                     const rect = game.get_rectangles_at(i);
                     const block = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    block.setAttribute('x', rect.get_x());
-                    block.setAttribute('y', rect.get_y());
-                    block.setAttribute('width', rect.get_width());
-                    block.setAttribute('height', rect.get_height());
-                    block.setAttribute('fill', 'blue');
+                    block.setAttribute('x', rect.get_x().toString());
+                    block.setAttribute('y', rect.get_y().toString());
+                    block.setAttribute('width', rect.get_width().toString());
+                    block.setAttribute('height', rect.get_height().toString());
+                    block.setAttribute('fill', rect.get_color());
                     blocksContainer.appendChild(block);
                 }
             }

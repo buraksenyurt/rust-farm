@@ -8,6 +8,9 @@
         svg {
             border: 1px solid black;
         }
+        table {
+            border: 1px solid black;
+        }
     </style>
 </head>
 
@@ -17,8 +20,17 @@
         <g id="blocksContainer"></g>
         <rect id="player" width="0" height="0" fill="none" stroke="black" />
     </svg>
+    <div>
+        <table id="hud">
+            <tr>
+                <td>
+                    <p id="description"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
     <script type="module">
-        import init, { Rectangle, Position, Game, Velocity } from './pkg/running_rectangle.js';
+        import init, { Rectangle, Position, Game, Velocity, Size } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
@@ -26,14 +38,21 @@
             let pBoxWidth = 64;
             let pBoxHeight = 64;
 
-            const game = Game.new(400, 400);
+            const game = Game.new();
             const level1 = document.getElementById('level1');
             const playerElement = document.getElementById('player');
+            const hudElement=document.getElementById('hud');
+            const descriptionElement=document.getElementById('description');
+
+            hudElement.setAttribute('width',game.max_width);
+            hudElement.setAttribute('height','50px');
+            descriptionElement.innerText="Catch the 3.14";
+
             level1.setAttribute('width', game.max_width);
             level1.setAttribute('height', game.max_height);
             const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
 
-            const playerRectangle = Rectangle.new(position, pBoxWidth, pBoxHeight,'');
+            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'');
             playerElement.setAttribute('width', playerRectangle.get_width());
             playerElement.setAttribute('height', playerRectangle.get_height());
 
@@ -73,12 +92,27 @@
                 for (let i = 0; i < count; i++) {
                     const rect = game.get_rectangles_at(i);
                     const block = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    block.setAttribute('x', rect.get_x().toString());
-                    block.setAttribute('y', rect.get_y().toString());
-                    block.setAttribute('width', rect.get_width().toString());
-                    block.setAttribute('height', rect.get_height().toString());
+                    let x = parseFloat(rect.get_x().toString());
+                    let y = parseFloat(rect.get_y().toString());
+                    let width = parseFloat(rect.get_width().toString());
+                    let height = parseFloat(rect.get_height().toString());
+
+                    block.setAttribute('x', x.toString());
+                    block.setAttribute('y', y.toString());
+                    block.setAttribute('width', width.toString());
+                    block.setAttribute('height', height.toString());
                     block.setAttribute('fill', rect.get_color());
                     blocksContainer.appendChild(block);
+
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute('x', (x + width / 2).toString());
+                    text.setAttribute('y', (y + height / 2 + 5).toString());
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', 'white');
+                    text.setAttribute('font-size', '18px');
+                    text.setAttribute('font-weight', 'bold');
+                    text.textContent = "Pi";
+                    blocksContainer.appendChild(text);
                 }
             }
 

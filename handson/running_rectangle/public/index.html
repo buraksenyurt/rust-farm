@@ -52,7 +52,7 @@
             level1.setAttribute('height', game.max_height);
             const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
 
-            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'');
+            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'',Velocity.new(0,0));
             playerElement.setAttribute('width', playerRectangle.get_width());
             playerElement.setAttribute('height', playerRectangle.get_height());
 
@@ -64,22 +64,23 @@
             updatePosition();
 
             window.addEventListener('keydown', event => {
+                let amount=20;
                 switch (event.key) {
                     case 'ArrowLeft':
-                        let lVelocity = Velocity.new(-5, 0);
-                        playerRectangle.move_to(lVelocity);
+                        playerRectangle.change_velocity(-amount, 0);
+                        playerRectangle.move_to();
                         break;
                     case 'ArrowRight':
-                        let rVelocity = Velocity.new(5, 0);
-                        playerRectangle.move_to(rVelocity);
+                        playerRectangle.change_velocity(amount, 0);
+                        playerRectangle.move_to();
                         break;
                     case 'ArrowUp':
-                        let uVelocity = Velocity.new(0, -5);
-                        playerRectangle.move_to(uVelocity);
+                        playerRectangle.change_velocity(0, -amount);
+                        playerRectangle.move_to();
                         break;
                     case 'ArrowDown':
-                        let dVelocity = Velocity.new(0, 5);
-                        playerRectangle.move_to(dVelocity);
+                        playerRectangle.change_velocity(0, amount);
+                        playerRectangle.move_to();
                         break;
                 }
                 updatePosition();

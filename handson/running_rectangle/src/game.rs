@@ -1,7 +1,10 @@
-use crate::constants::{MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH};
+use crate::constants::{
+    MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
+};
 use crate::lane_manager::{Column, LaneManager};
 use crate::utility::Utility;
 use crate::{Position, Rectangle, Velocity};
+use rand::rngs::ThreadRng;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
 
@@ -14,6 +17,10 @@ pub struct Game {
 
 #[wasm_bindgen]
 impl Game {
+    fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
+        let y = rng.gen_range(MIN_VERTICAL_SPEED..MAX_VERTICAL_SPEED);
+        Velocity::new(0, y)
+    }
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
         let lane_manager = LaneManager::new();
@@ -23,26 +30,31 @@ impl Game {
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Zero)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
+                Self::get_random_velocity(&mut rng),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::One)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
+                Self::get_random_velocity(&mut rng),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Two)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
+                Self::get_random_velocity(&mut rng),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Three)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
+                Self::get_random_velocity(&mut rng),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Four)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
+                Self::get_random_velocity(&mut rng),
             ),
         ];
         Self {
@@ -57,9 +69,8 @@ impl Game {
     }
 
     pub fn update(&mut self) {
-        let velocity = Velocity::new(0, 1);
         for rect in &mut self.rectangles {
-            rect.move_to(velocity.clone());
+            rect.move_to();
         }
     }
 

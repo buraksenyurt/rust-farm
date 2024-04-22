@@ -39,6 +39,7 @@ impl LaneManager {
         Self { lanes }
     }
 
+    #[allow(dead_code)]
     pub fn get_lane(&self, column: Column) -> Option<&Lane> {
         self.lanes.iter().find(|l| l.column == column)
     }

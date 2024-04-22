@@ -26,3 +26,15 @@ npm install express
 # Örneği çalıştırmak için, yine root klasördeyken
 npm start
 ```
+
+## Çalışma Zamanı
+
+Örnek çalışmaya başlatıldığında ile versiyonda aşağıdaki gibi bir çıktı olması beklenir.
+
+![Running Rectangle Runtime 01](../images/running_rectangle_01.png)
+
+Bundan sonrasında uygulama biraz daha oyunlaştırılabilir. Örneğin alt bölümde yer alan sorunun cevabını içeren bloğun oyuncu tarafından diğerlerine çarpmadan yakalanması sağlanabilir. Bu anlamada aşağıdaki değişiklikler düşünülebilir.
+
+- Bloklar farklı ivmelerle insinler.
+- Soru modülü eklensin. Aşağıdaki çıkan sorunun doğru cevabı tek bir blokta olsun, diğerleri hatalı cevaplar içersin.
+- Oyuncu yanlış bloğu yakalarsa yansın, doğru bloğu yakalarsa oyun bir sonraki soruya geçsin.

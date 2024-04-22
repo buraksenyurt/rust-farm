@@ -1,39 +1,20 @@
 mod colors;
 mod constants;
 mod game;
+mod instrument;
 mod lane_manager;
 mod test;
 mod utility;
 
 use crate::constants::*;
+use crate::instrument::*;
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen]
-#[derive(Clone)]
-pub struct Position {
-    pub x: i32,
-    pub y: i32,
-}
-
-#[wasm_bindgen]
-impl Position {
-    pub fn new(x: i32, y: i32) -> Self {
-        Self { x, y }
-    }
-}
-
-#[wasm_bindgen]
-#[derive(Clone)]
-pub struct Velocity {
-    pub x: i32,
-    pub y: i32,
-}
-
-#[wasm_bindgen]
-impl Velocity {
-    pub fn new(x: i32, y: i32) -> Self {
-        Self { x, y }
-    }
+enum BlockSize {
+    Short,
+    Tall,
+    Grande,
+    Venti,
 }
 
 #[wasm_bindgen]
@@ -43,27 +24,6 @@ pub struct Rectangle {
     size: Size,
     color: String,
     velocity: Velocity,
-}
-
-#[wasm_bindgen]
-#[derive(Clone)]
-pub struct Size {
-    width: u32,
-    height: u32,
-}
-
-#[wasm_bindgen]
-impl Size {
-    pub fn new(width: u32, height: u32) -> Self {
-        Self { width, height }
-    }
-}
-
-enum BlockSize {
-    Short,
-    Tall,
-    Grande,
-    Venti,
 }
 
 impl BlockSize {

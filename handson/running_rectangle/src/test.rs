@@ -1,7 +1,8 @@
 #[cfg(test)]
 mod test {
-    use super::*;
-    use crate::{Position, Rectangle, Size, Velocity};
+    use crate::constants::MAX_SCREEN_WIDTH;
+    use crate::lane_manager::{Column, LaneManager};
+    use crate::{BlockSize, Position, Rectangle, Size, Velocity};
 
     #[test]
     fn create_rect_test() {
@@ -47,5 +48,37 @@ mod test {
         let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string());
         rect.move_to(velocity);
         assert_eq!(rect.get_y(), 15);
+    }
+
+    #[test]
+    fn get_lane_test() {
+        let lane_manager = LaneManager::new();
+        let expected = lane_manager.get_lane(Column::Zero);
+        assert!(expected.is_some());
+        assert_eq!(expected.unwrap().column, Column::Zero);
+        assert_eq!(expected.unwrap().start, 0);
+        assert_eq!(
+            expected.unwrap().end,
+            100 - BlockSize::Venti.to_size().width
+        );
+    }
+
+    #[test]
+    fn get_first_lane_range_test() {
+        let lane_manager = LaneManager::new();
+        let expected = lane_manager.get_lane_range(Column::Zero);
+        assert_eq!(expected.start, 0);
+        assert_eq!(expected.end, 100 - BlockSize::Venti.to_size().width as i32);
+    }
+
+    #[test]
+    fn get_last_lane_range_test() {
+        let lane_manager = LaneManager::new();
+        let expected = lane_manager.get_lane_range(Column::Four);
+        assert_eq!(expected.start, 400);
+        assert_eq!(
+            expected.end,
+            (MAX_SCREEN_WIDTH - BlockSize::Venti.to_size().width) as i32
+        );
     }
 }

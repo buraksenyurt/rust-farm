@@ -1,8 +1,9 @@
-use rand::Rng;
 use crate::constants::{MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH};
-use crate::{Position, Rectangle, Velocity};
-use wasm_bindgen::prelude::wasm_bindgen;
+use crate::lane_manager::{Column, LaneManager};
 use crate::utility::Utility;
+use crate::{Position, Rectangle, Velocity};
+use rand::Rng;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
 pub struct Game {
@@ -15,14 +16,34 @@ pub struct Game {
 impl Game {
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
+        let lane_manager = LaneManager::new();
 
         let rectangles = vec![
-            Rectangle::new(Position::new(rng.gen_range(0..32), 0), Utility::get_random_size(), Utility::get_random_color()),
-            Rectangle::new(Position::new(rng.gen_range(100..136), 0), Utility::get_random_size(), Utility::get_random_color()),
-            Rectangle::new(Position::new(rng.gen_range(200..236), 0), Utility::get_random_size(), Utility::get_random_color()),
-            Rectangle::new(Position::new(rng.gen_range(300..336), 0), Utility::get_random_size(), Utility::get_random_color()),
-            Rectangle::new(Position::new(rng.gen_range(400..436), 0), Utility::get_random_size(), Utility::get_random_color()),
-            Rectangle::new(Position::new(rng.gen_range(500..536), 0), Utility::get_random_size(), Utility::get_random_color()),
+            Rectangle::new(
+                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Zero)), 0),
+                Utility::get_random_size(),
+                Utility::get_random_color(),
+            ),
+            Rectangle::new(
+                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::One)), 0),
+                Utility::get_random_size(),
+                Utility::get_random_color(),
+            ),
+            Rectangle::new(
+                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Two)), 0),
+                Utility::get_random_size(),
+                Utility::get_random_color(),
+            ),
+            Rectangle::new(
+                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Three)), 0),
+                Utility::get_random_size(),
+                Utility::get_random_color(),
+            ),
+            Rectangle::new(
+                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Four)), 0),
+                Utility::get_random_size(),
+                Utility::get_random_color(),
+            ),
         ];
         Self {
             max_width: MAX_SCREEN_WIDTH,
@@ -48,5 +69,11 @@ impl Game {
 
     pub fn get_rectangles_at(&self, index: usize) -> Rectangle {
         self.rectangles[index].clone()
+    }
+}
+
+impl Default for Game {
+    fn default() -> Self {
+        Self::new()
     }
 }

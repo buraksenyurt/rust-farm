@@ -1,6 +1,7 @@
 mod colors;
 mod constants;
 mod game;
+mod lane_manager;
 mod test;
 mod utility;
 

@@ -1,6 +1,6 @@
 use crate::constants::MAX_SCREEN_WIDTH;
-use std::cmp::PartialEq;
 use crate::entity::BlockSize;
+use std::cmp::PartialEq;
 
 #[derive(Debug, PartialEq)]
 pub enum Column {

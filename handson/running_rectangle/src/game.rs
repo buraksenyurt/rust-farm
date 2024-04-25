@@ -1,13 +1,13 @@
 use crate::constants::{
     MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
 };
+use crate::entity::*;
+use crate::instrument::{Position, Velocity};
 use crate::lane_manager::{Column, LaneManager};
 use crate::utility::Utility;
 use rand::rngs::ThreadRng;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
-use crate::entity::*;
-use crate::instrument::{Position, Velocity};
 
 #[wasm_bindgen]
 pub struct Game {

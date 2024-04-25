@@ -1,6 +1,6 @@
-use wasm_bindgen::prelude::wasm_bindgen;
 use crate::constants::{MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH};
 use crate::instrument::{Position, Size, Velocity};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 pub enum BlockSize {
     Short,
@@ -69,5 +69,53 @@ impl Rectangle {
     }
     pub fn get_color(self) -> String {
         self.color
+    }
+}
+
+#[derive(Clone)]
+pub struct Question {
+    id: u32,
+    text: String,
+    answers: Vec<Answer>,
+}
+
+impl Question {
+    pub fn new(id: u32, text: String) -> Self {
+        Self {
+            id,
+            text,
+            answers: vec![],
+        }
+    }
+
+    pub fn add_answer(&mut self, answer: Answer) {
+        self.answers.push(answer);
+    }
+
+    pub fn get_id(&self) -> u32 {
+        self.id
+    }
+    pub fn get_text(&self) -> String {
+        String::from(&self.text)
+    }
+
+    pub fn get_answers(&self) -> Vec<Answer> {
+        self.answers.clone()
+    }
+}
+
+#[derive(Clone)]
+pub struct Answer {
+    text: String,
+    is_correct: bool,
+}
+
+impl Answer {
+    pub fn new(text: String, is_correct: bool) -> Self {
+        Self { text, is_correct }
+    }
+
+    pub fn is_correct(&self) -> bool {
+        self.is_correct
     }
 }

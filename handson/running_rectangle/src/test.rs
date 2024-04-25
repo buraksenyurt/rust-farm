@@ -4,6 +4,7 @@ mod test {
     use crate::entity::*;
     use crate::instrument::*;
     use crate::lane_manager::{Column, LaneManager};
+    use crate::question_manager::QuestionManager;
 
     #[test]
     fn create_rect_test() {
@@ -86,5 +87,25 @@ mod test {
             expected.end,
             (MAX_SCREEN_WIDTH - BlockSize::Venti.to_size().width) as i32
         );
+    }
+
+    #[test]
+    fn get_first_question_test() {
+        let question_manager = QuestionManager::init();
+        let actual = question_manager.get_question(1);
+        assert!(actual.is_some());
+        assert_eq!(
+            actual.unwrap().get_text(),
+            "3.14 olarak da bilinen Matematik enstrümanıdır?".to_string()
+        );
+    }
+
+    #[test]
+    fn get_first_question_answers_test() {
+        let question_manager = QuestionManager::init();
+        let actual = question_manager.get_question(1);
+        let answers = actual.unwrap().get_answers();
+        assert_eq!(answers.len(), 5);
+        assert_eq!(answers.iter().find(|a| a.is_correct()).iter().len(), 1);
     }
 }

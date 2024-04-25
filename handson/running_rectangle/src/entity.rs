@@ -8,15 +8,6 @@ pub enum BlockSize {
     Grande,
     Venti,
 }
-#[wasm_bindgen]
-#[derive(Clone)]
-pub struct Rectangle {
-    position: Position,
-    size: Size,
-    color: String,
-    velocity: Velocity,
-}
-
 impl BlockSize {
     pub fn to_size(&self) -> Size {
         match *self {
@@ -27,15 +18,30 @@ impl BlockSize {
         }
     }
 }
-
+#[wasm_bindgen]
+#[derive(Clone)]
+pub struct Rectangle {
+    position: Position,
+    size: Size,
+    color: String,
+    velocity: Velocity,
+    answer_text: String,
+}
 #[wasm_bindgen]
 impl Rectangle {
-    pub fn new(position: Position, size: Size, color: String, velocity: Velocity) -> Self {
+    pub fn new(
+        position: Position,
+        size: Size,
+        color: String,
+        velocity: Velocity,
+        answer_text: String,
+    ) -> Self {
         Self {
             position,
             size,
             color,
             velocity,
+            answer_text,
         }
     }
 
@@ -70,8 +76,12 @@ impl Rectangle {
     pub fn get_color(self) -> String {
         self.color
     }
+    pub fn get_answer_text(&self) -> String {
+        String::from(&self.answer_text)
+    }
 }
 
+#[wasm_bindgen]
 #[derive(Clone)]
 pub struct Question {
     id: u32,
@@ -102,20 +112,34 @@ impl Question {
     pub fn get_answers(&self) -> Vec<Answer> {
         self.answers.clone()
     }
+
+    pub fn get_answer_at(&self, id: u32) -> Answer {
+        self.answers.iter().find(|a| a.id == id).unwrap().clone()
+    }
 }
 
+#[wasm_bindgen]
 #[derive(Clone)]
 pub struct Answer {
+    id: u32,
     text: String,
     is_correct: bool,
 }
 
 impl Answer {
-    pub fn new(text: String, is_correct: bool) -> Self {
-        Self { text, is_correct }
+    pub fn new(id: u32, text: String, is_correct: bool) -> Self {
+        Self {
+            id,
+            text,
+            is_correct,
+        }
     }
 
     pub fn is_correct(&self) -> bool {
         self.is_correct
+    }
+
+    pub fn get_text(self) -> String {
+        self.text
     }
 }

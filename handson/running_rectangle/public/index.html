@@ -46,13 +46,13 @@
 
             hudElement.setAttribute('width',game.max_width);
             hudElement.setAttribute('height','50px');
-            descriptionElement.innerText="Catch the 3.14";
+            descriptionElement.innerText = game.get_current_question_text();
 
             level1.setAttribute('width', game.max_width);
             level1.setAttribute('height', game.max_height);
             const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
 
-            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'',Velocity.new(0,0));
+            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'',Velocity.new(0,0),'');
             playerElement.setAttribute('width', playerRectangle.get_width());
             playerElement.setAttribute('height', playerRectangle.get_height());
 
@@ -91,12 +91,13 @@
                 blocksContainer.innerHTML = '';
                 const count = game.get_rectangles_count();
                 for (let i = 0; i < count; i++) {
-                    const rect = game.get_rectangles_at(i);
+                    const rect = game.get_rectangle_at(i);
                     const block = document.createElementNS("http://www.w3.org/2000/svg", "rect");
                     let x = parseFloat(rect.get_x().toString());
                     let y = parseFloat(rect.get_y().toString());
                     let width = parseFloat(rect.get_width().toString());
                     let height = parseFloat(rect.get_height().toString());
+                    let answer=rect.get_answer_text().toString();
 
                     block.setAttribute('x', x.toString());
                     block.setAttribute('y', y.toString());
@@ -112,7 +113,7 @@
                     text.setAttribute('fill', 'white');
                     text.setAttribute('font-size', '18px');
                     text.setAttribute('font-weight', 'bold');
-                    text.textContent = "Pi";
+                    text.textContent = answer;
                     blocksContainer.appendChild(text);
                 }
             }

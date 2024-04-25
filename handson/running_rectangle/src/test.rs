@@ -2,6 +2,7 @@
 mod test {
     use crate::constants::MAX_SCREEN_WIDTH;
     use crate::entity::*;
+    use crate::game::Game;
     use crate::instrument::*;
     use crate::lane_manager::{Column, LaneManager};
     use crate::question_manager::QuestionManager;
@@ -14,6 +15,7 @@ mod test {
             Size::new(64, 64),
             "#5dade2".to_string(),
             Velocity::new(1, 1),
+            String::default(),
         );
         assert_eq!(rect.get_x(), 50);
         assert_eq!(rect.get_y(), 10);
@@ -25,7 +27,13 @@ mod test {
     fn move_left_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(-5, 0);
-        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string(), velocity);
+        let mut rect = Rectangle::new(
+            position,
+            Size::new(64, 64),
+            "#5dade2".to_string(),
+            velocity,
+            String::default(),
+        );
         rect.move_to();
         assert_eq!(rect.get_x(), 45);
     }
@@ -34,7 +42,13 @@ mod test {
     fn move_right_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(5, 0);
-        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string(), velocity);
+        let mut rect = Rectangle::new(
+            position,
+            Size::new(64, 64),
+            "#5dade2".to_string(),
+            velocity,
+            String::default(),
+        );
         rect.move_to();
         assert_eq!(rect.get_x(), 55);
     }
@@ -43,7 +57,13 @@ mod test {
     fn move_up_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, -5);
-        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string(), velocity);
+        let mut rect = Rectangle::new(
+            position,
+            Size::new(64, 64),
+            "#5dade2".to_string(),
+            velocity,
+            String::default(),
+        );
         rect.move_to();
         assert_eq!(rect.get_y(), 5);
     }
@@ -52,7 +72,13 @@ mod test {
     fn move_down_rect_test() {
         let position = Position::new(50, 10);
         let velocity = Velocity::new(0, 5);
-        let mut rect = Rectangle::new(position, Size::new(64, 64), "#5dade2".to_string(), velocity);
+        let mut rect = Rectangle::new(
+            position,
+            Size::new(64, 64),
+            "#5dade2".to_string(),
+            velocity,
+            String::default(),
+        );
         rect.move_to();
         assert_eq!(rect.get_y(), 15);
     }
@@ -107,5 +133,12 @@ mod test {
         let answers = actual.unwrap().get_answers();
         assert_eq!(answers.len(), 5);
         assert_eq!(answers.iter().find(|a| a.is_correct()).iter().len(), 1);
+    }
+
+    #[test]
+    fn get_answer_from_rectangle_test() {
+        let game = Game::new();
+        let answer_text = game.get_rectangle_at(0).get_answer_text();
+        assert_eq!(answer_text, "X".to_string());
     }
 }

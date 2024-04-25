@@ -10,11 +10,11 @@ impl QuestionManager {
             1,
             "3.14 olarak da bilinen Matematik enstrümanıdır?".to_string(),
         );
-        question_1.add_answer(Answer::new("".to_string(), false));
-        question_1.add_answer(Answer::new("P".to_string(), false));
-        question_1.add_answer(Answer::new("e".to_string(), false));
-        question_1.add_answer(Answer::new("N".to_string(), false));
-        question_1.add_answer(Answer::new("\u{03C0}".to_string(), true));
+        question_1.add_answer(Answer::new(0, "X".to_string(), false));
+        question_1.add_answer(Answer::new(1, "||".to_string(), false));
+        question_1.add_answer(Answer::new(2, "e".to_string(), false));
+        question_1.add_answer(Answer::new(3, "N".to_string(), false));
+        question_1.add_answer(Answer::new(4, "Pi".to_string(), true));
 
         let questions = vec![question_1];
         Self { questions }

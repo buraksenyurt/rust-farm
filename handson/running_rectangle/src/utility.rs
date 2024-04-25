@@ -1,6 +1,7 @@
 use crate::colors::Color;
-use crate::{BlockSize, Size};
 use rand::prelude::SliceRandom;
+use crate::entity::BlockSize;
+use crate::instrument::Size;
 
 pub struct Utility {}
 

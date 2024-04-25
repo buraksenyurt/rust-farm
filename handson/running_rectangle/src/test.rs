@@ -1,8 +1,9 @@
 #[cfg(test)]
 mod test {
     use crate::constants::MAX_SCREEN_WIDTH;
+    use crate::entity::*;
+    use crate::instrument::*;
     use crate::lane_manager::{Column, LaneManager};
-    use crate::{BlockSize, Position, Rectangle, Size, Velocity};
 
     #[test]
     fn create_rect_test() {

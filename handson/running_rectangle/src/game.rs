@@ -3,10 +3,11 @@ use crate::constants::{
 };
 use crate::lane_manager::{Column, LaneManager};
 use crate::utility::Utility;
-use crate::{Position, Rectangle, Velocity};
 use rand::rngs::ThreadRng;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
+use crate::entity::*;
+use crate::instrument::{Position, Velocity};
 
 #[wasm_bindgen]
 pub struct Game {

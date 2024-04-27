@@ -1,4 +1,3 @@
-use crate::colors::Color;
 use crate::constants::{
     MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
 };
@@ -32,7 +31,7 @@ impl Game {
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
         let question = question_manager.get_question(1).unwrap().clone();
-        let mut q_index = vec![0, 1, 2, 3, 4];
+        let mut q_index = [0, 1, 2, 3, 4];
         q_index.shuffle(&mut rng);
 
         let rectangles = vec![
@@ -104,6 +103,11 @@ impl Game {
         }
     }
 
+    pub fn update_player(&mut self, position: Position) {
+        self.player.set_x(position.x);
+        self.player.set_y(position.y);
+    }
+
     pub fn get_rectangles_count(&self) -> usize {
         self.rectangles.len()
     }
@@ -117,6 +121,11 @@ impl Game {
     }
 
     pub fn collision_check(&self) -> bool {
+        for rect in self.rectangles.iter() {
+            if self.player.collided_with(rect) {
+                return true;
+            }
+        }
         false
     }
 }

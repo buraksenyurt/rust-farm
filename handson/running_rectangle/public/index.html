@@ -30,7 +30,7 @@
         </table>
     </div>
     <script type="module">
-        import init, { Game } from './pkg/running_rectangle.js';
+        import init, { Game,Position } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
@@ -55,6 +55,7 @@
             function updatePosition() {
                 playerElement.setAttribute('x', player.get_x().toString());
                 playerElement.setAttribute('y', player.get_y().toString());
+                game.update_player(Position.new(player.get_x(),player.get_y()));
             }
 
             updatePosition();
@@ -117,6 +118,11 @@
             function gameLoop() {
                 game.update();
                 draw();
+                //console.log(game.get_player().get_x()+':'+game.get_player().get_y());
+
+                if(game.collision_check()){
+                    console.log("Çarpışma tespit edildi");
+                }
                 requestAnimationFrame(gameLoop);
             }
 

@@ -67,6 +67,12 @@ impl Rectangle {
     pub fn get_y(&self) -> i32 {
         self.position.y
     }
+    pub fn set_x(&mut self, x: i32) {
+        self.position.x = x;
+    }
+    pub fn set_y(&mut self, y: i32) {
+        self.position.y = y;
+    }
     pub fn get_width(&self) -> u32 {
         self.size.width
     }
@@ -78,6 +84,19 @@ impl Rectangle {
     }
     pub fn get_answer_text(&self) -> String {
         String::from(&self.answer_text)
+    }
+
+    // AABB (Axis-Aligned Bounding Boxes)
+    pub fn collided_with(&self, other: &Rectangle) -> bool {
+        let self_right = self.position.x + self.size.width as i32;
+        let self_bottom = self.position.y + self.size.height as i32;
+        let other_right = other.position.x + other.size.width as i32;
+        let other_bottom = other.position.y + other.size.height as i32;
+
+        let x_overlap = self.position.x < other_right && self_right > other.position.x;
+        let y_overlap = self.position.y < other_bottom && self_bottom > other.position.y;
+
+        x_overlap && y_overlap
     }
 }
 

@@ -134,10 +134,41 @@ mod test {
         assert_eq!(answers.iter().find(|a| a.is_correct()).iter().len(), 1);
     }
 
-    // #[test]
-    // fn get_answer_from_rectangle_test() {
-    //     let game = Game::new();
-    //     let answer_text = game.get_rectangle_at(0).get_answer_text();
-    //     assert_eq!(answer_text, "X".to_string());
-    // }
+    #[test]
+    fn two_rect_is_collided_test() {
+        let rect_a = Rectangle::new(
+            Position::new(0, 0),
+            Size::new(10, 10),
+            "".to_string(),
+            Velocity::new(0, 0),
+            "".to_string(),
+        );
+        let rect_b = Rectangle::new(
+            Position::new(5, 5),
+            Size::new(10, 10),
+            "".to_string(),
+            Velocity::new(0, 0),
+            "".to_string(),
+        );
+        assert_eq!(rect_a.collided_with(&rect_b), true);
+    }
+
+    #[test]
+    fn two_rect_is_not_collided_test() {
+        let rect_a = Rectangle::new(
+            Position::new(0, 0),
+            Size::new(10, 10),
+            "".to_string(),
+            Velocity::new(0, 0),
+            "".to_string(),
+        );
+        let rect_b = Rectangle::new(
+            Position::new(20, 20),
+            Size::new(10, 10),
+            "".to_string(),
+            Velocity::new(0, 0),
+            "".to_string(),
+        );
+        assert_eq!(rect_a.collided_with(&rect_b), false);
+    }
 }

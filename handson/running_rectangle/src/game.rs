@@ -30,7 +30,10 @@ impl Game {
         let mut rng = rand::thread_rng();
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
-        let question = question_manager.get_question(1).unwrap().clone();
+        let question = question_manager
+            .get_question(rng.gen_range(1..=question_manager.get_question_count()))
+            .unwrap()
+            .clone();
         let mut q_index = [0, 1, 2, 3, 4];
         q_index.shuffle(&mut rng);
 

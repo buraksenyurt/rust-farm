@@ -4,12 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Dörtgen Hareket Simülasyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
         svg {
             border: 1px solid black;
         }
         table {
             border: 1px solid black;
+            text-align: center;
+        }
+        #hud td {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -27,8 +35,14 @@
                     <p id="description"></p>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <p id="result"></p>
+                </td>
+            </tr>
         </table>
     </div>
+
     <script type="module">
         import init, { Game,Position } from './pkg/running_rectangle.js';
 
@@ -118,10 +132,12 @@
             function gameLoop() {
                 game.update();
                 draw();
-                //console.log(game.get_player().get_x()+':'+game.get_player().get_y());
+                const resultElement=document.getElementById('result');
 
                 if(game.collision_check()){
-                    console.log("Çarpışma tespit edildi");
+                    resultElement.textContent = "Doğru";
+                } else {
+                    resultElement.textContent = "";
                 }
                 requestAnimationFrame(gameLoop);
             }

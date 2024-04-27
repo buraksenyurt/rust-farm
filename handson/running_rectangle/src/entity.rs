@@ -135,6 +135,9 @@ impl Question {
     pub fn get_answer_at(&self, id: u32) -> Answer {
         self.answers.iter().find(|a| a.id == id).unwrap().clone()
     }
+    pub fn get_correct_answer(&self) -> Answer {
+        self.answers.iter().find(|a| a.is_correct).unwrap().clone()
+    }
 }
 
 #[wasm_bindgen]

@@ -122,7 +122,9 @@ impl Game {
 
     pub fn collision_check(&self) -> bool {
         for rect in self.rectangles.iter() {
-            if self.player.collided_with(rect) {
+            if self.player.collided_with(rect)
+                && rect.get_answer_text() == self.question.get_correct_answer().get_text()
+            {
                 return true;
             }
         }

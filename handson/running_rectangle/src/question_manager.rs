@@ -14,7 +14,7 @@ impl QuestionManager {
         question_1.add_answer(Answer::new(1, "||".to_string(), false));
         question_1.add_answer(Answer::new(2, "e".to_string(), false));
         question_1.add_answer(Answer::new(3, "N".to_string(), false));
-        question_1.add_answer(Answer::new(4, "Pi".to_string(), true));
+        question_1.add_answer(Answer::new(4, "\u{03C0}".to_string(), true));
 
         let questions = vec![question_1];
         Self { questions }

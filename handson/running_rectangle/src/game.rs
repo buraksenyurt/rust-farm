@@ -6,6 +6,7 @@ use crate::instrument::{Position, Velocity};
 use crate::lane_manager::{Column, LaneManager};
 use crate::question_manager::QuestionManager;
 use crate::utility::Utility;
+use rand::prelude::SliceRandom;
 use rand::rngs::ThreadRng;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -29,6 +30,8 @@ impl Game {
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
         let question = question_manager.get_question(1).unwrap().clone();
+        let mut q_index = vec![0, 1, 2, 3, 4];
+        q_index.shuffle(&mut rng);
 
         let rectangles = vec![
             Rectangle::new(
@@ -36,35 +39,35 @@ impl Game {
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(0).get_text(),
+                question.get_answer_at(q_index[0]).get_text(),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::One)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(1).get_text(),
+                question.get_answer_at(q_index[1]).get_text(),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Two)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(2).get_text(),
+                question.get_answer_at(q_index[2]).get_text(),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Three)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(3).get_text(),
+                question.get_answer_at(q_index[3]).get_text(),
             ),
             Rectangle::new(
                 Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Four)), 0),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(4).get_text(),
+                question.get_answer_at(q_index[4]).get_text(),
             ),
         ];
         Self {

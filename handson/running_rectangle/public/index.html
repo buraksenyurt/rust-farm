@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <h1>Moveable Rectangle with WASM</h1>
+    <h1>Burağın Matematik Yarışması</h1>
     <svg id="level1">
         <g id="blocksContainer"></g>
         <rect id="player" width="0" height="0" fill="none" stroke="black" />
@@ -30,13 +30,10 @@
         </table>
     </div>
     <script type="module">
-        import init, { Rectangle, Position, Game, Velocity, Size } from './pkg/running_rectangle.js';
+        import init, { Game } from './pkg/running_rectangle.js';
 
         async function run() {
             await init();
-
-            let pBoxWidth = 64;
-            let pBoxHeight = 64;
 
             const game = Game.new();
             const level1 = document.getElementById('level1');
@@ -50,15 +47,14 @@
 
             level1.setAttribute('width', game.max_width);
             level1.setAttribute('height', game.max_height);
-            const position = Position.new(0, level1.getAttribute('height') - pBoxHeight);
+            let player=game.get_player();
 
-            const playerRectangle = Rectangle.new(position, Size.new(pBoxWidth, pBoxHeight),'',Velocity.new(0,0),'');
-            playerElement.setAttribute('width', playerRectangle.get_width());
-            playerElement.setAttribute('height', playerRectangle.get_height());
+            playerElement.setAttribute('width', player.get_width().toString());
+            playerElement.setAttribute('height', player.get_height().toString());
 
             function updatePosition() {
-                playerElement.setAttribute('x', playerRectangle.get_x());
-                playerElement.setAttribute('y', playerRectangle.get_y());
+                playerElement.setAttribute('x', player.get_x().toString());
+                playerElement.setAttribute('y', player.get_y().toString());
             }
 
             updatePosition();
@@ -67,20 +63,20 @@
                 let amount=20;
                 switch (event.key) {
                     case 'ArrowLeft':
-                        playerRectangle.change_velocity(-amount, 0);
-                        playerRectangle.move_to();
+                        player.change_velocity(-amount, 0);
+                        player.move_to();
                         break;
                     case 'ArrowRight':
-                        playerRectangle.change_velocity(amount, 0);
-                        playerRectangle.move_to();
+                        player.change_velocity(amount, 0);
+                        player.move_to();
                         break;
                     case 'ArrowUp':
-                        playerRectangle.change_velocity(0, -amount);
-                        playerRectangle.move_to();
+                        player.change_velocity(0, -amount);
+                        player.move_to();
                         break;
                     case 'ArrowDown':
-                        playerRectangle.change_velocity(0, amount);
-                        playerRectangle.move_to();
+                        player.change_velocity(0, amount);
+                        player.move_to();
                         break;
                 }
                 updatePosition();

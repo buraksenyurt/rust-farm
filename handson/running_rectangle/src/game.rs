@@ -1,8 +1,9 @@
+use crate::colors::Color;
 use crate::constants::{
     MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
 };
 use crate::entity::*;
-use crate::instrument::{Position, Velocity};
+use crate::instrument::{Position, Size, Velocity};
 use crate::lane_manager::{Column, LaneManager};
 use crate::question_manager::QuestionManager;
 use crate::utility::Utility;
@@ -14,6 +15,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 #[wasm_bindgen]
 pub struct Game {
     rectangles: Vec<Rectangle>,
+    player: Rectangle,
     pub max_width: u32,
     pub max_height: u32,
     question: Question,
@@ -70,16 +72,30 @@ impl Game {
                 question.get_answer_at(q_index[4]).get_text(),
             ),
         ];
+
+        let player = Rectangle::new(
+            Position::new(0, MAX_SCREEN_HEIGHT as i32 - 64),
+            Size::new(64, 64),
+            "Black".to_string(),
+            Velocity::new(0, 0),
+            "".to_string(),
+        );
+
         Self {
             max_width: MAX_SCREEN_WIDTH,
             max_height: MAX_SCREEN_HEIGHT,
             rectangles,
             question,
+            player,
         }
     }
 
     pub fn add_rectangle(&mut self, rect: Rectangle) {
         self.rectangles.push(rect);
+    }
+
+    pub fn get_player(&self) -> Rectangle {
+        self.player.clone()
     }
 
     pub fn update(&mut self) {
@@ -98,6 +114,10 @@ impl Game {
 
     pub fn get_current_question_text(&self) -> String {
         self.question.get_text()
+    }
+
+    pub fn collision_check(&self) -> bool {
+        false
     }
 }
 

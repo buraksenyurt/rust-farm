@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .and(with_handlebars(handlebars.clone()))
         .and_then(Handler::get_all_handler);
 
-    let list_notes_ordered_route = warp::path!("note" / "ordered" / String / String)
+    let list_notes_ordered_route = warp::path!("note" / "list" / String / String)
         .and(warp::get())
         .and(with_handlebars(handlebars.clone()))
         .and_then(|column, order, handlebars: Arc<Handlebars<'static>>| {

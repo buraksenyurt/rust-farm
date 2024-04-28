@@ -1,6 +1,6 @@
 use crate::cache::{update_cache_if_needed, NotesCache};
 use crate::entity::{Note, NoteForm};
-use crate::utility::get_file_path;
+use crate::utility::{get_date_from, get_file_path};
 use handlebars::Handlebars;
 use log::{error, info};
 use rand::prelude::SliceRandom;
@@ -121,6 +121,10 @@ impl Handler {
             "id" => match order.as_str() {
                 "desc" => notes.sort_by(|n1, n2| n2.id.cmp(&n1.id)),
                 _ => notes.sort_by(|n1, n2| n1.id.cmp(&n2.id)),
+            },
+            "date" => match order.as_str() {
+                "desc" => notes.sort_by(|n1, n2| get_date_from(n2).cmp(&get_date_from(n1))),
+                _ => notes.sort_by(|n1, n2| get_date_from(n1).cmp(&get_date_from(n2))),
             },
             _ => {
                 notes.sort_by(|n1, n2| n1.title.cmp(&n2.title));

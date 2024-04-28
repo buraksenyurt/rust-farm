@@ -28,6 +28,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .and(with_handlebars(handlebars.clone()))
         .and_then(Handler::get_all_handler);
 
+    let list_notes_ordered_route = warp::path!("note" / "ordered" / String / String)
+        .and(warp::get())
+        .and(with_handlebars(handlebars.clone()))
+        .and_then(|column, order, handlebars: Arc<Handlebars<'static>>| {
+            Handler::get_all_with_order_handler(column, order, handlebars)
+        });
+
     let note_form_route = warp::path!("note" / "add")
         .and(warp::get())
         .and(with_handlebars(handlebars.clone()))
@@ -47,7 +54,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .or(note_form_route)
         .or(add_note_route)
         .or(list_notes_route)
-        .or(detail_note_route);
+        .or(detail_note_route)
+        .or(list_notes_ordered_route);
 
     info!("Server is running on localhost:5555");
     warp::serve(routes).run(([0, 0, 0, 0], 5555)).await;

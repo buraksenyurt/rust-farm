@@ -15,6 +15,9 @@ pub async fn create_handlebars<'a>() -> Arc<Handlebars<'a>> {
         .register_template_file("list", get_file_path("templates/list.hbs"))
         .unwrap();
     handlebars
+        .register_template_file("ordered", get_file_path("templates/list.hbs"))
+        .unwrap();
+    handlebars
         .register_template_file("detail", get_file_path("templates/detail.hbs"))
         .unwrap();
     handlebars

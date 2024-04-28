@@ -100,6 +100,49 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
+
+    pub async fn get_all_with_order_handler<'a>(
+        column: String,
+        order: String,
+        handlebars: Arc<Handlebars<'a>>,
+    ) -> Result<impl Reply, Rejection> {
+        let cached_notes = Self::get_notes_from_cache().await?;
+        let notes = &mut cached_notes.notes.clone();
+
+        match column.as_str() {
+            "title" => match order.as_str() {
+                "desc" => notes.sort_by(|n1, n2| n2.title.cmp(&n1.title)),
+                _ => notes.sort_by(|n1, n2| n1.title.cmp(&n2.title)),
+            },
+            "author" => match order.as_str() {
+                "desc" => notes.sort_by(|n1, n2| n2.author.cmp(&n1.author)),
+                _ => notes.sort_by(|n1, n2| n1.author.cmp(&n2.author)),
+            },
+            "id" => match order.as_str() {
+                "desc" => notes.sort_by(|n1, n2| n2.id.cmp(&n1.id)),
+                _ => notes.sort_by(|n1, n2| n1.id.cmp(&n2.id)),
+            },
+            _ => {
+                notes.sort_by(|n1, n2| n1.title.cmp(&n2.title));
+            }
+        }
+
+        let data = json!({ "notes": &notes });
+
+        let rendered = match handlebars.render("ordered", &data) {
+            Ok(rendered) => rendered,
+            Err(e) => {
+                error!("{}", e);
+                return Err(reject::not_found());
+            }
+        };
+
+        Ok(Response::builder()
+            .header("Content-Type", "text/html; charset=utf-8")
+            .body(rendered)
+            .unwrap())
+    }
+
     pub async fn get_by_id(
         id: usize,
         handlebars: Arc<Handlebars<'static>>,

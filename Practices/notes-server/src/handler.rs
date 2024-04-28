@@ -5,6 +5,7 @@ use handlebars::Handlebars;
 use log::{error, info};
 use rand::prelude::SliceRandom;
 use serde_json::json;
+use std::cmp::Reverse;
 use std::fs;
 use std::sync::Arc;
 use warp::http::{Response, StatusCode};
@@ -18,8 +19,8 @@ impl Reject for NoteError {}
 pub struct Handler {}
 
 impl Handler {
-    pub async fn index_handler<'a>(
-        handlebars: Arc<Handlebars<'a>>,
+    pub async fn index_handler(
+        handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let note = cached_notes.notes.choose(&mut rand::thread_rng());
@@ -33,8 +34,8 @@ impl Handler {
             .body(rendered)
             .unwrap())
     }
-    pub async fn note_form_handler<'a>(
-        handlebars: Arc<Handlebars<'a>>,
+    pub async fn note_form_handler(
+        handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let rendered = handlebars
             .render("noteForm", &{})
@@ -81,8 +82,8 @@ impl Handler {
             }
         }
     }
-    pub async fn get_all_handler<'a>(
-        handlebars: Arc<Handlebars<'a>>,
+    pub async fn get_all_handler(
+        handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let data = serde_json::json!({ "notes": &cached_notes.notes });
@@ -101,10 +102,10 @@ impl Handler {
             .unwrap())
     }
 
-    pub async fn get_all_with_order_handler<'a>(
+    pub async fn get_all_with_order_handler(
         column: String,
         order: String,
-        handlebars: Arc<Handlebars<'a>>,
+        handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
         let notes = &mut cached_notes.notes.clone();
@@ -123,8 +124,8 @@ impl Handler {
                 _ => notes.sort_by(|n1, n2| n1.id.cmp(&n2.id)),
             },
             "date" => match order.as_str() {
-                "desc" => notes.sort_by(|n1, n2| get_date_from(n2).cmp(&get_date_from(n1))),
-                _ => notes.sort_by(|n1, n2| get_date_from(n1).cmp(&get_date_from(n2))),
+                "desc" => notes.sort_by_key(|n2| Reverse(get_date_from(n2))),
+                _ => notes.sort_by_key(get_date_from),
             },
             _ => {
                 notes.sort_by(|n1, n2| n1.title.cmp(&n2.title));

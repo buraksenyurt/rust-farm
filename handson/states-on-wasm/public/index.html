@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>State Yönetimi</title>
+    <script type="module">
+        import init, { Game } from './pkg/states_on_wasm.js';
+
+        async function run() {
+            await init();
+            const game = Game.new();
+
+            document.getElementById('btnStart').addEventListener('click', () => {
+                game.update_state("playing");
+                document.getElementById('divMenu').style.display = 'none';
+                document.getElementById('divGame').style.display = 'block';
+                document.getElementById('divCredits').style.display = 'none';
+            });
+
+            document.getElementById('btnCredits').addEventListener('click', () => {
+                document.getElementById('divMenu').style.display = 'none';
+                document.getElementById('divGame').style.display = 'none';
+                document.getElementById('divCredits').style.display = 'block';
+            });
+
+            document.getElementById('btnBackToMenu').addEventListener('click', () => {
+                game.update_state("menu");
+                document.getElementById('divGame').style.display = 'none';
+                document.getElementById('divMenu').style.display = 'block';
+                document.getElementById('divCredits').style.display = 'none';
+            });
+
+            window.addEventListener('keydown', (event) => {
+                if (event.key === "Escape") {
+                    game.update_state("menu");
+                    document.getElementById('divGame').style.display = 'none';
+                    document.getElementById('divMenu').style.display = 'block';
+                    document.getElementById('divCredits').style.display = 'none';
+                }
+            });
+        }
+        run();
+    </script>
+</head>
+<body>
+    <div id="divMenu" style="display: block;">
+        <h2>Oyunlarda Durum(State) Geçişleri</h2>
+        <button id="btnStart">Başlat</button>
+        <button id="btnCredits">Bilgi</button>
+    </div>
+    <div id="divGame" style="display: none;">
+        <svg width="400" height="640">
+            <circle cx="200" cy="320" r="50" fill="blue" />
+        </svg>
+        <button id="btnBackToMenu">Menüye Dön</button>
+    </div>
+    <div id="divCredits" style="display: none;">
+        <h3>
+            Burada oyunla geliştiricileri ile ilgili bilgiler yer alır.
+        </h3>
+        <p>Menüye dönmek için ESC tuşuna basabilirsiniz.</p>
+    </div>
+</body>
+</html>

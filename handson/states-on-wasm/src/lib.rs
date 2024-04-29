@@ -1,14 +1,33 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub struct Game {
+    state: GameState,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[derive(Debug)]
+enum GameState {
+    Menu,
+    Playing,
+    Credits,
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+#[wasm_bindgen]
+impl Game {
+    pub fn new() -> Game {
+        Game {
+            state: GameState::Menu,
+        }
+    }
+
+    pub fn update_state(&mut self, new_state: &str) {
+        self.state = match new_state {
+            "menu" => GameState::Menu,
+            "playing" => GameState::Playing,
+            "credits" => GameState::Credits,
+            _ => {
+                return;
+            }
+        };
     }
 }

@@ -12,30 +12,19 @@
 
             document.getElementById('btnStart').addEventListener('click', () => {
                 game.update_state("playing");
-                document.getElementById('divMenu').style.display = 'none';
-                document.getElementById('divGame').style.display = 'block';
-                document.getElementById('divCredits').style.display = 'none';
             });
 
             document.getElementById('btnCredits').addEventListener('click', () => {
-                document.getElementById('divMenu').style.display = 'none';
-                document.getElementById('divGame').style.display = 'none';
-                document.getElementById('divCredits').style.display = 'block';
+                game.update_state("credits");
             });
 
             document.getElementById('btnBackToMenu').addEventListener('click', () => {
                 game.update_state("menu");
-                document.getElementById('divGame').style.display = 'none';
-                document.getElementById('divMenu').style.display = 'block';
-                document.getElementById('divCredits').style.display = 'none';
             });
 
             window.addEventListener('keydown', (event) => {
                 if (event.key === "Escape") {
                     game.update_state("menu");
-                    document.getElementById('divGame').style.display = 'none';
-                    document.getElementById('divMenu').style.display = 'block';
-                    document.getElementById('divCredits').style.display = 'none';
                 }
             });
         }

@@ -6,6 +6,7 @@ description = "State usages on wasm based games"
 
 [dependencies]
 wasm-bindgen = "0.2.92"
+web-sys = { version = "0.3.69", features = ["Document", "HtmlElement", "Window", "Element", "CssStyleDeclaration"] }
 
 [lib]
 crate-type = ["cdylib"]

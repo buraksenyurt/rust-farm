@@ -35,13 +35,19 @@ pub enum Status {
 }
 
 impl WorkItem {
-    pub fn new(id: u32, title: String) -> Self {
+    pub fn new(
+        id: u32,
+        title: String,
+        duration: Option<u32>,
+        duration_type: Option<DurationType>,
+        size: Option<Size>,
+    ) -> Self {
         Self {
             id,
             title,
-            duration: None,
-            duration_type: None,
-            size: None,
+            duration,
+            duration_type,
+            size,
             status: Status::Todo,
         }
     }
@@ -59,13 +65,13 @@ mod tests {
 
     #[test]
     fn new_work_item_status_must_at_todo_state_test() {
-        let work_item = WorkItem::new(1, "Design the system".to_string());
+        let work_item = WorkItem::new(1, "Design the system".to_string(), None, None, None);
         assert_eq!(work_item.get_current_status(), Status::Todo);
     }
 
     #[test]
     fn change_status_from_test() {
-        let mut work_item = WorkItem::new(1, "Design the system".to_string());
+        let mut work_item = WorkItem::new(1, "Design the system".to_string(), None, None, None);
         work_item.change_status(Status::Inprogress);
         assert_eq!(work_item.get_current_status(), Status::Inprogress);
     }

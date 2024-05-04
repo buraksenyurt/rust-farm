@@ -12,7 +12,7 @@ use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsCast;
 use web_sys::window;
-use web_sys::HtmlElement;
+use web_sys::{HtmlElement, SvgElement};
 
 #[derive(Debug)]
 enum GameState {
@@ -152,6 +152,51 @@ impl Game {
 
     pub fn get_rectangle_at(&self, index: usize) -> Rectangle {
         self.rectangles[index].clone()
+    }
+
+    pub fn draw(&mut self) {
+        if let Some(document) = window().unwrap().document() {
+            if let Some(container) = document.get_element_by_id("blocksContainer") {
+                if let Ok(container_element) = container.clone().dyn_into::<SvgElement>() {
+                    container_element.set_inner_html("");
+                    for rect in self.rectangles.iter() {
+                        let x = rect.get_x() as f32;
+                        let y = rect.get_y() as f32;
+                        let width = rect.get_width() as f32;
+                        let height = rect.get_height() as f32;
+                        let answer = rect.get_answer_text().clone();
+
+                        let block = document
+                            .create_element_ns(Some("http://www.w3.org/2000/svg"), "rect")
+                            .unwrap();
+                        block.set_attribute("x", x.to_string().as_str()).unwrap();
+                        block.set_attribute("y", y.to_string().as_str()).unwrap();
+                        block
+                            .set_attribute("width", width.to_string().as_str())
+                            .unwrap();
+                        block
+                            .set_attribute("height", height.to_string().as_str())
+                            .unwrap();
+                        block.set_attribute("fill", rect.clone().get_color().as_str()).unwrap();
+                        container.append_child(&block).unwrap();
+
+                        let text = document
+                            .create_element_ns(Some("http://www.w3.org/2000/svg"), "text")
+                            .unwrap();
+                        text.set_attribute("x", (x + width / 2.0).to_string().as_str())
+                            .unwrap();
+                        text.set_attribute("y", (y + height / 2.0 + 5.0).to_string().as_str())
+                            .unwrap();
+                        text.set_attribute("text-anchor", "middle").unwrap();
+                        text.set_attribute("fill", "white").unwrap();
+                        text.set_attribute("font-size", "18px").unwrap();
+                        text.set_attribute("font-weight", "bold").unwrap();
+                        text.set_text_content(Some(&answer));
+                        container.append_child(&text).unwrap();
+                    }
+                }
+            }
+        }
     }
 
     pub fn get_current_question_text(&self) -> String {

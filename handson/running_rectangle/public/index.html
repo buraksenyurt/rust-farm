@@ -51,7 +51,8 @@
     </div>
 </div>
 <div id="divEndGame" style="display: none;">
-
+    <p>Ne yazık ki yanlış cevap</p>
+    <button id="btnBackToMenu">Başlat</button>
 </div>
 
 <script type="module">
@@ -60,6 +61,10 @@
     async function run() {
         await init();
         const game = Game.new();
+
+        document.getElementById('btnBackToMenu').addEventListener('click', () => {
+            game.update_state("menu");
+        });
 
         document.getElementById('btnStart').addEventListener('click', () => {
             game.update_state("playing");
@@ -114,45 +119,14 @@
                 updatePosition();
             });
 
-            function draw() {
-                const blocksContainer = document.getElementById('blocksContainer');
-                blocksContainer.innerHTML = '';
-                const count = game.get_rectangles_count();
-                for (let i = 0; i < count; i++) {
-                    const rect = game.get_rectangle_at(i);
-                    const block = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    let x = parseFloat(rect.get_x().toString());
-                    let y = parseFloat(rect.get_y().toString());
-                    let width = parseFloat(rect.get_width().toString());
-                    let height = parseFloat(rect.get_height().toString());
-                    let answer = rect.get_answer_text().toString();
-
-                    block.setAttribute('x', x.toString());
-                    block.setAttribute('y', y.toString());
-                    block.setAttribute('width', width.toString());
-                    block.setAttribute('height', height.toString());
-                    block.setAttribute('fill', rect.get_color());
-                    blocksContainer.appendChild(block);
-
-                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    text.setAttribute('x', (x + width / 2).toString());
-                    text.setAttribute('y', (y + height / 2 + 5).toString());
-                    text.setAttribute('text-anchor', 'middle');
-                    text.setAttribute('fill', 'white');
-                    text.setAttribute('font-size', '18px');
-                    text.setAttribute('font-weight', 'bold');
-                    text.textContent = answer;
-                    blocksContainer.appendChild(text);
-                }
-            }
-
             function gameLoop() {
                 game.update();
-                draw();
+                game.draw();
                 const resultElement = document.getElementById('result');
 
                 if (game.collision_check()) {
                     resultElement.textContent = "Doğru";
+                    game.update_state("endGame");
                 } else {
                     resultElement.textContent = "";
                 }

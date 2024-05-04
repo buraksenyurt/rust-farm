@@ -80,7 +80,7 @@ impl QuestionManager {
             9,
             "Fiyatı 15 TL olan bir ürün üzerine %20 KDV eklenirse KDV dahil fiyatı ne olur?"
                 .to_string(),
-            Level::Hard,
+            Level::Medium,
         );
         question_9.add_answer(Answer::new(0, "20".to_string(), false));
         question_9.add_answer(Answer::new(1, "15".to_string(), false));

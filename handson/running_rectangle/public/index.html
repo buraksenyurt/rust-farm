@@ -57,7 +57,7 @@
     <button id="btnStart">Başlat</button>
 </div>
 <div id="divGame" style="display: none;">
-    <svg id="level1">
+    <svg id="scene">
         <g id="blocksContainer"></g>
         <rect id="player" width="0" height="0" fill="none" stroke="black"/>
     </svg>
@@ -91,31 +91,24 @@
 
     let game;
     let animationFrameId;
-    let level1;
     let resultSummaryElement;
 
     async function run() {
         await init();
         game = Game.new();
 
-        level1 = document.getElementById('level1');
         resultSummaryElement = document.getElementById('resultSummary');
 
         document.getElementById('btnStart').addEventListener('click', startGame);
         document.getElementById('btnBackToMenu').addEventListener('click', () => {
-            console.log("Going to menu...");
             stopGame();
             game.update_state("menu");
         });
     }
 
     function startGame() {
-        console.log("Game started");
         game.init();
         game.update_state("playing");
-
-        level1.setAttribute('width', game.max_width);
-        level1.setAttribute('height', game.max_height);
 
         window.addEventListener('keydown', handleKeyDown);
         gameLoop();
@@ -124,7 +117,6 @@
     function gameLoop() {
         game.update();
         game.draw();
-        game.draw_player();
 
         if (game.collision_check()) {
             resultSummaryElement.textContent = game.get_current_question_text() + " sorusuna verdiğin cevap Doğru!";

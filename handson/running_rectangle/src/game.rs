@@ -1,5 +1,5 @@
 use crate::constants::{
-    MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
+    LANE_COUNT, MAX_SCREEN_HEIGHT, MAX_SCREEN_WIDTH, MAX_VERTICAL_SPEED, MIN_VERTICAL_SPEED,
 };
 use crate::entity::*;
 use crate::instrument::{Position, Size, Velocity};
@@ -56,13 +56,12 @@ impl Game {
             .get_question(rng.gen_range(1..=question_manager.get_question_count()))
             .unwrap()
             .clone();
-        let mut q_index: Vec<u32> = (0..=4).collect();
+        let mut q_index: Vec<u32> = (0..=LANE_COUNT as u32).collect();
         q_index.shuffle(&mut rng);
-        let mut lane_index = 0;
-        for &i in &q_index {
+        for (lane_index, &i) in q_index.iter().enumerate() {
             let rectangle = Rectangle::new(
                 Position::new(
-                    rng.gen_range(lane_manager.get_lane_range(Column::from(lane_index))),
+                    rng.gen_range(lane_manager.get_lane_range(Column::from(lane_index as u32))),
                     0,
                 ),
                 Utility::get_random_size(),
@@ -71,7 +70,6 @@ impl Game {
                 question.get_answer_at(i).get_text(),
             );
             self.rectangles.push(rectangle);
-            lane_index += 1;
         }
 
         let player = Rectangle::new(
@@ -82,9 +80,25 @@ impl Game {
             "".to_string(),
         );
 
-        //self.rectangles = rectangles;
         self.question = question;
         self.player = player;
+        self.setup_scene();
+    }
+
+    fn setup_scene(&self) {
+        let document = window().unwrap().document().unwrap();
+        if let Ok(schene_element) = document
+            .get_element_by_id("scene")
+            .unwrap()
+            .dyn_into::<SvgElement>()
+        {
+            schene_element
+                .set_attribute("width", self.max_width.to_string().as_str())
+                .unwrap();
+            schene_element
+                .set_attribute("height", self.max_height.to_string().as_str())
+                .unwrap();
+        }
     }
 
     fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
@@ -135,13 +149,14 @@ impl Game {
                         let block = document
                             .create_element_ns(Some("http://www.w3.org/2000/svg"), "rect")
                             .unwrap();
-                        block.set_attribute("x", x.to_string().as_str()).unwrap();
-                        block.set_attribute("y", y.to_string().as_str()).unwrap();
                         block
-                            .set_attribute("width", width.to_string().as_str())
-                            .unwrap();
-                        block
-                            .set_attribute("height", height.to_string().as_str())
+                            .set_attribute(
+                                "style",
+                                &format!(
+                                    "x: {}px; y: {}px; width: {}px; height: {}px;",
+                                    x, y, width, height
+                                ),
+                            )
                             .unwrap();
                         block
                             .set_attribute("fill", rect.clone().get_color().as_str())
@@ -166,6 +181,7 @@ impl Game {
             }
         }
         self.draw_hud();
+        self.draw_player();
     }
 
     pub fn update_player(&mut self, position: Position) {
@@ -175,7 +191,7 @@ impl Game {
         }
     }
 
-    pub fn draw_player(&self) {
+    fn draw_player(&self) {
         let document = window().unwrap().document().unwrap();
         if let Ok(player_element) = document
             .get_element_by_id("player")
@@ -183,16 +199,16 @@ impl Game {
             .dyn_into::<SvgElement>()
         {
             player_element
-                .set_attribute("width", self.player.get_width().to_string().as_str())
-                .unwrap();
-            player_element
-                .set_attribute("height", self.player.get_height().to_string().as_str())
-                .unwrap();
-            player_element
-                .set_attribute("x", self.player.get_x().to_string().as_str())
-                .unwrap();
-            player_element
-                .set_attribute("y", self.player.get_y().to_string().as_str())
+                .set_attribute(
+                    "style",
+                    &format!(
+                        "width:{}px; height:{}px; x:{}px; y:{}px;",
+                        self.player.get_width(),
+                        self.player.get_height(),
+                        self.player.get_x(),
+                        self.player.get_y()
+                    ),
+                )
                 .unwrap();
         }
     }
@@ -204,10 +220,20 @@ impl Game {
             .unwrap()
             .dyn_into::<HtmlElement>()
         {
+            let (bg_color, font_color) = match self.question.get_level() {
+                Level::Easy => ("#00A36C", "#FFFFFF"),
+                Level::Medium => ("#4169E1", "#F2D2BD"),
+                Level::Hard => ("#8B0000", "#F2D2BD"),
+            };
             hud_element
-                .set_attribute("width", self.max_width.to_string().as_str())
+                .set_attribute(
+                    "style",
+                    &format!(
+                        "background-color: {};color:{}; width:{}, height: 64px",
+                        bg_color, font_color, self.max_width
+                    ),
+                )
                 .unwrap();
-            hud_element.set_attribute("height", "64px").unwrap();
         }
 
         if let Ok(question_element) = document

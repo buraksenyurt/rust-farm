@@ -151,6 +151,10 @@ impl Question {
     pub fn get_correct_answer(&self) -> Answer {
         self.answers.iter().find(|a| a.is_correct).unwrap().clone()
     }
+
+    pub fn get_level(&self) -> Level {
+        self.level.clone()
+    }
 }
 
 #[wasm_bindgen]

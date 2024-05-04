@@ -8,15 +8,39 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #divMenu, #divGame, #divEndGame {
+            width: 500px;
+            height: 800px;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
         }
 
         svg {
-            border: 1px solid black;
+            width: 100%;
+            height: 90%;
         }
 
-        table {
-            border: 1px solid black;
-            text-align: center;
+        table, button {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #hud {
+            width: 100%;
+            margin: 0;
         }
 
         #hud td {

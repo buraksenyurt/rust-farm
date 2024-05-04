@@ -58,11 +58,11 @@ impl Game {
             .clone();
         let mut q_index: Vec<u32> = (0..=4).collect();
         q_index.shuffle(&mut rng);
-
+        let mut lane_index = 0;
         for &i in &q_index {
             let rectangle = Rectangle::new(
                 Position::new(
-                    rng.gen_range(lane_manager.get_lane_range(Column::from(i))),
+                    rng.gen_range(lane_manager.get_lane_range(Column::from(lane_index))),
                     0,
                 ),
                 Utility::get_random_size(),
@@ -71,6 +71,7 @@ impl Game {
                 question.get_answer_at(i).get_text(),
             );
             self.rectangles.push(rectangle);
+            lane_index += 1;
         }
 
         let player = Rectangle::new(

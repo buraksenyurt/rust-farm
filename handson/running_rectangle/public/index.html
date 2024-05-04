@@ -9,13 +9,16 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+
         svg {
             border: 1px solid black;
         }
+
         table {
             border: 1px solid black;
             text-align: center;
         }
+
         #hud td {
             font-weight: bold;
         }
@@ -23,10 +26,14 @@
 </head>
 
 <body>
-    <h1>Burağın Matematik Yarışması</h1>
+<h1>Burağın Matematik Yarışması</h1>
+<div id="divMenu" style="display: block;">
+    <button id="btnStart">Başlat</button>
+</div>
+<div id="divGame" style="display: none;">
     <svg id="level1">
         <g id="blocksContainer"></g>
-        <rect id="player" width="0" height="0" fill="none" stroke="black" />
+        <rect id="player" width="0" height="0" fill="none" stroke="black"/>
     </svg>
     <div>
         <table id="hud">
@@ -42,26 +49,33 @@
             </tr>
         </table>
     </div>
+</div>
+<div id="divEndGame" style="display: none;">
 
-    <script type="module">
-        import init, { Game,Position } from './pkg/running_rectangle.js';
+</div>
 
-        async function run() {
-            await init();
+<script type="module">
+    import init, {Game, Position} from './pkg/running_rectangle.js';
 
-            const game = Game.new();
+    async function run() {
+        await init();
+        const game = Game.new();
+
+        document.getElementById('btnStart').addEventListener('click', () => {
+            game.update_state("playing");
+
             const level1 = document.getElementById('level1');
             const playerElement = document.getElementById('player');
-            const hudElement=document.getElementById('hud');
-            const descriptionElement=document.getElementById('description');
+            const hudElement = document.getElementById('hud');
+            const descriptionElement = document.getElementById('description');
 
-            hudElement.setAttribute('width',game.max_width);
-            hudElement.setAttribute('height','64px');
+            hudElement.setAttribute('width', game.max_width);
+            hudElement.setAttribute('height', '64px');
             descriptionElement.innerText = game.get_current_question_text();
 
             level1.setAttribute('width', game.max_width);
             level1.setAttribute('height', game.max_height);
-            let player=game.get_player();
+            let player = game.get_player();
 
             playerElement.setAttribute('width', player.get_width().toString());
             playerElement.setAttribute('height', player.get_height().toString());
@@ -69,13 +83,13 @@
             function updatePosition() {
                 playerElement.setAttribute('x', player.get_x().toString());
                 playerElement.setAttribute('y', player.get_y().toString());
-                game.update_player(Position.new(player.get_x(),player.get_y()));
+                game.update_player(Position.new(player.get_x(), player.get_y()));
             }
 
             updatePosition();
 
             window.addEventListener('keydown', event => {
-                let amount=20;
+                let amount = 20;
                 switch (event.key) {
                     case 'ArrowLeft':
                         player.change_velocity(-amount, 0);
@@ -93,6 +107,9 @@
                         player.change_velocity(0, amount);
                         player.move_to();
                         break;
+                    case 'Escape':
+                        game.update_state("menu");
+                        break;
                 }
                 updatePosition();
             });
@@ -108,7 +125,7 @@
                     let y = parseFloat(rect.get_y().toString());
                     let width = parseFloat(rect.get_width().toString());
                     let height = parseFloat(rect.get_height().toString());
-                    let answer=rect.get_answer_text().toString();
+                    let answer = rect.get_answer_text().toString();
 
                     block.setAttribute('x', x.toString());
                     block.setAttribute('y', y.toString());
@@ -132,9 +149,9 @@
             function gameLoop() {
                 game.update();
                 draw();
-                const resultElement=document.getElementById('result');
+                const resultElement = document.getElementById('result');
 
-                if(game.collision_check()){
+                if (game.collision_check()) {
                     resultElement.textContent = "Doğru";
                 } else {
                     resultElement.textContent = "";
@@ -143,10 +160,12 @@
             }
 
             gameLoop();
-        }
 
-        run();
-    </script>
+        });
+    }
+
+    run();
+</script>
 </body>
 
 </html>

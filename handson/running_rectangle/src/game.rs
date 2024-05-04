@@ -10,6 +10,16 @@ use rand::prelude::SliceRandom;
 use rand::rngs::ThreadRng;
 use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsCast;
+use web_sys::window;
+use web_sys::HtmlElement;
+
+#[derive(Debug)]
+enum GameState {
+    Menu,
+    Playing,
+    End,
+}
 
 #[wasm_bindgen]
 pub struct Game {
@@ -18,14 +28,11 @@ pub struct Game {
     pub max_width: u32,
     pub max_height: u32,
     question: Question,
+    state: GameState,
 }
 
 #[wasm_bindgen]
 impl Game {
-    fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
-        let y = rng.gen_range(MIN_VERTICAL_SPEED..MAX_VERTICAL_SPEED);
-        Velocity::new(0, y)
-    }
     pub fn new() -> Self {
         let mut rng = rand::thread_rng();
         let lane_manager = LaneManager::new();
@@ -83,13 +90,21 @@ impl Game {
             "".to_string(),
         );
 
-        Self {
+        let game = Self {
             max_width: MAX_SCREEN_WIDTH,
             max_height: MAX_SCREEN_HEIGHT,
             rectangles,
             question,
             player,
-        }
+            state: GameState::Menu,
+        };
+        game.update_visibility();
+        game
+    }
+
+    fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
+        let y = rng.gen_range(MIN_VERTICAL_SPEED..MAX_VERTICAL_SPEED);
+        Velocity::new(0, y)
     }
 
     pub fn add_rectangle(&mut self, rect: Rectangle) {
@@ -100,15 +115,35 @@ impl Game {
         self.player.clone()
     }
 
+    pub fn update_state(&mut self, new_state: &str) {
+        self.state = match new_state {
+            "menu" => GameState::Menu,
+            "playing" => GameState::Playing,
+            "end" => GameState::End,
+            _ => return,
+        };
+        self.update_visibility();
+    }
     pub fn update(&mut self) {
-        for rect in &mut self.rectangles {
-            rect.move_to();
+        match self.state {
+            GameState::Menu => {}
+            GameState::Playing => {
+                for rect in &mut self.rectangles {
+                    rect.move_to();
+                }
+            }
+            GameState::End => {}
         }
     }
 
     pub fn update_player(&mut self, position: Position) {
-        self.player.set_x(position.x);
-        self.player.set_y(position.y);
+        match self.state {
+            GameState::Playing => {
+                self.player.set_x(position.x);
+                self.player.set_y(position.y);
+            }
+            _ => {}
+        }
     }
 
     pub fn get_rectangles_count(&self) -> usize {
@@ -132,6 +167,41 @@ impl Game {
             }
         }
         false
+    }
+
+    fn update_visibility(&self) {
+        let document = window().unwrap().document().unwrap();
+        let menu = document
+            .get_element_by_id("divMenu")
+            .unwrap()
+            .dyn_into::<HtmlElement>()
+            .unwrap();
+        let game = document
+            .get_element_by_id("divGame")
+            .unwrap()
+            .dyn_into::<HtmlElement>()
+            .unwrap();
+        let end_game = document
+            .get_element_by_id("divEndGame")
+            .unwrap()
+            .dyn_into::<HtmlElement>()
+            .unwrap();
+
+        menu.style().set_property("display", "none").unwrap();
+        game.style().set_property("display", "none").unwrap();
+        end_game.style().set_property("display", "none").unwrap();
+
+        match self.state {
+            GameState::Menu => {
+                menu.style().set_property("display", "block").unwrap();
+            }
+            GameState::Playing => {
+                game.style().set_property("display", "block").unwrap();
+            }
+            GameState::End => {
+                end_game.style().set_property("display", "block").unwrap();
+            }
+        }
     }
 }
 

@@ -47,6 +47,8 @@ impl Game {
     }
 
     pub fn init(&mut self) {
+        self.rectangles.clear();
+
         let mut rng = rand::thread_rng();
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
@@ -125,7 +127,7 @@ impl Game {
         self.state = match new_state {
             "menu" => GameState::Menu,
             "playing" => GameState::Playing,
-            "end" => GameState::End,
+            "endGame" => GameState::End,
             _ => return,
         };
         self.update_visibility();
@@ -141,14 +143,6 @@ impl Game {
             GameState::End => {}
         }
     }
-
-    pub fn update_player(&mut self, position: Position) {
-        if let GameState::Playing = self.state {
-            self.player.set_x(position.x);
-            self.player.set_y(position.y);
-        }
-    }
-
     pub fn draw(&mut self) {
         if let Some(document) = window().unwrap().document() {
             if let Some(container) = document.get_element_by_id("blocksContainer") {
@@ -193,6 +187,35 @@ impl Game {
                     }
                 }
             }
+        }
+    }
+
+    pub fn update_player(&mut self, position: Position) {
+        if let GameState::Playing = self.state {
+            self.player.set_x(position.x);
+            self.player.set_y(position.y);
+        }
+    }
+
+    pub fn draw_player(&self) {
+        let document = window().unwrap().document().unwrap();
+        if let Ok(player_element) = document
+            .get_element_by_id("player")
+            .unwrap()
+            .dyn_into::<SvgElement>()
+        {
+            player_element
+                .set_attribute("width", self.player.get_width().to_string().as_str())
+                .unwrap();
+            player_element
+                .set_attribute("height", self.player.get_height().to_string().as_str())
+                .unwrap();
+            player_element
+                .set_attribute("x", self.player.get_x().to_string().as_str())
+                .unwrap();
+            player_element
+                .set_attribute("y", self.player.get_y().to_string().as_str())
+                .unwrap();
         }
     }
 

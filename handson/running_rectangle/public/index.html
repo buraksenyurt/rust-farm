@@ -51,96 +51,111 @@
     </div>
 </div>
 <div id="divEndGame" style="display: none;">
-    <p>Ne yazık ki yanlış cevap</p>
-    <button id="btnBackToMenu">Başlat</button>
+    <table>
+        <tr>
+            <td>
+                <p id="resultSummary"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="btnBackToMenu">Menüye Dön</button>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <script type="module">
     import init, {Game, Position} from './pkg/running_rectangle.js';
 
+    let game;
+    let animationFrameId;
+    let level1;
+    let descriptionElement;
+    let hudElement;
+    let resultSummaryElement;
+
     async function run() {
         await init();
-        const game = Game.new();
+        game = Game.new();
 
+        level1 = document.getElementById('level1');
+        descriptionElement = document.getElementById('description');
+        hudElement = document.getElementById('hud');
+        resultSummaryElement = document.getElementById('resultSummary');
+
+        document.getElementById('btnStart').addEventListener('click', startGame);
         document.getElementById('btnBackToMenu').addEventListener('click', () => {
+            console.log("Going to menu...");
+            stopGame();
             game.update_state("menu");
         });
+    }
 
-        document.getElementById('btnStart').addEventListener('click', () => {
-            console.log("Game started");
-            game.init();
-            game.update_state("playing");
+    function startGame() {
+        console.log("Game started");
+        game.init();
+        game.update_state("playing");
 
-            const level1 = document.getElementById('level1');
-            const playerElement = document.getElementById('player');
-            const hudElement = document.getElementById('hud');
-            const descriptionElement = document.getElementById('description');
+        hudElement.style.width = `${game.max_width}px`;
+        hudElement.style.height = '64px';
+        descriptionElement.textContent = game.get_current_question_text();
+        level1.setAttribute('width', game.max_width);
+        level1.setAttribute('height', game.max_height);
 
-            hudElement.setAttribute('width', game.max_width);
-            hudElement.setAttribute('height', '64px');
-            descriptionElement.innerText = game.get_current_question_text();
+        window.addEventListener('keydown', handleKeyDown);
+        gameLoop();
+    }
 
-            level1.setAttribute('width', game.max_width);
-            level1.setAttribute('height', game.max_height);
-            let player = game.get_player();
+    function gameLoop() {
+        game.update();
+        game.draw();
+        game.draw_player();
 
-            playerElement.setAttribute('width', player.get_width().toString());
-            playerElement.setAttribute('height', player.get_height().toString());
+        if (game.collision_check()) {
+            resultSummaryElement.textContent = game.get_current_question_text() + " sorusuna verdiğin cevap Doğru!";
+            stopGame();
+            game.update_state("endGame");
+        } else {
+            resultSummaryElement.textContent = "";
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+    }
 
-            function updatePosition() {
-                playerElement.setAttribute('x', player.get_x().toString());
-                playerElement.setAttribute('y', player.get_y().toString());
-                game.update_player(Position.new(player.get_x(), player.get_y()));
-            }
+    function handleKeyDown(event) {
+        let amount = 20;
+        let player = game.get_player();
+        switch (event.key) {
+            case 'ArrowLeft':
+                player.change_velocity(-amount, 0);
+                break;
+            case 'ArrowRight':
+                player.change_velocity(amount, 0);
+                break;
+            case 'ArrowUp':
+                player.change_velocity(0, -amount);
+                break;
+            case 'ArrowDown':
+                player.change_velocity(0, amount);
+                break;
+            case 'Escape':
+                stopGame();
+                break;
+        }
+        player.move_to();
+        game.update_player(Position.new(player.get_x(), player.get_y()));
+    }
 
-            updatePosition();
-
-            window.addEventListener('keydown', event => {
-                let amount = 20;
-                switch (event.key) {
-                    case 'ArrowLeft':
-                        player.change_velocity(-amount, 0);
-                        player.move_to();
-                        break;
-                    case 'ArrowRight':
-                        player.change_velocity(amount, 0);
-                        player.move_to();
-                        break;
-                    case 'ArrowUp':
-                        player.change_velocity(0, -amount);
-                        player.move_to();
-                        break;
-                    case 'ArrowDown':
-                        player.change_velocity(0, amount);
-                        player.move_to();
-                        break;
-                    case 'Escape':
-                        game.update_state("menu");
-                        break;
-                }
-                updatePosition();
-            });
-
-            function gameLoop() {
-                game.update();
-                game.draw();
-                const resultElement = document.getElementById('result');
-
-                if (game.collision_check()) {
-                    resultElement.textContent = "Doğru";
-                    game.update_state("endGame");
-                } else {
-                    resultElement.textContent = "";
-                }
-                requestAnimationFrame(gameLoop);
-            }
-
-            gameLoop();
-        });
+    function stopGame() {
+        cancelAnimationFrame(animationFrameId);
+        window.removeEventListener('keydown', handleKeyDown);
+        game.init();
     }
 
     run();
 </script>
+
+
 </body>
 
 </html>

@@ -106,14 +106,25 @@ pub struct Question {
     id: u32,
     text: String,
     answers: Vec<Answer>,
+    level: Level,
+}
+
+#[wasm_bindgen]
+#[derive(Default, Clone)]
+pub enum Level {
+    #[default]
+    Easy,
+    Medium,
+    Hard,
 }
 
 impl Question {
-    pub fn new(id: u32, text: String) -> Self {
+    pub fn new(id: u32, text: String, level: Level) -> Self {
         Self {
             id,
             text,
             answers: vec![],
+            level,
         }
     }
 
@@ -124,6 +135,7 @@ impl Question {
     pub fn get_id(&self) -> u32 {
         self.id
     }
+
     pub fn get_text(&self) -> String {
         String::from(&self.text)
     }
@@ -135,6 +147,7 @@ impl Question {
     pub fn get_answer_at(&self, id: u32) -> Answer {
         self.answers.iter().find(|a| a.id == id).unwrap().clone()
     }
+
     pub fn get_correct_answer(&self) -> Answer {
         self.answers.iter().find(|a| a.is_correct).unwrap().clone()
     }

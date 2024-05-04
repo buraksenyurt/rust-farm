@@ -2,6 +2,7 @@ pub const MAX_SCREEN_WIDTH: u32 = 500;
 pub const MAX_SCREEN_HEIGHT: u32 = 700;
 pub const MAX_VERTICAL_SPEED: i32 = 3;
 pub const MIN_VERTICAL_SPEED: i32 = 1;
+pub const LANE_COUNT: u8 = 5;
 pub const INFINITY: &str = "\u{221E}";
 pub const SIGMA: &str = "\u{03A3}";
 pub const DELTA: &str = "\u{0394}";

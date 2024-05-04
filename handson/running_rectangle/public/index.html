@@ -36,6 +36,8 @@
             padding: 10px 10px;
             font-size: 16px;
             cursor: pointer;
+            color: azure;
+            background-color: cornflowerblue;
         }
 
         #hud {
@@ -63,12 +65,7 @@
         <table id="hud">
             <tr>
                 <td>
-                    <p id="description"></p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p id="result"></p>
+                    <p id="questionText"></p>
                 </td>
             </tr>
         </table>
@@ -95,8 +92,6 @@
     let game;
     let animationFrameId;
     let level1;
-    let descriptionElement;
-    let hudElement;
     let resultSummaryElement;
 
     async function run() {
@@ -104,8 +99,6 @@
         game = Game.new();
 
         level1 = document.getElementById('level1');
-        descriptionElement = document.getElementById('description');
-        hudElement = document.getElementById('hud');
         resultSummaryElement = document.getElementById('resultSummary');
 
         document.getElementById('btnStart').addEventListener('click', startGame);
@@ -121,9 +114,6 @@
         game.init();
         game.update_state("playing");
 
-        hudElement.style.width = `${game.max_width}px`;
-        hudElement.style.height = '64px';
-        descriptionElement.textContent = game.get_current_question_text();
         level1.setAttribute('width', game.max_width);
         level1.setAttribute('height', game.max_height);
 

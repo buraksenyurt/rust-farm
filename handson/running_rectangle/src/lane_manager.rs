@@ -16,6 +16,19 @@ pub struct Lane {
     pub end: u32,
 }
 
+impl From<u32> for Column {
+    fn from(value: u32) -> Self {
+        match value {
+            0 => Self::Zero,
+            1 => Self::One,
+            2 => Self::Two,
+            3 => Self::Three,
+            4 => Self::Four,
+            _ => Self::Zero,
+        }
+    }
+}
+
 impl Lane {
     pub fn new(column: Column, start: u32, end: u32) -> Self {
         Self { column, start, end }

@@ -56,46 +56,22 @@ impl Game {
             .get_question(rng.gen_range(1..=question_manager.get_question_count()))
             .unwrap()
             .clone();
-        let mut q_index = [0, 1, 2, 3, 4];
+        let mut q_index: Vec<u32> = (0..=4).collect();
         q_index.shuffle(&mut rng);
 
-        let rectangles = vec![
-            Rectangle::new(
-                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Zero)), 0),
+        for &i in &q_index {
+            let rectangle = Rectangle::new(
+                Position::new(
+                    rng.gen_range(lane_manager.get_lane_range(Column::from(i))),
+                    0,
+                ),
                 Utility::get_random_size(),
                 Utility::get_random_color(),
                 Self::get_random_velocity(&mut rng),
-                question.get_answer_at(q_index[0]).get_text(),
-            ),
-            Rectangle::new(
-                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::One)), 0),
-                Utility::get_random_size(),
-                Utility::get_random_color(),
-                Self::get_random_velocity(&mut rng),
-                question.get_answer_at(q_index[1]).get_text(),
-            ),
-            Rectangle::new(
-                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Two)), 0),
-                Utility::get_random_size(),
-                Utility::get_random_color(),
-                Self::get_random_velocity(&mut rng),
-                question.get_answer_at(q_index[2]).get_text(),
-            ),
-            Rectangle::new(
-                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Three)), 0),
-                Utility::get_random_size(),
-                Utility::get_random_color(),
-                Self::get_random_velocity(&mut rng),
-                question.get_answer_at(q_index[3]).get_text(),
-            ),
-            Rectangle::new(
-                Position::new(rng.gen_range(lane_manager.get_lane_range(Column::Four)), 0),
-                Utility::get_random_size(),
-                Utility::get_random_color(),
-                Self::get_random_velocity(&mut rng),
-                question.get_answer_at(q_index[4]).get_text(),
-            ),
-        ];
+                question.get_answer_at(i).get_text(),
+            );
+            self.rectangles.push(rectangle);
+        }
 
         let player = Rectangle::new(
             Position::new(0, MAX_SCREEN_HEIGHT as i32 - 64),
@@ -105,7 +81,7 @@ impl Game {
             "".to_string(),
         );
 
-        self.rectangles = rectangles;
+        //self.rectangles = rectangles;
         self.question = question;
         self.player = player;
     }
@@ -188,6 +164,7 @@ impl Game {
                 }
             }
         }
+        self.draw_hud();
     }
 
     pub fn update_player(&mut self, position: Position) {
@@ -216,6 +193,28 @@ impl Game {
             player_element
                 .set_attribute("y", self.player.get_y().to_string().as_str())
                 .unwrap();
+        }
+    }
+
+    fn draw_hud(&self) {
+        let document = window().unwrap().document().unwrap();
+        if let Ok(hud_element) = document
+            .get_element_by_id("hud")
+            .unwrap()
+            .dyn_into::<HtmlElement>()
+        {
+            hud_element
+                .set_attribute("width", self.max_width.to_string().as_str())
+                .unwrap();
+            hud_element.set_attribute("height", "64px").unwrap();
+        }
+
+        if let Ok(question_element) = document
+            .get_element_by_id("questionText")
+            .unwrap()
+            .dyn_into::<HtmlElement>()
+        {
+            question_element.set_inner_text(self.question.get_text().as_str());
         }
     }
 

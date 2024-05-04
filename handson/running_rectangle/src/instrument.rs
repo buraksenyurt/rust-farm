@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Position {
     pub x: i32,
     pub y: i32,
@@ -15,7 +15,7 @@ impl Position {
 }
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Velocity {
     pub x: i32,
     pub y: i32,
@@ -29,7 +29,7 @@ impl Velocity {
 }
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Size {
     pub width: u32,
     pub height: u32,

@@ -34,6 +34,19 @@ pub struct Game {
 #[wasm_bindgen]
 impl Game {
     pub fn new() -> Self {
+        let game = Self {
+            max_width: MAX_SCREEN_WIDTH,
+            max_height: MAX_SCREEN_HEIGHT,
+            rectangles: vec![],
+            question: Question::default(),
+            player: Rectangle::default(),
+            state: GameState::Menu,
+        };
+        game.update_visibility();
+        game
+    }
+
+    pub fn init(&mut self) {
         let mut rng = rand::thread_rng();
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
@@ -90,16 +103,9 @@ impl Game {
             "".to_string(),
         );
 
-        let game = Self {
-            max_width: MAX_SCREEN_WIDTH,
-            max_height: MAX_SCREEN_HEIGHT,
-            rectangles,
-            question,
-            player,
-            state: GameState::Menu,
-        };
-        game.update_visibility();
-        game
+        self.rectangles = rectangles;
+        self.question = question;
+        self.player = player;
     }
 
     fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
@@ -137,21 +143,10 @@ impl Game {
     }
 
     pub fn update_player(&mut self, position: Position) {
-        match self.state {
-            GameState::Playing => {
-                self.player.set_x(position.x);
-                self.player.set_y(position.y);
-            }
-            _ => {}
+        if let GameState::Playing = self.state {
+            self.player.set_x(position.x);
+            self.player.set_y(position.y);
         }
-    }
-
-    pub fn get_rectangles_count(&self) -> usize {
-        self.rectangles.len()
-    }
-
-    pub fn get_rectangle_at(&self, index: usize) -> Rectangle {
-        self.rectangles[index].clone()
     }
 
     pub fn draw(&mut self) {
@@ -177,7 +172,9 @@ impl Game {
                         block
                             .set_attribute("height", height.to_string().as_str())
                             .unwrap();
-                        block.set_attribute("fill", rect.clone().get_color().as_str()).unwrap();
+                        block
+                            .set_attribute("fill", rect.clone().get_color().as_str())
+                            .unwrap();
                         container.append_child(&block).unwrap();
 
                         let text = document

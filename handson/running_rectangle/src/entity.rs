@@ -19,7 +19,7 @@ impl BlockSize {
     }
 }
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Rectangle {
     position: Position,
     size: Size,
@@ -101,7 +101,7 @@ impl Rectangle {
 }
 
 #[wasm_bindgen]
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Question {
     id: u32,
     text: String,

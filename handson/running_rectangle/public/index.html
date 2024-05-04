@@ -67,6 +67,8 @@
         });
 
         document.getElementById('btnStart').addEventListener('click', () => {
+            console.log("Game started");
+            game.init();
             game.update_state("playing");
 
             const level1 = document.getElementById('level1');
@@ -134,7 +136,6 @@
             }
 
             gameLoop();
-
         });
     }
 

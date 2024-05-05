@@ -14,6 +14,8 @@ pub struct Note {
     pub day: usize,
     #[serde(default)]
     pub externals: Option<Vec<External>>,
+    #[serde(rename = "isArchived")]
+    pub is_archived: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -45,4 +47,5 @@ pub struct NoteForm {
     pub month: String,
     pub day: usize,
     pub externals: Vec<External>,
+    pub is_archived: bool,
 }

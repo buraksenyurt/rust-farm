@@ -47,5 +47,4 @@ pub struct NoteForm {
     pub month: String,
     pub day: usize,
     pub externals: Vec<External>,
-    pub is_archived: bool,
 }

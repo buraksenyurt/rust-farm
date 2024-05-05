@@ -45,6 +45,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .and(with_handlebars(handlebars.clone()))
         .and_then(|id, handlebars: Arc<Handlebars<'static>>| Handler::get_by_id(id, handlebars));
 
+    let delete_note_route = warp::path!("note" / "del" / usize)
+        .and(warp::get())
+        .and(with_handlebars(handlebars.clone()))
+        .and_then(|id, handlebars: Arc<Handlebars<'static>>| Handler::delete_by_id(id, handlebars));
+
     let add_note_route = warp::path!("note" / "create")
         .and(warp::post())
         .and(warp::body::json::<NoteForm>())
@@ -55,7 +60,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .or(add_note_route)
         .or(list_notes_route)
         .or(detail_note_route)
-        .or(list_notes_ordered_route);
+        .or(list_notes_ordered_route)
+        .or(delete_note_route);
 
     info!("Server is running on localhost:5555");
     warp::serve(routes).run(([0, 0, 0, 0], 5555)).await;

@@ -2,7 +2,7 @@ use crate::cache::{update_cache_if_needed, NotesCache};
 use crate::entity::{Note, NoteForm};
 use crate::utility::{get_date_from, get_file_path};
 use handlebars::Handlebars;
-use log::{error, info};
+use log::{error, info, warn};
 use rand::prelude::SliceRandom;
 use serde_json::json;
 use std::cmp::Reverse;
@@ -19,11 +19,21 @@ impl Reject for NoteError {}
 pub struct Handler {}
 
 impl Handler {
-    pub async fn index_handler(
-        handlebars: Arc<Handlebars<'_>>,
-    ) -> Result<impl Reply, Rejection> {
+    pub async fn index_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
-        let note = cached_notes.notes.choose(&mut rand::thread_rng());
+        let note = cached_notes
+            .notes
+            .iter()
+            .filter(|n| !n.is_archived)
+            .collect::<Vec<_>>() // Collect to Vec
+            .choose(&mut rand::thread_rng())
+            .cloned();
+
+        let note = match note {
+            Some(note) => note,
+            None => return Err(reject::not_found()),
+        };
+
         let rendered = match handlebars.render("index", &note) {
             Ok(rendered) => rendered,
             Err(_) => return Err(reject::not_found()),
@@ -62,6 +72,7 @@ impl Handler {
             month: note_data.month,
             day: note_data.day,
             externals: Option::from(note_data.externals),
+            is_archived: false,
         };
 
         notes.push(new_note);
@@ -82,11 +93,9 @@ impl Handler {
             }
         }
     }
-    pub async fn get_all_handler(
-        handlebars: Arc<Handlebars<'_>>,
-    ) -> Result<impl Reply, Rejection> {
+    pub async fn get_all_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
-        let data = serde_json::json!({ "notes": &cached_notes.notes });
+        let data = json!({ "notes": &cached_notes.notes.iter().filter(|n| !n.is_archived).collect::<Vec<_>>() });
 
         let rendered = match handlebars.render("list", &data) {
             Ok(rendered) => rendered,
@@ -108,7 +117,12 @@ impl Handler {
         handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
-        let notes = &mut cached_notes.notes.clone();
+        let mut notes = cached_notes
+            .notes
+            .clone()
+            .into_iter()
+            .filter(|n| !n.is_archived)
+            .collect::<Vec<_>>();
 
         match column.as_str() {
             "title" => match order.as_str() {
@@ -146,6 +160,64 @@ impl Handler {
             .header("Content-Type", "text/html; charset=utf-8")
             .body(rendered)
             .unwrap())
+    }
+
+    pub async fn delete_by_id(
+        id: usize,
+        handlebars: Arc<Handlebars<'static>>,
+    ) -> Result<impl Reply, Rejection> {
+        warn!("Deleted note id is {}", id);
+        let cached_notes = Self::get_notes_from_cache().await?;
+        let mut notes = cached_notes.notes.clone();
+        let note = notes.iter_mut().find(|n| n.id == id);
+
+        match note {
+            Some(note) => {
+                note.is_archived = true;
+                let path = get_file_path("notes.json");
+                match fs::write(path, serde_json::to_string(&notes).unwrap()) {
+                    Ok(_) => {
+                        info!("Dosya değişti");
+                        let data = json!({
+                            "title": "Kayıt Arşivlendi",
+                            "id":id
+                        });
+                        let rendered = match handlebars.render("deleted", &data) {
+                            Ok(rendered) => rendered,
+                            Err(e) => {
+                                error!("{}", e);
+                                return Err(reject::not_found());
+                            }
+                        };
+
+                        Ok(Response::builder()
+                            .header("Content-Type", "text/html; charset=utf-8")
+                            .body(rendered)
+                            .unwrap())
+                    }
+                    Err(e) => {
+                        let note_error = NoteError("Failed to write to file".to_string());
+                        error!("{}.{}", note_error.0, e);
+                        Err(reject::custom(note_error))
+                    }
+                }
+            }
+            None => {
+                let data = json!({
+                    "title": "Hata",
+                    "message": "Aranan not bilgisi bulunamadı."
+                });
+                let rendered = handlebars.render("error", &data).unwrap_or_else(|_| {
+                    "<h1>500 Internal Server Error</h1><p>Hata sayfası render edilemedi.</p>"
+                        .to_string()
+                });
+
+                Ok(Response::builder()
+                    .header("Content-Type", "text/html; charset=utf-8")
+                    .body(rendered)
+                    .unwrap())
+            }
+        }
     }
 
     pub async fn get_by_id(

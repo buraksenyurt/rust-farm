@@ -24,7 +24,7 @@ pub async fn create_handlebars<'a>() -> Arc<Handlebars<'a>> {
         .register_template_file("error", get_file_path("templates/error.hbs"))
         .unwrap();
     handlebars
-        .register_template_file("deleted", get_file_path("templates/deleted.hbs"))
+        .register_template_file("deleted", get_file_path("templates/archived.hbs"))
         .unwrap();
 
     Arc::new(handlebars)

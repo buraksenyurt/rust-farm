@@ -29,7 +29,7 @@ impl WorkItemManager {
 
         let client = Client::new();
         let res = client
-            .post("https://localhost:5984/api/workitems")
+            .post("https://localhost:4448/api/items")
             .json(&work_item)
             .send()
             .await

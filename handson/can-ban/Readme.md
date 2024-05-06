@@ -38,3 +38,15 @@ npm install express
 # Frontend taraftaki örneği çalıştırmak için, yine root klasördeyken aşağıdaki komut kullanılabilir
 npm start
 ```
+
+## Çalışma Zamanı
+
+Projeler can-ban isimli workspace altında birleştirilmiştir. Kolayca başlatmak için run.sh isimli terminal script'i kullanılabilir. 
+
+```bash
+# run.sh betiğini çalıştırılabilir hale getirmek için
+sudo chmod +x start.sh
+
+# Sonrasında çalıştırmak için
+./start.sh
+```

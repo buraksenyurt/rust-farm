@@ -1,6 +1,10 @@
 # Can-Ban Board
 
-Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem nasıl yaparım diye yola çıktığım örnektir.
+Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem nasıl yaparım diye yola çıktığım örnektir. Solution içerisinde iki klasör yer alıyor. backend klasörü Rest tabanlı çalışan bir Web API için. Kanban board'daki varlıkların temel CRUD _(Create, Read, Update, Delete)_ operasyonları için kullanılıyor diyebiliriz. Frontend klasöründe önyüz uygulamamız yer alacak. Frontend taraftaki uygulamada basit HTML, Rust ve WASM üçlemesi söz konusu. UI ekranında yapılan işlemler için backend taraftaki servise gidildiğini ifade edebiliriz.
+
+## Frontend Tarafı
+
+Bu projede wasm kullanılacağı için işleri kolaylaştıracak wasm-pack'e ihtiyacımız var.
 
 ```bash
 # wasm pack kurulumu için
@@ -12,7 +16,7 @@ wasm-pack build --target web
 
 ## Sunucu Yayınlama
 
-Sayfayı dilersek basit bir node sunucusu üzerinden yayınlayabliriz. Bunun için aşağıdaki komutlarla ilerlenebilir.
+Frontend taraftaki rust tabanlı wasm uygulamasını host etmek için node.js ve express kullanılabilir
 
 ```bash
 # root klasördeyken
@@ -23,6 +27,6 @@ npm init -y
 # Express modülü host işlemlerimizi kolaylaştırır
 npm install express
 
-# Örneği çalıştırmak için, yine root klasördeyken
+# Frontend taraftaki örneği çalıştırmak için, yine root klasördeyken aşağıdaki komut kullanılabilir
 npm start
 ```

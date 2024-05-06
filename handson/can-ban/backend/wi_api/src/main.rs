@@ -1,6 +1,8 @@
 mod model;
 
+use actix_cors::Cors;
 use actix_web::web::Data;
+use actix_web::http::header;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 use log::{info, warn};
 use model::WorkItem;
@@ -42,6 +44,14 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(data.clone())
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allowed_methods(vec!["GET", "POST"])
+                    .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
+                    .allowed_header(header::CONTENT_TYPE)
+                    .max_age(3600),
+            )
             .route("/api/items", web::post().to(create))
             .route("/api/items/{id}", web::get().to(get))
     })

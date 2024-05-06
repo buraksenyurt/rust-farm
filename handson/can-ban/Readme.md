@@ -14,6 +14,14 @@ cargo install wasm-pack
 wasm-pack build --target web
 ```
 
+## Backend Tarafı
+
+Backend servisi tipik bir Rest servisi. Log çıktılarını görebilmek için aşağıdaki gibi hareket edebiliriz.
+
+```bash
+RUST_LOG=info cargo run
+```
+
 ## Sunucu Yayınlama
 
 Frontend taraftaki rust tabanlı wasm uygulamasını host etmek için node.js ve express kullanılabilir

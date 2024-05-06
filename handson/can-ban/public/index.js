@@ -13,9 +13,12 @@ async function run() {
         const size = document.getElementById('inputSize').value;
 
         const manager = WorkItemManager.new();
-        let createdId = manager.create(title, duration, durationType, size);
-        console.log("A new work item created..." + createdId);
-        form.reset();
+        manager.create(title, duration, durationType, size)
+            .then(success => {
+                console.log("A new work item created");
+                form.reset();
+            })
+            .catch(error => console.log("API call failed"));
     });
 
 }

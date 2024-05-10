@@ -1,25 +1,26 @@
 mod model;
 
 use actix_cors::Cors;
-use actix_web::web::Data;
 use actix_web::http::header;
+use actix_web::web::Data;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 use log::{info, warn};
 use model::WorkItem;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-async fn create(item: web::Json<WorkItem>, data: web::Data<AppState>) -> impl Responder {
+async fn create(item: web::Json<WorkItem>, data: Data<AppState>) -> impl Responder {
     let mut items = data.items.lock().unwrap();
     let id = items.len() as u32 + 1;
     let mut new_item = item.into_inner();
+    info!("{:?}", new_item);
     new_item.id = id;
-    items.insert(id, new_item);
+    items.insert(id, new_item.clone());
     info!("New item has been added");
-    HttpResponse::Created().json("Item created")
+    HttpResponse::Created().json(new_item)
 }
 
-async fn get(id: web::Path<u32>, data: web::Data<AppState>) -> impl Responder {
+async fn get(id: web::Path<u32>, data: Data<AppState>) -> impl Responder {
     let items = data.items.lock().unwrap();
     if let Some(item) = items.get(&id.into_inner()) {
         HttpResponse::Ok().json(item)

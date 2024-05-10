@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 //use std::str::FromStr;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct WorkItem {
     pub id: u32,
     pub title: String,
@@ -11,7 +11,7 @@ pub struct WorkItem {
     pub status: Status,
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum DurationType {
     Hour,
     Day,
@@ -34,7 +34,7 @@ pub enum DurationType {
 //     }
 // }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum Size {
     Small,
     Medium,
@@ -57,7 +57,7 @@ pub enum Size {
 //     }
 // }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum Status {
     Todo,
     Inprogress,

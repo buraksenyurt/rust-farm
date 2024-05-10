@@ -2,6 +2,7 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::js_sys::JsString;
 
 #[wasm_bindgen]
 pub struct WorkItemManager {}
@@ -17,7 +18,7 @@ impl WorkItemManager {
         duration: u32,
         duration_type: &str,
         size: &str,
-    ) -> Result<bool, JsValue> {
+    ) -> Result<JsString, JsValue> {
         let work_item = WorkItem {
             id: 1,
             title,
@@ -36,7 +37,11 @@ impl WorkItemManager {
             .map_err(|e| e.to_string())?;
 
         if res.status().is_success() {
-            Ok(true)
+            let json_response = res
+                .text()
+                .await
+                .map_err(|e| JsValue::from_str(&e.to_string()))?;
+            Ok(JsString::from(json_response))
         } else {
             Err(JsValue::from_str(&format!("Send error: {}", res.status())))
         }
@@ -83,7 +88,6 @@ pub enum Size {
     Medium,
     Large,
     Epic,
-    Unknown,
 }
 
 impl FromStr for Size {
@@ -95,7 +99,7 @@ impl FromStr for Size {
             "Medium" => Self::Medium,
             "Large" => Self::Large,
             "Epic" => Self::Epic,
-            _ => Self::Unknown,
+            _ => Self::Small,
         };
         Ok(value)
     }

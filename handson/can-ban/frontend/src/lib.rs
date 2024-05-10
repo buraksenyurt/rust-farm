@@ -46,6 +46,27 @@ impl WorkItemManager {
             Err(JsValue::from_str(&format!("Send error: {}", res.status())))
         }
     }
+
+    pub async fn change_status(&self, id: u32, status: &str) -> Result<(), JsValue> {
+        let update_item = UpdateItem {
+            id,
+            new_status: Status::from_str(status).unwrap(),
+        };
+
+        let client = Client::new();
+        let res = client
+            .put("http://localhost:4448/api/items")
+            .json(&update_item)
+            .send()
+            .await
+            .map_err(|e| e.to_string())?;
+
+        if res.status().is_success() {
+            Ok(())
+        } else {
+            Err(JsValue::from_str(&format!("Send error: {}", res.status())))
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -56,6 +77,12 @@ pub struct WorkItem {
     duration_type: Option<DurationType>,
     size: Option<Size>,
     status: Status,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UpdateItem {
+    pub id: u32,
+    pub new_status: Status,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -110,4 +137,18 @@ pub enum Status {
     Todo,
     Inprogress,
     Completed,
+}
+
+impl FromStr for Status {
+    type Err = ();
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        let value = match value {
+            "ToDo" => Self::Todo,
+            "InProgress" => Self::Inprogress,
+            "Completed" => Self::Completed,
+            _ => Self::Todo,
+        };
+        Ok(value)
+    }
 }

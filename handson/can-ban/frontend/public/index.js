@@ -51,7 +51,7 @@ function addTodoCard(workItem) {
 
     const cardContent = document.createElement("div");
     cardContent.innerHTML = `
-        <h5 class="card-title">${workItem.title}</h5>
+        <h5 class="card-title">${workItem.id} - ${workItem.title}</h5>
         <p class="card-text">Duration: ${workItem.duration} ${workItem.duration_type}</p>
         <p class="card-text">Size: ${workItem.size}</p>
     `;
@@ -79,8 +79,36 @@ function moveCard(card, direction) {
 
     if (targetIndex !== undefined) {
         allColumns[targetIndex].appendChild(card);
+        changeStatus(card, targetIndex);
         changeCardStyle(card, targetIndex);
     }
+}
+
+function changeStatus(card, columnIndex) {
+    const manager = WorkItemManager.new();
+    let status = "ToDo";
+    switch (columnIndex) {
+        case 0:
+            status = "ToDo";
+            break;
+        case 1:
+            status = "InProgress";
+            break;
+        case 2:
+            status = "Completed";
+            break;
+    }
+
+    manager.change_status(parseInt(card.id.toString().substring(4,)), status)
+        .then(_response => {
+            console.log('Work item status was successfully changed!');
+            showAlert('Work item status was successfully changed!', 'success');
+        })
+        .catch(error => {
+            console.log('API call failed on changing status!');
+            showAlert("Failed to create a new work item. Reason is '" + error + "'", "danger");
+        });
+
 }
 
 function changeCardStyle(card, columnIndex) {

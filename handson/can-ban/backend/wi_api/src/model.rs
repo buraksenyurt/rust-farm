@@ -11,6 +11,12 @@ pub struct WorkItem {
     pub status: Status,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct UpdateItem {
+    pub id: u32,
+    pub new_status: Status,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub enum DurationType {
     Hour,

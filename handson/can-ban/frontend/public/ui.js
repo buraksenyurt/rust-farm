@@ -1,35 +1,5 @@
-import init, {WorkItemManager} from './pkg/can_ban.js';
-
-async function run() {
-    await init();
-
-    const form = document.getElementById('formNewWorkItem');
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const title = document.getElementById('inputTitle').value;
-        const duration = document.getElementById('inputDuration').value;
-        const durationType = document.getElementById('inputDurationType').value;
-        const size = document.getElementById('inputSize').value;
-
-        const manager = WorkItemManager.new();
-        manager.create(title, duration, durationType, size)
-            .then(payload => {
-                const workItem = JSON.parse(payload);
-                console.log('A new work item was successfully created!' + payload);
-                addTodoCard(workItem);
-                form.reset();
-                showAlert('A new work item was successfully created!', 'success');
-            })
-            .catch(error => {
-                console.log('API call failed');
-                showAlert("Failed to create a new work item. Reason is '" + error + "'", "danger");
-            });
-    });
-
-}
-
-function addTodoCard(workItem) {
+import {WorkItemManager} from './pkg/can_ban.js';
+export function addTodoCard(workItem) {
     const divInProgress = document.getElementById('divTodo');
 
     const card = document.createElement("div");
@@ -125,7 +95,7 @@ function changeCardStyle(card, columnIndex) {
     }
 }
 
-function showAlert(message, type) {
+export function showAlert(message, type) {
     const alertPlaceholder = document.getElementById('alertPlaceholder');
     const alert = document.createElement('div');
     alert.className = `alert alert-${type} alert-dismissible fade show`;
@@ -137,5 +107,3 @@ function showAlert(message, type) {
     alertPlaceholder.appendChild(alert);
     setTimeout(() => alert.remove(), 5000);
 }
-
-run();

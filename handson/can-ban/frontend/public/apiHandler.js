@@ -11,3 +11,14 @@ export async function createWorkItem(workItemData) {
             , workItemData.size);
     return JSON.parse(payload);
 }
+
+export async function fetchWorkItems() {
+    const manager = WorkItemManager.new();
+    try {
+        const jsStringResponse = await manager.get_board();
+        return JSON.parse(jsStringResponse);
+    } catch (error) {
+        console.error("Error fetching board items:", error);
+        throw error;
+    }
+}

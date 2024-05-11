@@ -1,10 +1,10 @@
 import {WorkItemManager} from './pkg/can_ban.js';
-export function addTodoCard(workItem) {
-    const divInProgress = document.getElementById('divTodo');
 
+export function bindCard(workItem) {
     const card = document.createElement("div");
     card.className = "card mb-3 bg-post-it-yellow";
     card.id = 'card' + workItem.id;
+    card.style.backgroundColor = changeCardStyleFromWorkItem(workItem);
 
     const cardBody = document.createElement("div");
     cardBody.className = "card-body d-flex justify-content-between align-items-center";
@@ -32,6 +32,24 @@ export function addTodoCard(workItem) {
 
     card.appendChild(cardBody);
 
+    return card;
+}
+
+export function addTodoCard(workItem) {
+    const divInProgress = document.getElementById('divTodo');
+    const card = bindCard(workItem)
+    divInProgress.appendChild(card);
+}
+
+export function addInProgressCard(workItem) {
+    const divInProgress = document.getElementById('divInProgress');
+    const card = bindCard(workItem)
+    divInProgress.appendChild(card);
+}
+
+export function addCompletedCard(workItem) {
+    const divInProgress = document.getElementById('divCompleted');
+    const card = bindCard(workItem)
     divInProgress.appendChild(card);
 }
 
@@ -95,6 +113,17 @@ function changeCardStyle(card, columnIndex) {
     }
 }
 
+function changeCardStyleFromWorkItem(workItem) {
+    switch (workItem.status) {
+        case 'Todo':
+            return '#fff3cd';
+        case 'Inprogress':
+            return '#add8e6';
+        case 'Completed':
+            return '#77dd77';
+    }
+}
+
 export function showAlert(message, type) {
     const alertPlaceholder = document.getElementById('alertPlaceholder');
     const alert = document.createElement('div');
@@ -106,4 +135,20 @@ export function showAlert(message, type) {
     `;
     alertPlaceholder.appendChild(alert);
     setTimeout(() => alert.remove(), 5000);
+}
+
+export function displayWorkItems(workItems) {
+    workItems.forEach(item => {
+        switch (item.status) {
+            case 'Todo':
+                addTodoCard(item);
+                break;
+            case 'Inprogress':
+                addInProgressCard(item);
+                break;
+            case 'Completed':
+                addCompletedCard(item);
+                break;
+        }
+    });
 }

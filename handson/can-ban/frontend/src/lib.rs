@@ -70,6 +70,25 @@ impl WorkItemManager {
             Err(JsValue::from_str(&format!("Send error: {}", res.status())))
         }
     }
+
+    pub async fn get_board(&self) -> Result<JsString, JsValue> {
+        let client = Client::new();
+        let res = client
+            .get("http://localhost:4448/api/items")
+            .send()
+            .await
+            .map_err(|e| e.to_string())?;
+
+        if res.status().is_success() {
+            let json_response = res
+                .text()
+                .await
+                .map_err(|e| JsValue::from_str(&e.to_string()))?;
+            Ok(JsString::from(json_response))
+        } else {
+            Err(JsValue::from_str(&format!("Send error: {}", res.status())))
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]

@@ -59,17 +59,41 @@ impl DbContext {
                     id: row.get(0)?,
                     title: row.get(1)?,
                     duration: row.get(2)?,
-                    duration_type: match row.get::<_, Option<u8>>(3)? {
-                        Some(dt) => Some(DurationType::try_from(dt).unwrap()),
-                        None => None,
-                    },
-                    size: match row.get::<_, Option<u8>>(4)? {
-                        Some(sz) => Some(Size::try_from(sz).unwrap()),
-                        None => None,
-                    },
+                    duration_type: row
+                        .get::<_, Option<u8>>(3)?
+                        .map(|dt| DurationType::try_from(dt).unwrap()),
+                    size: row
+                        .get::<_, Option<u8>>(4)?
+                        .map(|sz| Size::try_from(sz).unwrap()),
                     status: Status::try_from(row.get::<_, u8>(5)?).unwrap(),
                 })
             },
         )
+    }
+
+    pub fn get_all(&self) -> Result<Vec<CreateWorkItemResponse>, rusqlite::Error> {
+        let mut query = self.conn.prepare(
+            "SELECT id,title,duration,duration_type,size,status FROM work_items ORDER BY id",
+        )?;
+        let reader = query.query_map([], |row| {
+            Ok(CreateWorkItemResponse {
+                id: row.get(0)?,
+                title: row.get(1)?,
+                duration: row.get(2)?,
+                duration_type: row
+                    .get::<_, Option<u8>>(3)?
+                    .map(|dt| DurationType::try_from(dt).unwrap()),
+                size: row
+                    .get::<_, Option<u8>>(4)?
+                    .map(|sz| Size::try_from(sz).unwrap()),
+                status: Status::try_from(row.get::<_, u8>(5)?).unwrap(),
+            })
+        })?;
+
+        let mut results = Vec::new();
+        for row in reader {
+            results.push(row?);
+        }
+        Ok(results)
     }
 }

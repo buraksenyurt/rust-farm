@@ -7,6 +7,11 @@ use wasm_bindgen_futures::js_sys::JsString;
 #[wasm_bindgen]
 pub struct WorkItemManager {}
 
+impl Default for WorkItemManager {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 #[wasm_bindgen]
 impl WorkItemManager {
     pub fn new() -> Self {

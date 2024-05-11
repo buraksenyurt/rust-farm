@@ -2,7 +2,7 @@ import {WorkItemManager} from './pkg/can_ban.js';
 
 export async function createWorkItem(workItemData) {
     const manager = WorkItemManager.new();
-    //console.log(workItemData);
+    console.log(workItemData);
     const payload = await manager
         .create(
             workItemData.title

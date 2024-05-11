@@ -1,33 +1,58 @@
+mod db_context;
 mod model;
+mod test;
 
-use crate::model::UpdateItem;
+use crate::model::*;
 use actix_cors::Cors;
 use actix_web::http::header;
 use actix_web::web::Data;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-use log::{info, warn};
+use chrono::Local;
+use log::*;
 use model::WorkItem;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-async fn create(item: web::Json<WorkItem>, data: Data<AppState>) -> impl Responder {
+async fn create(item: web::Json<CreateWorkItemRequest>, data: Data<AppState>) -> impl Responder {
     let mut items = data.items.lock().unwrap();
     let id = items.len() as u32 + 1;
-    let mut new_item = item.into_inner();
+    let payload = item.into_inner();
+
+    let new_item = WorkItem {
+        id,
+        title: payload.title,
+        duration: payload.duration,
+        duration_type: payload.duration_type,
+        size: payload.size,
+        status: Status::Todo,
+        crate_date: Local::now(),
+        modified_date: None,
+    };
+
     info!("{:?}", new_item);
-    new_item.id = id;
     items.insert(id, new_item.clone());
     info!("New item has been added");
-    HttpResponse::Created().json(new_item)
+
+    let response = CreateWorkItemResponse {
+        id: new_item.id,
+        title: new_item.title,
+        duration: new_item.duration,
+        duration_type: new_item.duration_type,
+        size: new_item.size,
+        status: new_item.status,
+    };
+
+    HttpResponse::Created().json(response)
 }
 
-async fn update_state(body: web::Json<UpdateItem>, data: Data<AppState>) -> impl Responder {
+async fn update_state(body: web::Json<UpdateStatusRequest>, data: Data<AppState>) -> impl Responder {
     let mut items = data.items.lock().unwrap();
     let payload = body.into_inner();
     info!("{:?}", payload);
     if let Some(item) = items.get_mut(&payload.id) {
         info!("Status from {:?} to {:?}", item.status, payload.new_status);
         item.status = payload.new_status;
+        item.modified_date = Some(Local::now());
         HttpResponse::Accepted().finish()
     } else {
         warn!("Failed to find");

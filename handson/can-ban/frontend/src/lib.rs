@@ -19,13 +19,11 @@ impl WorkItemManager {
         duration_type: &str,
         size: &str,
     ) -> Result<JsString, JsValue> {
-        let work_item = WorkItem {
-            id: 1,
+        let work_item = CreateWorkItemRequest {
             title,
             duration: Some(duration),
             duration_type: Some(DurationType::from_str(duration_type).unwrap()),
             size: Some(Size::from_str(size).unwrap()),
-            status: Status::Todo,
         };
 
         let client = Client::new();
@@ -48,7 +46,7 @@ impl WorkItemManager {
     }
 
     pub async fn change_status(&self, id: u32, status: &str) -> Result<(), JsValue> {
-        let update_item = UpdateItem {
+        let update_item = UpdateStatusRequest {
             id,
             new_status: Status::from_str(status).unwrap(),
         };
@@ -70,7 +68,15 @@ impl WorkItemManager {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct WorkItem {
+pub struct CreateWorkItemRequest {
+    title: String,
+    duration: Option<u32>,
+    duration_type: Option<DurationType>,
+    size: Option<Size>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CreateWorkItemResponse {
     id: u32,
     title: String,
     duration: Option<u32>,
@@ -80,7 +86,7 @@ pub struct WorkItem {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct UpdateItem {
+pub struct UpdateStatusRequest {
     pub id: u32,
     pub new_status: Status,
 }

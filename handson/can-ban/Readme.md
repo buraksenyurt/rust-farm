@@ -2,6 +2,12 @@
 
 Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem nasıl yaparım diye yola çıktığım örnektir. Solution içerisinde iki klasör yer alıyor. backend klasörü Rest tabanlı çalışan bir Web API için. Kanban board'daki varlıkların temel CRUD _(Create, Read, Update, Delete)_ operasyonları için kullanılıyor diyebiliriz. Frontend klasöründe önyüz uygulamamız yer alacak. Frontend taraftaki uygulamada basit HTML, Rust ve WASM üçlemesi söz konusu. UI ekranında yapılan işlemler için backend taraftaki servise gidildiğini ifade edebiliriz.
 
+Örneğin çalışma zamanı üç aşağı beş yukarı aşağıdaki ekran görüntülerinde olduğu gibidir.
+
+![runtime 01](../images/can_ban_runtime_01.png)
+
+![runtime 02](../images/can_ban_runtime_02.png)
+
 ## Frontend Tarafı
 
 Bu projede wasm kullanılacağı için işleri kolaylaştıracak wasm-pack'e ihtiyacımız var.

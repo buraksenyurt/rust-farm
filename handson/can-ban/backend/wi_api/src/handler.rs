@@ -57,6 +57,14 @@ impl Handler {
         }
     }
 
+    pub async fn move_to_archive(id: web::Path<u32>, data: Data<AppState>) -> impl Responder {
+        let db = data.db_context.lock().unwrap();
+        match db.move_to_archive(*id) {
+            Ok(_) => HttpResponse::Accepted().finish(),
+            Err(_) => HttpResponse::InternalServerError().finish(),
+        }
+    }
+
     pub async fn get(id: web::Path<u32>, data: Data<AppState>) -> impl Responder {
         let db = data.db_context.lock().unwrap();
         match db.get_item(*id) {

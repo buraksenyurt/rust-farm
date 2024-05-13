@@ -18,6 +18,7 @@ impl DbContext {
                     duration_type INTEGER NOT NULL,
                     size INTEGER NOT NULL,
                     status INTEGER NOT NULL,
+                    archived INTEGER DEFAULT 0,
                     create_date TEXT NOT NULL,
                     modified_date TEXT
             )",
@@ -50,9 +51,17 @@ impl DbContext {
         Ok(())
     }
 
+    pub fn move_to_archive(&self, id: u32) -> Result<()> {
+        self.conn.execute(
+            "UPDATE work_items SET archived = 1 WHERE id = ?1",
+            params![id],
+        )?;
+        Ok(())
+    }
+
     pub fn get_item(&self, id: u32) -> Result<CreateWorkItemResponse, rusqlite::Error> {
         self.conn.query_row(
-            "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1",
+            "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1 AND archived <> 1",
             params![id],
             |row| {
                 Ok(CreateWorkItemResponse {

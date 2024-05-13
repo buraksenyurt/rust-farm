@@ -6,7 +6,7 @@ use crate::model::{
 use actix_web::web::Data;
 use actix_web::{web, HttpResponse, Responder};
 use chrono::Local;
-use log::info;
+use log::{error, info};
 
 pub struct Handler {}
 
@@ -41,7 +41,10 @@ impl Handler {
                 };
                 HttpResponse::Created().json(response)
             }
-            Err(_) => HttpResponse::InternalServerError().finish(),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
         }
     }
 
@@ -54,7 +57,10 @@ impl Handler {
         info!("{:?}", payload);
         match db.update_work_item_status(&payload) {
             Ok(_) => HttpResponse::Accepted().finish(),
-            Err(_) => HttpResponse::InternalServerError().finish(),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
         }
     }
 
@@ -65,7 +71,10 @@ impl Handler {
         let db = data.db_context.lock().unwrap();
         match db.move_to_archive(body.into_inner().id) {
             Ok(_) => HttpResponse::Accepted().finish(),
-            Err(_) => HttpResponse::InternalServerError().finish(),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
         }
     }
 
@@ -73,7 +82,10 @@ impl Handler {
         let db = data.db_context.lock().unwrap();
         match db.get_item(*id) {
             Ok(response) => HttpResponse::Ok().json(response),
-            Err(_) => HttpResponse::NotFound().finish(),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
         }
     }
 
@@ -81,7 +93,10 @@ impl Handler {
         let db = data.db_context.lock().unwrap();
         match db.get_all() {
             Ok(result) => HttpResponse::Ok().json(result),
-            Err(_) => HttpResponse::InternalServerError().finish(),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
         }
     }
 }

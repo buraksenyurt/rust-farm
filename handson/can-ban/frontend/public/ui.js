@@ -89,11 +89,10 @@ function moveToArchive(card) {
     const manager = WorkItemManager.new();
     manager.move_to_archive(parseInt(card.id.toString().substring(4,)))
         .then(_response => {
-            //console.log('Work item was successfully moved to archive!');
             showAlert('Work item was successfully moved to archive!', 'success');
+            card.remove();
         })
         .catch(error => {
-            //console.log('API call failed on changing status!');
             showAlert("Failed to move to archive. Reason is '" + error + "'", "danger");
         });
 }

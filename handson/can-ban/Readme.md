@@ -1,6 +1,8 @@
 # Can-Ban Board
 
-Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem nasıl yaparım diye yola çıktığım örnektir. Solution içerisinde iki klasör yer alıyor. backend klasörü Rest tabanlı çalışan bir Web API için. Kanban board'daki varlıkların temel CRUD _(Create, Read, Update, Delete)_ operasyonları için kullanılıyor diyebiliriz. Frontend klasöründe önyüz uygulamamız yer alacak. Frontend taraftaki uygulamada basit HTML, Rust ve WASM üçlemesi söz konusu. UI ekranında yapılan işlemler için backend taraftaki servise gidildiğini ifade edebiliriz.
+Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem nasıl yaparım diye yola çıktığım örnektir. Solution içerisinde iki klasör yer alıyor. backend klasörü Rest tabanlı çalışan bir Web API için. Kanban board'daki varlıkların temel CRUD _(Create, Read, Update, Delete)_ operasyonları için kullanılıyor diyebiliriz. Frontend klasöründe önyüz uygulamamız yer alacak. Frontend taraftaki uygulamada basit HTML, Rust ve WASM üçlemesi söz konusu. UI ekranında yapılan işlemler için backend taraftaki servise gidildiğini ifade edebiliriz. Uygulamanın mimari modelini aşağıdaki şekille ifade edebiliriz.
+
+![Architecture](../images/can_ban_architecture.png)
 
 Örneğin çalışma zamanı üç aşağı beş yukarı aşağıdaki ekran görüntülerinde olduğu gibidir.
 

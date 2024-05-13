@@ -50,6 +50,22 @@ impl WorkItemManager {
         }
     }
 
+    pub async fn move_to_archive(&self, id: u32) -> Result<(), JsValue> {
+        let request = MoveToArchiveRequest { id };
+        let client = Client::new();
+        let res = client
+            .patch("http://localhost:4448/api/items")
+            .json(&request)
+            .send()
+            .await
+            .map_err(|e| e.to_string())?;
+
+        if res.status().is_success() {
+            Ok(())
+        } else {
+            Err(JsValue::from_str(&format!("Send error: {}", res.status())))
+        }
+    }
     pub async fn change_status(&self, id: u32, status: &str) -> Result<(), JsValue> {
         let update_item = UpdateStatusRequest {
             id,
@@ -113,6 +129,11 @@ pub struct CreateWorkItemResponse {
 pub struct UpdateStatusRequest {
     pub id: u32,
     pub new_status: Status,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MoveToArchiveRequest {
+    pub id: u32,
 }
 
 #[derive(Serialize, Deserialize)]

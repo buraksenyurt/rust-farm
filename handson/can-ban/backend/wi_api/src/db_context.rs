@@ -1,6 +1,7 @@
 use crate::model::{
     CreateWorkItemResponse, DurationType, Size, Status, UpdateStatusRequest, WorkItem,
 };
+use log::info;
 use rusqlite::{params, Connection, Result};
 
 pub struct DbContext {
@@ -52,6 +53,7 @@ impl DbContext {
     }
 
     pub fn move_to_archive(&self, id: u32) -> Result<()> {
+        info!("{id} is moving to archive");
         self.conn.execute(
             "UPDATE work_items SET archived = 1 WHERE id = ?1",
             params![id],
@@ -61,7 +63,7 @@ impl DbContext {
 
     pub fn get_item(&self, id: u32) -> Result<CreateWorkItemResponse, rusqlite::Error> {
         self.conn.query_row(
-            "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1 AND archived <> 1",
+            "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1",
             params![id],
             |row| {
                 Ok(CreateWorkItemResponse {
@@ -82,7 +84,7 @@ impl DbContext {
 
     pub fn get_all(&self) -> Result<Vec<CreateWorkItemResponse>, rusqlite::Error> {
         let mut query = self.conn.prepare(
-            "SELECT id,title,duration,duration_type,size,status FROM work_items ORDER BY id",
+            "SELECT id,title,duration,duration_type,size,status FROM work_items WHERE archived = 0 ORDER BY id",
         )?;
         let reader = query.query_map([], |row| {
             Ok(CreateWorkItemResponse {

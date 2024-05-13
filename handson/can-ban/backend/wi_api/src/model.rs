@@ -37,6 +37,11 @@ pub struct UpdateStatusRequest {
     pub new_status: Status,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct MoveToArchiveRequest {
+    pub id: u32,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq)]
 #[repr(u8)]
 pub enum DurationType {

@@ -30,10 +30,23 @@ export function bindCard(workItem) {
     cardBody.appendChild(cardContent);
     cardBody.appendChild(moveRight);
 
+    const archiveDiv = document.createElement("div");
+    archiveDiv.className = "d-flex justify-content-center";
+    archiveDiv.style.marginTop = "10px";
+
+    const archiveElement = document.createElement("i");
+    archiveElement.className = "bi bi-archive";
+    archiveElement.style.cursor = "pointer";
+    archiveElement.onclick = () => moveToArchive(card);
+
+    archiveDiv.appendChild(archiveElement);
+
     card.appendChild(cardBody);
+    card.appendChild(archiveDiv);
 
     return card;
 }
+
 
 export function addTodoCard(workItem) {
     const divInProgress = document.getElementById('divTodo');
@@ -72,6 +85,19 @@ function moveCard(card, direction) {
     }
 }
 
+function moveToArchive(card) {
+    const manager = WorkItemManager.new();
+    manager.move_to_archive(parseInt(card.id.toString().substring(4,)))
+        .then(_response => {
+            //console.log('Work item was successfully moved to archive!');
+            showAlert('Work item was successfully moved to archive!', 'success');
+        })
+        .catch(error => {
+            //console.log('API call failed on changing status!');
+            showAlert("Failed to move to archive. Reason is '" + error + "'", "danger");
+        });
+}
+
 function changeStatus(card, columnIndex) {
     const manager = WorkItemManager.new();
     let status = "ToDo";
@@ -94,7 +120,7 @@ function changeStatus(card, columnIndex) {
         })
         .catch(error => {
             console.log('API call failed on changing status!');
-            showAlert("Failed to create a new work item. Reason is '" + error + "'", "danger");
+            showAlert("Failed to status update. Reason is '" + error + "'", "danger");
         });
 
 }

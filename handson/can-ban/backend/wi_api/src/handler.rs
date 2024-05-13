@@ -1,6 +1,7 @@
 use crate::app_state::AppState;
 use crate::model::{
-    CreateWorkItemRequest, CreateWorkItemResponse, Status, UpdateStatusRequest, WorkItem,
+    CreateWorkItemRequest, CreateWorkItemResponse, MoveToArchiveRequest, Status,
+    UpdateStatusRequest, WorkItem,
 };
 use actix_web::web::Data;
 use actix_web::{web, HttpResponse, Responder};
@@ -57,9 +58,12 @@ impl Handler {
         }
     }
 
-    pub async fn move_to_archive(id: web::Path<u32>, data: Data<AppState>) -> impl Responder {
+    pub async fn move_to_archive(
+        body: web::Json<MoveToArchiveRequest>,
+        data: Data<AppState>,
+    ) -> impl Responder {
         let db = data.db_context.lock().unwrap();
-        match db.move_to_archive(*id) {
+        match db.move_to_archive(body.into_inner().id) {
             Ok(_) => HttpResponse::Accepted().finish(),
             Err(_) => HttpResponse::InternalServerError().finish(),
         }

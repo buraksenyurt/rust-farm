@@ -1,5 +1,6 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
+use std::num::ParseIntError;
 use std::str::FromStr;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::js_sys::JsString;
@@ -12,11 +13,13 @@ impl Default for WorkItemManager {
         Self::new()
     }
 }
+
 #[wasm_bindgen]
 impl WorkItemManager {
     pub fn new() -> Self {
         Self {}
     }
+
     pub async fn create(
         &self,
         title: String,
@@ -37,7 +40,7 @@ impl WorkItemManager {
             .json(&work_item)
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| JsValue::from_str(&e.to_string()))?;
 
         if res.status().is_success() {
             let json_response = res
@@ -58,7 +61,7 @@ impl WorkItemManager {
             .json(&request)
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| JsValue::from_str(&e.to_string()))?;
 
         if res.status().is_success() {
             Ok(())
@@ -66,6 +69,7 @@ impl WorkItemManager {
             Err(JsValue::from_str(&format!("Send error: {}", res.status())))
         }
     }
+
     pub async fn change_status(&self, id: u32, status: &str) -> Result<(), JsValue> {
         let update_item = UpdateStatusRequest {
             id,
@@ -78,7 +82,7 @@ impl WorkItemManager {
             .json(&update_item)
             .send()
             .await
-            .map_err(|e| e.to_string())?;
+            .map_err(|e| JsValue::from_str(&e.to_string()))?;
 
         if res.status().is_success() {
             Ok(())
@@ -101,6 +105,31 @@ impl WorkItemManager {
                 .await
                 .map_err(|e| JsValue::from_str(&e.to_string()))?;
             Ok(JsString::from(json_response))
+        } else {
+            Err(JsValue::from_str(&format!("Send error: {}", res.status())))
+        }
+    }
+
+    pub async fn get_items_count(&self) -> Result<u32, JsValue> {
+        let client = Client::new();
+        let res = client
+            .get("http://localhost:4448/api/items/stats/count")
+            .send()
+            .await
+            .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+        if res.status().is_success() {
+            let count_string = res
+                .text()
+                .await
+                .map_err(|e| JsValue::from_str(&e.to_string()))?;
+
+            let count: u32 = count_string
+                .trim()
+                .parse()
+                .map_err(|e: ParseIntError| JsValue::from_str(&e.to_string()))?;
+
+            Ok(count)
         } else {
             Err(JsValue::from_str(&format!("Send error: {}", res.status())))
         }

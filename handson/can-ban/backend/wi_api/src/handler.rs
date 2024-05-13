@@ -1,7 +1,7 @@
 use crate::app_state::AppState;
 use crate::model::{
-    CreateWorkItemRequest, CreateWorkItemResponse, MoveToArchiveRequest, Status,
-    UpdateStatusRequest, WorkItem,
+    CreateWorkItemRequest, MoveToArchiveRequest, Status, UpdateStatusRequest, WorkItem,
+    WorkItemResponse,
 };
 use actix_web::web::Data;
 use actix_web::{web, HttpResponse, Responder};
@@ -31,7 +31,7 @@ impl Handler {
         match db.add_work_item(&new_item) {
             Ok(id) => {
                 info!("{id}, New item has been added");
-                let response = CreateWorkItemResponse {
+                let response = WorkItemResponse {
                     id,
                     title: new_item.title,
                     duration: new_item.duration,
@@ -93,6 +93,20 @@ impl Handler {
         let db = data.db_context.lock().unwrap();
         match db.get_all() {
             Ok(result) => HttpResponse::Ok().json(result),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
+        }
+    }
+
+    pub async fn get_count(data: Data<AppState>) -> impl Responder {
+        let db = data.db_context.lock().unwrap();
+        match db.get_count() {
+            Ok(result) => {
+                info!("Total items {}", result);
+                HttpResponse::Ok().json(result)
+            }
             Err(e) => {
                 error!("{:?}", e);
                 HttpResponse::InternalServerError().body(e.to_string())

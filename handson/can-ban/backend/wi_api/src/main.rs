@@ -36,6 +36,7 @@ async fn main() -> std::io::Result<()> {
             .route("/api/items/{id}", web::get().to(Handler::get))
             .route("/api/items", web::patch().to(Handler::move_to_archive))
             .route("/api/items", web::put().to(Handler::update_state))
+            .route("/api/items/stats/count", web::get().to(Handler::get_count))
     })
     .bind("localhost:4448")?
     .run()

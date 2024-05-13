@@ -1,6 +1,5 @@
-use crate::model::{
-    CreateWorkItemResponse, DurationType, Size, Status, UpdateStatusRequest, WorkItem,
-};
+use crate::model::{DurationType, Size, Status, UpdateStatusRequest, WorkItem, WorkItemResponse};
+use chrono::Local;
 use log::info;
 use rusqlite::{params, Connection, Result};
 
@@ -46,8 +45,12 @@ impl DbContext {
 
     pub fn update_work_item_status(&self, payload: &UpdateStatusRequest) -> Result<()> {
         self.conn.execute(
-            "UPDATE work_items SET status = ?1 WHERE id= ?2",
-            params![payload.new_status as u8, payload.id],
+            "UPDATE work_items SET status = ?1, modified_date=?2 WHERE id= ?3",
+            params![
+                payload.new_status as u8,
+                Local::now().to_rfc3339(),
+                payload.id
+            ],
         )?;
         Ok(())
     }
@@ -55,18 +58,18 @@ impl DbContext {
     pub fn move_to_archive(&self, id: u32) -> Result<()> {
         info!("{id} is moving to archive");
         self.conn.execute(
-            "UPDATE work_items SET archived = 1 WHERE id = ?1",
-            params![id],
+            "UPDATE work_items SET archived = 1, modified_date=?1 WHERE id = ?2",
+            params![Local::now().to_rfc3339(), id],
         )?;
         Ok(())
     }
 
-    pub fn get_item(&self, id: u32) -> Result<CreateWorkItemResponse, rusqlite::Error> {
+    pub fn get_item(&self, id: u32) -> Result<WorkItemResponse, rusqlite::Error> {
         self.conn.query_row(
             "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1",
             params![id],
             |row| {
-                Ok(CreateWorkItemResponse {
+                Ok(WorkItemResponse {
                     id: row.get(0)?,
                     title: row.get(1)?,
                     duration: row.get(2)?,
@@ -82,12 +85,19 @@ impl DbContext {
         )
     }
 
-    pub fn get_all(&self) -> Result<Vec<CreateWorkItemResponse>, rusqlite::Error> {
+    pub fn get_count(&self) -> Result<u32, rusqlite::Error> {
+        self.conn.query_row(
+            "SELECT Count(id) FROM work_items WHERE archived = 0",
+            [],
+            |row| Ok(row.get(0)?),
+        )
+    }
+    pub fn get_all(&self) -> Result<Vec<WorkItemResponse>, rusqlite::Error> {
         let mut query = self.conn.prepare(
             "SELECT id,title,duration,duration_type,size,status FROM work_items WHERE archived = 0 ORDER BY id",
         )?;
         let reader = query.query_map([], |row| {
-            Ok(CreateWorkItemResponse {
+            Ok(WorkItemResponse {
                 id: row.get(0)?,
                 title: row.get(1)?,
                 duration: row.get(2)?,

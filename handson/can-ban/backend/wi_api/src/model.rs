@@ -22,7 +22,7 @@ pub struct CreateWorkItemRequest {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct CreateWorkItemResponse {
+pub struct WorkItemResponse {
     pub id: u32,
     pub title: String,
     pub duration: Option<u32>,

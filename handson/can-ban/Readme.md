@@ -4,17 +4,17 @@ Bildiğimiz Kanban board'u Rust, Wasm ve HTML üçlemesinde geliştirmek istesem
 
 ![Architecture](../images/can_ban_architecture.png)
 
+## Update
+
+Güncel olarak board'a en fazla 5 aktif görev eklenebiliyor. Dolayısıyla bazılarını tamamlamak ya da arşivlemek lazım. Arşivlemek içinse çöp kovasına basılması yeterli. Son değişikliklerle birlikte board'un güncel sayısal değerlerini gösteren bir raporda eklenmiş oldu.
+
+![runtime 04](../images/can_ban_runtime_04.png)
+
 Örneğin çalışma zamanı üç aşağı beş yukarı aşağıdaki ekran görüntülerinde olduğu gibidir.
 
 ![runtime 01](../images/can_ban_runtime_01.png)
 
 ![runtime 02](../images/can_ban_runtime_02.png)
-
-## Update
-
-Güncel olarak board'a en fazla 5 aktif görev eklenebiliyor. Dolayısıyla bazılarını tamamlamak ya da arşivlemek lazım. Arşivlemek içinse çöp kovasına basılması yeterli.
-
-![runtime 03](../images/can_ban_runtime_03.png)
 
 ## Frontend Tarafı
 

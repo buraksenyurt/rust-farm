@@ -1,16 +1,15 @@
-use crate::app_state::AppState;
-use crate::model::{
-    CreateWorkItemRequest, MoveToArchiveRequest, Status, UpdateStatusRequest, WorkItem,
-    WorkItemResponse,
-};
+use crate::api::*;
+use crate::models::WorkItem;
+use crate::state::AppState;
+use crate::types::*;
 use actix_web::web::Data;
 use actix_web::{web, HttpResponse, Responder};
 use chrono::Local;
 use log::{error, info};
 
-pub struct Handler {}
+pub struct WorkItemHandler {}
 
-impl Handler {
+impl WorkItemHandler {
     pub async fn create(
         item: web::Json<CreateWorkItemRequest>,
         data: Data<AppState>,

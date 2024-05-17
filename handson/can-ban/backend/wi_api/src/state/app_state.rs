@@ -1,4 +1,4 @@
-use crate::db_context::DbContext;
+use crate::db::DbContext;
 use std::sync::Mutex;
 
 pub struct AppState {

@@ -1,16 +1,17 @@
-mod app_state;
-mod db_context;
-mod handler;
-mod model;
-mod test;
+mod api;
+mod db;
+mod handlers;
+mod models;
+mod state;
+mod types;
 
-use crate::app_state::AppState;
-use crate::db_context::DbContext;
-use crate::handler::Handler;
 use actix_cors::Cors;
 use actix_web::http::header;
 use actix_web::web::Data;
 use actix_web::{web, App, HttpServer};
+use db::DbContext;
+use handlers::work_items::WorkItemHandler;
+use state::AppState;
 use std::sync::Mutex;
 
 #[actix_web::main]
@@ -31,12 +32,18 @@ async fn main() -> std::io::Result<()> {
                     .allowed_header(header::CONTENT_TYPE)
                     .max_age(3600),
             )
-            .route("/api/items", web::post().to(Handler::create))
-            .route("/api/items", web::get().to(Handler::get_all))
-            .route("/api/items/{id}", web::get().to(Handler::get))
-            .route("/api/items", web::patch().to(Handler::move_to_archive))
-            .route("/api/items", web::put().to(Handler::update_state))
-            .route("/api/items/stats/count", web::get().to(Handler::get_count))
+            .route("/api/items", web::post().to(WorkItemHandler::create))
+            .route("/api/items", web::get().to(WorkItemHandler::get_all))
+            .route("/api/items/{id}", web::get().to(WorkItemHandler::get))
+            .route(
+                "/api/items",
+                web::patch().to(WorkItemHandler::move_to_archive),
+            )
+            .route("/api/items", web::put().to(WorkItemHandler::update_state))
+            .route(
+                "/api/items/stats/count",
+                web::get().to(WorkItemHandler::get_count),
+            )
     })
     .bind("localhost:4448")?
     .run()

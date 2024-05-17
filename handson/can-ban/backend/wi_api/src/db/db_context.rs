@@ -1,4 +1,6 @@
-use crate::model::{DurationType, Size, Status, UpdateStatusRequest, WorkItem, WorkItemResponse};
+use crate::api::*;
+use crate::models::WorkItem;
+use crate::types::*;
 use chrono::Local;
 use log::info;
 use rusqlite::{params, Connection, Result};

@@ -47,7 +47,6 @@ export function bindCard(workItem) {
     return card;
 }
 
-
 export function addTodoCard(workItem) {
     const divInProgress = document.getElementById('divTodo');
     const card = bindCard(workItem)
@@ -88,9 +87,10 @@ function moveCard(card, direction) {
 function moveToArchive(card) {
     const manager = WorkItemManager.new();
     manager.move_to_archive(parseInt(card.id.toString().substring(4,)))
-        .then(_response => {
+        .then(async _response => {
             showAlert('Work item was successfully moved to archive!', 'success');
             card.remove();
+            await displayBoardReport();
         })
         .catch(error => {
             showAlert("Failed to move to archive. Reason is '" + error + "'", "danger");
@@ -113,9 +113,10 @@ function changeStatus(card, columnIndex) {
     }
 
     manager.change_status(parseInt(card.id.toString().substring(4,)), status)
-        .then(_response => {
+        .then(async _response => {
             console.log('Work item status was successfully changed!');
             showAlert('Work item status was successfully changed!', 'success');
+            await displayBoardReport();
         })
         .catch(error => {
             console.log('API call failed on changing status!');
@@ -176,4 +177,19 @@ export function displayWorkItems(workItems) {
                 break;
         }
     });
+}
+
+export async function displayBoardReport() {
+    const manager = WorkItemManager.new();
+    try {
+        const jsStringResponse = await manager.get_board_report()
+        const report = JSON.parse(jsStringResponse);
+        document.getElementById('divTotalCount').innerText = report.work_items;
+        document.getElementById('divTodoCount').innerText = report.todo_items;
+        document.getElementById('divInProgressCount').innerText = report.in_progress_items;
+        document.getElementById('divCompletedCount').innerText = report.completed_items;
+    } catch (error) {
+        console.error("Error fetching board items:", error);
+        throw error;
+    }
 }

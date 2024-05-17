@@ -110,6 +110,25 @@ impl WorkItemManager {
         }
     }
 
+    pub async fn get_board_report(&self) -> Result<JsString, JsValue> {
+        let client = Client::new();
+        let res = client
+            .get("http://localhost:4448/api/items/report/summary")
+            .send()
+            .await
+            .map_err(|e| e.to_string())?;
+
+        if res.status().is_success() {
+            let json_response = res
+                .text()
+                .await
+                .map_err(|e| JsValue::from_str(&e.to_string()))?;
+            Ok(JsString::from(json_response))
+        } else {
+            Err(JsValue::from_str(&format!("Send error: {}", res.status())))
+        }
+    }
+
     pub async fn get_items_count(&self) -> Result<u32, JsValue> {
         let client = Client::new();
         let res = client

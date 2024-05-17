@@ -9,12 +9,66 @@
         .bg-post-it-yellow {
             background-color: #fff3cd;
         }
-    </style>
 
+        .bg-pastel-blue {
+            background-color: #cfe2ff;
+        }
+
+        .bg-pastel-green {
+            background-color: #d1e7dd;
+        }
+
+        .bg-pastel-purple {
+            background-color: #e2d1ff;
+        }
+
+        .report-column {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            border-radius: 5px;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 
 <body>
 <div class="container py-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="report-column bg-post-it-yellow">
+                <div class="text-center">
+                    <strong>Total</strong>
+                    <div id="divTotalCount">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="report-column bg-pastel-blue">
+                <div class="text-center">
+                    <strong>Todo</strong>
+                    <div id="divTodoCount">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="report-column bg-pastel-green">
+                <div class="text-center">
+                    <strong>In Progress</strong>
+                    <div id="divInProgressCount">0</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="report-column bg-pastel-purple">
+                <div class="text-center">
+                    <strong>Completed</strong>
+                    <div id="divCompletedCount">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div id="alertPlaceholder" class="container mt-3"></div>
         <div class="col-md-4">

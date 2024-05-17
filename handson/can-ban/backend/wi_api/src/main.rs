@@ -5,6 +5,7 @@ mod models;
 mod state;
 mod types;
 
+use crate::handlers::reports::ReportHandler;
 use actix_cors::Cors;
 use actix_web::http::header;
 use actix_web::web::Data;
@@ -43,6 +44,10 @@ async fn main() -> std::io::Result<()> {
             .route(
                 "/api/items/stats/count",
                 web::get().to(WorkItemHandler::get_count),
+            )
+            .route(
+                "api/items/report/summary",
+                web::get().to(ReportHandler::get_board_summary_report),
             )
     })
     .bind("localhost:4448")?

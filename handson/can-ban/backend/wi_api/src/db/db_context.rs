@@ -1,5 +1,5 @@
 use crate::api::*;
-use crate::models::WorkItem;
+use crate::models::{SummaryReport, WorkItem};
 use crate::types::*;
 use chrono::Local;
 use log::info;
@@ -96,7 +96,7 @@ impl DbContext {
         self.conn.query_row(
             "SELECT Count(id) FROM work_items WHERE archived = 0",
             [],
-            |row| Ok(row.get(0)?),
+            |row| row.get(0),
         )
     }
     pub fn get_all(&self) -> Result<Vec<WorkItemResponse>, rusqlite::Error> {
@@ -123,5 +123,34 @@ impl DbContext {
             results.push(row?);
         }
         Ok(results)
+    }
+
+    pub fn get_summary_report(&self) -> Result<SummaryReport, rusqlite::Error> {
+        let mut query = self.conn.prepare(
+            "SELECT
+                    COUNT(*) AS total_work_items,
+                    SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS total_todo_items,
+                    SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) AS total_in_progress_items,
+                    SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS total_completed_items
+                FROM work_items
+                WHERE archived = 0",
+        )?;
+
+        let mut rows = query.query([])?;
+
+        if let Some(row) = rows.next()? {
+            let work_items: u32 = row.get(0)?;
+            let todo_items: u32 = row.get(1)?;
+            let in_progress_items: u32 = row.get(2)?;
+            let completed_items: u32 = row.get(3)?;
+            Ok(SummaryReport {
+                work_items,
+                todo_items,
+                in_progress_items,
+                completed_items,
+            })
+        } else {
+            Ok(SummaryReport::default())
+        }
     }
 }

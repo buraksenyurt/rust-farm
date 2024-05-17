@@ -18,7 +18,7 @@ use std::sync::Mutex;
 async fn main() -> std::io::Result<()> {
     env_logger::init();
 
-    let db_context = Mutex::new(DbContext::new().expect("Failed to init database"));
+    let db_context = Mutex::new(DbContext::new(false).expect("Failed to init database"));
     let data = Data::new(AppState { db_context });
 
     HttpServer::new(move || {

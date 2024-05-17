@@ -7,7 +7,7 @@ mod tests {
 
     #[test]
     fn test_create_work_item() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let new_item = WorkItem {
             id: 0,
             title: "Test Item".to_string(),
@@ -25,7 +25,7 @@ mod tests {
 
     #[test]
     fn test_update_work_item_status() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let new_item = WorkItem {
             id: 0,
             title: "Test Item".to_string(),
@@ -49,7 +49,7 @@ mod tests {
 
     #[test]
     fn test_move_to_archive_work_item() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let new_item = WorkItem {
             id: 0,
             title: "Test Item".to_string(),
@@ -68,7 +68,7 @@ mod tests {
 
     #[test]
     fn test_get_item_by_id() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let new_item = WorkItem {
             id: 0,
             title: "Test Item".to_string(),
@@ -91,14 +91,14 @@ mod tests {
 
     #[test]
     fn test_get_all_work_items() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let result = db.get_all();
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_get_work_items_count() {
-        let db = DbContext::new().expect("Failed to initialize database");
+        let db = DbContext::new(true).expect("Failed to initialize database");
         let result = db.get_count();
         assert!(result.is_ok());
     }

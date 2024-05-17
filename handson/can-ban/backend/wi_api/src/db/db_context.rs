@@ -10,8 +10,13 @@ pub struct DbContext {
 }
 
 impl DbContext {
-    pub fn new() -> Result<Self> {
-        let conn = Connection::open("can_ban.db")?;
+    pub fn new(use_in_memory: bool) -> Result<Self> {
+        let conn = if use_in_memory {
+            Connection::open_in_memory()?
+        } else {
+            Connection::open("can_ban.db")?
+        };
+
         conn.execute(
             "CREATE TABLE IF NOT EXISTS work_items (
                     id INTEGER PRIMARY KEY,

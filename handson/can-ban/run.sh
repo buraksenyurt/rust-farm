@@ -9,7 +9,7 @@ cleanup() {
 trap cleanup SIGINT SIGTSTP SIGTERM
 
 echo "Starting the Web Api..."
-(cd backend/wi_api && RUST_LOG=info cargo run) &
+(cd backend && RUST_LOG=info cargo run) &
 
 echo "Starting the CanBan Board..."
 (cd frontend && npm start) &

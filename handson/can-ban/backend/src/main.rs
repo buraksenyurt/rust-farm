@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
     builder
         .set_private_key(&load_encrypted_private_key())
         .unwrap();
-    builder.set_certificate_chain_file("../../cert/cert.pem").unwrap();
+    builder.set_certificate_chain_file("../cert/cert.pem").unwrap();
 
     let db_context = Mutex::new(DbContext::new(false).expect("Failed to init database"));
     let data = Data::new(AppState { db_context });
@@ -66,7 +66,7 @@ async fn main() -> std::io::Result<()> {
 }
 
 fn load_encrypted_private_key() -> PKey<Private> {
-    let mut file = File::open("../../cert/key.pem").unwrap();
+    let mut file = File::open("../cert/key.pem").unwrap();
     let mut buffer = Vec::new();
     file.read_to_end(&mut buffer).expect("Failed to read file");
     PKey::private_key_from_pem_passphrase(&buffer, b"P@ssw0rd").unwrap()

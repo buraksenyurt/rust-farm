@@ -64,3 +64,19 @@ sudo chmod +x run.sh
 # Sonrasında çalıştırmak için
 ./run.sh
 ```
+
+## HTTPS Desteği
+
+Servis tarafına geliştirme safhasında SSL desteği sağlamak için bir openssl sertifikası kullanılabilir. Bunun için wi_api projesinde cert klasörü altında development amaçlı kullanılabilecek OpenSSL sertfikası üretilir. Key.pem dosyasında private key, cert.pem dosyasında da örnek sertifika yer alır.
+
+```bash
+# Self-Signed Encrypted Private Key oluşturmak için
+sudo openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365
+
+# Benim sistemde dosya izinleri yetersizdi. Bu yüzden şu komutları çalıştırdım.
+sudo chmod 644 key.pem cert.pem
+```
+
+Örnek projedeki sertifikalar hem wi_api isimli backend servisinde hem de frontend tarafında ortaklaşa kullanılmaktadır. Buna istinaden servis ve node.js taraflarında da SSL kullanımı için gerekli kod değişiklikleri yapılmalıdır.
+
+Bu adımlardan sonra curl, postman veya browser'lardan https ile ilgili servis komutlarına erişim sağlanabilir.

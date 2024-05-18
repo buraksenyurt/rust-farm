@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "backend/wi_api",
-    "frontend"
-]
+    "frontend",
+    "shared"]
 resolver = "2"

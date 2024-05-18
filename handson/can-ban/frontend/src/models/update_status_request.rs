@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::models::Status;
+use shared::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct UpdateStatusRequest {

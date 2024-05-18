@@ -2,8 +2,8 @@
 mod tests {
     use crate::db::DbContext;
     use crate::models::WorkItem;
-    use crate::types::{DurationType, Size, Status};
     use chrono::Local;
+    use shared::*;
 
     #[test]
     fn test_create_work_item() {

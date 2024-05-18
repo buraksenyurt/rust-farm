@@ -1,9 +1,9 @@
 use crate::api::*;
 use crate::models::{SummaryReport, WorkItem};
-use crate::types::*;
 use chrono::Local;
 use log::info;
 use rusqlite::{params, Connection, Result};
+use shared::*;
 
 pub struct DbContext {
     pub conn: Connection,

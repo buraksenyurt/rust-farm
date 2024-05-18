@@ -4,12 +4,9 @@ pub mod handlers;
 pub mod models;
 pub mod state;
 pub mod tests;
-pub mod types;
 
-// Re-exports
 pub use api::*;
 pub use db::*;
 pub use handlers::*;
 pub use models::*;
 pub use state::*;
-pub use types::*;

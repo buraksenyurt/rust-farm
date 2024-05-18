@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::models::*;
+use shared::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct CreateWorkItemRequest {

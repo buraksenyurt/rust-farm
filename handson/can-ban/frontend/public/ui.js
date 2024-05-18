@@ -160,7 +160,7 @@ export function showAlert(message, type) {
         <button type='button' class='btn-close' data-dismiss='alert' aria-label='Close'></button>
     `;
     alertPlaceholder.appendChild(alert);
-    setTimeout(() => alert.remove(), 5000);
+    setTimeout(() => alert.remove(), 3000);
 }
 
 export function displayWorkItems(workItems) {

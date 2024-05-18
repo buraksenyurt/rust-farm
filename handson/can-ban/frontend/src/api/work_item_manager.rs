@@ -7,6 +7,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::js_sys::JsString;
 
+const API_ROOT: &str = "https://localhost:4448/api";
 #[wasm_bindgen]
 pub struct WorkItemManager {}
 
@@ -38,7 +39,7 @@ impl WorkItemManager {
 
         let client = Client::new();
         let res = client
-            .post("https://localhost:4448/api/items")
+            .post(format!("{API_ROOT}/items"))
             .json(&work_item)
             .send()
             .await
@@ -59,7 +60,7 @@ impl WorkItemManager {
         let request = MoveToArchiveRequest { id };
         let client = Client::new();
         let res = client
-            .patch("https://localhost:4448/api/items")
+            .patch(format!("{API_ROOT}/items"))
             .json(&request)
             .send()
             .await
@@ -80,7 +81,7 @@ impl WorkItemManager {
 
         let client = Client::new();
         let res = client
-            .put("https://localhost:4448/api/items")
+            .put(format!("{API_ROOT}/items"))
             .json(&update_item)
             .send()
             .await
@@ -96,7 +97,7 @@ impl WorkItemManager {
     pub async fn get_board(&self) -> Result<JsString, JsValue> {
         let client = Client::new();
         let res = client
-            .get("https://localhost:4448/api/items")
+            .get(format!("{API_ROOT}/items"))
             .send()
             .await
             .map_err(|e| e.to_string())?;
@@ -115,7 +116,7 @@ impl WorkItemManager {
     pub async fn get_board_report(&self) -> Result<JsString, JsValue> {
         let client = Client::new();
         let res = client
-            .get("https://localhost:4448/api/items/report/summary")
+            .get(format!("{API_ROOT}/items/report/summary"))
             .send()
             .await
             .map_err(|e| e.to_string())?;
@@ -134,7 +135,7 @@ impl WorkItemManager {
     pub async fn get_items_count(&self) -> Result<u32, JsValue> {
         let client = Client::new();
         let res = client
-            .get("https://localhost:4448/api/items/stats/count")
+            .get(format!("{API_ROOT}/items/stats/count"))
             .send()
             .await
             .map_err(|e| JsValue::from_str(&e.to_string()))?;

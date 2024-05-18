@@ -26,7 +26,9 @@ async fn main() -> std::io::Result<()> {
     builder
         .set_private_key(&load_encrypted_private_key())
         .unwrap();
-    builder.set_certificate_chain_file("../cert/cert.pem").unwrap();
+    builder
+        .set_certificate_chain_file("../cert/cert.pem")
+        .unwrap();
 
     let db_context = Mutex::new(DbContext::new(false).expect("Failed to init database"));
     let data = Data::new(AppState { db_context });

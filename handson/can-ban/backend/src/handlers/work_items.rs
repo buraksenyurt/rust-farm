@@ -1,6 +1,7 @@
 use crate::api::*;
 use crate::models::WorkItem;
 use crate::state::AppState;
+use crate::utility::calculate_planned_finish_time;
 use actix_web::web::Data;
 use actix_web::{web, HttpResponse, Responder};
 use chrono::Local;
@@ -25,11 +26,13 @@ impl WorkItemHandler {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         match db.add_work_item(&new_item) {
             Ok(id) => {
                 info!("{id}, New item has been added");
+                let planned_time = calculate_planned_finish_time(&new_item);
                 let response = WorkItemResponse {
                     id,
                     title: new_item.title,
@@ -37,6 +40,7 @@ impl WorkItemHandler {
                     duration_type: new_item.duration_type,
                     size: new_item.size,
                     status: new_item.status,
+                    finish_date: planned_time,
                 };
                 HttpResponse::Created().json(response)
             }

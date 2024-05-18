@@ -17,6 +17,7 @@ mod tests {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let result = db.add_work_item(&new_item);
@@ -35,6 +36,7 @@ mod tests {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let id = db.add_work_item(&new_item).unwrap();
@@ -59,6 +61,7 @@ mod tests {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let id = db.add_work_item(&new_item).unwrap();
@@ -78,6 +81,7 @@ mod tests {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let id = db.add_work_item(&new_item).unwrap();
@@ -115,6 +119,7 @@ mod tests {
             status: Status::Todo,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let new_item_2 = WorkItem {
@@ -126,6 +131,7 @@ mod tests {
             status: Status::Inprogress,
             crate_date: Local::now(),
             modified_date: None,
+            finish_date: None,
         };
 
         let new_item_3 = WorkItem {
@@ -137,6 +143,7 @@ mod tests {
             status: Status::Completed,
             crate_date: Local::now(),
             modified_date: Some(Local::now()),
+            finish_date: None,
         };
 
         let new_item_4 = WorkItem {
@@ -148,6 +155,7 @@ mod tests {
             status: Status::Completed,
             crate_date: Local::now(),
             modified_date: Some(Local::now()),
+            finish_date: None,
         };
 
         db.add_work_item(&new_item_1).unwrap();

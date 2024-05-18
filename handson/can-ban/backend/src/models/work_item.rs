@@ -11,5 +11,6 @@ pub struct WorkItem {
     pub size: Option<Size>,
     pub status: Status,
     pub crate_date: DateTime<Local>,
+    pub finish_date: Option<DateTime<Local>>,
     pub modified_date: Option<DateTime<Local>>,
 }

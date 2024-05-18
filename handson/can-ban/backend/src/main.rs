@@ -3,6 +3,7 @@ mod db;
 mod handlers;
 mod models;
 mod state;
+mod utility;
 
 use crate::handlers::reports::ReportHandler;
 use actix_cors::Cors;

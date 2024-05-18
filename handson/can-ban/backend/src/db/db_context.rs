@@ -1,6 +1,7 @@
 use crate::api::*;
 use crate::models::{SummaryReport, WorkItem};
-use chrono::Local;
+use crate::utility::calculate_planned_finish_time;
+use chrono::{DateTime, Local};
 use log::info;
 use rusqlite::{params, Connection, Result};
 use shared::*;
@@ -27,6 +28,7 @@ impl DbContext {
                     status INTEGER NOT NULL,
                     archived INTEGER DEFAULT 0,
                     create_date TEXT NOT NULL,
+                    finish_date TEXT NOT NULL,
                     modified_date TEXT
             )",
             [],
@@ -35,16 +37,18 @@ impl DbContext {
     }
 
     pub fn add_work_item(&self, item: &WorkItem) -> Result<u32> {
+        let finish_date = calculate_planned_finish_time(item).unwrap().to_rfc3339();
         self.conn.execute(
-            "INSERT INTO work_items (title, duration, duration_type, size, status, create_date)
-                VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            "INSERT INTO work_items (title, duration, duration_type, size, status, create_date, finish_date)
+                VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
             params![
                 item.title,
                 item.duration,
                 item.duration_type.unwrap() as u8,
                 item.size.unwrap() as u8,
                 item.status as u8,
-                item.crate_date.to_rfc3339()
+                item.crate_date.to_rfc3339(),
+                finish_date
             ],
         )?;
         Ok(self.conn.last_insert_rowid() as u32)
@@ -73,9 +77,15 @@ impl DbContext {
 
     pub fn get_item(&self, id: u32) -> Result<WorkItemResponse, rusqlite::Error> {
         self.conn.query_row(
-            "SELECT id, title, duration, duration_type, size, status FROM work_items WHERE id = ?1",
+            "SELECT id, title, duration, duration_type, size, status, finish_date FROM work_items WHERE id = ?1",
             params![id],
             |row| {
+                let finish_time_str: Option<String> = row.get(6)?;
+                let finish_time = finish_time_str
+                    .as_deref()
+                    .and_then(|s| DateTime::parse_from_rfc3339(s).ok())
+                    .map(|dt| dt.with_timezone(&Local));
+
                 Ok(WorkItemResponse {
                     id: row.get(0)?,
                     title: row.get(1)?,
@@ -87,6 +97,7 @@ impl DbContext {
                         .get::<_, Option<u8>>(4)?
                         .map(|sz| Size::try_from(sz).unwrap()),
                     status: Status::try_from(row.get::<_, u8>(5)?).unwrap(),
+                    finish_date: finish_time,
                 })
             },
         )
@@ -101,9 +112,17 @@ impl DbContext {
     }
     pub fn get_all(&self) -> Result<Vec<WorkItemResponse>, rusqlite::Error> {
         let mut query = self.conn.prepare(
-            "SELECT id,title,duration,duration_type,size,status FROM work_items WHERE archived = 0 ORDER BY id",
+            "SELECT id, title, duration, duration_type, size, status, finish_date \
+            FROM work_items \
+            WHERE archived = 0 ORDER BY id",
         )?;
         let reader = query.query_map([], |row| {
+            let finish_time_str: Option<String> = row.get(6)?;
+            let finish_time = finish_time_str
+                .as_deref()
+                .and_then(|s| DateTime::parse_from_rfc3339(s).ok())
+                .map(|dt| dt.with_timezone(&Local));
+
             Ok(WorkItemResponse {
                 id: row.get(0)?,
                 title: row.get(1)?,
@@ -115,6 +134,7 @@ impl DbContext {
                     .get::<_, Option<u8>>(4)?
                     .map(|sz| Size::try_from(sz).unwrap()),
                 status: Status::try_from(row.get::<_, u8>(5)?).unwrap(),
+                finish_date: finish_time,
             })
         })?;
 

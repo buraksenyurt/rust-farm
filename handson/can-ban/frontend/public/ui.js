@@ -1,5 +1,19 @@
 import {WorkItemManager} from './pkg/can_ban.js';
 
+function formatDateTime(value) {
+    const date = new Date(value);
+    const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    return date.toLocaleString('tr-TR', options).replace(',', '');
+}
+
 export function bindCard(workItem) {
     const card = document.createElement("div");
     card.className = "card mb-3 bg-post-it-yellow";
@@ -21,10 +35,13 @@ export function bindCard(workItem) {
 
     const cardContent = document.createElement("div");
     cardContent.innerHTML = `
-        <h5 class="card-title">${workItem.id} - ${workItem.title}</h5>
-        <p class="card-text">Duration: ${workItem.duration} ${workItem.duration_type}</p>
-        <p class="card-text">Size: ${workItem.size}</p>
-    `;
+    <div class="card-body">
+        <h5 class="card-title text-center">${workItem.id} - ${workItem.title}</h5>
+        <p class="card-text">${workItem.duration} ${workItem.duration_type}</p>
+        <p class="card-text">${workItem.size}</p>
+        <p class="card-text text-end fw-bold">${formatDateTime(workItem.finish_date)}</p>
+    </div>
+`;
 
     cardBody.appendChild(moveLeft);
     cardBody.appendChild(cardContent);

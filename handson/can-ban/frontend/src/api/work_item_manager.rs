@@ -38,7 +38,7 @@ impl WorkItemManager {
 
         let client = Client::new();
         let res = client
-            .post("http://localhost:4448/api/items")
+            .post("https://localhost:4448/api/items")
             .json(&work_item)
             .send()
             .await
@@ -59,7 +59,7 @@ impl WorkItemManager {
         let request = MoveToArchiveRequest { id };
         let client = Client::new();
         let res = client
-            .patch("http://localhost:4448/api/items")
+            .patch("https://localhost:4448/api/items")
             .json(&request)
             .send()
             .await
@@ -80,7 +80,7 @@ impl WorkItemManager {
 
         let client = Client::new();
         let res = client
-            .put("http://localhost:4448/api/items")
+            .put("https://localhost:4448/api/items")
             .json(&update_item)
             .send()
             .await
@@ -96,7 +96,7 @@ impl WorkItemManager {
     pub async fn get_board(&self) -> Result<JsString, JsValue> {
         let client = Client::new();
         let res = client
-            .get("http://localhost:4448/api/items")
+            .get("https://localhost:4448/api/items")
             .send()
             .await
             .map_err(|e| e.to_string())?;
@@ -115,7 +115,7 @@ impl WorkItemManager {
     pub async fn get_board_report(&self) -> Result<JsString, JsValue> {
         let client = Client::new();
         let res = client
-            .get("http://localhost:4448/api/items/report/summary")
+            .get("https://localhost:4448/api/items/report/summary")
             .send()
             .await
             .map_err(|e| e.to_string())?;
@@ -134,7 +134,7 @@ impl WorkItemManager {
     pub async fn get_items_count(&self) -> Result<u32, JsValue> {
         let client = Client::new();
         let res = client
-            .get("http://localhost:4448/api/items/stats/count")
+            .get("https://localhost:4448/api/items/stats/count")
             .send()
             .await
             .map_err(|e| JsValue::from_str(&e.to_string()))?;

@@ -7,6 +7,7 @@ use actix_web::{web, HttpResponse, Responder};
 use chrono::Local;
 use log::{error, info};
 use shared::*;
+use validator::Validate;
 
 pub struct WorkItemHandler {}
 
@@ -17,6 +18,11 @@ impl WorkItemHandler {
     ) -> impl Responder {
         let db = data.db_context.lock().unwrap();
         let payload = item.into_inner();
+
+        if let Err(validation_errors) = payload.validate() {
+            return HttpResponse::BadRequest().json(validation_errors);
+        }
+
         let new_item = WorkItem {
             id: 0,
             title: payload.title,

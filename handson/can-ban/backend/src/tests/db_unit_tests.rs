@@ -96,7 +96,7 @@ mod tests {
     #[test]
     fn test_get_all_work_items() {
         let db = DbContext::new(true).expect("Failed to initialize database");
-        let result = db.get_all();
+        let result = db.get_all(false);
         assert!(result.is_ok());
     }
 

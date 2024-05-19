@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "e8603980-b720-4443-a5f6-4d990ae8f534",
+		"name": "Can-Ban Board Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1401662"
+	},
+	"item": [
+		{
+			"name": "Validations",
+			"item": [
+				{
+					"name": "Invalid Title",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test\",\n    \"duration\": 1,\n    \"duration_type\": \"Hour\",\n    \"size\": \"Large\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4448/api/items",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4448",
+							"path": [
+								"api",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Duration Range",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Oyun bilgisayarı kasasını temizleyelim.\",\n    \"duration\": 45,\n    \"duration_type\": \"Hour\",\n    \"size\": \"Large\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4448/api/items",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4448",
+							"path": [
+								"api",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Duration Type",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Oyun bilgisayarı kasasını temizleyelim.\",\n    \"duration\": 1,\n    \"duration_type\": \"H\",\n    \"size\": \"Large\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4448/api/items",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4448",
+							"path": [
+								"api",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Size",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Oyun bilgisayarı kasasını temizleyelim.\",\n    \"duration\": 1,\n    \"duration_type\": \"Hour\",\n    \"size\": \"L\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4448/api/items",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4448",
+							"path": [
+								"api",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items Count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/stats/count",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"stats",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Active Items",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Items (Include Archived)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/all",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get by Work Item Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Work Item Not Found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Current Board Report",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/report/summary",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"report",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Work Item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Oyun bilgisayarı kasasını temizleyelim.\",\n    \"duration\": 1,\n    \"duration_type\": \"Hour\",\n    \"size\": \"Small\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4448/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Work Item",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:4448/api/items/4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update State",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"new_status\": \"Inprogress\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4448/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Move to Archive",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:4448/api/items",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "4448",
+					"path": [
+						"api",
+						"items"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -80,3 +80,7 @@ sudo chmod 644 key.pem cert.pem
 Örnek projedeki sertifikalar hem wi_api isimli backend servisinde hem de frontend tarafında ortaklaşa kullanılmaktadır. Buna istinaden servis ve node.js taraflarında da SSL kullanımı için gerekli kod değişiklikleri yapılmalıdır.
 
 Bu adımlardan sonra curl, postman veya browser'lardan https ile ilgili servis komutlarına erişim sağlanabilir.
+
+## Notlar
+
+- Web API tarafına ait testler için [Can-Ban Board Api.postman_collection.json](Can-Ban Board Api.postman_collection.json) Postman koleksiyonu kullanılabilir.

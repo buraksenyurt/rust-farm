@@ -1,4 +1,5 @@
 use crate::api::*;
+use crate::handlers::app_error::AppError;
 use crate::models::WorkItem;
 use crate::state::AppState;
 use crate::utility::calculate_planned_finish_time;
@@ -21,6 +22,13 @@ impl WorkItemHandler {
 
         if let Err(validation_errors) = payload.validate() {
             return HttpResponse::BadRequest().json(validation_errors);
+        }
+
+        if let Ok(count) = db.get_count() {
+            if count >= 5 {
+                return HttpResponse::NotAcceptable()
+                    .json("There can be only 5 work item in same time");
+            }
         }
 
         let new_item = WorkItem {
@@ -65,7 +73,13 @@ impl WorkItemHandler {
         let payload = body.into_inner();
         info!("{:?}", payload);
         match db.update_work_item_status(&payload) {
-            Ok(_) => HttpResponse::Accepted().finish(),
+            Ok(value) => {
+                if value == 1 {
+                    HttpResponse::Ok().finish()
+                } else {
+                    HttpResponse::NotFound().json("Item not found")
+                }
+            }
             Err(e) => {
                 error!("{:?}", e);
                 HttpResponse::InternalServerError().body(e.to_string())
@@ -79,7 +93,30 @@ impl WorkItemHandler {
     ) -> impl Responder {
         let db = data.db_context.lock().unwrap();
         match db.move_to_archive(body.into_inner().id) {
-            Ok(_) => HttpResponse::Accepted().finish(),
+            Ok(value) => {
+                if value == 1 {
+                    HttpResponse::Ok().finish()
+                } else {
+                    HttpResponse::NotFound().json("Item not found")
+                }
+            }
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
+        }
+    }
+
+    pub async fn delete(id: web::Path<u32>, data: Data<AppState>) -> impl Responder {
+        let db = data.db_context.lock().unwrap();
+        match db.delete(*id) {
+            Ok(value) => {
+                if value == 1 {
+                    HttpResponse::Ok().finish()
+                } else {
+                    HttpResponse::NotFound().json("Item not found")
+                }
+            }
             Err(e) => {
                 error!("{:?}", e);
                 HttpResponse::InternalServerError().body(e.to_string())
@@ -91,16 +128,27 @@ impl WorkItemHandler {
         let db = data.db_context.lock().unwrap();
         match db.get_item(*id) {
             Ok(response) => HttpResponse::Ok().json(response),
-            Err(e) => {
+            Err(AppError::NotFound) => HttpResponse::NotFound().json("Item not found"),
+            Err(AppError::DatabaseError(e)) => {
                 error!("{:?}", e);
                 HttpResponse::InternalServerError().body(e.to_string())
             }
         }
     }
 
+    pub async fn get_actives(data: Data<AppState>) -> impl Responder {
+        let db = data.db_context.lock().unwrap();
+        match db.get_all(true) {
+            Ok(result) => HttpResponse::Ok().json(result),
+            Err(e) => {
+                error!("{:?}", e);
+                HttpResponse::InternalServerError().body(e.to_string())
+            }
+        }
+    }
     pub async fn get_all(data: Data<AppState>) -> impl Responder {
         let db = data.db_context.lock().unwrap();
-        match db.get_all() {
+        match db.get_all(false) {
             Ok(result) => HttpResponse::Ok().json(result),
             Err(e) => {
                 error!("{:?}", e);

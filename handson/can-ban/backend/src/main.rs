@@ -47,8 +47,10 @@ async fn main() -> std::io::Result<()> {
                     .max_age(3600),
             )
             .route("/api/items", web::post().to(WorkItemHandler::create))
-            .route("/api/items", web::get().to(WorkItemHandler::get_all))
+            .route("/api/items", web::get().to(WorkItemHandler::get_actives))
+            .route("/api/items/all", web::get().to(WorkItemHandler::get_all))
             .route("/api/items/{id}", web::get().to(WorkItemHandler::get))
+            .route("/api/items/{id}", web::delete().to(WorkItemHandler::delete))
             .route(
                 "/api/items",
                 web::patch().to(WorkItemHandler::move_to_archive),

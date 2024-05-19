@@ -1,8 +1,10 @@
 use crate::api::*;
+use crate::handlers::app_error::AppError;
 use crate::models::{SummaryReport, WorkItem};
 use crate::utility::calculate_planned_finish_time;
 use chrono::{DateTime, Local};
 use log::info;
+use rusqlite::Error::QueryReturnedNoRows;
 use rusqlite::{params, Connection, Result};
 use shared::*;
 
@@ -54,8 +56,8 @@ impl DbContext {
         Ok(self.conn.last_insert_rowid() as u32)
     }
 
-    pub fn update_work_item_status(&self, payload: &UpdateStatusRequest) -> Result<()> {
-        self.conn.execute(
+    pub fn update_work_item_status(&self, payload: &UpdateStatusRequest) -> Result<u64> {
+        let rows_affected = self.conn.execute(
             "UPDATE work_items SET status = ?1, modified_date=?2 WHERE id= ?3",
             params![
                 payload.new_status as u8,
@@ -63,19 +65,39 @@ impl DbContext {
                 payload.id
             ],
         )?;
-        Ok(())
+        if rows_affected == 0 {
+            Ok(0)
+        } else {
+            Ok(1)
+        }
     }
 
-    pub fn move_to_archive(&self, id: u32) -> Result<()> {
+    pub fn move_to_archive(&self, id: u32) -> Result<u64> {
         info!("{id} is moving to archive");
-        self.conn.execute(
+        let rows_affected = self.conn.execute(
             "UPDATE work_items SET archived = 1, modified_date=?1 WHERE id = ?2",
             params![Local::now().to_rfc3339(), id],
         )?;
-        Ok(())
+        if rows_affected == 0 {
+            Ok(0)
+        } else {
+            Ok(1)
+        }
     }
 
-    pub fn get_item(&self, id: u32) -> Result<WorkItemResponse, rusqlite::Error> {
+    pub fn delete(&self, id: u32) -> Result<u64> {
+        info!("{id} is deleting");
+        let rows_affected = self
+            .conn
+            .execute("DELETE FROM work_items WHERE id = ?1", params![id])?;
+        if rows_affected == 0 {
+            Ok(0)
+        } else {
+            Ok(1)
+        }
+    }
+
+    pub fn get_item(&self, id: u32) -> Result<WorkItemResponse, AppError> {
         self.conn.query_row(
             "SELECT id, title, duration, duration_type, size, status, finish_date FROM work_items WHERE id = ?1",
             params![id],
@@ -100,7 +122,13 @@ impl DbContext {
                     finish_date: finish_time,
                 })
             },
-        )
+        ).map_err(|e|{
+            if e==QueryReturnedNoRows{
+                AppError::NotFound
+            } else {
+                AppError::DatabaseError(e)
+            }
+        })
     }
 
     pub fn get_count(&self) -> Result<u32, rusqlite::Error> {
@@ -110,12 +138,22 @@ impl DbContext {
             |row| row.get(0),
         )
     }
-    pub fn get_all(&self) -> Result<Vec<WorkItemResponse>, rusqlite::Error> {
-        let mut query = self.conn.prepare(
-            "SELECT id, title, duration, duration_type, size, status, finish_date \
+    pub fn get_all(
+        &self,
+        include_archived: bool,
+    ) -> Result<Vec<WorkItemResponse>, rusqlite::Error> {
+        let query_text = match include_archived {
+            true => {
+                "SELECT id, title, duration, duration_type, size, status, finish_date \
             FROM work_items \
-            WHERE archived = 0 ORDER BY id",
-        )?;
+            WHERE archived = 0 ORDER BY id"
+            }
+            false => {
+                "SELECT id, title, duration, duration_type, size, status, finish_date, archived \
+            FROM work_items ORDER BY id"
+            }
+        };
+        let mut query = self.conn.prepare(query_text)?;
         let reader = query.query_map([], |row| {
             let finish_time_str: Option<String> = row.get(6)?;
             let finish_time = finish_time_str

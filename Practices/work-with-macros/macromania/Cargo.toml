@@ -1,0 +1,12 @@
+[package]
+name = "macromania"
+version = "0.1.0"
+edition = "2021"
+description = "Procedural macro samples"
+
+[dependencies]
+quote = "1.0.36"
+syn = { version = "2.0.66", features = ["full"] }
+
+[lib]
+proc-macro = true

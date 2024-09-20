@@ -313,3 +313,21 @@ rustup default stable
 | Generic tip  parametreleri          | UpperCamelCase       |
 
 - C#, Java gibi nesne yönelimli dillerde yapıcı metotlar *(Constructors)* genelde özel ve tek tipte tanımlanırlar. Örneğin C# dilinde dönüş tipi olmayan ve sınıfla aynı isme sahip metotlar constructor olarak kabul edilir. Rust tarafında nesne başlatıcısı fonksiyonlara ait özel bir tanım yoktur ancak yaygın olarak **new** veya **with_more_details** gibi isimlendirilmiş metotlar bu amaca hizmet edecek şekilde değerlendirilirler.
+
+## OBL (Ownership Borrowing Lifetimes)
+
+Bu konuda dokuz önemli kural var. En nihayetinde Rust, veriler üzerinde olabilecek beklenmeye güncellemeleri en aza indirmek istediği için aşağıdaki kurallara sahiptir. Yüksek bellek güvenliği ve tutarlılığı bu şekilde sağlanır, olası kaçaklar henüz derleme aşamasında tespit edilir.
+
+1. Ownership Kuralları
+   2. Bir value belli bir anda tek bir değişken, yapı, vektör vb tarafından sahiplenilebilir
+   3. Bir değeri başka bir değişkene atadığımızda, fonksiyona pasladığımızda, vektöre eklediğimiz vb hallerde o değeri taşımız oluruz _(moved)_ Bu duruma eski değer artık kullanılamaz.
+   4. Bunlara karşın bir değere sadece okuma amaçlı erişen sayısız referansı oluşturabilir ve aynı zaman diliminde kullanabiliriz.
+5. Borrowing Kuralları
+   6. Bir referans var olan bir değeri sahiplenmişse taşınamaz.
+   7. Bir değerin referansını o anda onu kullanan herhangibir read-only referans yoksa değiştirebilir _(mutable)_ tanımlayabiliriz. Lakin t anında sadece bir tane mutable referans olabilir.
+   8. Bir değere ister mutable ister immutable referans varsa bu değeri sahibi aracılığı ile değiştiremeyiz.
+   9. Sayılar, boolean'lar, karakterler gibi bazı primitive türler tarafından işaret edilen değerler taşınmak _(move) yerine kopyalanabilirler.
+10. Lifetimes Kuralları
+    11. Bir değişken kapsam _(scope)_ dışına çıktığında sahibi olduğu değer düşürülür _(Memory Cleaning)_
+    12. Değişken değerleri eğer onları halen referans eden aktif elemanlar varsa bellekten düşmezler _(drop)_
+    13. Bir değere yapılan referanslar, referans bulundukları değerden daha uzun ömürlü olamaz.

@@ -3,14 +3,25 @@ fn main() {
 
     let mut meggy = Account::new(1013, "Meggy Ceyn Vatson".to_string());
     meggy.balance = 1000;
-    azon_bank.accounts.push(meggy);
+    // azon_bank.accounts.push(meggy);
 
+    // Solution #01 (Clone)
+    azon_bank.accounts.push(meggy.clone());
+
+    // Case #00
     // print_account(meggy); // Value used after being moved [E0382]
+
+    // Solution #01 (Clone)
+    print_account(meggy);
 
     let mut john = Account::new(1094, "John Doe".to_string());
     john.balance = 950;
     azon_bank.accounts.push(john);
 
+    // Solution #02 (Passed by Reference)
+    azon_bank.accounts.iter().for_each(|a| print_account_ref(a));
+
+    // Case #00
     // azon_bank.accounts.iter().for_each(|&a| print_account(a));
     /*
         azon_bank.accounts.iter().for_each(|&a| print_account(a));
@@ -22,11 +33,30 @@ fn main() {
     */
 }
 
+// Case #00
+// fn print_account(account: Account) {
+//     println!("{:?}", account);
+// }
+
 fn print_account(account: Account) {
     println!("{:?}", account);
 }
 
-#[derive(Debug)]
+// Solution #02
+fn print_account_ref(account: &Account) {
+    println!("{:?}", account);
+}
+
+// Case #00
+// #[derive(Debug)]
+// struct Account {
+//     pub id: u32,
+//     pub owner: String,
+//     pub balance: u32,
+// }
+
+// Solution #01 (Clone trait)
+#[derive(Debug, Clone)]
 struct Account {
     pub id: u32,
     pub owner: String,

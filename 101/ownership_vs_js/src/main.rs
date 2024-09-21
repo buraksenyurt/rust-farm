@@ -15,6 +15,24 @@ fn main() {
     let products = vec![mouse];
     // Bu nedenle aşağıdaki metot çağrısı için de "value used here after move" hatası alırız
     // discount(mouse, 90);
+
+    // Bir değere istediğimiz kadar immutable referans bağlayabiliriz.
+    // Aynen aşağıdaki gibi.
+    let tv = Product::new(45, "37 Ekran siyah beyaz".to_string(), 100056);
+
+    let tv_ref_1 = &tv; // burada tv referansı tv_ref_1 tarafından alınıyor
+    let tv_ref_2 = &tv;
+
+    // let _lcd = tv; // Burada ise tv değeri tv_ref_1 de iken değer taşıması (move) yapılmaya çalışıyor.
+    // // Doğal olarak aşağıdaki çağrımlarda referans değerlerine ulaşılamaması söz konusu olabilir.
+    // // tv_ref_1'in referans ettiği değerin boşaldığını düşünelim. Boşalmış bir değeri aşağıdaki
+    // // gibi başka bir yerde kullanılmak üzere taşımaya Rust izin vermeyecektir.
+    // print_product(tv_ref_1); // borrow later used here
+    // print_product(tv_ref_2);
+}
+
+fn print_product(product: &Product) {
+    println!("{:?}", product);
 }
 
 fn discount(mut product: Product, rate: u32) {

@@ -62,6 +62,20 @@ fn main() {
     for p in catalog.products {
         println!("{:?}", p);
     }
+
+    /*
+        Rust dilinde sayısal değerler, bool, char, elemanları kopylanabilen array'ler,
+        elemanları kopyalanabilen tuple'lar, okunabilir veya yazılabilir referanslar
+        kopylama suretiyle taşınırlar. Ancak String türü için durum farklıdır. Söz gelimi
+        aşağıdaki kod parçasını göz önüne alalım. id ve product_name ayrı birer binding olarak
+        hazırlanıyorlar. Sonrasında bu değerlerden yararlanılarak bir Product nesnesi örnekleniyor.
+        Ne var ki println! fonksiyonunda 'Value used after being moved [E0382]' hatası alınıyor.
+     */
+    let id = 6;
+    let product_name = String::from("Altılı Kahve Bardağı Seti");
+    let _cup = Product::new(id, product_name, 19.90);
+    //                  in this method  ^^^^^^ this parameter takes ownership of the value
+    // println!("{}->{}", id, product_name); // 'Value used after being moved [E0382]'
 }
 
 // Catalog üstünden değişiklik olacağı için mutable referans olarak kullanılabilir

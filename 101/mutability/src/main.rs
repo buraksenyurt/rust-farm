@@ -46,6 +46,34 @@ fn main() {
     tv.title = "51 Ekran renkli televizyon".to_string(); // tv.title` is assigned to here but it was already borrowed
 
     // println!("{:?}", product_ref); // borrow later used here
+
+    /*
+       Senaryo :
+
+       Ürünlerin listesini tutan bir nesnemiz olsun. Catalog olarak isimlendirelim.
+       Kataloğa yeni bir ürün eklemek için de harici bir fonksiyon kullanmak istediğimizi düşünelim.
+       Bunu yazmanın birkaç yolu var ancak ideomatic olanı nedir?
+    */
+    let mut catalog = Catalog::default();
+    let bas_guitar = Product::new(3, "Fender Ştratakoster bas gitar".to_string(), 1000.54);
+    let org = Product::new(4, "Atarima Org".to_string(), 100.50);
+    add_product(&mut catalog, bas_guitar);
+    add_product(&mut catalog, org);
+    for p in catalog.products {
+        println!("{:?}", p);
+    }
+}
+
+// Catalog üstünden değişiklik olacağı için mutable referans olarak kullanılabilir
+// Product ise bu fonksiyona taşınabilen ve içerideki vektöre eklendikten sonra yok edilebilen
+// şekliyle kullanılabilir.
+fn add_product(catalog: &mut Catalog, product: Product) {
+    catalog.products.push(product);
+}
+
+#[derive(Debug, Default)]
+struct Catalog {
+    products: Vec<Product>,
 }
 
 // Mutable Reference kullanımı

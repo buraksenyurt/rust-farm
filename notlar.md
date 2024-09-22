@@ -326,7 +326,7 @@ Bu konuda dokuz önemli kural var. En nihayetinde Rust, veriler üzerinde olabil
    6. Bir referans var olan bir değeri sahiplenmişse taşınamaz.
    7. Bir değerin referansını o anda onu kullanan herhangibir read-only referans yoksa değiştirebilir _(mutable)_ tanımlayabiliriz. Lakin t anında sadece bir tane mutable referans olabilir.
    8. Bir değere ister mutable ister immutable referans varsa bu değeri sahibi aracılığı ile değiştiremeyiz.
-   9. Sayılar, boolean'lar, karakterler gibi bazı primitive türler tarafından işaret edilen değerler taşınmak _(move) yerine kopyalanabilirler.
+   9. Sayılar, boolean'lar, karakterler, içerdiği elamanları kopyalanbilir olan array ve tuble türler tarafından işaret edilen değerler taşınmak _(move)_ yerine kopyalanırlar.
 10. Lifetimes Kuralları
     11. Bir değişken kapsam _(scope)_ dışına çıktığında sahibi olduğu değer düşürülür _(Memory Cleaning)_
     12. Değişken değerleri eğer onları halen referans eden aktif elemanlar varsa bellekten düşmezler _(drop)_

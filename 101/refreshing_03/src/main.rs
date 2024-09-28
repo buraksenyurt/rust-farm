@@ -34,6 +34,112 @@ fn main() {
 
     let new_list = convert_to_uppercase(&levels);
     write_all(&new_list);
+
+    /*
+       into_iter kullandığımızda sahiplik(ownership) de taşınır.
+       Aşağıdaki senaryoda locations değişkeni ile ifade edilen vektör elemanları
+       into_iter adaptörü ardından gelen filter tüketicisi ile B harfine göre çekilirler
+       ve her biri for_each tüketicisi ile target isimli vektöre taşınır(move)
+
+       Bu nedenle de 55nci satırdaki kod çalışmaz.
+       Nitekim locations elemanları target'a taşınmıştır ve locations
+       değişkeni artık kullanılabilir değildir.
+
+    */
+    let locations = vec![
+        String::from("Tokyo"),
+        String::from("İstanbul"),
+        String::from("London"),
+        String::from("Berlin"),
+        String::from("Beijing"),
+        String::from("Budapest"),
+        String::from("Boston"),
+    ];
+    let mut target = vec![];
+    locations
+        .into_iter()
+        .filter(|l| l.starts_with("B"))
+        .for_each(|arg| target.push(arg));
+    println!("Locations {:?}", target);
+    // println!("Locations: {:?}", locations); // Value used after being moved
+
+    /*
+       Aşağıdaki örnekte String türüdünden elemanlar taşıyan bir vector'ün
+       tüm elemanları char türünden birer vector türüne dönüştürülmektedir.
+    */
+    let team_codes = vec![
+        String::from("REDONE"),
+        String::from("BLUETWO"),
+        String::from("COPYTHAT"),
+        String::from("IRINE"),
+        String::from("BLACKDOWN"),
+        String::from("GOLDLEADER"),
+        String::from("RANGERECHO"),
+        String::from("SIERRAALPHA"),
+    ];
+    /*
+       collect fonksiyonu ne döneceğini bilmek ister. Bunun için type annotation kullanır.
+       Aşağıdaki kullanımda bunu yapmazsak "type must be known at this point" hatası alırız.
+    */
+
+    let coded: Vec<Vec<char>> = team_codes
+        .iter()
+        .map(|a| a.chars().map(|c| c.to_ascii_lowercase()).collect())
+        .collect();
+
+    coded.iter().for_each(|l| println!("{:?}", l));
+
+    let founded_team_code = search_team_codes(&team_codes, "BLUE", "OFF");
+    println!("Found team code {:?}", founded_team_code);
+    let founded_team_code = search_team_codes(&team_codes, "PINK", "OFF");
+    println!("Found team code {:?}", founded_team_code);
+
+    let gamers = vec![
+        Player {
+            name: String::from("Rouge one"),
+            points: 10,
+        },
+        Player {
+            name: String::from("Mor Galled"),
+            points: 4,
+        },
+        Player {
+            name: String::from("Condor"),
+            points: 5,
+        },
+        Player {
+            name: String::from("Wicker"),
+            points: 9,
+        },
+    ];
+
+    // Collect için bir başka type annotation örneği
+    let beginners = gamers
+        .into_iter()
+        .filter(|g| g.points <= 5)
+        .map(|g| g.name)
+        .collect::<Vec<String>>();
+
+    beginners.iter().for_each(|b| println!("{}", b));
+}
+
+/*
+   String türünden bir vector slice üzerinde argument ile belirtilen değer aranır.
+   Bulamazsa fallback değeri ele alınır.
+   argument ve fallback herhangi bir değişime uğramayacak veya herhangi bir hesaplamada
+   kullanılmayacak türden değişkenleri ifade edebilir.
+   Bu nedenle string slice olarak tanımlanmışlardır.
+
+   Fonksiyonun nasıl kullanılmak istendiğine göre dönüş türü değişiklik gösterebilir.
+   Yani, mutable veya immutable olması tamamen fonksiyonun kullanım amacına bağlı olabilir.
+*/
+fn search_team_codes(codes: &[String], argument: &str, fallback: &str) -> String {
+    codes
+        .iter()
+        .find(|c| c.contains(argument))
+        .map_or(String::from(fallback), |arg| arg.to_string())
+    // map_or fonksiyonu bir önceki fonksiyon çağrısının Option değerine göre hareket eder.
+    // Eğer sonuç None ise ilk argümanı döner, eğer Some ise(yani bir değer bulunmuşsa) onu döner.
 }
 
 fn write_all(list: &Vec<String>) {
@@ -109,4 +215,9 @@ fn convert_to_uppercase(list: &[String]) -> Vec<String> {
 
     // let result = list.iter().map(|arg| arg.to_uppercase()).collect();
     // result
+}
+
+struct Player {
+    name: String,
+    points: i32,
 }

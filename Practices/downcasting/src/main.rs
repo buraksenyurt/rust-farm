@@ -1,14 +1,19 @@
-use std::any::Any;
-use std::fmt::{Display, Formatter};
-use std::ops::Deref;
+mod component;
 
+use component::prelude::*;
+use std::any::{Any, TypeId};
+use std::collections::HashMap;
+use std::fmt::Display;
+use std::ops::Deref;
 /*
     Bu örnekte özellikle farklı türden struct nesnelerini taşıyabilen
     Inventory modeli ve downcasting konusuna bakmaya çalıştım.
+    Ayrıca Any, TypeId türleri ile temel bir ECS(Entity Component System) için gerekli olan
+    component setine sahip entity'ler için bir girizgah da yer almakta.
 */
 
 fn main() {
-    let mut enemy_health = Health(100);
+    let mut enemy_health = Health::default();
     enemy_health.lose(10);
     println!("Enemy health is {}", enemy_health);
 
@@ -16,8 +21,12 @@ fn main() {
         objects: vec![
             Box::new(Gem { value: 1000 }),
             Box::new(FieldGlass {
-                range: 2,
+                range: 5,
                 range_unit: RangeUnit::SeaMile,
+            }),
+            Box::new(FieldGlass {
+                range: 1,
+                range_unit: RangeUnit::Km,
             }),
             Box::new(Gem { value: 500 }),
             Box::new(Gem { value: 750 }),
@@ -54,79 +63,34 @@ fn main() {
     for field_glass in field_glasses {
         println!("FieldGlass: {:?}", field_glass);
     }
-}
 
-struct Health(u32);
-
-impl Health {
-    pub fn new(value: u32) -> Self {
-        Health(value)
-    }
-
-    pub fn is_live(&self) -> bool {
-        self.0 > 0
-    }
-
-    pub fn lose(&mut self, amount: u32) {
-        self.0 -= amount;
-    }
-}
-
-impl Display for Health {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", **self)
-    }
-}
-
-impl Deref for Health {
-    type Target = u32;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-#[derive(Debug)]
-struct Gem {
-    value: u32,
-}
-
-#[derive(Debug)]
-struct FieldGlass {
-    range: u32,
-    range_unit: RangeUnit,
-}
-
-#[derive(Debug)]
-struct Chest {
-    origin: String,
-    volume: f32,
-    content: String,
-}
-
-#[derive(Debug)]
-enum RangeUnit {
-    Km,
-    SeaMile,
-}
-
-// Herhangibir tipte nesneleri saklamak için bir yol
-struct Inventory {
-    objects: Vec<Box<dyn Any + 'static>>,
-}
-
-impl Inventory {
-    pub fn get<T: Any + 'static>(&self, index: usize) -> Option<&T> {
-        if index >= self.objects.len() {
-            return None;
+    /*
+       Bir ECS sisteminde entity'ler kendilerine atanmış componentler ve benzersiz bir id ile
+       ifade edilebilirler. Aşağıdaki Any type kullanarak bunu nasıl yapabileceğimizin bir örneği
+       var.
+    */
+    let mut components: HashMap<TypeId, Vec<Box<dyn Any + 'static>>> = HashMap::new();
+    let entity_id = TypeId::of::<u32>();
+    components.insert(
+        entity_id,
+        vec![
+            Box::new(Health::new(50)),
+            Box::new(Position::new(10.0, 10.0)),
+            Box::new(Velocity::new(1.0, 0.0)),
+        ],
+    );
+    components.insert(
+        TypeId::of::<i32>(),
+        vec![
+            Box::new(Health::default()),
+            Box::new(Position::new(10.0, 10.0)),
+            Box::new(Power::new(6)),
+        ],
+    );
+    for (id, comps) in &components {
+        println!("{:?}", id);
+        for comp in comps {
+            println!("{:?}", comp.downcast_ref::<Position>());
         }
-        self.objects[index].downcast_ref()
-    }
-
-    pub fn get_all<T: Any + 'static>(&self) -> Vec<&T> {
-        self.objects
-            .iter()
-            .filter_map(|object| object.downcast_ref::<T>())
-            .collect()
     }
 }

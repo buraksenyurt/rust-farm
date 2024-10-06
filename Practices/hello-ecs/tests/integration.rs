@@ -1,0 +1,3 @@
+/*
+   Entegrasyon testleri için kullanacağız.
+*/

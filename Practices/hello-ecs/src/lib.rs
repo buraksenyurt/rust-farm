@@ -19,4 +19,8 @@ impl World {
     pub fn get_resource<T: Any>(&mut self) -> Option<&T> {
         self.resource_provider.get::<T>()
     }
+
+    pub fn get_resource_mut<T: Any>(&mut self) -> Option<&mut T> {
+        self.resource_provider.get_mut::<T>()
+    }
 }

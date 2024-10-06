@@ -18,6 +18,15 @@ impl ResourceProvider {
             None
         }
     }
+
+    pub fn get_mut<T: Any>(&mut self) -> Option<&mut T> {
+        let type_id = TypeId::of::<T>();
+        if let Some(data) = self.store.get_mut(&type_id) {
+            data.downcast_mut::<T>()
+        } else {
+            None
+        }
+    }
 }
 
 #[cfg(test)]
@@ -27,7 +36,10 @@ mod test {
     #[test]
     fn add_delta_time_into_resource_store_test() {
         let resource_provider = setup_resource_provider();
-        let store = resource_provider.store.get(&TypeId::of::<DeltaTime>()).unwrap();
+        let store = resource_provider
+            .store
+            .get(&TypeId::of::<DeltaTime>())
+            .unwrap();
         let delta_time_resource = store.downcast_ref::<DeltaTime>().unwrap();
         assert_eq!(delta_time_resource.0, 0.5);
     }
@@ -38,6 +50,15 @@ mod test {
         if let Some(delta_time) = resource_provider.get::<DeltaTime>() {
             assert_eq!(delta_time.0, 0.5);
         }
+    }
+
+    #[test]
+    fn get_resource_mut_test() {
+        let mut resource_provider = setup_resource_provider();
+        let delta_time: &mut DeltaTime = resource_provider.get_mut::<DeltaTime>().unwrap();
+        delta_time.0 = 1.0;
+        let delta_time = resource_provider.get::<DeltaTime>().unwrap();
+        assert_eq!(delta_time.0, 1.0);
     }
 
     fn setup_resource_provider() -> ResourceProvider {

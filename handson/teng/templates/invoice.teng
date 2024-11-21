@@ -1,0 +1,7 @@
+{{ title }} - {{ serial_number }}
+{{ customer }}
+
+Line Items
+{{ line_items }}
+
+{{ total_amount }} $

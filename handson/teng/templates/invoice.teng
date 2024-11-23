@@ -1,7 +1,16 @@
-{{ title }} - {{ serial_number }}
-{{ customer }}
+<html>
+<head>
+    <title>{{ title }} - {{ serial_number }}</title>
+</head>
+<body>
+    <h1>{{ title }} - {{ serial_number }} </h1>
+    <p>{{ customer }}</p>
 
-Line Items
-{{ line_items }}
+    <h2>Line Items</h2>
+    <ul>
+        {{ line_items }}
+    </ul>
 
-{{ total_amount }} $
+    <p>Total Amount is <b>{{ total_amount }}</b> $</p>
+
+</body>

@@ -1,14 +1,18 @@
-use crate::file::*;
-use crate::report::*;
+use crate::server::*;
+use axum::{extract::Query, response::Html, routing::get, Router};
+use std::net::SocketAddr;
 
 mod file;
 mod model;
 mod report;
+mod server;
 
-fn main() {
-    let invoice_data = load_json("data_samples/invoice.json");
-    let template_file = "templates/invoice.teng";
-    let template = load_template(template_file);
-    let output = generate(&template, &invoice_data);
-    println!("{}", output);
+#[tokio::main]
+async fn main() {
+    let app = Router::new().route("/report", get(generate_report));
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    println!("Sunucu çalışıyor: http://{}", addr);
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }

@@ -25,7 +25,7 @@ pub fn generate(template: &str, invoice: &Invoice) -> String {
         .iter()
         .map(|item| {
             format!(
-                "{} {} - {}$ ({})",
+                "<li>{} {} - {}$ ({})</li>",
                 item.id, item.title, item.unit_price, item.quantity
             )
         })

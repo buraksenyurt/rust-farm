@@ -1,5 +1,4 @@
 use serde::Deserialize;
-
 #[derive(Deserialize, Debug)]
 pub struct Item {
     pub id: i32,
@@ -7,7 +6,6 @@ pub struct Item {
     pub unit_price: f32,
     pub quantity: i32,
 }
-
 #[derive(Deserialize, Debug)]
 pub struct Invoice {
     pub title: String,

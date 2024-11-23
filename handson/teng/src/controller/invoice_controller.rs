@@ -1,5 +1,5 @@
-use crate::model::Invoice;
 use regex::Regex;
+use crate::model::invoice::Invoice;
 
 pub fn generate(template: &str, invoice: &Invoice) -> String {
     let mut rendered = template.to_string();

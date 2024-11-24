@@ -1,15 +1,17 @@
-use crate::server::*;
+use crate::report_builder::*;
 use axum::{routing::get, Router};
 use std::net::SocketAddr;
 
-mod file;
-mod server;
-mod model;
 mod controller;
+mod file;
+mod model;
+mod report_builder;
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/reports/invoice", get(generate_report));
+    let app = Router::new()
+        .route("/reports/invoice", get(generate_invoice_report))
+        .route("/reports/sales/monthly", get(generate_sales_report));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("Sunucu çalışıyor: http://{}", addr);

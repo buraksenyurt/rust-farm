@@ -1,0 +1,11 @@
+{
+    "report_title": "Monthly Sales Report",
+    "month": "November 2024",
+    "total_sales": 110000,
+    "sales_by_category": [
+        { "category": "Electronics", "amount": 50000 },
+        { "category": "Books", "amount": 30000 },
+        { "category": "Home Supplies", "amount": 20000 },
+        { "category": "Music", "amount": 10000 }
+    ]
+}

@@ -1,5 +1,5 @@
-use regex::Regex;
 use crate::model::invoice::Invoice;
+use regex::Regex;
 
 pub fn generate(template: &str, invoice: &Invoice) -> String {
     let mut rendered = template.to_string();
@@ -19,7 +19,7 @@ pub fn generate(template: &str, invoice: &Invoice) -> String {
         rendered = re.replace_all(&rendered, *value).to_string();
     }
 
-    let re = Regex::new(r"\{\{\s*line_items\s*\}\}").unwrap();
+    let re = Regex::new(r"\{\{\s*line_items\s*}}").unwrap();
     let items = invoice
         .line_items
         .iter()

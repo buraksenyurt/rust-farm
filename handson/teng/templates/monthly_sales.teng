@@ -1,0 +1,17 @@
+<html>
+<head>
+    <meta>
+    <title>{{ report_title }}</title>
+</head>
+<body>
+    <h1>{{ report_title }}</h1>
+    <p>Month: {{ month }}</p>
+    <p>Total Sales: {{ total_sales }}₺</p>
+    <h2>Sales by Category</h2>
+    <ul>
+        {{#each sales_by_category}}
+            <li>{{ category }}: {{ amount }} Unit</li>
+        {{/each}}
+    </ul>
+</body>
+</html>

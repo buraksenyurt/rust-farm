@@ -19,7 +19,7 @@ pub fn generate(template: &str, sales_data: &SalesData) -> String {
         rendered = re.replace_all(&rendered, *value).to_string();
     }
 
-    let each_rx = Regex::new(r"\{\{\#each\s+(\w+)\s*\}\}([\s\S]*?)\{\{\/each\}\}").unwrap();
+    let each_rx = Regex::new(r"\{\{#each\s+(\w+)\s*}}([\s\S]*?)\{\{/each}}").unwrap();
     rendered = each_rx
         .replace_all(&rendered, |caps: &regex::Captures| {
             let key = &caps[1];

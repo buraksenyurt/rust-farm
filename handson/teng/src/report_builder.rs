@@ -1,20 +1,13 @@
 use crate::file::*;
-use crate::model::invoice::Invoice;
-use crate::model::sales::SalesData;
+use crate::traits::Reportable;
 use axum::response::Html;
 
-pub async fn generate_invoice_report() -> Html<String> {
-    let invoice_data: Invoice = load_json("data/invoice.json");
-    let template_file = "templates/invoice.teng";
-    let template = load_template(template_file);
-    let output = crate::controller::invoice_controller::generate(&template, &invoice_data);
-    Html(output)
-}
-
-pub async fn generate_sales_report() -> Html<String> {
-    let sales_data: SalesData = load_json("data/monthly_sales.json");
-    let template_file = "templates/monthly_sales.teng";
-    let template = load_template(template_file);
-    let output = crate::controller::sales_controller::generate(&template, &sales_data);
+pub async fn generate_report<T>(report_name: &str) -> Html<String>
+where
+    T: Reportable + serde::Serialize + serde::de::DeserializeOwned,
+{
+    let data: T = load_json(format!("data/{report_name}.json").as_str());
+    let template = load_template(format!("templates/{report_name}.teng").as_str());
+    let output = T::generate(&template, &data);
     Html(output)
 }

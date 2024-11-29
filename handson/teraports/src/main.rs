@@ -1,8 +1,8 @@
-use crate::file::load_json;
-use crate::model::SalesData;
 use axum::response::Html;
 use axum::routing::get;
 use axum::{Extension, Router};
+use file::load_json;
+use model::*;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tera::{Context, Tera};
@@ -15,17 +15,18 @@ async fn main() {
     let tera = match Tera::new("templates/**/*") {
         Ok(t) => Arc::new(t),
         Err(e) => {
-            eprintln!("Şablonları yüklerken hata oluştu: {}", e);
+            eprintln!("Error on loading templates {}", e);
             std::process::exit(1);
         }
     };
 
     let app = Router::new()
         .route("/reports/sales/monthly", get(generate_sales_report))
+        .route("/reports/invoice", get(generate_invoice_report))
         .layer(Extension(tera));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
-    println!("Sunucu çalışıyor: http://{}", addr);
+    println!("Server online http://{}", addr);
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
@@ -42,7 +43,28 @@ async fn generate_sales_report(Extension(tera): Extension<Arc<Tera>>) -> Html<St
     let rendered = tera
         .render("monthly_sales.html", &context)
         .map_err(|e| {
-            eprintln!("Şablon render edilirken hata oluştu: {:?}", e);
+            eprintln!("Error on render operation: {:?}", e);
+            std::process::exit(1);
+        })
+        .unwrap();
+
+    Html(rendered)
+}
+
+async fn generate_invoice_report(Extension(tera): Extension<Arc<Tera>>) -> Html<String> {
+    let sales_data = load_json::<Invoice>("data/invoice.json");
+
+    let mut context = Context::new();
+    context.insert("title", &sales_data.title);
+    context.insert("customer", &sales_data.customer);
+    context.insert("total_amount", &sales_data.total_amount);
+    context.insert("serial_number", &sales_data.serial_number);
+    context.insert("line_items", &sales_data.line_items);
+
+    let rendered = tera
+        .render("invoice.html", &context)
+        .map_err(|e| {
+            eprintln!("Error on render operation: {:?}", e);
             std::process::exit(1);
         })
         .unwrap();

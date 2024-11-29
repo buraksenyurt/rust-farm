@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>{{ title }} - {{ serial_number }}</title>
@@ -8,7 +9,9 @@
 
     <h2>Line Items</h2>
     <ul>
-        {{ line_items }}
+        {% for item in line_items %}
+        <li>{{ item.id }}- {{ item.title }} ({{ item.unit_price }}) Quantity is {{ item.quantity }}</li>
+        {% endfor %}
     </ul>
 
     <p>Total Amount is <b>{{ total_amount }}</b> $</p>

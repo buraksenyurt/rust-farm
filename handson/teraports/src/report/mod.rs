@@ -35,3 +35,12 @@ pub async fn generate_report<T: Serialize>(
 
     Html(rendered)
 }
+
+pub async fn home(tera: Arc<Tera>) -> Html<String> {
+    let context = Context::new();
+    let rendered = tera.render("index.html", &context).unwrap_or_else(|e| {
+        eprintln!("Error rendering index page: {:?}", e);
+        "Failed to render index page.".to_string()
+    });
+    Html(rendered)
+}

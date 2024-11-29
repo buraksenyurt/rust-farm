@@ -20,6 +20,13 @@ async fn main() {
     };
 
     let app = Router::new()
+        .route("/", {
+            let tera = tera.clone();
+            get(move || {
+                let tera = Arc::clone(&tera);
+                async move { report::home(tera).await }
+            })
+        })
         .route("/reports/sales/monthly", {
             let tera = tera.clone();
             get(move || {

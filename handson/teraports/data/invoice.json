@@ -1,0 +1,11 @@
+{
+  "title": "Invoice",
+  "serial_number": "INV-CAB-19023",
+  "customer": "Azon Cable Company",
+  "line_items": [
+    {"id": 1,"title": "vga cable","unit_price": 45.50,"quantity": 100},
+    {"id": 2,"title": "hdmi cable","unit_price": 200.14,"quantity": 50},
+    {"id": 3,"title": "dvi cable","unit_price": 185.50,"quantity": 80}
+  ],
+  "total_amount": 230
+}

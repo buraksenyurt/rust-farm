@@ -1,9 +1,9 @@
 pub mod invoice;
 pub mod monthly_sales;
-
-use axum::response::Html;
 pub use invoice::*;
 pub use monthly_sales::*;
+
+use axum::response::Html;
 use serde::Serialize;
 use std::sync::Arc;
 use tera::{Context, Tera};

@@ -1,0 +1,33 @@
+{% extends "master.html" %}
+
+{% block title %}Popular Video Games of 80s{% endblock %}
+
+{% block header %}
+<h1 class="fw-bold">Popular Video Games of 80s</h1>
+<p>Top 10 video games from the 1980s.</p>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Developer</th>
+        <th>Genre</th>
+        <th>Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for game in games %}
+    <tr>
+        <td>{{ game.id }}</td>
+        <td>{{ game.name }}</td>
+        <td>{{ game.developer }}</td>
+        <td>{{ game.genre }}</td>
+        <td>{{ game.rating }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

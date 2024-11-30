@@ -1,0 +1,74 @@
+{
+"games":[
+    {
+      "id": 1,
+      "name": "Pac-Man",
+      "developer": "Namco",
+      "genre": "Arcade",
+      "rating": 9.2
+    },
+    {
+      "id": 2,
+      "name": "Space Invaders",
+      "developer": "Taito",
+      "genre": "Shooter",
+      "rating": 8.8
+    },
+    {
+      "id": 3,
+      "name": "Donkey Kong",
+      "developer": "Nintendo",
+      "genre": "Platformer",
+      "rating": 9.5
+    },
+    {
+      "id": 4,
+      "name": "Galaga",
+      "developer": "Namco",
+      "genre": "Shooter",
+      "rating": 8.7
+    },
+    {
+      "id": 5,
+      "name": "Tetris",
+      "developer": "Alexey Pajitnov",
+      "genre": "Puzzle",
+      "rating": 9.8
+    },
+    {
+      "id": 6,
+      "name": "The Legend of Zelda",
+      "developer": "Nintendo",
+      "genre": "Action-Adventure",
+      "rating": 9.7
+    },
+    {
+      "id": 7,
+      "name": "Frogger",
+      "developer": "Konami",
+      "genre": "Arcade",
+      "rating": 8.6
+    },
+    {
+      "id": 8,
+      "name": "Missile Command",
+      "developer": "Atari",
+      "genre": "Shooter",
+      "rating": 8.4
+    },
+    {
+      "id": 9,
+      "name": "Pong",
+      "developer": "Atari",
+      "genre": "Sports",
+      "rating": 8.1
+    },
+    {
+      "id": 10,
+      "name": "Asteroids",
+      "developer": "Atari",
+      "genre": "Shooter",
+      "rating": 8.3
+    }
+  ]
+}

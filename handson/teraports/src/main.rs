@@ -10,7 +10,7 @@ mod model;
 mod report;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tera = match Tera::new("templates/**/*") {
         Ok(t) => Arc::new(t),
         Err(e) => {
@@ -24,7 +24,7 @@ async fn main() {
             let tera = tera.clone();
             get(move || {
                 let tera = Arc::clone(&tera);
-                async move { report::home(tera).await }
+                async move { home(tera).await }
             })
         })
         .route("/reports/sales/monthly", {
@@ -41,10 +41,19 @@ async fn main() {
                 async move { generate_invoice_report(tera).await }
             })
         })
+        .route("/reports/topGames", {
+            let tera = tera.clone();
+            get(move || {
+                let tera = Arc::clone(&tera);
+                async move { generate_top_games_report(tera).await }
+            })
+        })
         .layer(Extension(tera));
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("Server online http://{}", addr);
-    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
+
+    Ok(())
 }

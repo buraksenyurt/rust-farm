@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="en-US">
-<head>
-    <title>{{ report_title }}</title>
-</head>
-    <body>
-        <h1>{{ report_title }}</h1>
-        <p>{{ month }}</p>
-        <p>Total Sales {{ total_sales }}</p>
-        <h2>Sales by Category</h2>
-        <ul>
-            {% for sales in sales_by_category %}
-            <li>{{ sales.category }}: {{ sales.amount }} Unit</li>
-            {% endfor %}
-        </ul>
-    </body>
-</html>
+{% extends "master.html" %}
+
+{% block title %}{{ report_title }}{% endblock %}
+
+{% block header %}
+<h1 class="fw-bold">{{ report_title }}</h1>
+<p class="fs-5">{{ month }}</p>
+{% endblock %}
+
+{% block content %}
+<h2 class="fw-semibold">Sales by Category</h2>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+        <th>Category</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for sales in sales_by_category %}
+    <tr>
+        <td>{{ sales.category }}</td>
+        <td>{{ sales.amount }} Unit</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p class="fs-5 text-end"><strong>Total Sales:</strong> <span class="fw-bold">{{ total_sales }}</span></p>
+{% endblock %}

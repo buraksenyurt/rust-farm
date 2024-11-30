@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Reports</title>
-</head>
-<body>
-    <h1>Reports</h1>
-    <ul>
-        <li><a href="/reports/invoice">Invoice Report</a></li>
-        <li><a href="/reports/sales/monthly">Monthly Sales Report</a></li>
-    </ul>
-</body>
-</html>
+{% extends "master.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block header %}
+<h1 class="fw-bold">Corporate Reports</h1>
+{% endblock %}
+
+{% block content %}
+<div class="list-group">
+    <a href="/reports/invoice" class="list-group-item list-group-item-action">
+        Invoice Report
+    </a>
+    <a href="/reports/sales/monthly" class="list-group-item list-group-item-action">
+        Monthly Sales Report
+    </a>
+</div>
+{% endblock %}

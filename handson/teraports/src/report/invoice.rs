@@ -6,9 +6,9 @@ use std::sync::Arc;
 use tera::Tera;
 
 pub async fn generate_invoice_report(tera: Arc<Tera>) -> Html<String> {
-    let json_source = JsonSource {
+    let jds = JsonDataSource {
         file_name: "data/invoice.json".to_string(),
     };
-    let invoice_data: Invoice = load_data(json_source).await;
+    let invoice_data: Invoice = jds.load_data().await;
     generate_report(tera, "invoice.html", invoice_data).await
 }

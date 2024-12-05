@@ -41,11 +41,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 async move { generate_invoice_report(tera).await }
             })
         })
-        .route("/reports/topGames", {
+        .route("/reports/games/top", {
             let tera = tera.clone();
             get(move || {
                 let tera = Arc::clone(&tera);
                 async move { generate_top_games_report(tera).await }
+            })
+        })
+        .route("/reports/players/top", {
+            let tera = tera.clone();
+            get(move || {
+                let tera = Arc::clone(&tera);
+                async move { generate_top_players_report(tera).await }
             })
         })
         .layer(Extension(tera));

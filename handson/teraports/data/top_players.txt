@@ -1,0 +1,11 @@
+nickname,total_score,join_year
+Ironette,15230,2014
+Bat Guy,24560,2011
+Wonder Gale,18750,2019
+Super Lass,32100,2021
+Flash Dash,29040,2022
+Black Widow,17500,2017
+Green Lantern,22010,2023
+Spider Lad,19990,2023
+Hawk Key,18330,2023
+Storm Bringer,25020,2024

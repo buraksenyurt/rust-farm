@@ -1,0 +1,31 @@
+{% extends "master.html" %}
+
+{% block title %}Popular Players of All Time{% endblock %}
+
+{% block header %}
+<h1 class="fw-bold">Top Players</h1>
+<p>A list of top players</p>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+    <tr>
+        <th>#</th>
+        <th>Nickname</th>
+        <th>Total Score</th>
+        <th>Join Year</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for player in players %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ player.nickname }}</td>
+        <td>{{ player.total_score }}</td>
+        <td>{{ player.join_year }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

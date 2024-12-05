@@ -1,17 +1,16 @@
-pub mod json_source;
+mod csv_ds;
+mod json_ds;
 
-pub use json_source::*;
+pub use csv_ds::*;
+pub use json_ds::*;
 
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 
-pub trait DataSource {
+pub trait JsonLoader {
     async fn load_data<T: DeserializeOwned>(&self) -> T;
 }
 
-pub async fn load_data<T, S>(data_source: S) -> T
-where
-    T: DeserializeOwned,
-    S: DataSource,
-{
-    data_source.load_data().await
+pub trait TabularLoader {
+    async fn load_data<T: Serialize + DeserializeOwned + Send>(&self) -> Vec<T>;
 }

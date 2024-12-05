@@ -1,10 +1,12 @@
-pub mod invoice;
-pub mod monthly_sales;
-pub mod top_games;
+mod invoice;
+mod monthly_sales;
+mod top_games;
+mod top_players;
 
 pub use invoice::*;
 pub use monthly_sales::*;
 pub use top_games::*;
+pub use top_players::*;
 
 use axum::response::Html;
 use serde::Serialize;

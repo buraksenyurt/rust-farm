@@ -1,6 +1,6 @@
 use crate::report::*;
 use axum::routing::get;
-use axum::{Extension, Router};
+use axum::Router;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tera::Tera;
@@ -21,41 +21,25 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = Router::new()
         .route("/", {
-            let tera = tera.clone();
-            get(move || {
-                let tera = Arc::clone(&tera);
-                async move { home(tera).await }
-            })
+            let tera = Arc::clone(&tera);
+            get(move || async move { home(tera).await })
         })
         .route("/reports/sales/monthly", {
-            let tera = tera.clone();
-            get(move || {
-                let tera = Arc::clone(&tera);
-                async move { generate_sales_report(tera).await }
-            })
+            let tera = Arc::clone(&tera);
+            get(move || async move { generate_sales_report(tera).await })
         })
         .route("/reports/invoice", {
-            let tera = tera.clone();
-            get(move || {
-                let tera = Arc::clone(&tera);
-                async move { generate_invoice_report(tera).await }
-            })
+            let tera = Arc::clone(&tera);
+            get(move || async move { generate_invoice_report(tera).await })
         })
         .route("/reports/games/top", {
-            let tera = tera.clone();
-            get(move || {
-                let tera = Arc::clone(&tera);
-                async move { generate_top_games_report(tera).await }
-            })
+            let tera = Arc::clone(&tera);
+            get(move || async move { generate_top_games_report(tera).await })
         })
         .route("/reports/players/top", {
-            let tera = tera.clone();
-            get(move || {
-                let tera = Arc::clone(&tera);
-                async move { generate_top_players_report(tera).await }
-            })
-        })
-        .layer(Extension(tera));
+            let tera = Arc::clone(&tera);
+            get(move || async move { generate_top_players_report(tera).await })
+        });
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("Server online http://{}", addr);

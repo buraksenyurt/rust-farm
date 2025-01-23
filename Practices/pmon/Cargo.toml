@@ -1,0 +1,9 @@
+[package]
+name = "pmon"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.27", features = ["derive"] }
+colored = "3.0.0"
+sysinfo = "0.33.1"

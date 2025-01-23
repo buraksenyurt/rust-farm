@@ -15,20 +15,33 @@ cargo add clap -F derive
 cargo run -- -h
 cargo run -- --help
 
-# firefox process'lerini en çok bellek tüketenden en az tüketene kadar göstermek
-cargo run -- --filter firefox.exe --sort memory
+# firefox process'lerini bellek kullanımına göre artan sırada listelemek
+cargo run -- --filter firefox.exe --sort memory --order asc
 
-# aynısını ters sırada çekmek. Az bellek tüketenden çok tüketene doğru
+# Bellek kullanımına göre azalan sıralamada listelemek
 cargo run -- --filter firefox.exe --sort memory --order desc
 
-# tüm process'leri cpu kullanımlarına göre varsayılan sırada(çok kullanandan az kullanana doğru)
+# tüm process'leri cpu kullanımlarına göre azalan sırada listelemek
 cargo run -- --all --sort cpu
+
+# tüm işlemlerin listelenmesi
+cargo run -- --all
 ```
 
 İşte çalışma zamanına ait birkaç örnek.
 
-![Runtime_01.png](runtime_01.png)
+Kullanım kılavuzunun gösterilmesi.
 
-Tüm process'lerin CPU kullanımına göre sıralanması
+![Help](help.png)
 
-![Runtime_02.png](runtime_02.png)
+Firefox processlerini bellek kullanımına göre artan sırada listelemek.
+
+![Firefox 01](firefox_01.png)
+
+Yukarıdakinin tam tersi sıralama.
+
+![Firefox 02](firefox_02.png)
+
+Tüm processleri cpu kullanımına göre azalan sırada listelemek.
+
+![Cpu 01](cpu_01.png)

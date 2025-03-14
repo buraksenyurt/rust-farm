@@ -4,11 +4,14 @@ use std::fmt::{Display, Formatter};
 use std::thread::sleep;
 use std::time::Duration;
 use sysinfo::System;
+use std::io::Write;
 
 fn main() {
     let mut sys = System::new();
     let mut measurements = VecDeque::new();
     let max_log_count = sys.cpus().len() * 5;
+    let stdout = std::io::stdout();
+    let mut lock = stdout.lock();
 
     loop {
         sys.refresh_cpu_usage();
@@ -34,7 +37,10 @@ fn main() {
                 usage: cpu.cpu_usage(),
             });
 
-            println!("{}", measurements.back().unwrap());
+            if let Err(e) = writeln!(lock, "{}", measurements.back().unwrap()) {
+                eprintln!("Error writing measurements to stdout. {}", e);
+            }
+            // println!("{}", measurements.back().unwrap());
             // sleep(sysinfo::MINIMUM_CPU_UPDATE_INTERVAL);
             sleep(Duration::from_secs(1));
         }
@@ -73,7 +79,7 @@ impl Display for CpuLog {
         write!(
             f,
             "{}|{}|{} (%)|{}",
-            self.time_stamp, self.name, self.usage,self.level
+            self.time_stamp, self.name, self.usage, self.level
         )
     }
 }

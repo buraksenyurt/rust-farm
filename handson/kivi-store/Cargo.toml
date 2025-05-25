@@ -1,0 +1,8 @@
+[package]
+name = "kivi-store"
+description = "A lightweight In-Memory Key Value Store"
+authors = ["Burak Selim Şenyurt"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]

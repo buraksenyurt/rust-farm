@@ -9,5 +9,6 @@ mod store;
 mod tests;
 
 fn main() -> std::io::Result<()> {
+    env_logger::init();
     server::run("127.0.0.1:5555")
 }

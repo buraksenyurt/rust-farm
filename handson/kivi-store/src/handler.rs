@@ -1,5 +1,6 @@
 use crate::command::Command;
 use crate::store::DataStore;
+use log::info;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
@@ -10,7 +11,7 @@ pub fn handle_request(mut stream: TcpStream, data_store: DataStore) {
         if size == 0 {
             break;
         }
-
+        info!("Read {}(bytes)", size);
         let request = String::from_utf8_lossy(&buffer[..size]);
         let cmd = Command::parse(&request);
 
@@ -19,10 +20,14 @@ pub fn handle_request(mut stream: TcpStream, data_store: DataStore) {
                 data_store.set(&key, &value);
                 "OK\n".to_string()
             }
-            Command::Get { key } => data_store
-                .get(&key)
-                .unwrap_or_else(|| "NOT FOUND\n".to_string()),
+            Command::Get { key } => {
+                info!("GET {}", key);
+                data_store
+                    .get(&key)
+                    .unwrap_or_else(|| "NOT FOUND\n".to_string())
+            }
             Command::Remove { key } => {
+                info!("REMOVE {}", key);
                 if data_store.remove(&key) {
                     "OK\n".to_string()
                 } else {

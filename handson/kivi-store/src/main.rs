@@ -5,6 +5,7 @@
 mod server;
 mod handler;
 mod store;
+mod data_store_tests;
 
 fn main() {
     

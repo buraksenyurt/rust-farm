@@ -1,34 +1,20 @@
 use crate::handler::handle_request;
 use crate::store::DataStore;
-use log::{error, info};
-use std::net::TcpListener;
-use std::thread;
+use log::info;
+use tokio::net::TcpListener;
 
-pub fn run(address: &str) -> std::io::Result<()> {
-    let listener = TcpListener::bind(address)?;
+pub async fn run(address: &str) -> tokio::io::Result<()> {
+    let listener = TcpListener::bind(address).await?;
     let store = DataStore::new();
 
     info!("Server running at {}", address);
 
-    for stream in listener.incoming() {
-        match stream {
-            Ok(stream) => {
-                let store = store.clone();
-                thread::spawn(move || {
-                    info!(
-                        "Connection from {}",
-                        stream
-                            .peer_addr()
-                            .unwrap_or_else(|_| "[Unknown]".parse().unwrap())
-                    );
-                    handle_request(stream, store);
-                });
-            }
-            Err(e) => {
-                error!("Error: {}", e);
-            }
-        }
+    loop {
+        let (stream, addr) = listener.accept().await?;
+        info!("Client {} connected", addr);
+        let store = store.clone();
+        tokio::spawn(async move {
+            handle_request(stream, store).await;
+        });
     }
-
-    Ok(())
 }

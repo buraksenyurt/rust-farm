@@ -3,11 +3,11 @@ mod tests {
     use crate::command::Command;
     use crate::store::DataStore;
 
-    #[test]
-    fn test_set_and_get() {
+    #[tokio::test]
+    async fn test_set_and_get() {
         let data_store = DataStore::new();
-        data_store.set("Resilience", "on");
-        let expected = data_store.get("Resilience").unwrap();
+        data_store.set("Resilience", "on").await;
+        let expected = data_store.get("Resilience").await.unwrap();
         assert_eq!(expected, "on");
     }
 

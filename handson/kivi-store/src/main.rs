@@ -2,11 +2,11 @@
     TCP protokolü ile çalışan hafifsiklet bir Key-Value Store klonu.
     Veri In-Memory olarak tutulur.
 */
-mod server;
-mod handler;
-mod store;
 mod data_store_tests;
+mod handler;
+mod server;
+mod store;
 
-fn main() {
-    
+fn main() -> std::io::Result<()> {
+    server::run("127.0.0.1:5555")
 }

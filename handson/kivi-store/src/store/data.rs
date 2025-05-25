@@ -19,8 +19,8 @@ impl DataStore {
         self.context.lock().unwrap().insert(key.to_string(), value.to_string());
     }
 
-    pub fn remove(&self, key: &str) {
-        self.context.lock().unwrap().remove(key);
+    pub fn remove(&self, key: &str) -> bool {
+        self.context.lock().unwrap().remove(key).is_some()
     }
     
     pub fn get(&self, key: &str) -> Option<String> {

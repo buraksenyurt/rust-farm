@@ -1,3 +1,4 @@
+use crate::command::Command;
 use crate::store::DataStore;
 use std::io::{Read, Write};
 use std::net::TcpStream;
@@ -11,29 +12,25 @@ pub fn handle_request(mut stream: TcpStream, data_store: DataStore) {
         }
 
         let request = String::from_utf8_lossy(&buffer[..size]);
-        let mut parts = request.trim().splitn(3, ' ');
+        let cmd = Command::parse(&request);
 
-        let cmd = parts.next().unwrap_or("").to_uppercase();
-        let key = parts.next().unwrap_or("");
-        let value = parts.next().unwrap_or("");
-
-        let response = match cmd.as_str() {
-            "SET" => {
+        let response = match cmd {
+            Command::Set { key, value } => {
                 data_store.set(&key, &value);
                 "OK\n".to_string()
             }
-            "GET" => data_store
+            Command::Get { key } => data_store
                 .get(&key)
                 .unwrap_or_else(|| "NOT FOUND\n".to_string()),
-            "REMOVE" => {
-                if data_store.remove(key) {
+            Command::Remove { key } => {
+                if data_store.remove(&key) {
                     "OK\n".to_string()
                 } else {
                     "NOT FOUND\n".to_string()
                 }
             }
-            "LIST" => data_store.keys().join("\n").to_string(),
-            _ => "ERROR: Unknown command\n".to_string(),
+            Command::List => data_store.keys().join("\n").to_string(),
+            Command::Invalid(cmd) => format!("ERROR: Unknown command '{}'\n", cmd),
         };
 
         let _ = stream.write_all(response.as_bytes());

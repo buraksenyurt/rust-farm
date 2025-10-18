@@ -1,0 +1,10 @@
+[package]
+name = "look-exif"
+description = "A experimental CLI tool to view and manipulate EXIF metadata in images."
+authors = ["Burak Selim Senyurt"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.49", features = ["derive"] }
+rexif = "0.7.5"

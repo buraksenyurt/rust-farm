@@ -8,7 +8,7 @@ use crate::question_manager::QuestionManager;
 use crate::utility::Utility;
 use rand::prelude::SliceRandom;
 use rand::rngs::ThreadRng;
-use rand::Rng;
+use rand::RngExt;
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsCast;
 use web_sys::window;
@@ -49,11 +49,11 @@ impl Game {
     pub fn init(&mut self) {
         self.rectangles.clear();
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let lane_manager = LaneManager::new();
         let question_manager = QuestionManager::init();
         let question = question_manager
-            .get_question(rng.gen_range(1..=question_manager.get_question_count()))
+            .get_question(rng.random_range(1..=question_manager.get_question_count()))
             .unwrap()
             .clone();
         let mut q_index: Vec<u32> = (0..=LANE_COUNT as u32).collect();
@@ -61,7 +61,7 @@ impl Game {
         for (lane_index, &i) in q_index.iter().enumerate() {
             let rectangle = Rectangle::new(
                 Position::new(
-                    rng.gen_range(lane_manager.get_lane_range(Column::from(lane_index as u32))),
+                    rng.random_range(lane_manager.get_lane_range(Column::from(lane_index as u32))),
                     0,
                 ),
                 Utility::get_random_size(),
@@ -102,7 +102,7 @@ impl Game {
     }
 
     fn get_random_velocity(rng: &mut ThreadRng) -> Velocity {
-        let y = rng.gen_range(MIN_VERTICAL_SPEED..MAX_VERTICAL_SPEED);
+        let y = rng.random_range(MIN_VERTICAL_SPEED..MAX_VERTICAL_SPEED);
         Velocity::new(0, y)
     }
 

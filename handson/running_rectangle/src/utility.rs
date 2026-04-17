@@ -1,13 +1,13 @@
 use crate::colors::Color;
 use crate::entity::BlockSize;
 use crate::instrument::Size;
-use rand::prelude::SliceRandom;
+use rand::prelude::IndexedRandom;
 
 pub struct Utility {}
 
 impl Utility {
     pub fn get_random_size() -> Size {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let block_sizes = [
             BlockSize::Short,
             BlockSize::Tall,
@@ -18,7 +18,7 @@ impl Utility {
     }
 
     pub fn get_random_color() -> String {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let colors = [
             Color::IndianRed,
             Color::MediumVioletRed,

@@ -3,7 +3,7 @@ use crate::entity::{Note, NoteForm};
 use crate::utility::{get_date_from, get_file_path};
 use handlebars::Handlebars;
 use log::{error, info, warn};
-use rand::prelude::SliceRandom;
+use rand::prelude::IndexedRandom;
 use serde_json::json;
 use std::cmp::Reverse;
 use std::fs;
@@ -21,18 +21,15 @@ pub struct Handler {}
 impl Handler {
     pub async fn index_handler(handlebars: Arc<Handlebars<'_>>) -> Result<impl Reply, Rejection> {
         let cached_notes = Self::get_notes_from_cache().await?;
+        let mut rng = rand::rng();
         let note = cached_notes
             .notes
             .iter()
             .filter(|n| !n.is_archived)
-            .collect::<Vec<_>>() // Collect to Vec
-            .choose(&mut rand::thread_rng())
-            .cloned();
-
-        let note = match note {
-            Some(note) => note,
-            None => return Err(reject::not_found()),
-        };
+            .collect::<Vec<_>>()
+            .choose(&mut rng)
+            .copied()
+            .ok_or_else(reject::not_found)?;
 
         let rendered = match handlebars.render("index", &note) {
             Ok(rendered) => rendered,
@@ -48,7 +45,7 @@ impl Handler {
         handlebars: Arc<Handlebars<'_>>,
     ) -> Result<impl Reply, Rejection> {
         let rendered = handlebars
-            .render("noteForm", &{})
+            .render("noteForm", &())
             .map_err(|_| reject::not_found())?;
 
         Ok(Response::builder()

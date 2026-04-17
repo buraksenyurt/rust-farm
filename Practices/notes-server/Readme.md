@@ -1,10 +1,16 @@
 # Notes Server
 
-Bu uygulama sadece index.html sayfasını host eden basit bir web sunucu uygulamasıdır. Sayfa her talep edildiğinde benim kitaplardan, bültenlerden, dergilerden derlediğim notlardan rastgele birisini göstermektedir. 
+Bu uygulama sadece index.html sayfasını host eden basit bir web sunucu uygulamasıdır. Sayfa her talep edildiğinde benim kitaplardan, bültenlerden, dergilerden derlediğim notlardan rastgele birisini göstermektedir.
 
 Örnek projede warp, tokio, serde, handlebars küfeleri kullanılmakta. warp web sunucusu, tokio asenkron operasyonlar, serde json serileştirme operasyonları ve handlebars' da HTML şablonundaki dinamik içerikleri yönetmek için kullanılmaktadır.
 
 İşte çalışma zamanına ait birkaç görüntü.
+
+```bash
+cargo run
+```
+
+Sonrasında `http://localhost:5555/note` adresine gidildiğinde rastgele bir notun gösterildiği sayfa açılacaktır.
 
 ![Çalışma zamanı - 1](../images/notes_server_01.png)
 
@@ -71,7 +77,7 @@ sudo docker cp notes-server:/usr/local/bin/notes.json .
 sudo docker cp 236ff7:/usr/local/bin/notes.json .
 ```
 
-## Güncelleme
+## Loglama
 
 Uygulamaya loglama eklendi. Local'de çalıştırırken aşağıdaki gibi ilerlenebilir.
 

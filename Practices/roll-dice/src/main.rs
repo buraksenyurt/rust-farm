@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 use std::str::FromStr;
 
 /*
@@ -23,9 +23,9 @@ struct Roll {
 
 impl Roll {
     fn apply(&self) -> u32 {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         (0..self.dice)
-            .map(|_| rng.gen_range(1..=self.sides) as u32)
+            .map(|_| rng.random_range(1..=self.sides) as u32)
             .sum()
     }
 }

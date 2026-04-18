@@ -6,5 +6,5 @@ edition = "2021"
 
 [dependencies]
 dotenv = "0.15.0"
-sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "postgres", "macros"] }
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "postgres", "macros"] }
 tokio = { version = "1.27.0", features = ["full"] }

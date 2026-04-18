@@ -24,7 +24,8 @@ Bu projede wasm kullanılacağı için işleri kolaylaştıracak wasm-pack'e iht
 # wasm pack kurulumu için
 cargo install wasm-pack
 
-# WASM paketini hazırlamak için
+# WASM paketini hazırlamak için (frontend klasöründen çalıştırılmalıdır)
+cd frontend
 wasm-pack build --target web
 ```
 
@@ -33,6 +34,7 @@ wasm-pack build --target web
 Backend servisi tipik bir Rest servisi. Log çıktılarını görebilmek için aşağıdaki gibi hareket edebiliriz.
 
 ```bash
+cd backend
 RUST_LOG=info cargo run
 ```
 
@@ -55,7 +57,7 @@ npm start
 
 ## Çalışma Zamanı
 
-Projeler can-ban isimli workspace altında birleştirilmiştir. Kolayca başlatmak için run.sh isimli terminal script'i kullanılabilir. 
+Projeler can-ban isimli workspace altında birleştirilmiştir. Kolayca başlatmak için run.sh isimli terminal script'i kullanılabilir.
 
 ```bash
 # run.sh betiğini çalıştırılabilir hale getirmek için

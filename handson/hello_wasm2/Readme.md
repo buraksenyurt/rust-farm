@@ -52,7 +52,7 @@ Dolayısıyla *npm run dev* komutu ile artık webpack-dev-server işletilecek bu
 npm run dev
 ```
 
-Bu işlemin ardından http://localhost:8080/ adresine gidilirse console tarafına fonksiyon sonucunun yansıdığı görülebilir.
+Bu işlemin ardından `http://localhost:8080/` adresine gidilirse console tarafına fonksiyon sonucunun yansıdığı görülebilir.
 
 ![../images/hello_wasm_05](../images/hello_wasm_05.png)
 
@@ -177,7 +177,8 @@ Web assembly tarafın için aşağıdaki modülü kullanabiliriz.
 )
 ```
 
-(memory $mempage 1) kısmında tek bir bellek sayfası *(Memory Page)* tanımlıyoruz. Bu 64 Kb büyüklüğünde bir bellek sayfası anlamına gelmektedir. Bu bellek sayfasına kullanımı kolaylaştıran $mempage takma ismini *(alias)* verdik. İzleyen satırda da bellek sayfasının sıfırıncı konumundan başlamak suretiyle string bir veriyi bellek sayfasına aldık. Ayrıca export kısmı ile söz konusu bellek sayfasını dışarıdan kullanılabilmesi için de açıyoruz. 
+(memory $mempage 1) kısmında tek bir bellek sayfası *(Memory Page)* tanımlıyoruz. Bu 64 Kb büyüklüğünde bir bellek sayfası anlamına gelmektedir. Bu bellek sayfasına kullanımı kolaylaştıran $mempage takma ismini *(alias)* verdik. İzleyen satırda da bellek sayfasının sıfırıncı konumundan başlamak suretiyle string bir veriyi bellek sayfasına aldık. Ayrıca export kısmı ile söz konusu bellek sayfasını dışarıdan kullanılabilmesi için de açıyoruz.
+
 Tabii yine [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip bu WAT'a karşılık gelen binary dosyasını ürettirip indirmemiz lazım.
 
 Yeni WASM binary'si ile gelen bellek sayfasını index.js tarafında da aşağıdaki gibi ele alabiliriz.
@@ -277,7 +278,7 @@ jsObject içerisinde js niteliği üzerinden taşınan mem isimli değişken, 64
 )
 ```
 
-Tabii bir önceki örnekte kullanılan $mempage burada yer almıyor. Sonrasında yine [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip wasm dosyasını indirip www/public klasöründeki calc.wasm ile değiştirmeliyiz. 
+Tabii bir önceki örnekte kullanılan $mempage burada yer almıyor. Sonrasında yine [https://webassembly.github.io/wabt/demo/wat2wasm/](https://webassembly.github.io/wabt/demo/wat2wasm/) adresine gidip wasm dosyasını indirip www/public klasöründeki calc.wasm ile değiştirmeliyiz.
 
 Sonrasında
 
@@ -286,5 +287,3 @@ npm run dev
 ```
 
 ![../images/hello_wasm_10](../images/hello_wasm_10.png)
-
-

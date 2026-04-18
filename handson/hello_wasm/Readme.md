@@ -13,7 +13,7 @@
 ))
 ```
 
-gibi. Burada calc isimli bir fonksiyon tanımlanmıştır. 32 bit float tam sayı alıp yine aynı türde sonuç döndürür. İlk satırında 3.14 pi değeri sabit olarak tanımlanmış ardından get 0 ile fonksiyon parametresi çekilmiş sonrasında mul çağrısı ile de çarpma işlemi gerçekleştirilmiştir. Ardından fonksiyon parametresi tekrar hesaba katılmış ve pi * r * r işlemi gerçekleştirilmiştir.
+gibi. Burada calc isimli bir fonksiyon tanımlanmıştır. 32 bit float tam sayı alıp yine aynı türde sonuç döndürür. İlk satırında 3.14 pi değeri sabit olarak tanımlanmış ardından get 0 ile fonksiyon parametresi çekilmiş sonrasında mul çağrısı ile de çarpma işlemi gerçekleştirilmiştir. Ardından fonksiyon parametresi tekrar hesaba katılmış ve `pi * r * r` işlemi gerçekleştirilmiştir.
 
 Örnek kod parçasının doğru olup olmadığı ve çalışma zamanı sonuçları üstte belirttiğimiz siteden kontrol edilebilir.
 

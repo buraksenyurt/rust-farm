@@ -3,20 +3,20 @@ mod message;
 use crate::message::Message;
 use bincode::serialize;
 use std::net::UdpSocket;
-use rand::Rng;
+use rand::RngExt;
 
 fn main() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     let socket = UdpSocket::bind("0.0.0.0:0").expect("UDP soket oluşturulamadı.");
     socket
         .connect("127.0.0.1:5001")
         .expect("UDP sunucusuna bağlanılamıyor");
     println!("Peer adresi {:?}", socket.peer_addr());
-    send_message(&socket, Message::new(rng.gen_range(1..10), "Merhaba. Ben Dam.".to_string()));
-    send_message(&socket, Message::new(rng.gen_range(10..11), "Van Dam.".to_string()));
-    send_message(&socket, Message::new(rng.gen_range(11..20), "Claud Van Dam.".to_string()));
-    send_message(&socket, Message::new(rng.gen_range(21..30), "Jan Claud Van Dam.".to_string()));
+    send_message(&socket, Message::new(rng.random_range(1..10), "Merhaba. Ben Dam.".to_string()));
+    send_message(&socket, Message::new(rng.random_range(10..11), "Van Dam.".to_string()));
+    send_message(&socket, Message::new(rng.random_range(11..20), "Claud Van Dam.".to_string()));
+    send_message(&socket, Message::new(rng.random_range(21..30), "Jan Claud Van Dam.".to_string()));
 }
 
 fn send_message(socket: &UdpSocket, message: Message) {

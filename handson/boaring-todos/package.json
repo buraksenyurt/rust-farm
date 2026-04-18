@@ -13,10 +13,12 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@tauri-apps/cli": "^1.1.0",
-    "rollup": "^2.79.1"
+    "rollup": "^2.80.0"
   },
   "dependencies": {
-    "@tauri-apps/cli": "^1.1.0",
     "servor": "^4.0.2"
+  },
+  "optionalDependencies": {
+    "@tauri-apps/cli-win32-x64-msvc": "1.6.3"
   }
 }

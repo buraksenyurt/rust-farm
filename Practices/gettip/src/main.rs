@@ -1,4 +1,4 @@
-use rand::{thread_rng, Rng};
+use rand::RngExt;
 use serde::{Deserialize};
 use std::env;
 use std::fmt::{Display, Formatter};
@@ -45,8 +45,8 @@ fn load_tips() -> Vec<Tip> {
 }
 
 fn get_random_tip(tips: &[Tip]) -> String {
-    let mut rng = thread_rng();
-    let number = rng.gen_range(0..tips.len());
+    let mut rng = rand::rng();
+    let number = rng.random_range(0..tips.len());
     tips[number].to_string()
 }
 

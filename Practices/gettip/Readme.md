@@ -24,4 +24,3 @@ cd target/release
 Ancak şöyle bir hatırlatma yapalım. Program tips.json dosyası ile çalıştığından onu da binary'nin olduğu klasörle birlikte dağıtmalıyız.
 
 ![../images/gettip_2.png](../images/gettip_2.png)
-

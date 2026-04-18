@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 use std::io;
 use std::process::exit;
 
@@ -51,6 +51,6 @@ fn main() {
 }
 
 fn get_number() -> u8 {
-    let mut rnd = rand::thread_rng();
-    rnd.gen_range(1..=10)
+    let mut rnd = rand::rng();
+    rnd.random_range(1..=10)
 }

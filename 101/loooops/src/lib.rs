@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 
 #[cfg(test)]
 mod tests {
@@ -125,7 +125,7 @@ pub fn get_perfect_divisors(max: i32, div: i32) -> Vec<i32> {
 pub fn get_random_vec(length: i32) -> Vec<i32> {
     let mut i = 0;
     let mut numbers = Vec::<i32>::new();
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     // loop aslında while gibi sonsuz bir döngü bloğu açar.
     loop {
         // Sembolik bir iç döngü...
@@ -133,7 +133,7 @@ pub fn get_random_vec(length: i32) -> Vec<i32> {
         // , sıfırdan farklı bir tane ele edene kadar deniyoruz. Daha kolay yolu da var tabii
         // ama sırf iç döngü örneği olsun diye :)
         loop {
-            let n = rng.gen();
+            let n = rng.random();
             if n <= 0 {
                 continue;
             } else {

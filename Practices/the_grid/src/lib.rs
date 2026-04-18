@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
@@ -48,8 +48,8 @@ pub fn get_random_color() -> JsValue {
         "#4B2840".to_string(),
     ));
 
-    let mut rng = rand::thread_rng();
-    let index = rng.gen_range(0..colors.len());
+    let mut rng = rand::rng();
+    let index = rng.random_range(0..colors.len());
     JsValue::from_serde(&colors[index]).unwrap()
 }
 
@@ -63,9 +63,9 @@ impl GridSize {
 #[wasm_bindgen]
 impl GameGrid {
     pub fn new() -> Self {
-        let mut rng = rand::thread_rng();
-        let row_count = rng.gen_range(5..16);
-        let column_count = rng.gen_range(5..16);
+        let mut rng = rand::rng();
+        let row_count = rng.random_range(5..16);
+        let column_count = rng.random_range(5..16);
         Self {
             size: GridSize::new(row_count, column_count),
         }
@@ -91,11 +91,11 @@ pub struct Wall {
 #[wasm_bindgen]
 impl Wall {
     pub fn new(rows_count: usize, columns_count: usize, width: usize) -> Self {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let mut walls = Vec::<WallCell>::new();
         for row in 0..rows_count {
             for column in 0..columns_count {
-                let number: usize = rng.gen_range(0..100);
+                let number: usize = rng.random_range(0..100);
                 if number % 2 == 0 {
                     walls.push(WallCell((row * width) + column))
                 }

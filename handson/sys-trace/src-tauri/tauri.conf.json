@@ -15,11 +15,15 @@
       {
         "title": "sys-trace",
         "width": 800,
-        "height": 600
+        "height": 720,
+        "minWidth": 560,
+        "minHeight": 480,
+        "resizable": true,
+        "theme": "Dark"
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'"
     }
   },
   "bundle": {

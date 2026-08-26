@@ -2,7 +2,7 @@
 
 Rust ekosisteminin popüler masaüstü uygulama geliştirme framework'lerinden birisidir. Bir Tauri uygulaması aslında tek bir process'te çalışan iki uygulamadan oluşur. Çekirdek fonksiyonellikler Rust tarafında ele alınırken önyüz tarafında WebView *(Linux tarafında WebKitGTK, Windows tarafında Edge WebView2 ve macOS tarafında WKWebView)* kullanılır. **Electron** ile kıyaslandığında ilk fark burada ortaya çıkar. Electron'da önyüz tarafında browser engine olarak Chromium kullanılır. Bu çalışmada Tauri ile bir masaüstü uygulaması geliştiriyoruz. Amacımız **sysinfo** küfesini *(crate)* kullanarak ilkel bir dashboard hazırlamak ve burada en azında CPU, RAM ve Disk kullanımını göstermek. Bu örneği göz önüne alırsak Tauri'nin çalışma prensibini aşağıdaki şekilde olduğı gibi özetleyebiliriz.
 
-![Architecture](Architecture.png)
+![Architecture](screenshots/Architecture.png)
 
 Önyüz ve arka plan uygulamaları arasında **IPC *(Inter Process Communication)*** mekanizması ile veri alışverişi yapılır. **REST** gibi network katmanına çıkılmayı gerektirecek bir iletişim söz konusu değildir. IPC'nin avantajlarını kullanır. WebKitGTK *(Windows tarafında WebView2 veya Mac OS tarafında WKWebView)* kullanıldığında zaten bundled browser yoktur. Önyüz için söyleyebileceğimiz önemli detaylardan birisi de işletim sistemine doğrudan temas etmemesi bunu Rust tarafından istemesidir. Bu iletişim **Command** ve **Event** enstrümanları üzerine kuruludur.
 
@@ -56,7 +56,7 @@ npm create tauri-app@latest
 **CLI** arabirimi uygulama ile ilgili bize birkaç soru soracaktır. Bu soruları aşağıdaki gibi cevaplayabiliriz.
 
 - **Project name**: sys-trace *(Bu benim verdiğim uygulama adı. Siz başka bir tane verebilirsiniz.)*
-- **Identifier**: com.buraksenyurt.sys-trace *(Varsayılan olarak sunulanı kabul ettim. Bana biraz Java classpath mantığını hatırlattı.)*
+- **Identifier**: com.buraks.sys-trace *(Varsayılan olarak sunulanı kabul ettim. Bana biraz Java classpath mantığını hatırlattı.)*
 - **Choose which language to use for the frontend**: Typescript
 - **Choose your package manager**: npm
 - **Choose your UI template**: Vanilla
@@ -74,7 +74,7 @@ npm run tauri dev
 
 Karşımıza aşağıdaki gibi bir pencere çıkması lazım.
 
-![Runtime 00](Runtime_00.png)
+![Runtime 00](screenshots/Runtime_00.png)
 
 > İlk çalıştırmada büyük ihtimalle Rust tarafı gerekli küfeleri yükleyecektir ve bu işlem birkaç dakika sürebilir. Sabırlı olun :D
 
@@ -98,3 +98,22 @@ cargo add sysinfo --no-default-features --features system,disk
 
 Rust tarafındaki geliştirmeler ile önyüz tarafı bittikten sonra çalışır bir örnekle karşılaşmış oldum. İtiraf etmeliyim ki doğduğumdan beri önyüz tarafında beceriksizim :D Neyse ki bu işi `GPT-5.3-Codex`' e devrettim. Ondan material design'a uygun makul bir arayüz çıkarmasını istedim. Sonuç ortada.
 
+![Runtime 01](screenshots/Runtime_01.png)
+
+## Paketleme (Building)
+
+Uygulama geliştirmelerini tamamladıktan sonra bir `deb` paketi oluşturabiliriz. Bunun için aşağıdaki komutu çalıştırmamız yeterli.
+
+```bash
+npm run tauri build
+
+# Yukarıdaki işlem sonrasında bundle/deb ve bundle/appImage klasörleri oluşacaktır. Bu klasörler altında paketlenmiş uygulamayı bulabiliriz.
+
+# Kurulum da oldukça basittir.
+sudo dpkg -i src-tauri/target/release/bundle/deb/sys-trace_0.1.0_amd64.deb
+sys-trace
+
+# Ya da AppImage olarak çalıştırabiliriz.
+chmod +x src-tauri/target/release/bundle/appimage/sys-trace-0.1.0_amd64.AppImage
+./src-tauri/target/release/bundle/appimage/sys-trace-0.1.0_amd64.AppImage
+```

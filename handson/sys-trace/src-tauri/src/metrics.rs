@@ -1,5 +1,4 @@
 use serde::Serialize;
-use sysinfo::{Disks, System};
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -27,8 +26,7 @@ pub struct DiskSnapshot {
     pub file_system: String,
     pub kind: String,
     pub total_space: u64,
-    pub available_space: u64,
-    pub removable_space: u64,
+    pub available_space: u64
 }
 
 #[derive(Debug, Clone, Serialize)]

@@ -95,3 +95,6 @@ Rust tarafında programın çalıştığı sistemden bazı bilgileri toplamak i�
 cd src-tauri
 cargo add sysinfo --no-default-features --features system,disk
 ```
+
+Rust tarafındaki geliştirmeler ile önyüz tarafı bittikten sonra çalışır bir örnekle karşılaşmış oldum. İtiraf etmeliyim ki doğduğumdan beri önyüz tarafında beceriksizim :D Neyse ki bu işi `GPT-5.3-Codex`' e devrettim. Ondan material design'a uygun makul bir arayüz çıkarmasını istedim. Sonuç ortada.
+

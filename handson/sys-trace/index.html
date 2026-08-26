@@ -1,43 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/src/styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/src/main.ts" defer></script>
-  </head>
 
-  <body>
-    <main class="container">
-      <h1>Welcome to Tauri</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Dashboard</title>
+  <script type="module" src="/src/main.ts" defer></script>
+</head>
 
-      <div class="row">
-        <a href="https://vite.dev" target="_blank">
-          <img src="/src/assets/vite.svg" class="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img
-            src="/src/assets/tauri.svg"
-            class="logo tauri"
-            alt="Tauri logo"
-          />
-        </a>
-        <a href="https://www.typescriptlang.org/docs" target="_blank">
-          <img
-            src="/src/assets/typescript.svg"
-            class="logo typescript"
-            alt="typescript logo"
-          />
-        </a>
-      </div>
-      <p>Click on the Tauri logo to learn more about the framework</p>
+<body>
+  <main style="max-width: 1280px; margin: 0 auto; padding: 8px;">
+    <div style="display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); gap:8px;">
+      <md-elevated-card style="display:block; padding:10px; grid-column: 1 / span 2; grid-row: 1 / span 2;">
+        <h2 style="margin: 0;">Summary</h2>
+        <h1 id="hostname" style="margin: 6px 0 4px 0;">—</h1>
+        <p id="hostmeta" style="margin: 0 0 8px 0;">connecting…</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+          <md-outlined-card style="display:block; padding:8px;">
+            <div>CPU</div>
+            <div id="cpu-total">—</div>
+          </md-outlined-card>
+          <md-outlined-card style="display:block; padding:8px;">
+            <div>Memory</div>
+            <div id="mem-total">—</div>
+          </md-outlined-card>
+        </div>
+        <p id="loadavg" style="margin: 8px 0 0 0;"></p>
+      </md-elevated-card>
 
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-      <p id="greet-msg"></p>
-    </main>
-  </body>
+      <md-elevated-card style="display:block; padding:10px; grid-column: 3 / span 2; grid-row: 1 / span 2;">
+        <h2 style="margin: 0 0 8px 0;">CPU Cores</h2>
+        <div id="cores"></div>
+      </md-elevated-card>
+
+      <md-outlined-card style="display:block; padding:10px; grid-column: 1 / span 4; grid-row: 3 / span 2;">
+        <h2 style="margin: 0 0 8px 0;">Memory & Storage</h2>
+        <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+          <div>
+            <h3 style="margin: 0 0 6px 0;">Memory</h3>
+            <div id="memory"></div>
+          </div>
+          <div>
+            <h3 style="margin: 0 0 6px 0;">Storage</h3>
+            <div id="disks"></div>
+          </div>
+        </div>
+      </md-outlined-card>
+    </div>
+  </main>
+</body>
+
 </html>

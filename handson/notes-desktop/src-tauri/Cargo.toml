@@ -1,0 +1,20 @@
+[package]
+name = "notes-desktop"
+version = "0.1.0"
+description = "A simple desktop notes app written with Tauri"
+authors = ["Burak Selim Şenyurt"]
+edition = "2021"
+
+[lib]
+name = "notes_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+chrono = "0.4"

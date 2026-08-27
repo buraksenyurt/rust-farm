@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notlarım</title>
+  <script type="module" src="/src/main.ts" defer></script>
+</head>
+
+<body>
+  <main style="max-width: 900px; margin: 0 auto; padding: 12px;">
+    <nav style="display:flex; align-items:center; gap:4px; margin-bottom:12px;">
+      <h1 style="font-size:20px; margin:0; flex:1;">Notlarım</h1>
+      <md-text-button id="nav-home">Ana Sayfa</md-text-button>
+      <md-text-button id="nav-add">Not Ekle</md-text-button>
+      <md-text-button id="nav-list">Tüm Notlar</md-text-button>
+    </nav>
+
+    <section id="view-home">
+      <div style="margin-top:10px;">
+        <md-filled-button id="home-refresh">Başka Bir Not Göster</md-filled-button>
+      </div>
+      <div id="home-card"></div>
+
+    </section>
+
+    <section id="view-add" style="display:none;">
+      <md-elevated-card style="display:block; padding:16px;">
+        <h2 style="margin-top:0;">Yeni Not Ekle</h2>
+        <div id="add-message"></div>
+        <form id="add-form">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <md-outlined-text-field id="f-title" label="Başlık" required style="width:100%;"></md-outlined-text-field>
+            <md-outlined-text-field id="f-body" label="İçerik" type="textarea" rows="4" required
+              style="width:100%;"></md-outlined-text-field>
+            <div style="display:flex; gap:12px;">
+              <md-outlined-text-field id="f-publisher" label="Kaynak" required style="flex:1;"></md-outlined-text-field>
+              <md-outlined-text-field id="f-author" label="Yazar" required style="flex:1;"></md-outlined-text-field>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <md-filled-select id="f-media-type" label="Tür" style="flex:1;"></md-filled-select>
+              <md-filled-select id="f-month" label="Ay" style="flex:1;"></md-filled-select>
+              <md-outlined-text-field id="f-day" label="Gün" type="number" min="0" max="31" value="1"
+                style="width:100px;"></md-outlined-text-field>
+              <md-outlined-text-field id="f-year" label="Yıl" type="number" value="2026"
+                style="width:110px;"></md-outlined-text-field>
+            </div>
+
+            <div>
+              <h3 style="margin-bottom:6px;">Dış Bağlantılar</h3>
+              <div id="externals-rows" style="display:flex; flex-direction:column; gap:8px;"></div>
+              <md-outlined-button id="add-external-row" type="button" style="margin-top:8px;">
+                + Bağlantı Ekle
+              </md-outlined-button>
+            </div>
+
+            <div>
+              <md-filled-button type="submit">Kaydet</md-filled-button>
+            </div>
+          </div>
+        </form>
+      </md-elevated-card>
+    </section>
+
+    <section id="view-list" style="display:none;">
+      <md-outlined-card style="display:block; padding:16px;">
+        <h2 style="margin-top:0;">Tüm Notlar</h2>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse;" id="notes-table">
+            <thead>
+              <tr style="text-align:left; border-bottom:1px solid var(--md-sys-color-outline-variant, #ccc);">
+                <th style="padding:8px;"><a href="#" data-sort="title" class="sort-link">Başlık</a></th>
+                <th style="padding:8px;"><a href="#" data-sort="author" class="sort-link">Yazar</a></th>
+                <th style="padding:8px;">Kaynak</th>
+                <th style="padding:8px;"><a href="#" data-sort="date" class="sort-link">Tarih</a></th>
+                <th style="padding:8px;"><a href="#" data-sort="id" class="sort-link">#</a></th>
+              </tr>
+            </thead>
+            <tbody id="notes-table-body"></tbody>
+          </table>
+        </div>
+      </md-outlined-card>
+    </section>
+
+    <section id="view-detail" style="display:none;">
+      <div id="detail-card"></div>
+    </section>
+  </main>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 # Notes Desktop
 
-> ÖNEMLİ NOT: Bu uygulama `Claude Sonnet 4.6` sürümüne daha önceden geliştirilmiş `notes-server` uygulaması referans verilerek yazdırılmıştır.
+> ÖNEMLİ NOT: Bu uygulama `Claude Sonnet` sürümüne daha önceden geliştirilmiş `notes-server` uygulaması referans verilerek yazdırılmıştır.
 
 `Practices/notes-server` isimli warp tabanlı web uygulamasının Tauri ile yazılmış masaüstü portu. Aynı işi görür: rastgele bir not gösterir, yeni not eklemeye, tüm notları listeleyip sıralamaya ve arşivlemeye (soft-delete) izin verir. `handson/sys-trace` referans alınarak Vanilla + TypeScript + Vite iskeleti ve Material Design 3 arayüzü (`@material/web`) ile hazırlanmıştır.
 

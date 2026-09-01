@@ -17,4 +17,27 @@ docker-compose up -d
 
 ## Genel Kullanım
 
-// EKLENECEK
+Sunucuyu doğrudan `cargo` ile çalıştırabilirsiniz:
+
+```bash
+cargo run
+```
+
+Varsayılan olarak `.env` dosyasındaki `LISTEN_ADDRESS` (`0.0.0.0:5555`) adresini dinler.
+
+Desteklenen komutlar, boşlukla ayrılmış metin satırları şeklinde gönderilir:
+
+```bash
+SET key value
+GET key
+REMOVE key
+LIST
+```
+
+### İstemci ile Bağlanmak
+
+Projeyle birlikte gelen basit, cross-platform komut satırı istemcisini kullanabilirsiniz:
+
+```bash
+cargo run --bin client
+```

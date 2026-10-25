@@ -1,0 +1,10 @@
+[package]
+name = "log-lens"
+description = "A simple Leptos application. Analyze the logs efficiently on Client-side with power of WASM"
+authors = ["BSŞ"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+console_error_panic_hook = "0.1.7"
+leptos = { version = "0.8", features = ["csr"] }

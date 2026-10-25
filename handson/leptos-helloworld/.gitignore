@@ -1,0 +1,5 @@
+# Ignore dist folder
+dist/
+
+# Ignore vs code settings
+.vscode/

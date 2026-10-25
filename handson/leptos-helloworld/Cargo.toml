@@ -1,0 +1,15 @@
+[package]
+name = "leptos-helloworld"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+console_error_panic_hook = "0.1.7"
+leptos = { version = "0.8.22", features = ["csr"] }
+
+# use your own native target
+[target.aarch64-apple-darwin]
+rustflags = ["--cfg", "erase_components"]
+
+[target.wasm32-unknown-unknown]
+rustflags = ["--cfg", "erase_components"]

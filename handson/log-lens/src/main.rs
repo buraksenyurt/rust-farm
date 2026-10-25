@@ -1,3 +1,5 @@
+mod parser;
+
 use leptos::prelude::*;
 
 fn main() {

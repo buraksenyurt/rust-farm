@@ -1,5 +1,6 @@
-use crate::components::upload::FileDrop;
+use crate::components::{stats::StatsPanel, upload::FileDrop};
 use crate::parser::{LogEntry, parse_all};
+use crate::stats::summarize;
 use leptos::prelude::*;
 
 // Log file that has been loaded and parsed
@@ -29,21 +30,31 @@ pub fn App() -> impl IntoView {
         }));
     });
 
+    let summary = Memo::new(move |_| {
+        dataset.with(|d| {
+            d.as_ref()
+                .map(|d| summarize(d.entries.iter()))
+                .unwrap_or_default()
+        })
+    });
+
     view! {
         <header>
             <h1>"Log Lens"</h1>
             <p>"Nginx log'larını tarayıcında analiz et. Dosyan hiçbir sunucuya gönderilmez."</p>
         </header>
-
         <main>
             <FileDrop on_load=on_load />
-            {move || dataset.with(|d| d.as_ref().map(|d| view! {
-                <p class="meta">
-                    <b>{d.name.clone()}</b>
-                    {format!(" · {} kayıt · {} hatalı satır · {:.1} ms'de ayrıştırıldı",
-                        d.entries.len(), d.failed, d.parse_ms)}
-                </p>
-            }))}
+            <Show when=move || dataset.with(|d| d.is_some())>
+                {move || dataset.with(|d| d.as_ref().map(|d| view! {
+                    <p class="meta">
+                        <b>{d.name.clone()}</b>
+                        {format!(" · {} kayıt · {} hatalı satır · {:.1} ms'de ayrıştırıldı",
+                            d.entries.len(), d.failed, d.parse_ms)}
+                    </p>
+                }))}
+                <StatsPanel summary=summary />
+            </Show>
         </main>
     }
 }

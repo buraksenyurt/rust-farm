@@ -1,6 +1,7 @@
 mod app;
 mod components;
 mod parser;
+mod stats;
 
 use leptos::prelude::*;
 

@@ -1,4 +1,5 @@
-use crate::components::{stats::StatsPanel, upload::FileDrop};
+use crate::components::{filters::FilterBar, stats::StatsPanel, upload::FileDrop};
+use crate::filter::Filters;
 use crate::parser::{LogEntry, parse_all};
 use crate::stats::summarize;
 use leptos::prelude::*;
@@ -30,11 +31,27 @@ pub fn App() -> impl IntoView {
         }));
     });
 
+    let filters = Filters::new();
+    provide_context(filters);
+
+    let filtered = Memo::new(move |_| {
+        let criteria = filters.criteria();
+        dataset.with(|d| match d {
+            Some(d) => d
+                .entries
+                .iter()
+                .enumerate()
+                .filter(|(_, e)| criteria.matches(e))
+                .map(|(i, _)| i)
+                .collect::<Vec<usize>>(),
+            None => Vec::new(),
+        })
+    });
+
     let summary = Memo::new(move |_| {
-        dataset.with(|d| {
-            d.as_ref()
-                .map(|d| summarize(d.entries.iter()))
-                .unwrap_or_default()
+        dataset.with(|d| match d {
+            Some(d) => filtered.with(|idx| summarize(idx.iter().map(|&i| &d.entries[i]))),
+            None => Default::default(),
         })
     });
 
@@ -53,6 +70,7 @@ pub fn App() -> impl IntoView {
                             d.entries.len(), d.failed, d.parse_ms)}
                     </p>
                 }))}
+                <FilterBar matched=Signal::derive(move || filtered.with(|v| v.len())) />
                 <StatsPanel summary=summary />
             </Show>
         </main>

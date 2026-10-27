@@ -1,0 +1,65 @@
+:root {
+    --bg: #f6f7f9;
+    --card: #fff;
+    --text: #1d232b;
+    --muted: #687384;
+    --border: #dde1e7;
+    --accent: #c2410c;
+    --ok: #15803d;
+    --warn: #b45309;
+    --bad: #b91c1c;
+    font-family: system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+}
+
+body {
+    margin: 0;
+}
+
+header,
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+header h1 {
+    margin: 24px 0 4px;
+}
+
+header p {
+    margin: 0 0 20px;
+    color: var(--muted);
+}
+
+.drop-zone {
+    display: block;
+    padding: 32px;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    text-align: center;
+    cursor: pointer;
+}
+
+.drop-zone.dragging {
+    border-color: var(--accent);
+    background: #fff7ed;
+}
+
+.drop-zone input {
+    display: none;
+}
+
+.drop-zone span {
+    color: var(--muted);
+}
+
+.meta {
+    color: var(--muted);
+}
+
+.error {
+    color: var(--bad);
+}

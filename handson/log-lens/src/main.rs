@@ -1,10 +1,12 @@
+mod app;
+mod components;
 mod parser;
 
 use leptos::prelude::*;
 
 fn main() {
     console_error_panic_hook::set_once();
-    leptos::mount::mount_to_body(App);
+    leptos::mount::mount_to_body(app::App);
 }
 
 #[component]

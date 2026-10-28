@@ -1,4 +1,6 @@
-use crate::components::{filters::FilterBar, stats::StatsPanel, upload::FileDrop};
+use crate::components::{
+    filters::FilterBar, stats::StatsPanel, table::RequestTable, upload::FileDrop,
+};
 use crate::filter::Filters;
 use crate::parser::{LogEntry, parse_all};
 use crate::stats::summarize;
@@ -7,6 +9,7 @@ use leptos::prelude::*;
 // Log file that has been loaded and parsed
 #[derive(Clone)]
 pub struct Dataset {
+    pub id: u32,
     pub name: String,
     pub entries: Vec<LogEntry>,
     pub failed: usize,
@@ -18,12 +21,17 @@ fn now_ms() -> f64 {
 }
 
 #[component]
+
 pub fn App() -> impl IntoView {
     let dataset = RwSignal::new(None::<Dataset>);
+    let load_count = StoredValue::new(0u32);
     let on_load = Callback::new(move |(name, text): (String, String)| {
         let start = now_ms();
         let result = parse_all(&text);
+
+        load_count.update_value(|c| *c += 1);
         dataset.set(Some(Dataset {
+            id: load_count.get_value(),
             name,
             entries: result.entries,
             failed: result.failed,
@@ -33,7 +41,6 @@ pub fn App() -> impl IntoView {
 
     let filters = Filters::new();
     provide_context(filters);
-
     let filtered = Memo::new(move |_| {
         let criteria = filters.criteria();
         dataset.with(|d| match d {
@@ -72,6 +79,7 @@ pub fn App() -> impl IntoView {
                 }))}
                 <FilterBar matched=Signal::derive(move || filtered.with(|v| v.len())) />
                 <StatsPanel summary=summary />
+                <RequestTable dataset=dataset rows=filtered />
             </Show>
         </main>
     }

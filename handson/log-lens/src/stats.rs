@@ -1,6 +1,6 @@
 //! Raw computation of log statistics.
 use crate::parser::LogEntry;
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct Summary {
@@ -67,6 +67,64 @@ pub fn human_bytes(b: u64) -> String {
     }
 }
 
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
+pub struct HourBucket {
+    pub total: usize,
+    pub errors: usize, // 5xx
+}
+
+pub fn hourly<'a>(entries: impl Iterator<Item = &'a LogEntry>) -> [HourBucket; 24] {
+    let mut buckets = [HourBucket::default(); 24];
+    for e in entries {
+        let b = &mut buckets[(e.hour as usize).min(23)];
+        b.total += 1;
+        if e.status >= 500 {
+            b.errors += 1;
+        }
+    }
+    buckets
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct EndpointStat {
+    pub path: String,
+    pub count: usize,
+    pub errors: usize,
+    pub avg_ms: f64,
+}
+
+/// Most requested endpoints. Query string ("?q=...") is ignored in grouping.
+pub fn top_endpoints<'a>(
+    entries: impl Iterator<Item = &'a LogEntry>,
+    n: usize,
+) -> Vec<EndpointStat> {
+    let mut map: HashMap<&str, (usize, usize, f64, usize)> = HashMap::new();
+    for e in entries {
+        let path = e.path.split('?').next().unwrap_or(&e.path);
+        let slot = map.entry(path).or_default();
+        slot.0 += 1;
+        if e.status >= 500 {
+            slot.1 += 1;
+        }
+        if let Some(t) = e.request_time {
+            slot.2 += t * 1000.0;
+            slot.3 += 1;
+        }
+    }
+    let mut list: Vec<EndpointStat> = map
+        .into_iter()
+        .map(|(path, (count, errors, sum, timed))| EndpointStat {
+            path: path.to_string(),
+            count,
+            errors,
+            avg_ms: if timed > 0 { sum / timed as f64 } else { 0.0 },
+        })
+        .collect();
+    list.sort_by(|a, b| b.count.cmp(&a.count).then_with(|| a.path.cmp(&b.path)));
+    list.truncate(n);
+    list
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -110,5 +168,28 @@ mod tests {
         assert_eq!(human_bytes(512), "512 B");
         assert_eq!(human_bytes(1536), "1.5 KB");
         assert_eq!(human_bytes(5 * 1024 * 1024), "5.0 MB");
+    }
+
+    #[test]
+    fn hourly_and_top() {
+        let data = vec![entry("1.1.1.1", 200, 0.1), entry("1.1.1.1", 500, 0.3)];
+
+        let h = hourly(data.iter());
+        assert_eq!(
+            h[10],
+            HourBucket {
+                total: 2,
+                errors: 1
+            }
+        );
+        assert_eq!(h[9].total, 0);
+
+        let top = top_endpoints(data.iter(), 5);
+
+        assert_eq!(top.len(), 1);
+        assert_eq!(top[0].path, "/");
+        assert_eq!(top[0].count, 2);
+        assert_eq!(top[0].errors, 1);
+        assert!((top[0].avg_ms - 200.0).abs() < 1e-9);
     }
 }

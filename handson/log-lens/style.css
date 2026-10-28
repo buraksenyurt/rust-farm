@@ -247,3 +247,108 @@ td.path {
     opacity: .4;
     cursor: default;
 }
+
+insights {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 800px) {
+    .insights {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-width: 0;
+}
+
+.panel h3 {
+    margin: 0 0 10px;
+    font-size: 14px;
+}
+
+.bars {
+    display: flex;
+    gap: 3px;
+    height: 180px;
+    align-items: stretch;
+}
+
+.bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.bar .fill {
+    width: 100%;
+    background: #94a3b8;
+    border-radius: 3px 3px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.bar .err {
+    width: 100%;
+    background: var(--bad);
+}
+
+.bar span {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.bar:hover .fill {
+    background: #64748b;
+}
+
+table.compact td,
+table.compact th {
+    padding: 5px 6px;
+}
+
+tr.clickable {
+    cursor: pointer;
+}
+
+tr.clickable:hover {
+    background: #fff7ed;
+}
+
+.progress {
+    position: relative;
+    height: 28px;
+    margin: 12px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #fed7aa;
+    transition: width .1s;
+}
+
+.progress span {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}

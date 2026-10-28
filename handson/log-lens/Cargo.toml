@@ -7,6 +7,7 @@ edition = "2024"
 
 [dependencies]
 console_error_panic_hook = "0.1.7"
+gloo-timers = { version = "0.4.0", features = ["futures"] }
 leptos = { version = "0.8", features = ["csr"] }
 wasm-bindgen = "0.2.129"
 wasm-bindgen-futures = "0.4.79"
@@ -18,3 +19,8 @@ web-sys = { version = "0.3.106", features = [
     "DataTransfer",
     "Performance",
 ] }
+
+[profile.release]
+lto = true # Link Time Optimization, discard unused code between crates
+codegen-units = 1 # Reduce codegen units for better optimization
+panic = "abort" # Unwind strategy. Unwind is disabled, abort on panic

@@ -89,16 +89,23 @@ pub struct ParseResult {
     pub failed: usize,
 }
 
-/// Parses a multi-line text; skips empty lines.
+impl ParseResult {
+    pub fn push_line(&mut self, line: &str) {
+        if line.trim().is_empty() {
+            return;
+        }
+        match parse_line(line) {
+            Ok(entry) => self.entries.push(entry),
+            Err(_) => self.failed += 1,
+        }
+    }
+}
+
+#[cfg(test)]
 pub fn parse_all(text: &str) -> ParseResult {
     let mut result = ParseResult::default();
-
-    for line in text.lines().filter(|l| !l.trim().is_empty()) {
-        match parse_line(line) {
-            Ok(entry) => result.entries.push(entry),
-
-            Err(_) => result.failed += 1,
-        }
+    for line in text.lines() {
+        result.push_line(line);
     }
     result
 }
